@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){var e=document.getElementById("searchPackage"),t=document.getElementById("packageTable");e&&t&&e.addEventListener("input",function(e){var n=e.target.value.toLowerCase();t.querySelectorAll("tbody tr").forEach(function(e){var t=e.textContent.toLowerCase();e.style.display=t.includes(n)?"":"none"})})});

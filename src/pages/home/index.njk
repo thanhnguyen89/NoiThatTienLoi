@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.home.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.home.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <meta property="og:title" content="{{ PAGE_SEO.home.title }} | {{ siteName }}">
+  <meta property="og:description" content="{{ PAGE_SEO.home.description }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/slider.css">
+  <link rel="stylesheet" href="../../assets/css/pages/flash-sales.css">
+  <link rel="stylesheet" href="../../assets/css/pages/home.css">
+  <script src="./index.js" defer></script>
+  <script src="../../assets/js/common.js" defer></script>
+  <title>{{ PAGE_SEO.home.title }} | {{ siteName }}</title>
+</head>
+<body class="bg_site_1">
+  {% include "partials/header.njk" %}
+
+    <main class="main-content">
+    <div class="container">
+      {% include "partials/slider.njk" %}
+      <!--Flash sale -->
+      {% include "partials/flash-sales.njk" %}
+      <div class="content-wrapper">
+        <section class="footer-note"><p>Hạ tầng mạng 4G/5G Viettel phủ sóng toàn quốc.</p></section>
+      </div>
+    </div>
+  </main>
+
+  {# {% include "partials/ai-chat.njk" %} #}
+</body>
+</html>

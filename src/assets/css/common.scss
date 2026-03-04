@@ -1,0 +1,33 @@
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import '~@fortawesome/fontawesome-free/css/all.css';
+// Bootstrap lite (grid, containers, utilities)
+@import './bootstrap-lite';
+
+body {
+    color: #333;
+    font-family: 'Inter var', sans-serif !important;
+    font-size: 14px;
+    background: #fff;
+    line-height: 1.42857143;
+    margin: 0;
+}
+body.bg_site_1{
+    background: #f2f1f6;
+}
+a:visited, a,a:focus,a:active{
+  color: #333333;
+  text-decoration: none;
+  outline: 0
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+em {
+    font-style: italic;
+}
