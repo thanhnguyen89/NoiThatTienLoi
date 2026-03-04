@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init Simple Slider (vanilla JS)
   initSlider();
+  
+  // Init Category Slider
+  initCategorySlider();
+  
+  // Init Best Sellers Slider
+  initBestSellersSlider();
 });
 
 function initSlider() {
@@ -89,4 +95,65 @@ function initSlider() {
   setInterval(() => {
     goToSlide(currentIndex + 1);
   }, 4000);
+}
+
+// Category Slider
+function initCategorySlider() {
+  const track = document.querySelector('.category-track');
+  const prevBtn = document.querySelector('.cat-prev');
+  const nextBtn = document.querySelector('.cat-next');
+  
+  if (!track || !prevBtn || !nextBtn) return;
+  
+  const items = track.querySelectorAll('.category-item');
+  const itemWidth = 115; // item width + gap
+  const visibleItems = Math.floor(track.parentElement.offsetWidth / itemWidth);
+  const maxScroll = (items.length - visibleItems) * itemWidth;
+  
+  let currentScroll = 0;
+  
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentScroll}px)`;
+  }
+  
+  prevBtn.addEventListener('click', () => {
+    currentScroll = Math.max(0, currentScroll - itemWidth * 2);
+    updateSlider();
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    currentScroll = Math.min(maxScroll, currentScroll + itemWidth * 2);
+    updateSlider();
+  });
+}
+
+// Best Sellers Slider
+function initBestSellersSlider() {
+  const track = document.querySelector('.bs-slider-track');
+  const prevBtn = document.querySelector('.bs-slider-prev');
+  const nextBtn = document.querySelector('.bs-slider-next');
+  
+  if (!track || !prevBtn || !nextBtn) return;
+  
+  const items = track.querySelectorAll('.bs-product-card');
+  const itemWidth = 212; // item width + gap
+  const viewport = track.parentElement;
+  const visibleItems = Math.floor(viewport.offsetWidth / itemWidth);
+  const maxScroll = Math.max(0, (items.length - visibleItems) * itemWidth);
+  
+  let currentScroll = 0;
+  
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentScroll}px)`;
+  }
+  
+  prevBtn.addEventListener('click', () => {
+    currentScroll = Math.max(0, currentScroll - itemWidth * 2);
+    updateSlider();
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    currentScroll = Math.min(maxScroll, currentScroll + itemWidth * 2);
+    updateSlider();
+  });
 }
