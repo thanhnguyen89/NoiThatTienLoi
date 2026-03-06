@@ -4,13 +4,13 @@
   max-width: 880px;
   margin: 0 auto;
   position: relative;
+  height: 260px;
 }
 
 /* FlexSlider Base */
 .flexslider {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
 }
 
 .flexslider .slides {
@@ -29,9 +29,8 @@
 
 .flexslider .slides img {
   width: 100%;
-  height: auto;
+  height: 260px;
   display: block;
-  border-radius: 8px;
 }
 
 .flexslider .slides a {

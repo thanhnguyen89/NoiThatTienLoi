@@ -1,0 +1,18 @@
+.container-slider{
+    background: #fff;
+}
+.container-slider .slider_top{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+}
+.container-slider .slider_top .group_banner_right {
+    float: right;
+    width: 435px;
+}
+.container-slider .slider_top .item_banner_right {
+    margin-bottom: 4px;
+    height: 128px;
+    overflow: hidden;
+}

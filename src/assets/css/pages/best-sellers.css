@@ -14,20 +14,25 @@
 }
 
 .best-sellers-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #1F7A5C;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .best-sellers-viewall {
-  color: #1F7A5C;
-  font-size: 13px;
-  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  transition: all 0.3s;
+    text-decoration: none;
 }
 
 .best-sellers-viewall:hover {
-  text-decoration: underline;
+      color: #ee5a24;
 }
 
 /* Slider */
@@ -90,6 +95,8 @@
 
 .bs-product-card:hover {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+   transform: translateY(-2px);
+  cursor: pointer;
 }
 
 /* Thumb with discount badge */
@@ -139,6 +146,7 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 5px;
+  justify-content: space-between;
 }
 
 .bs-product-price .price-new {

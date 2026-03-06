@@ -76,7 +76,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: '',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -131,6 +131,10 @@ module.exports = {
         'contact/index': {
           import: 'src/pages/contact/index.njk',
           data: { ...SITE_CONFIG, PAGE_SEO, page: 'contact' },
+        },
+        'category/index': {
+          import: 'src/pages/category/index.njk',
+          data: { ...SITE_CONFIG, PAGE_SEO, page: 'category' },
         },
       },
       js: {

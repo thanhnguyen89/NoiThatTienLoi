@@ -1,0 +1,247 @@
+/* Today Suggestion Section */
+.today-suggestion-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.today-suggestion-header {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 15px;
+}
+
+.today-suggestion-title {
+  font-size: 20px;
+    font-weight: 600;
+    color: #1F7A5C;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.today-suggestion-title a {
+  color: #1F7A5C;
+  text-decoration: none;
+}
+
+/* Grid Layout - 5 sản phẩm trên 1 dòng */
+.today-suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+/* Product Card */
+.ts-product-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ts-product-card:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Thumb with discount badge */
+.ts-product-thumb {
+  display: block;
+  position: relative;
+  padding-top: 100%;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.ts-product-thumb img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.ts-product-card:hover .ts-product-thumb img {
+  transform: scale(1.2);
+}
+
+.ts-product-card .discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4757;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.ts-product-info {
+  padding: 10px;
+}
+
+.ts-product-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  justify-content: space-between;
+}
+
+.ts-product-price .price-new {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ee5a24;
+}
+
+.ts-product-price .price-old {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.ts-product-brand {
+  font-size: 13px;
+  color: #333;
+  font-weight: 600;
+  margin: 0 0 3px;
+}
+
+.ts-product-name {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  height: 42px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.ts-product-name a {
+  color: #333;
+  text-decoration: none;
+}
+
+.ts-product-name a:hover {
+  color: #326e51;
+}
+
+.ts-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.rating-score {
+  background: #1F7A5C;
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.rating-star {
+  color: #ffc107;
+}
+
+.rating-count {
+  color: #999;
+}
+
+.sold-count {
+  color: #666;
+  margin-left: auto;
+}
+
+/* Progress Bar */
+.ts-product-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.ts-product-progress .progress-bar {
+  flex: 1;
+  height: 16px;
+  background: #ffaf7e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ts-product-progress .progress-bar span {
+  display: block;
+  height: 100%;
+  background-color: #ff6600;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.ts-product-progress .progress-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ee5a24;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Footer with View More Button */
+.today-suggestion-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.today-suggestion-viewmore {
+  display: inline-block;
+  padding: 10px 40px;
+  background: #e8f5f1;
+  color: #1F7A5C;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 25px;
+  border: 1px solid #1F7A5C;
+  transition: all 0.3s ease;
+}
+
+.today-suggestion-viewmore:hover {
+  background: #1F7A5C;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .today-suggestion-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .today-suggestion-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .today-suggestion-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .today-suggestion-grid {
+    grid-template-columns: 1fr;
+  }
+}

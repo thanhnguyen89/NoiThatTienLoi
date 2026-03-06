@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.home.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.home.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <meta property="og:title" content="{{ PAGE_SEO.home.title }} | {{ siteName }}">
+  <meta property="og:description" content="{{ PAGE_SEO.home.description }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/category.css">
+  <link rel="stylesheet" href="../../assets/css/pages/header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/category-slider.css">
+  <link rel="stylesheet" href="../../assets/css/pages/search-keywords.css">
+  <link rel="stylesheet" href="../../assets/css/pages/column-left.css">
+  <link rel="stylesheet" href="../../assets/css/pages/product-card.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <script src="./index.js" defer></script>
+  <script src="../../assets/js/common.js" defer></script>
+  <title>{{ PAGE_SEO.home.title }} | {{ siteName }}</title>
+</head>
+<body class="bg_site_1">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <div class="container">
+      <!--breadcrumb-->
+       {% include "partials/breadcrumb.njk" %}
+
+      <!-- Category Banner Slider -->
+      {% include "partials/category-slider.njk" %}
+      
+      <!-- main content -->
+      <div class="main-content-cate">
+        <div class="row">
+          <div class="col-auto column-cate-left">
+            {% include "partials/column-left.njk" %}
+          </div>
+          <div class="col column-cate-right">
+            <div class="cate-heading">
+              <h1 class="cate-heading__title">Giường sắt</h1>
+              <span class="cate-heading__count">(6990)</span>
+            </div>
+            <!-- Sort bar -->
+            <nav class="cate-sort" aria-label="Sắp xếp sản phẩm">
+              <div class="cate-sort__tabs">
+                <button class="cate-sort__tab is-active" data-sort="newest">Mới nhất</button>
+                <button class="cate-sort__tab" data-sort="best-seller">Bán chạy</button>
+                <button class="cate-sort__tab" data-sort="price-asc">Giá thấp đến cao</button>
+                <button class="cate-sort__tab" data-sort="price-desc">Giá cao đến thấp</button>
+                <div class="cate-sort__display">
+                  <select class="cate-sort__select" aria-label="Số sản phẩm hiển thị">
+                    <option value="40" selected>Hiển thị 40</option>
+                    <option value="60">Hiển thị 60</option>
+                    <option value="80">Hiển thị 80</option>
+                  </select>
+                </div>
+              </div>
+            </nav>
+            <!--san pham-->
+            <div class="cate-product-grid">
+              {% for i in range(0, 12) %}
+              {% include "partials/product-card.njk" %}
+              {% endfor %}
+            </div>
+
+            <nav class="cate-paging" aria-label="Phân trang">
+              <ul class="cate-paging__list">
+                <li class="cate-paging__item cate-paging__item--disabled">
+                  <span class="cate-paging__link cate-paging__prev" aria-label="Trang trước">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><path d="M14 16.5L10 12.5L14 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </li>
+                <li class="cate-paging__item is-active"><a href="#" class="cate-paging__link">1</a></li>
+                <li class="cate-paging__item"><a href="#" class="cate-paging__link">2</a></li>
+                <li class="cate-paging__item"><a href="#" class="cate-paging__link">3</a></li>
+                <li class="cate-paging__item"><a href="#" class="cate-paging__link">4</a></li>
+                <li class="cate-paging__item"><a href="#" class="cate-paging__link">5</a></li>
+                <li class="cate-paging__item cate-paging__item--dots"><span class="cate-paging__link">…</span></li>
+                <li class="cate-paging__item"><a href="#" class="cate-paging__link">8</a></li>
+                <li class="cate-paging__item">
+                  <a href="#" class="cate-paging__link cate-paging__next" aria-label="Trang sau">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><path d="M10 8.5L14 12.5L10 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- tu khoa tim kiem -->
+      {% include "partials/search-keywords.njk" %}
+    </div>
+  </main>
+
+  {% include "partials/footer.njk" %}
+
+  {# {% include "partials/ai-chat.njk" %} #}
+</body>
+</html>

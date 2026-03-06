@@ -3,7 +3,10 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 // Bootstrap lite (grid, containers, utilities)
 @import './bootstrap-lite';
-
+* {
+    margin: 0;
+    padding: 0;
+}
 body {
     color: #333;
     font-family: 'Inter var', sans-serif !important;
@@ -20,6 +23,9 @@ a:visited, a,a:focus,a:active{
   text-decoration: none;
   outline: 0
 }
+.hide {
+    display: none !important;
+}
 .fa {
     display: inline-block;
     font: normal normal normal 14px / 1 FontAwesome;
@@ -30,4 +36,60 @@ a:visited, a,a:focus,a:active{
 }
 em {
     font-style: italic;
+}
+img {
+    border: 0px;
+    font-size: 0;
+    line-height: 0;
+    max-width: 100%;
+}
+ul, ol {
+    list-style: none;
+}
+/*breadcrumb*/
+section.bsc-block {
+    margin-bottom: 10px;
+    background: unset;
+}
+.breadcrumb {
+    width: auto;
+    margin: 10px auto 0;
+}
+.breadcrumb li {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 17px;
+    padding-right: 10px;
+    position: relative;
+        vertical-align: text-bottom;
+}
+.breadcrumb li::before {
+    border-top: 1px solid #666;
+    border-right: 1px solid #666;
+    content: '';
+    height: 4px;
+    position: absolute;
+    right: 1px;
+    transform: rotate(45deg);
+    top: 8px;
+    width: 4px;
+}
+.breadcrumb li:last-child::before {
+    display: none;
+}
+.breadcrumb li a, .breadcrumb li p
+{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    color: rgba(152, 162, 179, 1);
+}
+.breadcrumb .sort-total {
+    color: rgba(52, 64, 84, 1);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    padding-left: 2px;
 }
