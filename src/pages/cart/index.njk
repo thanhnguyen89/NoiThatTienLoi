@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer-content.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-nav.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-category-drawer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/modal-login.css">
+  <link rel="stylesheet" href="../../assets/css/pages/cart.css">
+  <script src="./index.js" defer></script>
+  <script src="../../assets/js/common.js" defer></script>
+  <title>Giỏ hàng | Nội Thất Tiện Lợi</title>
+</head>
+<body class="bg_site_1">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <div class="container">
+      <div class="cart-page">
+
+        <h1 class="cart-page__title">Giỏ hàng(<span id="cartCount">2</span> sản phẩm)</h1>
+
+        <!-- Empty cart -->
+        <div class="cart-empty" id="cartEmpty" style="display:none;">
+          <div class="cart-empty__icon"><i class="fas fa-shopping-cart"></i></div>
+          <p class="cart-empty__text">Bạn chưa chọn sản phẩm.</p>
+          <a href="/" class="cart-empty__btn">Tiếp tục mua sắm</a>
+        </div>
+
+        <!-- Cart has items -->
+        <div class="cart-has-items" id="cartHasItems">
+          <div class="cart-main">
+            <div class="cart-table-head">
+              <span class="col-product">Sản phẩm</span>
+              <span class="col-price">Giá tiền</span>
+              <span class="col-qty">Số lượng</span>
+              <span class="col-total">Thành tiền</span>
+            </div>
+
+            <!-- Item 1 -->
+            <div class="cart-item" data-idx="0">
+              <div class="cart-item__product">
+                <img class="cart-item__img" src="../../assets/images/sanpham/Giuong-sat-kieu-dan-cheo-2-768x768.jpg" alt="">
+                <div class="cart-item__info">
+                  <p class="cart-item__brand">OHAHA</p>
+                  <p class="cart-item__name">Giường sắt kiểu đan chéo 2 tầng cao cấp 1m2 x 2m</p>
+                  <div class="cart-item__actions">
+                    <a href="#" class="cart-item__wishlist"><i class="far fa-heart"></i> Yêu thích</a>
+                    <button class="cart-item__remove" data-idx="0"><i class="fas fa-times"></i> Xóa</button>
+                  </div>
+                </div>
+              </div>
+              <div class="cart-item__price">
+                <span class="cart-item__price-current">2.350.000 đ</span>
+                <span class="cart-item__price-original">2.900.000 đ</span>
+              </div>
+              <div class="cart-item__qty">
+                <div class="qty-stepper">
+                  <button class="qty-btn qty-btn--minus" data-idx="0">−</button>
+                  <input class="qty-input" type="number" min="1" value="1" data-idx="0">
+                  <button class="qty-btn qty-btn--plus" data-idx="0">+</button>
+                </div>
+              </div>
+              <div class="cart-item__total">2.350.000 đ</div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="cart-item" data-idx="1">
+              <div class="cart-item__product">
+                <img class="cart-item__img" src="../../assets/images/sanpham/vong-inox.jpg" alt="">
+                <div class="cart-item__info">
+                  <p class="cart-item__brand">INOX</p>
+                  <p class="cart-item__name">Võng inox cao cấp khung chắc chắn, chịu lực tốt</p>
+                  <div class="cart-item__actions">
+                    <a href="#" class="cart-item__wishlist"><i class="far fa-heart"></i> Yêu thích</a>
+                    <button class="cart-item__remove" data-idx="1"><i class="fas fa-times"></i> Xóa</button>
+                  </div>
+                </div>
+              </div>
+              <div class="cart-item__price">
+                <span class="cart-item__price-current">450.000 đ</span>
+                <span class="cart-item__price-original">580.000 đ</span>
+              </div>
+              <div class="cart-item__qty">
+                <div class="qty-stepper">
+                  <button class="qty-btn qty-btn--minus" data-idx="1">−</button>
+                  <input class="qty-input" type="number" min="1" value="1" data-idx="1">
+                  <button class="qty-btn qty-btn--plus" data-idx="1">+</button>
+                </div>
+              </div>
+              <div class="cart-item__total">450.000 đ</div>
+            </div>
+
+            <!-- Mobile summary (chỉ hiện trên mobile) -->
+            <div class="cart-mobile-summary">
+              <div class="cart-mobile-summary__row">
+                <span>Tạm tính:</span>
+                <span>2.800.000 đ</span>
+              </div>
+              <div class="cart-mobile-summary__row">
+                <span>Giảm giá:</span>
+                <span>0 đ</span>
+              </div>
+              <div class="cart-mobile-summary__row cart-mobile-summary__row--total">
+                <span>Tổng thanh toán:</span>
+                <span>2.800.000 đ</span>
+              </div>
+              <div class="cart-mobile-summary__vat">Đã bao gồm VAT</div>
+            </div>
+            <a href="/checkout" class="btn-checkout btn-checkout--mobile">Tiến hành đặt hàng</a>
+
+            <div class="cart-bottom">
+              <a href="/" class="cart-back-link"><i class="fas fa-chevron-left"></i> Tiếp tục mua hàng</a>
+              <div class="cart-subtotal">
+                <div class="cart-subtotal__row">Tạm tính: <strong id="cartSubtotal">2.800.000 đ</strong></div>
+                <div class="cart-subtotal__vat">(Đã bao gồm VAT)</div>
+                <a href="/checkout" class="btn-checkout">Tiến hành đặt hàng</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-invoice">
+            <h3 class="cart-invoice__title">Hóa đơn của bạn</h3>
+            <div class="cart-invoice__row"><span>Tạm tính:</span><span id="invoiceSubtotal">2.800.000 đ</span></div>
+            <div class="cart-invoice__row"><span>Giảm giá:</span><span id="invoiceDiscount">0 đ</span></div>
+            <div class="cart-invoice__row cart-invoice__row--total"><span>Tổng cộng:</span><span id="invoiceTotal">2.800.000 đ</span></div>
+            <small class="cart-invoice__vat">(Đã bao gồm VAT)</small>
+            <a href="/checkout" class="btn-checkout btn-checkout--full">Tiến hành đặt hàng</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  {% include "partials/footer.njk" %}
+  <div class="container">
+    {% include "partials/footer-content.njk" %}
+  </div>
+  {% include "partials/floating-contact.njk" %}
+
+  <nav class="mobile-bottom-nav">
+    <ul class="mobile-bottom-nav-list">
+      <li class="mobile-bottom-nav-item">
+        <a href="/" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-home"></i></div><span class="mobile-bottom-nav-label">Trang chủ</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/category" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-th-large"></i></div><span class="mobile-bottom-nav-label">Danh mục</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/cart" class="mobile-bottom-nav-link active"><div class="mobile-bottom-nav-icon"><i class="fas fa-shopping-cart"></i></div><span class="mobile-bottom-nav-label">Giỏ hàng</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/notifications" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-bell"></i></div><span class="mobile-bottom-nav-label">Thông báo</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/account" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-user"></i></div><span class="mobile-bottom-nav-label">Tài khoản</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  {% include "partials/mobile-category-drawer.njk" %}
+  {% include "partials/modal-login.njk" %}
+  {% include "partials/modal-register.njk" %}
+  {% include "partials/modal-forgot-password.njk" %}
+</body>
+</html>

@@ -134,3 +134,33 @@
 .flexslider:hover .flex-direction-nav a {
   opacity: 1;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #slider_item_big_top {
+    height: auto;
+    max-width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 10px;
+  }
+  
+  .flexslider .slides img {
+    height: auto;
+    border-radius: 12px;
+  }
+  
+  .flex-control-nav {
+    bottom: 8px;
+    gap: 6px;
+  }
+  
+  .flex-control-nav li a {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .flex-direction-nav a {
+    display: none;
+  }
+}

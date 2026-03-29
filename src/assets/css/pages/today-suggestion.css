@@ -174,7 +174,7 @@
 
 .ts-product-progress .progress-bar {
   flex: 1;
-  height: 16px;
+  height: 10px;
   background: #ffaf7e;
   border-radius: 10px;
   overflow: hidden;
@@ -234,14 +234,66 @@
 }
 
 @media (max-width: 768px) {
+  .today-suggestion-section {
+    margin: 10px 0;
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+  
+  .today-suggestion-header {
+    margin-bottom: 12px;
+  }
+  
+  .today-suggestion-title {
+    font-size: 16px;
+  }
+  
   .today-suggestion-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-}
+  
+  .ts-product-card {
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  
+  .ts-product-info {
+    padding: 8px;
+  }
 
-@media (max-width: 480px) {
-  .today-suggestion-grid {
-    grid-template-columns: 1fr;
+  .ts-product-price {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+
+  .ts-product-price .price-new {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  
+  .ts-product-price .price-old {
+    font-size: 11px;
+  }
+  
+  .ts-product-name {
+    font-size: 13px;
+    height: 38px;
+    margin-bottom: 6px;
+  }
+  
+  .ts-product-rating {
+    margin-bottom: 6px;
+  }
+
+  .today-suggestion-footer {
+    margin-top: 15px;
+  }
+  
+  .today-suggestion-viewmore {
+    padding: 8px 30px;
+    font-size: 13px;
   }
 }

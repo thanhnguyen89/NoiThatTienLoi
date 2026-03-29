@@ -16,3 +16,22 @@
     height: 128px;
     overflow: hidden;
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .container-slider {
+        background: transparent;
+    }
+    
+    .container-slider .slider_top {
+        flex-direction: column;
+    }
+    
+    .container-slider .slider_top .group_banner_right {
+        display: none;
+    }
+    
+    .banner-home-qc {
+        display: none;
+    }
+}

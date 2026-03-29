@@ -17,7 +17,9 @@
   <link rel="stylesheet" href="../../assets/css/pages/search-keywords.css">
   <link rel="stylesheet" href="../../assets/css/pages/column-left.css">
   <link rel="stylesheet" href="../../assets/css/pages/product-card.css">
+  <link rel="stylesheet" href="../../assets/css/pages/suggestions-you.css">
   <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer-content.css">
   <script src="./index.js" defer></script>
   <script src="../../assets/js/common.js" defer></script>
   <title>{{ PAGE_SEO.home.title }} | {{ siteName }}</title>
@@ -34,7 +36,7 @@
       {% include "partials/category-slider.njk" %}
       
       <!-- main content -->
-      <div class="main-content-cate">
+      <section class="main-content-cate">
         <div class="row">
           <div class="col-auto column-cate-left">
             {% include "partials/column-left.njk" %}
@@ -90,7 +92,9 @@
             </nav>
           </div>
         </div>
-      </div>
+      </section>
+      <!-- Category Banner Slider -->
+      {% include "partials/suggestions-you.njk" %}
       <!-- tu khoa tim kiem -->
       {% include "partials/search-keywords.njk" %}
     </div>
@@ -98,6 +102,8 @@
 
   {% include "partials/footer.njk" %}
 
-  {# {% include "partials/ai-chat.njk" %} #}
+  <div class="container">
+    {% include "partials/footer-content.njk" %}
+  </div>
 </body>
 </html>

@@ -25,7 +25,77 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Init Best Sellers Slider
   initBestSellersSlider();
+
+  // Init Footer Accordion (mobile)
+  initFooterAccordion();
+
+  // Init Mobile Category Drawer
+  initMobileCategoryDrawer();
+
+  // Init Modal Login
+  initModalLogin();
 });
+
+// Footer accordion on mobile
+function initFooterAccordion() {
+  if (window.innerWidth > 768) return;
+
+  const cols = document.querySelectorAll('.footer__col:not(:first-child)');
+  cols.forEach(col => {
+    const title = col.querySelector('.f-listtel__title');
+    if (!title) return;
+    title.addEventListener('click', () => {
+      col.classList.toggle('is-open');
+    });
+  });
+}
+
+// Mobile Category Drawer
+function initMobileCategoryDrawer() {
+  const overlay = document.getElementById('mobileCatOverlay');
+  const drawer = document.getElementById('mobileCatDrawer');
+  const closeBtn = document.getElementById('mobileCatClose');
+  const catNavLink = document.querySelector('.mobile-bottom-nav-item:nth-child(2) .mobile-bottom-nav-link');
+
+  if (!overlay || !drawer) return;
+
+  function openDrawer() {
+    overlay.classList.add('is-open');
+    drawer.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    overlay.classList.remove('is-open');
+    drawer.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (catNavLink) {
+    catNavLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDrawer();
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // Left panel switching
+  const leftItems = document.querySelectorAll('.mobile-cat-left-item');
+  leftItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const panelId = item.dataset.panel;
+
+      leftItems.forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+
+      document.querySelectorAll('.mobile-cat-panel').forEach(p => p.classList.remove('is-active'));
+      const panel = document.getElementById(panelId);
+      if (panel) panel.classList.add('is-active');
+    });
+  });
+}
 
 function initSlider() {
   const slider = document.querySelector('.flexslider');
@@ -156,4 +226,70 @@ function initBestSellersSlider() {
     currentScroll = Math.min(maxScroll, currentScroll + itemWidth * 2);
     updateSlider();
   });
+}
+
+// Modal Login
+function initModalLogin() {
+  const loginModalEl = document.getElementById('modalLogin');
+  const registerModalEl = document.getElementById('modalRegister');
+  const forgotModalEl = document.getElementById('modalForgot');
+  const loginLinks = document.querySelectorAll('a[href="/lich-su-mua-hang"].name-order, .mobile-bottom-nav-link[href="/account"]');
+
+  if (!loginModalEl) return;
+
+  const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
+  const registerModal = bootstrap.Modal.getOrCreateInstance(registerModalEl);
+  const forgotModal = bootstrap.Modal.getOrCreateInstance(forgotModalEl);
+
+  // Trigger mở login
+  loginLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginModal && loginModal.show();
+    });
+  });
+
+  // Switch: login → register (Bootstrap event-driven)
+  loginModalEl.addEventListener('click', (e) => {
+    const toRegister = e.target.closest('[data-bs-target="#modalRegister"]');
+    if (toRegister && registerModal) {
+      e.preventDefault();
+      loginModal.hide();
+      setTimeout(() => registerModal.show(), 150);
+    }
+  });
+
+  // Switch: register → login
+  if (registerModalEl) {
+    registerModalEl.addEventListener('click', (e) => {
+      const toLogin = e.target.closest('#switchToLogin, [data-bs-target="#modalLogin"]');
+      if (toLogin && loginModal) {
+        e.preventDefault();
+        registerModal.hide();
+        setTimeout(() => loginModal.show(), 150);
+      }
+    });
+  }
+
+  // Switch: login → forgot
+  loginModalEl.addEventListener('click', (e) => {
+    const forgotLink = e.target.closest('[data-bs-target="#modalForgot"]');
+    if (forgotLink && forgotModal) {
+      e.preventDefault();
+      loginModal.hide();
+      setTimeout(() => forgotModal.show(), 150);
+    }
+  });
+
+  // Forgot → login
+  if (forgotModalEl) {
+    forgotModalEl.addEventListener('click', (e) => {
+      const backLink = e.target.closest('[data-bs-target="#modalLogin"]');
+      if (backLink && loginModal) {
+        e.preventDefault();
+        forgotModal.hide();
+        setTimeout(() => loginModal.show(), 150);
+      }
+    });
+  }
 }

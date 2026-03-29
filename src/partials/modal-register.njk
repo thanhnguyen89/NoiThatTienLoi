@@ -1,0 +1,149 @@
+<!-- Modal Register -->
+<div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="modalRegisterLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-login-dialog">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title w-100 text-center" id="modalRegisterLabel">
+          <span class="d-block fs-5 fw-bold text-dark">Đăng ký</span>
+          <span class="d-block fs-6 fw-normal text-muted mt-1">Tạo tài khoản để mua sắm dễ dàng hơn.</span>
+        </h5>
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body pt-3">
+        <form class="modal-register-form" novalidate>
+
+          <!-- Email / Phone -->
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="regEmail" placeholder="Nhập email hoặc số điện thoại" autocomplete="username">
+            <label for="regEmail"><i class="far fa-envelope me-2 text-muted"></i>Nhập email hoặc số điện thoại</label>
+          </div>
+
+          <!-- Captcha + OTP -->
+          <div class="row g-2 mb-2">
+            <div class="col-5">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="regCaptcha" placeholder="Captcha">
+                <label for="regCaptcha">Mã captcha</label>
+              </div>
+            </div>
+            <div class="col-7 d-flex align-items-center gap-2">
+              <div class="modal-register__captcha-img flex-grow-1 text-center py-2 rounded">7 6 4 e</div>
+              <button class="btn btn-outline-secondary flex-shrink-0" type="button" style="height:58px;border-radius:8px;">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- OTP -->
+          <div class="input-group mb-2">
+            <div class="form-floating flex-grow-1">
+              <input type="text" class="form-control" id="regOtp" placeholder="Nhập mã xác thực">
+              <label for="regOtp">Nhập mã xác thực 6 số</label>
+            </div>
+            <button class="btn btn-outline-secondary flex-shrink-0" type="button" style="border-radius:0 8px 8px 0;">Lấy mã</button>
+          </div>
+          <a href="#" class="text-primary small text-decoration-none mb-3 d-inline-block">Xem hướng dẫn nhận OTP</a>
+
+          <!-- Password -->
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="regPassword" placeholder="Nhập mật khẩu" autocomplete="new-password">
+            <label for="regPassword"><i class="fas fa-lock me-2 text-muted"></i>Nhập mật khẩu từ 6 - 32 ký tự</label>
+          </div>
+
+          <!-- Full Name -->
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="regName" placeholder="Họ tên" autocomplete="name">
+            <label for="regName"><i class="far fa-user me-2 text-muted"></i>Họ tên</label>
+          </div>
+
+          <!-- Gender -->
+          <div class="d-flex gap-4 mb-3">
+            <span class="text-muted small">Giới tính:</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="gender0" value="0">
+              <label class="form-check-label" for="gender0">Không xác định</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="gender1" value="1">
+              <label class="form-check-label" for="gender1">Nam</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" checked>
+              <label class="form-check-label" for="gender2">Nữ</label>
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="row g-2 mb-3">
+            <div class="col-4">
+              <div class="form-floating">
+                <select class="form-select" id="dobDay">
+                  <option selected>Ngày</option>
+                </select>
+                <label for="dobDay">Ngày</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-floating">
+                <select class="form-select" id="dobMonth">
+                  <option selected>Tháng</option>
+                </select>
+                <label for="dobMonth">Tháng</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-floating">
+                <select class="form-select" id="dobYear">
+                  <option selected>Năm</option>
+                </select>
+                <label for="dobYear">Năm</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agreements -->
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="agreeTerms" checked>
+            <label class="form-check-label small text-dark" for="agreeTerms">
+              Tôi đã đọc và đồng ý với <a href="#" class="text-primary">Điều kiện giao dịch chung</a> và <a href="#" class="text-primary">Chính sách bảo mật thông tin</a> của noithattienloi.vn
+            </label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="agreePromo" checked>
+            <label class="form-check-label small text-dark" for="agreePromo">Nhận thông tin khuyến mãi qua e-mail</label>
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="agreePrivacy" checked>
+            <label class="form-check-label small text-dark" for="agreePrivacy">
+              Tôi đồng ý với <a href="#" class="text-primary">chính sách xử lý dữ liệu cá nhân</a> của noithattienloi.vn
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <button class="btn btn-success w-100 py-2 fw-bold rounded-pill" type="submit">Đăng ký</button>
+        </form>
+
+        <!-- Login link -->
+        <p class="text-center text-muted small mt-3 mb-0">
+          Bạn đã có tài khoản? <a href="#" id="switchToLogin" class="text-primary fw-bold text-decoration-none">ĐĂNG NHẬP</a>
+        </p>
+
+        <!-- Social -->
+        <p class="text-center text-muted small mt-3 mb-2">Hoặc đăng nhập với:</p>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-facebook" type="button">
+            <i class="fab fa-facebook-f me-2"></i>Facebook
+          </button>
+          <button class="btn btn-outline-secondary btn-google" type="button">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" height="20" class="me-2">
+            Sign in with Google
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

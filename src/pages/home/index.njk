@@ -21,6 +21,10 @@
   <link rel="stylesheet" href="../../assets/css/pages/home-news.css">
   <link rel="stylesheet" href="../../assets/css/pages/search-keywords.css">
   <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer-content.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-nav.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-category-drawer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/modal-login.css">
   <script src="./index.js" defer></script>
   <script src="../../assets/js/common.js" defer></script>
   <title>{{ PAGE_SEO.home.title }} | {{ siteName }}</title>
@@ -66,7 +70,60 @@
   </main>
 
   {% include "partials/footer.njk" %}
+  <div class="container">
+    {% include "partials/footer-content.njk" %}
+  </div>
+  {% include "partials/floating-contact.njk" %}
+  
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <ul class="mobile-bottom-nav-list">
+      <li class="mobile-bottom-nav-item">
+        <a href="/" class="mobile-bottom-nav-link active">
+          <div class="mobile-bottom-nav-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <span class="mobile-bottom-nav-label">Trang chủ</span>
+        </a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/category" class="mobile-bottom-nav-link">
+          <div class="mobile-bottom-nav-icon">
+            <i class="fas fa-th-large"></i>
+          </div>
+          <span class="mobile-bottom-nav-label">Danh mục</span>
+        </a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/cart" class="mobile-bottom-nav-link">
+          <div class="mobile-bottom-nav-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <span class="mobile-bottom-nav-label">Giỏ hàng</span>
+        </a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/notifications" class="mobile-bottom-nav-link">
+          <div class="mobile-bottom-nav-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <span class="mobile-bottom-nav-label">Thông báo</span>
+        </a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/account" class="mobile-bottom-nav-link">
+          <div class="mobile-bottom-nav-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="mobile-bottom-nav-label">Tài khoản</span>
+        </a>
+      </li>
+    </ul>
+  </nav>  <!-- Mobile Category Drawer -->
+  {% include "partials/mobile-category-drawer.njk" %}
+  {% include "partials/modal-login.njk" %}
+  {% include "partials/modal-register.njk" %}
+  {% include "partials/modal-forgot-password.njk" %}
 
-  {# {% include "partials/ai-chat.njk" %} #}
 </body>
 </html>

@@ -135,3 +135,8 @@
 .cl-section + .cl-section {
   border-top: 1px solid #f2f1f6;
 }
+
+.col-left,
+.column-cate-left {
+  display: none;
+}

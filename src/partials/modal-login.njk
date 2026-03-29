@@ -1,0 +1,72 @@
+<!-- Modal Login -->
+<div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-login-dialog">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title w-100 text-center" id="modalLoginLabel">
+          <span class="d-block fs-5 fw-bold text-dark">Đăng nhập</span>
+          <span class="d-block fs-6 fw-normal text-muted mt-1">Vui lòng đăng nhập hoặc tạo tài khoản.</span>
+        </h5>
+        <button type="button" class="btn-close position-absolute top-0 end-0 me-3 mt-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body pt-3">
+
+        <!-- Social Login -->
+        <div class="d-grid gap-2 mb-3">
+          <button class="btn btn-primary btn-facebook" type="button">
+            <i class="fab fa-facebook-f me-2"></i>Facebook
+          </button>
+          <button class="btn btn-outline-secondary btn-google" type="button">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" height="20" class="me-2">
+            Sign in with Google
+          </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="d-flex align-items-center gap-3 my-4">
+          <hr class="flex-grow-1 mb-0">
+          <span class="text-muted small">Hoặc đăng nhập với noithattienloi.vn</span>
+          <hr class="flex-grow-1 mb-0">
+        </div>
+
+        <!-- Form -->
+        <form class="modal-login-form" novalidate>
+
+          <!-- Email / Phone -->
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="loginEmail" placeholder="Nhập email hoặc số điện thoại" autocomplete="username">
+            <label for="loginEmail"><i class="far fa-envelope me-2 text-muted"></i>Nhập email hoặc số điện thoại</label>
+          </div>
+
+          <!-- Password -->
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="loginPassword" placeholder="Nhập password" autocomplete="current-password">
+            <label for="loginPassword"><i class="fas fa-lock me-2 text-muted"></i>Nhập mật khẩu</label>
+          </div>
+
+          <!-- Remember & Forgot -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="rememberMe">
+              <label class="form-check-label text-dark small" for="rememberMe">Nhớ mật khẩu</label>
+            </div>
+            <a href="#" class="text-primary small text-decoration-none" data-bs-target="#modalForgot" data-bs-toggle="modal" data-bs-dismiss="modal">Quên mật khẩu?</a>
+          </div>
+
+          <!-- Submit -->
+          <button class="btn btn-success w-100 py-2 fw-bold rounded-pill" type="submit">Đăng nhập</button>
+        </form>
+
+        <!-- Register -->
+        <p class="text-center text-muted small mt-3 mb-0">
+          Bạn chưa có tài khoản? <a href="#" class="text-primary fw-bold text-decoration-none" data-bs-target="#modalRegister" data-bs-toggle="modal" data-bs-dismiss="modal">ĐĂNG KÝ NGAY</a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>

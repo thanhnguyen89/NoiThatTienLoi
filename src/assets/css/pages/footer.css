@@ -219,20 +219,94 @@
 }
 
 @media (max-width: 768px) {
-  .footer__top {
-    flex-direction: column;
+  .footer.v2026 {
+    margin-top: 10px;
   }
 
-  .footer__col {
-    flex: 1 1 100%;
+  /* Ẩn các cột menu, chỉ giữ tổng đài */
+  .footer__top {
+    flex-direction: column;
+    padding: 15px;
+    gap: 0;
+  }
+
+  /* Cột tổng đài - hiển thị đầy đủ */
+  .footer__col:first-child {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+  }
+
+  .f-listtel__title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .f-listtel__content {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+
+  .f-listtel__content a {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1F7A5C;
+  }
+
+  /* Các cột còn lại - dạng accordion */
+  .footer__col:not(:first-child) {
+    border-bottom: 1px solid #eee;
+  }
+
+  .footer__col:not(:first-child) .f-listtel__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .footer__col:not(:first-child) .f-listtel__title::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 14px;
+    color: #999;
+  }
+
+  .footer__col:not(:first-child) .f-listmenu {
+    display: none;
+    padding-bottom: 10px;
+  }
+
+  .footer__col:not(:first-child).is-open .f-listmenu {
+    display: block;
+  }
+
+  .footer__col:not(:first-child).is-open .f-listtel__title::after {
+    content: '\f106';
+  }
+
+  .f-listmenu li {
+    margin: 6px 0;
+  }
+
+  .f-listmenu li a {
+    font-size: 13px;
+    color: #1F7A5C;
+  }
+
+  /* Copyright */
+  .copyright {
+    padding: 12px 15px;
   }
 
   .copyright p {
-    text-align: left;
     font-size: 12px;
-  }
-
-  .social-network h3 {
-    font-size: 20px;
+    text-align: left;
+    line-height: 1.6;
+    color: #666;
   }
 }

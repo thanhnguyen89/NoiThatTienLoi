@@ -136,6 +136,22 @@ module.exports = {
           import: 'src/pages/category/index.njk',
           data: { ...SITE_CONFIG, PAGE_SEO, page: 'category' },
         },
+        'product-detail/index': {
+          import: 'src/pages/product-detail/index.njk',
+          data: { ...SITE_CONFIG, PAGE_SEO, page: 'product-detail' },
+        },
+        'news/index': {
+          import: 'src/pages/news/index.njk',
+          data: { ...SITE_CONFIG, PAGE_SEO, page: 'news' },
+        },
+        'cart/index': {
+          import: 'src/pages/cart/index.njk',
+          data: { ...SITE_CONFIG, PAGE_SEO, page: 'cart' },
+        },
+        'checkout/index': {
+          import: 'src/pages/checkout/index.njk',
+          data: { ...SITE_CONFIG, PAGE_SEO, page: 'checkout' },
+        },
       },
       js: {
         filename: 'js/[name].[contenthash:8].js',

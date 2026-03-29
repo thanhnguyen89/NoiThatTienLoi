@@ -307,6 +307,7 @@
 .header.v2026 .header__top>div>a.header__cart span {
     font-weight: normal;
     font-size: 14px;
+    color: #fff;
 }
 .header.v2026 .header__top>div>a.header__cart>div>span {
     line-height: 12px;
@@ -583,4 +584,114 @@ a.txt_color_1, .txt_color_1 {
     position: absolute;
     right: 10px;
     top: 10px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header.v2026 {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .header.v2026 .header__top {
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .header__top {
+        padding: 8px 0;
+    }
+    
+    .header.v2026 .header__top>div {
+        padding: 0 10px;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .header__logo .logo_site {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    
+    .header.v2026 .header__top>div>.header__search {
+        flex: 1;
+        width: auto;
+        margin: 0;
+        border-radius: 20px;
+    }
+    
+    .header.v2026 .header__top>div>.header__search>input {
+        font-size: 13px;
+        padding: 6px 8px 6px 35px;
+        margin-left: 0;
+    }
+    
+    .header.v2026 .header__top>div>.header__search>button {
+        left: 8px;
+        width: 24px;
+        height: 100%;
+    }
+    
+    .header.v2026 .header__top>div>.header__search>button .icon-search {
+        width: 20px;
+        height: 20px;
+        background-size: contain;
+        margin: 0;
+    }
+    
+    /* Hide desktop menu items on mobile */
+    .header.v2026 .header__top div.profile,
+    .header.v2026 .header__top div.header_support,
+    .header.v2026 .header__top div.header_guarantee,
+    .header.v2026 .header__top div.header_customer {
+        display: none;
+    }
+    
+    .header.v2026 .header__top>div>a.header__cart {
+        width: auto;
+        margin: 0 0 0 8px;
+        padding: 0;
+        background: transparent;
+        position: relative;
+    }
+    
+    .header.v2026 .header__top>div>a.header__cart span {
+        display: none;
+    }
+    
+    .header.v2026 .header__top>div>a.header__cart .iconnewglobal-whitecart {
+        width: 24px;
+        height: 24px;
+        background-size: contain;
+        margin: 0;
+    }
+    
+    /* Mobile header icons */
+    .header__mobile-icon {
+        display: none !important;
+    }
+    
+    /* Hide search result dropdown on mobile */
+    #search-result {
+        display: none !important;
+    }
+
+    /* Top bar menu */
+    .top_bar_noithattienloi {
+        display: none;
+    }
+    
+    .header__main {
+        display: none;
+    }
 }

@@ -1,4 +1,6 @@
 // Common JavaScript
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Website loaded!');
   
@@ -23,12 +25,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Scroll to top button
+  initScrollTop();
+
   // Flash Sale Slider
   initFlashSaleSlider();
   
   // Flash Sale Timer
   initFlashSaleTimer();
 });
+
+// Scroll to top
+function initScrollTop() {
+  const btn = document.createElement('button');
+  btn.id = 'scrollTopBtn';
+  btn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+  btn.setAttribute('aria-label', 'Lên đầu trang');
+  document.body.appendChild(btn);
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 // Flash Sale Product Slider
 function initFlashSaleSlider() {

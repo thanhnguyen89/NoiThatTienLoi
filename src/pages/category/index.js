@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initCatBannerSlider();
+  initSuggestionsYouSlider();
 });
 
 function initCatBannerSlider() {
@@ -47,4 +48,35 @@ function initCatBannerSlider() {
 
   // Auto play
   resetAuto();
+}
+
+// Best Sellers Slider
+function initSuggestionsYouSlider() {
+  const track = document.querySelector('.bs-slider-track');
+  const prevBtn = document.querySelector('.bs-slider-prev');
+  const nextBtn = document.querySelector('.bs-slider-next');
+  
+  if (!track || !prevBtn || !nextBtn) return;
+  
+  const items = track.querySelectorAll('.bs-product-card');
+  const itemWidth = 212; // item width + gap
+  const viewport = track.parentElement;
+  const visibleItems = Math.floor(viewport.offsetWidth / itemWidth);
+  const maxScroll = Math.max(0, (items.length - visibleItems) * itemWidth);
+  
+  let currentScroll = 0;
+  
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentScroll}px)`;
+  }
+  
+  prevBtn.addEventListener('click', () => {
+    currentScroll = Math.max(0, currentScroll - itemWidth * 2);
+    updateSlider();
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    currentScroll = Math.min(maxScroll, currentScroll + itemWidth * 2);
+    updateSlider();
+  });
 }

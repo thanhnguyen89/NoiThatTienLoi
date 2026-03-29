@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer-content.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-nav.css">
+  <link rel="stylesheet" href="../../assets/css/pages/mobile-category-drawer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/modal-login.css">
+  <link rel="stylesheet" href="../../assets/css/pages/checkout.css">
+  <script src="./index.js" defer></script>
+  <script src="../../assets/js/common.js" defer></script>
+  <title>Thanh toán | Nội Thất Tiện Lợi</title>
+</head>
+<body class="bg_site_1">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <div class="container">
+      <div class="checkout-page">
+
+        <!-- LEFT COLUMN -->
+        <div class="checkout-left">
+
+          <!-- Địa chỉ nhận hàng -->
+          <div class="co-card">
+            <div class="co-card__head">
+              <span class="co-card__title">Địa chỉ nhận hàng</span>
+              <a href="#" class="co-card__action">Thay đổi</a>
+            </div>
+            <div class="co-address">
+              <span class="co-address__tag">Nhà riêng</span>
+              <span class="co-address__name">Nguyễn Văn A - *******123</span>
+            </div>
+            <p class="co-address__detail">96 Trần Đại Nghĩa, Phường Tân Tạo A, Quận Bình Tân, Hồ Chí Minh</p>
+          </div>
+
+          <!-- Thông tin giao hàng -->
+          <div class="co-card">
+            <div class="co-card__head" style="margin-bottom:6px;">
+              <span class="co-card__title" style="font-size:18px;">Thông tin giao hàng</span>
+            </div>
+            <p class="co-shipping-login">Bạn đã có tài khoản? <a href="#" id="checkoutLoginLink">Đăng nhập</a></p>
+            <div class="co-shipping-form">
+              <div class="co-form-row">
+                <input class="co-input" type="text" placeholder="Họ và tên">
+              </div>
+              <div class="co-form-row co-form-row--2col">
+                <input class="co-input" type="email" placeholder="Email">
+                <input class="co-input" type="tel" placeholder="Số điện thoại">
+              </div>
+              <div class="co-form-row">
+                <input class="co-input" type="text" placeholder="Địa chỉ">
+              </div>
+              <div class="co-form-row co-form-row--2col">
+                <div class="co-select-wrap">
+                  <label class="co-select-label">Tỉnh / thành</label>
+                  <select class="co-select">
+                    <option value="">Chọn tỉnh / thành</option>
+                    <option>Hồ Chí Minh</option>
+                    <option>Hà Nội</option>
+                    <option>Đà Nẵng</option>
+                    <option>Cần Thơ</option>
+                    <option>Bình Dương</option>
+                    <option>Đồng Nai</option>
+                  </select>
+                  <i class="fas fa-chevron-down co-select-arrow"></i>
+                </div>
+                <div class="co-select-wrap">
+                  <label class="co-select-label">Quận / huyện</label>
+                  <select class="co-select">
+                    <option value="">Chọn quận / huyện</option>
+                  </select>
+                  <i class="fas fa-chevron-down co-select-arrow"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hình thức thanh toán -->
+          <div class="co-card">
+            <div class="co-card__head">
+              <span class="co-card__title">Hình thức thanh toán</span>
+              <a href="#" class="co-card__action">Thay đổi</a>
+            </div>
+            <label class="co-payment-option">
+              <input type="radio" name="payment" checked>
+              <span class="co-payment-icon"><i class="fas fa-money-bill-wave"></i></span>
+              <span class="co-payment-label">Thanh toán khi nhận hàng (COD)</span>
+            </label>
+          </div>
+
+          <!-- Phiếu mua hàng -->
+          <div class="co-card">
+            <div class="co-card__head">
+              <span class="co-card__title">Phiếu mua hàng</span>
+              <a href="#" class="co-card__action">Chọn phiếu mua hàng</a>
+            </div>
+          </div>
+
+          <!-- Mã giảm giá -->
+          <div class="co-card">
+            <div class="co-card__head">
+              <span class="co-card__title">Mã giảm giá</span>
+              <a href="#" class="co-card__action">Nhập mã giảm giá</a>
+            </div>
+          </div>
+
+          <!-- Thông tin kiện hàng -->
+          <div class="co-card">
+            <div class="co-card__head">
+              <span class="co-card__title">Thông tin kiện hàng</span>
+            </div>
+            <div class="co-delivery-options">
+              <label class="co-delivery-opt co-delivery-opt--active">
+                <input type="radio" name="delivery" checked>
+                <div class="co-delivery-opt__body">
+                  <div class="co-delivery-opt__name">Thứ 4, 18/03 - Thứ 6, 20/03</div>
+                  <div class="co-delivery-opt__sub">Giao trong 3-5 ngày</div>
+                </div>
+                <span class="co-delivery-opt__price">0 đ</span>
+              </label>
+            </div>
+            <div class="co-items">
+              <div class="co-item">
+                <div class="co-item__img-wrap">
+                  <span class="co-item__badge">45%</span>
+                  <img src="../../assets/images/sanpham/Giuong-sat-kieu-dan-cheo-2-768x768.jpg" alt="" class="co-item__img">
+                </div>
+                <div class="co-item__info">
+                  <p class="co-item__brand">OHAHA</p>
+                  <p class="co-item__name">Giường sắt kiểu đan chéo 2 tầng cao cấp 1m2 x 2m</p>
+                  <p class="co-item__variant">1m2 x 2m</p>
+                  <div class="co-item__qty-row">
+                    <span class="co-item__qty-label">Số lượng 1</span>
+                    <span class="co-item__price-orig">2.900.000 đ</span>
+                  </div>
+                  <div class="co-item__voucher-row">
+                    <a href="#" class="co-item__voucher">Giá sau voucher Noithattienloi</a>
+                    <span class="co-item__price">2.350.000 đ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ghi chú -->
+            <div class="co-note-wrap">
+              <input class="co-note-input" type="text" placeholder="Ghi chú">
+            </div>
+
+            <!-- Thông tin xuất hóa đơn -->
+            <a href="#" class="co-invoice-link">
+              <span>Thông tin xuất hóa đơn</span>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+
+            <!-- Tóm tắt -->
+            <div class="co-summary-inline">
+              <div class="co-summary-inline__row">
+                <span>Tạm tính (1)</span>
+                <span>2.350.000 đ</span>
+              </div>
+              <div class="co-summary-inline__row">
+                <span>Giảm giá</span>
+                <span>-0 đ</span>
+              </div>
+              <div class="co-summary-inline__row">
+                <span>Phí vận chuyển</span>
+                <span>0 đ</span>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <p class="co-footer__terms">
+              Nhấn "Đặt hàng" đồng nghĩa việc bạn đồng ý tuân theo
+              <a href="#">Chính sách xử lý dữ liệu cá nhân</a> &amp; <a href="#">Điều khoản Noithattienloi</a>
+            </p>
+
+            <!-- Cảnh báo -->
+            <div class="co-footer__warning">
+              <i class="fas fa-exclamation-triangle"></i>
+              Cảnh báo lừa đảo: Noithattienloi chỉ nhận chuyển khoản qua tài khoản công ty.
+            </div>
+
+            <!-- Bottom bar đặt hàng (desktop) -->
+            <div class="co-footer co-footer--desktop">
+              <textarea class="co-note" placeholder="Ghi chú" rows="3"></textarea>
+              <div class="co-footer__right">
+                <div class="co-footer__total">Tổng tiền (1) <span>2.350.000 đ</span></div>
+                <button class="btn-place-order">Đặt hàng</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile bottom bar đặt hàng -->
+          <div class="co-mobile-order-bar">
+            <div class="co-mobile-order-bar__left">
+              <span class="co-mobile-order-bar__label">Tổng tiền (Đã VAT)</span>
+              <span class="co-mobile-order-bar__price">2.350.000 đ</span>
+            </div>
+            <button class="co-mobile-order-bar__btn">Đặt hàng</button>
+          </div>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="checkout-right">
+          <button class="btn-place-order btn-place-order--top">Đặt hàng</button>
+          <div class="co-invoice-row">
+            <span>Thông tin xuất hóa đơn</span>
+            <a href="#" class="co-card__action">Nhập</a>
+          </div>
+          <div class="co-summary">
+            <div class="co-summary__head">
+              <span>Đơn hàng</span>
+              <a href="/cart" class="co-card__action">Thay đổi</a>
+            </div>
+            <div class="co-summary__row"><span>Tạm tính (1)</span><span>2.350.000 đ</span></div>
+            <div class="co-summary__row"><span>Giảm giá</span><span>-0 đ</span></div>
+            <div class="co-summary__row"><span>Phí vận chuyển</span><span>0 đ</span></div>
+            <div class="co-summary__row co-summary__row--total"><span>Thành tiền (Đã VAT)</span><span>2.350.000 đ</span></div>
+            <p class="co-summary__note">Đã bao gồm VAT, phí đóng gói, phí vận chuyển và các chi phí khác vui lòng xem <a href="#">Chính sách vận chuyển</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  {% include "partials/footer.njk" %}
+  <div class="container">
+    {% include "partials/footer-content.njk" %}
+  </div>
+  {% include "partials/floating-contact.njk" %}
+
+  <nav class="mobile-bottom-nav">
+    <ul class="mobile-bottom-nav-list">
+      <li class="mobile-bottom-nav-item">
+        <a href="/" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-home"></i></div><span class="mobile-bottom-nav-label">Trang chủ</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/category" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-th-large"></i></div><span class="mobile-bottom-nav-label">Danh mục</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/cart" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-shopping-cart"></i></div><span class="mobile-bottom-nav-label">Giỏ hàng</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/notifications" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-bell"></i></div><span class="mobile-bottom-nav-label">Thông báo</span></a>
+      </li>
+      <li class="mobile-bottom-nav-item">
+        <a href="/account" class="mobile-bottom-nav-link"><div class="mobile-bottom-nav-icon"><i class="fas fa-user"></i></div><span class="mobile-bottom-nav-label">Tài khoản</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  {% include "partials/mobile-category-drawer.njk" %}
+  {% include "partials/modal-login.njk" %}
+  {% include "partials/modal-register.njk" %}
+  {% include "partials/modal-forgot-password.njk" %}
+</body>
+</html>

@@ -127,7 +127,7 @@
 }
 .product-card__bar {
   flex: 1;
-  height: 4px;
+  height: 10px;
   background: #ffaf7e;
   border-radius: 10px;
   overflow: hidden;

@@ -2,7 +2,7 @@
 .home-news-section {
   background: #fff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px 15px;
   margin: 20px 0;
 }
 
@@ -13,7 +13,9 @@
 .home-news-title {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: #1F7A5C;
+  margin: 0;
+  text-transform: uppercase;
   margin: 0;
 }
 
@@ -132,8 +134,59 @@
 }
 
 @media (max-width: 768px) {
+  .home-news-section {
+    margin: 10px 0;
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+  
+  .home-news-header {
+    margin-bottom: 12px;
+  }
+  
+  .home-news-title {
+    font-size: 16px;
+  }
+
+  /* Scroll ngang, 2 tin cùng lúc */
   .home-news-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 10px;
+  }
+
+  .home-news-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .news-card {
+    flex: 0 0 calc(50vw - 20px);
+    width: calc(50vw - 20px);
+    border-radius: 10px;
+  }
+  
+  .news-info {
+    padding: 8px 0;
+  }
+  
+  .news-title {
+    font-size: 13px;
+    height: 38px;
+  }
+  
+  .news-summary {
+    font-size: 12px;
+    height: 50px;
+  }
+  
+  .home-news-footer {
+    margin-top: 15px;
+  }
+  
+  .home-news-viewmore {
+    font-size: 13px;
   }
 }
