@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh sách danh mục - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="css/admin.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <!-- Logo -->
+  <div class="topnav__logo">
+    <i class="bi bi-grid-3x3-gap-fill"></i>
+    <span>SHOPVIETTEL.COM.VN</span>
+  </div>
+
+  <!-- Menu items -->
+  <div class="topnav__menu">
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Hệ thống
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Cấu hình hệ thống</a></li>
+        <li><a class="dropdown-item" href="#">Nhật ký hệ thống</a></li>
+        <li><a class="dropdown-item" href="#">Website</a></li>
+        <li><a class="dropdown-item" href="#">Menu</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Quản lý cấp quyền
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Tài khoản</a></li>
+        <li><a class="dropdown-item" href="#">Nhóm quyền</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn topnav__btn--active" href="categoryList.html">Quản lý nội dung</a>
+    </div>
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Quản lý gói cước
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Danh sách gói</a></li>
+        <li><a class="dropdown-item" href="#">Thêm gói cước</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý trang</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý mã nhúng</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý slider</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý URL</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý chiến dịch</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý link tab</a>
+    </div>
+
+  </div>
+
+  <!-- Right -->
+  <div class="topnav__right">
+    <button class="topnav__action">Xóa cache</button>
+    <div class="dropdown">
+      <button class="topnav__action topnav__action--domain dropdown-toggle" data-bs-toggle="dropdown">
+        shopviettel.com.vn
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#">shopviettel.com.vn</a></li>
+      </ul>
+    </div>
+    <button class="topnav__action topnav__action--logout">Thoát</button>
+  </div>
+</nav>
+
+<div class="container-fluid py-3 px-4">
+
+  <!-- THÔNG TIN TÌM KIẾM -->
+  <div class="card mb-3">
+    <div class="card-header-custom">
+      THÔNG TIN TÌM KIẾM
+      <div class="header-icons">
+        <i class="bi bi-dash-lg"></i>
+        <i class="bi bi-fullscreen"></i>
+        <i class="bi bi-x-lg"></i>
+      </div>
+    </div>
+    <div class="card-body py-3 px-3">
+      <!-- Hàng 1: Từ khóa | Công khai -->
+      <div class="row g-2 mb-2">
+        <div class="col-md-6">
+          <label class="form-label">Từ khóa</label>
+          <input type="text" class="form-control form-control-sm" placeholder="Nhập từ khóa cần tìm" />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Công khai</label>
+          <select class="form-select form-select-sm">
+            <option>Tất cả</option>
+            <option>Có</option>
+            <option>Không</option>
+          </select>
+        </div>
+      </div>
+      <!-- Hàng 2: Chuyên mục | Từ ngày | Đến ngày | Nút -->
+      <div class="row g-2 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label">Chuyên mục</label>
+          <select class="form-select form-select-sm">
+            <option>Tất cả</option>
+            <option>Sofa</option>
+            <option>Bàn ăn</option>
+            <option>Giường ngủ</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Từ ngày</label>
+          <input type="date" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Đến ngày</label>
+          <input type="date" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-3 d-flex gap-2 justify-content-end">
+          <button class="btn btn-sm btn-search"><i class="bi bi-search me-1"></i>Tìm kiếm</button>
+          <button class="btn btn-sm btn-reset"><i class="bi bi-arrow-counterclockwise me-1"></i>Làm mới</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANH SÁCH CHUYÊN MỤC -->
+  <div class="card">
+    <div class="card-header-custom">
+      DANH SÁCH CHUYÊN MỤC
+      <div class="header-icons">
+        <i class="bi bi-dash-lg"></i>
+        <i class="bi bi-fullscreen"></i>
+      </div>
+    </div>
+    <div class="card-body p-2">
+      <!-- Nút thêm mới -->
+      <div class="mb-2">
+        <a href="categoryNew.html" class="btn-add"><i class="bi bi-plus-lg me-1"></i>Thêm mới</a>
+      </div>
+
+      <!-- Table -->
+      <table class="table table-bordered mb-0">
+        <thead>
+          <tr>
+            <th style="width:40px">STT</th>
+            <th style="width:100px">Mã danh mục</th>
+            <th>Tên danh mục</th>
+            <th style="width:110px">Ngày tạo</th>
+            <th style="width:90px">Robot</th>
+            <th style="width:80px">Lượt xem</th>
+            <th style="width:110px">Thứ tự hiển thị</th>
+            <th style="width:80px">Công khai</th>
+            <th style="width:80px">Hình ảnh</th>
+            <th style="width:100px">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>GIUONG SAT</td>
+            <td>Tin tức gói 4G</td>
+            <td>13/06/2020</td>
+            <td></td>
+            <td>2</td>
+            <td>1</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+            <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>GIUONG SAT</td>
+            <td>Tin tức gói 5G</td>
+            <td>29/09/2021</td>
+            <td></td>
+            <td>0</td>
+            <td>2</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>GIUONG SAT</td>
+            <td>Tin tức gói COMBO</td>
+            <td>13/06/2020</td>
+            <td></td>
+            <td>0</td>
+            <td>3</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>GIUONG SAT</td>
+            <td>Tin tức gói DCOM</td>
+            <td>13/06/2020</td>
+            <td></td>
+            <td>0</td>
+            <td>4</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>GIUONG SAT</td>
+            <td>Tin tức gói roaming</td>
+            <td>17/02/2022</td>
+            <td></td>
+            <td>0</td>
+            <td>5</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>GIUONG SAT</td>
+            <td>Hỗ trợ khách hàng</td>
+            <td>13/06/2020</td>
+            <td></td>
+            <td>0</td>
+            <td>6</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>GIUONG SAT</td>
+            <td>Khuyến mãi</td>
+            <td>09/01/2020</td>
+            <td></td>
+            <td>0</td>
+            <td>7</td>
+            <td><i class="bi bi-check-lg check-icon"></i></td>
+             <td></td>
+            <td>
+              <button class="btn-edit me-1"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-del"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

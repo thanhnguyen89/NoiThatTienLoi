@@ -1,0 +1,199 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/* ── Rich Text Editor ── */
+.ck.ck-editor__editable { min-height: 300px; }
+.ck.ck-editor__editable_inline { padding: 8px 12px; }
+.ck.ck-toolbar { flex-wrap: wrap !important; }
+.ck.ck-toolbar__items { flex-wrap: wrap !important; }
+
+body { background: #f4f6f9; font-size: 13px; }
+
+/* ── Top Nav ── */
+.admin-topnav {
+  background: #f8f9fa !important;
+  border-bottom: 2px solid #4a9fd4;
+  padding: 0 8px !important;
+  position: sticky; top: 0; z-index: 1050;
+  min-height: 40px;
+}
+.admin-topnav .navbar-brand.admin-topnav__logo {
+  font-size: 12.5px; font-weight: 700; color: #333;
+  padding: 0 12px 0 4px; border-right: 1px solid #ddd;
+  margin-right: 4px;
+}
+.admin-topnav .nav-link {
+  font-size: 12px; color: #444; padding: 0 10px;
+  height: 40px; line-height: 40px; white-space: nowrap;
+}
+.admin-topnav .nav-link:hover { background: #e9ecef; color: #222; }
+.admin-topnav .nav-item.active > .nav-link,
+.admin-topnav .nav-link.text-website { color: #4a9fd4 !important; font-weight: 600; }
+.admin-topnav .dropdown-menu {
+  font-size: 12.5px; border: 1px solid #ddd;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border-radius: 4px; padding: 4px 0;
+  min-width: 200px;
+}
+.admin-topnav .dropdown-item {
+  padding: 7px 16px; color: #333;
+  border-left: 3px solid transparent;
+}
+.admin-topnav .dropdown-item:hover { background: #f0f4f8; color: #1a56db; border-left-color: #4a9fd4; }
+.admin-topnav .dropdown-item.active { background: #4a9fd4; color: #fff; border-left-color: transparent; }
+
+.admin-topnav__right {
+  display: flex; align-items: center; gap: 4px;
+  margin-left: auto; flex-shrink: 0; padding-left: 8px;
+}
+.admin-topnav__action-btn {
+  padding: 3px 10px; font-size: 11.5px;
+  border: 1px solid #bbb;
+  border-radius: 2px; background: #fff;
+  color: #444; cursor: pointer;
+  transition: background .1s; white-space: nowrap;
+}
+.admin-topnav__action-btn:hover { background: #e9ecef; }
+.admin-topnav__action-btn--domain { background: #f0f0f0; }
+.admin-topnav__action-btn--logout { background: #555; border-color: #555; color: #fff; }
+.admin-topnav__action-btn--logout:hover { background: #444; }
+
+/* ── Card / Table ── */
+.card, .admin-card { border-radius: 4px; border: 1px solid #dde1e7; background: #fff; }
+.card-header-custom { background: #fff; border-bottom: 1px solid #dde1e7; padding: 8px 14px; font-weight: 600; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+.admin-card__header-icons,
+.header-icons { display: flex; gap: 6px; color: #888; }
+.admin-table,
+table.table-bordered {
+  border-radius: 4px; border: 1px solid #dde1e7; overflow: hidden;
+}
+table.table-bordered thead th,
+.admin-table thead th {
+  background: #17a2b8;
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 7px 10px;
+  border: none;
+  white-space: nowrap;
+}
+table.table-bordered tbody td,
+.admin-table tbody td {
+  padding: 6px 10px;
+  vertical-align: middle;
+  font-size: 12px;
+  border-color: #eee;
+}
+table.table-bordered tbody tr:nth-child(odd),
+.admin-table tbody tr:nth-child(odd) { background: #f9fafb; }
+table.table-bordered tbody tr:hover,
+.admin-table tbody tr:hover { background: #eef6ff; }
+table.table-bordered tbody tr td:first-child,
+.admin-table tbody tr td:first-child { border-left: 3px solid transparent; }
+table.table-bordered tbody tr:hover td:first-child,
+.admin-table tbody tr:hover td:first-child { border-left-color: #17a2b8; }
+
+/* ── Buttons ── */
+.btn-add {
+  background: #28a745; color: #fff; border: none;
+  font-size: 12px; padding: 4px 10px; border-radius: 3px;
+  text-decoration: none; display: inline-block;
+}
+.btn-add:hover { background: #218838; color: #fff; }
+.btn-search { background: #17a2b8; color: #fff; border: none; font-size: 12px; padding: 4px 12px; border-radius: 3px; }
+.btn-search:hover { background: #138496; color: #fff; }
+.btn-reset { background: #6c757d; color: #fff; border: none; font-size: 12px; padding: 4px 12px; border-radius: 3px; }
+.btn-reset:hover { background: #5a6268; color: #fff; }
+.btn-edit { background: #17a2b8; border: none; color: #fff; padding: 3px 7px; border-radius: 3px; cursor: pointer; }
+.btn-del { background: #dc3545; border: none; color: #fff; padding: 3px 7px; border-radius: 3px; cursor: pointer; }
+.btn-setup { background: #6f42c1; border: none; color: #fff; padding: 3px 7px; border-radius: 3px; cursor: pointer; }
+.btn-setup:hover { background: #5a32a3; color: #fff; }
+.check-icon { color: #28a745; font-size: 15px; }
+
+/* ── Form ── */
+.form-label { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+.form-control, .form-select { font-size: 12px; border-radius: 3px; }
+
+/* ── Tabs override ── */
+.nav-tabs { border-bottom: 1px solid #dee2e6; }
+.nav-tabs .nav-link { font-size: 12px; padding: 6px 12px; border-radius: 3px 3px 0 0; color: #6c757d; }
+.nav-tabs .nav-link.active { color: #fff !important; background: #17a2b8 !important; border-color: #17a2b8 !important; }
+.nav-tabs .badge { font-size: 10px; }
+
+/* ── Breadcrumb ── */
+.rk-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; margin-bottom: 12px;
+}
+.rk-breadcrumb a { color: #64748b; text-decoration: none; }
+.rk-breadcrumb a:hover { color: #2563eb; }
+.rk-breadcrumb__sep { color: #94a3b8; font-size: 10px; }
+.rk-breadcrumb__current { color: #1e293b; font-weight: 500; }
+
+/* ── Status badge ── */
+.rk-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+}
+.rk-status--active { background: #dcfce7; color: #166534; }
+.rk-status--inactive { background: #fee2e2; color: #991b1b; }
+.rk-status__dot { width: 6px; height: 6px; border-radius: 50%; }
+.rk-status--active .rk-status__dot { background: #22c55e; }
+.rk-status--inactive .rk-status__dot { background: #ef4444; }
+
+/* ── Dropdown action ── */
+.rk-dropdown {
+  position: absolute; right: 0; top: 100%; margin-top: 4px;
+  min-width: 140px; background: #fff;
+  border: 1px solid #e2e8f0; border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 50; padding: 4px 0;
+}
+.rk-dropdown__item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; font-size: 12.5px; color: #1e293b;
+  background: none; border: none; width: 100%;
+  text-align: left; cursor: pointer; text-decoration: none;
+}
+.rk-dropdown__item:hover { background: #f8fafc; }
+.rk-dropdown__item--danger { color: #ef4444; }
+.rk-dropdown__item--danger:hover { background: #fef2f2; }
+.rk-dropdown__divider { height: 1px; background: #f1f5f9; margin: 2px 0; }
+
+/* ── Empty state ── */
+.rk-empty { text-align: center; padding: 50px 20px; color: #94a3b8; }
+.rk-empty i { font-size: 44px; margin-bottom: 10px; display: block; }
+
+/* ── Switch toggle ── */
+.rk-switch { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; }
+.rk-switch input { display: none; }
+.rk-switch__slider {
+  width: 36px; height: 20px; background: #cbd5e1;
+  border-radius: 20px; position: relative; transition: background .15s; flex-shrink: 0;
+}
+.rk-switch__slider::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; background: #fff;
+  border-radius: 50%; transition: transform .15s;
+}
+.rk-switch input:checked + .rk-switch__slider { background: #2563eb; }
+.rk-switch input:checked + .rk-switch__slider::after { transform: translateX(16px); }
+
+/* ── Form layout ── */
+.rk-form-topbar {
+  display: flex; justify-content: flex-end;
+  gap: 8px; margin-bottom: 16px;
+}
+
+/* ── Filters bar ── */
+.rk-filters {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-bottom: 1px solid #f1f5f9;
+}
+.rk-filters__right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.rk-filters__search { position: relative; }
+.rk-filters__search input {
+  width: 200px; padding: 6px 10px 6px 30px;
+  border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12.5px; outline: none;
+}
+.rk-filters__search input:focus { border-color: #93c5fd; }
+.rk-filters__search i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #94a3b8; }

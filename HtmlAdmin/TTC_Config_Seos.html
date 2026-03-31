@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh sách danh mục - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link href="css/admin.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <!-- Logo -->
+  <div class="topnav__logo">
+    <i class="bi bi-grid-3x3-gap-fill"></i>
+    <span>SHOPVIETTEL.COM.VN</span>
+  </div>
+
+  <!-- Menu items -->
+  <div class="topnav__menu">
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Hệ thống
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Cấu hình hệ thống</a></li>
+        <li><a class="dropdown-item" href="#">Nhật ký hệ thống</a></li>
+        <li><a class="dropdown-item" href="#">Website</a></li>
+        <li><a class="dropdown-item" href="#">Menu</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Quản lý cấp quyền
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Tài khoản</a></li>
+        <li><a class="dropdown-item" href="#">Nhóm quyền</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn topnav__btn--active" href="categoryList.html">Quản lý nội dung</a>
+    </div>
+
+    <div class="topnav__item dropdown">
+      <button class="topnav__btn dropdown-toggle" data-bs-toggle="dropdown">
+        Quản lý gói cước
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Danh sách gói</a></li>
+        <li><a class="dropdown-item" href="#">Thêm gói cước</a></li>
+      </ul>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý trang</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý mã nhúng</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý slider</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý URL</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý chiến dịch</a>
+    </div>
+
+    <div class="topnav__item">
+      <a class="topnav__btn" href="#">Quản lý link tab</a>
+    </div>
+
+  </div>
+
+  <!-- Right -->
+  <div class="topnav__right">
+    <button class="topnav__action">Xóa cache</button>
+    <div class="dropdown">
+      <button class="topnav__action topnav__action--domain dropdown-toggle" data-bs-toggle="dropdown">
+        shopviettel.com.vn
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#">shopviettel.com.vn</a></li>
+      </ul>
+    </div>
+    <button class="topnav__action topnav__action--logout">Thoát</button>
+  </div>
+</nav>
+
+<div class="container-fluid py-3 px-4">
+<div class="card bg-white w-100">
+    <div class="card-header">
+        <h4 class="card-title">Thông tin tìm kiếm</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+        <div class="heading-elements">
+            <ul class="list-inline mb-0">
+                <li class="cursor"><a data-action="collapse"><i class="fas fa-minus"></i></a></li>
+                <li class="cursor"><a data-action="reload"><i class="fas fa-sync-alt"></i></a></li>
+                <li class="cursor"><a data-action="expand"><i class="fas fa-expand"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-content collapse show">
+        <div class="card-body">
+            <form action="/TTC_Config_Seos/Index" class="" data-ajax="true" data-ajax-begin="Common.TTCConfigSeo.BeforeSend" data-ajax-failure="Common.TTCConfigSeo.Error" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-success="Common.TTCConfigSeo.Success" data-ajax-update="#result-searchlist" id="search-form" method="post" role="form">    <div class="hidden">
+        <input data-val="true" data-val-number="The field PageIndex must be a number." data-val-required="The PageIndex field is required." id="PageIndex" name="PageIndex" type="hidden" value="1">
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">Từ khóa</label>
+        <input class="form-control form-control-sm" id="TuKhoa" name="TuKhoa" placeholder="Nhập từ khóa cần tìm" type="text" value="" data-listener-added_921fe4ac="true">
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12 text-right">
+            <button type="button" class="btn btn-primary text-white btn-sm btn-block-sm" id="btnFormSearch"><i class="fas fa-search mr-1"></i>Tìm kiếm</button>
+            <button type="button" class="btn btn-secondary btn-block-sm btn-sm mt-md-0 mt-sm-2 text-white" id="btnLamMoi"><i class="fas fa-sync-alt"></i> Làm mới</button>
+        </div>
+    </div>
+</form>
+        </div>
+    </div>
+</div>
+
+<div class="card bg-white w-100">
+    <div class="card-header">
+        <h4 class="card-title">Danh sách cấu hình seo</h4>
+        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+        <div class="heading-elements">
+            <ul class="list-inline mb-0">
+                <li class="cursor"><a data-action="collapse"><i class="fas fa-minus"></i></a></li>
+                <li class="cursor"><a data-action="expand"><i class="fas fa-expand"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-content collapse show">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <button type="button" class="btn btn-success btn-block-sm btn-sm" onclick="window.location.href='/TTC_Config_Seos/Update'">
+                        <i class="fas fa-plus"></i> Thêm mới
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mt-3" id="result-searchlist">
+
+<table id="tableNews" class="table table-hover mb-0 table-striped table-mobile table-bordered">
+    <thead>
+        <tr class="bg-info text-white">
+            <th width="300">Url</th>
+            <th width="200">Tiêu đề</th>
+            <th width="200">Tiêu đề seo</th>
+            <th width="150">Tên hệ thống</th>
+            <th width="100">Noindex</th>
+            <th class="text-center" width="150">Thứ tự hiển thị</th>
+            <th class="text-center" width="100">Công khai</th>
+            <th class="text-center" width="200">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-id="10">
+            <td data-label="Url">goi-cuoc-viettel</td>
+            <td data-label="Tiêu đề">Tổng hợp các gói cước HOT 3G/4G Viettel. Ưu đãi từ 60Gb -120Gb data tốc độ cao</td>
+            <td data-label="Tiêu đề seo">Tổng hợp các gói cước HOT 3G/4G Viettel. Ưu đãi từ 60Gb -120Gb data tốc độ cao</td>
+            <td data-label="Tên hệ thống">PageGoiCuocViettel</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">9</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/10'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="9">
+            <td data-label="Url">goi-cuoc-nam</td>
+            <td data-label="Tiêu đề">Hướng dẫn cách đăng ký 4G Viettel năm ưu đãi data siêu khủng với tốc độ cao</td>
+            <td data-label="Tiêu đề seo">Hướng dẫn cách đăng ký 4G Viettel năm ưu đãi data siêu khủng với tốc độ cao</td>
+            <td data-label="Tên hệ thống">PageGoiCuocNam</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">8</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/9'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="8">
+            <td data-label="Url">goi-cuoc -thang</td>
+            <td data-label="Tiêu đề">Danh sách gói cước 3G/4G Viettel tháng rẻ nhất</td>
+            <td data-label="Tiêu đề seo">Danh sách gói cước 3G/4G Viettel tháng rẻ nhất</td>
+            <td data-label="Tên hệ thống">PageGoiCuocThang</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">7</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/8'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="7">
+            <td data-label="Url">goi-cuoc-ngay</td>
+            <td data-label="Tiêu đề">Gói cước 3G/4G Viettel 1 ngày, 3 , 5, 7, 15  ngày rẻ nhất</td>
+            <td data-label="Tiêu đề seo">Gói cước 3G/4G Viettel 1 ngày, 3 , 5, 7,15  ngày rẻ nhất</td>
+            <td data-label="Tên hệ thống">PageGoiCuocNgay</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">6</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/7'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="6">
+            <td data-label="Url">goi-cuoc-tinh</td>
+            <td data-label="Tiêu đề">Gói cước 3G/4G theo tỉnh thành cho thuê bao Viettel</td>
+            <td data-label="Tiêu đề seo">Gói cước 3G/4G theo tỉnh thành cho thuê bao Viettel</td>
+            <td data-label="Tên hệ thống">PageGoiCuocTinh</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">5</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/6'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="5">
+            <td data-label="Url">chi-tiet-bai-viet-tin-tuc</td>
+            <td data-label="Tiêu đề">Chi tiết bài viết - phần tin tức</td>
+            <td data-label="Tiêu đề seo">&nbsp;</td>
+            <td data-label="Tên hệ thống">DetailNews</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">4</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/5'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="4">
+            <td data-label="Url">danh-muc-goi-cuoc</td>
+            <td data-label="Tiêu đề">Danh mục gói cước</td>
+            <td data-label="Tiêu đề seo">&nbsp;</td>
+            <td data-label="Tên hệ thống">DanhMucGoiCuoc</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">3</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/4'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="3">
+            <td data-label="Url">tin-tuc</td>
+            <td data-label="Tiêu đề">Tin tức ShopViettel</td>
+            <td data-label="Tiêu đề seo">Tin tức ShopViettel</td>
+            <td data-label="Tên hệ thống">TinTucMoiNhat</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">2</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/3'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        <tr data-id="2">
+            <td data-label="Url">/</td>
+            <td data-label="Tiêu đề">Đăng ký 4G Viettel</td>
+            <td data-label="Tiêu đề seo">Đăng ký 4G Viettel</td>
+            <td data-label="Tên hệ thống">HomePage</td>
+            <td data-label="Noindex" class="text-center text-success font-weight-bold">
+                    <span> &nbsp;</span>
+            </td>
+            <td data-label="Thứ tự hiển thị" class="text-center">1</td>
+            <td data-label="Công khai" class="text-center text-success font-weight-bold">
+                    <i class="fas fa-check"></i>
+            </td>
+            <td data-label="Thao tác" class="text-center">
+                <button title="Chỉnh sửa" class="btn btn-primary btn-sm" type="button" onclick="window.location.href='/TTC_Config_Seos/Update/2'"><i class="far fa-edit"></i></button>
+                <button title="Xóa" class="btn btn-danger btn-sm btnDelRowLV"><i class="far fa-trash-alt"></i></button>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+    <!--- Pagination -->
+    <div class="paging-bottom">
+        <div class="mt-3"><div class="col-md-12 text-right"><ul class="pagination justify-content-end"></ul></div></div>
+    </div>
+    <!--- End Pagination -->
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

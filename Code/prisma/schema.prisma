@@ -1,0 +1,962 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ADMIN AUTH & USER MANAGEMENT
+// ============================================================
+
+// Quyền theo model + action
+// action: VIEW | CREATE | UPDATE | DELETE
+// model: categories | products | sliders | seo_configs | redirects | text_to_links | product_sizes | product_colors | inquiries | news | pages | users | roles | settings | all
+model AdminPermission {
+  id          String   @id @default(cuid())
+  action      String // VIEW | CREATE | UPDATE | DELETE
+  resource    String // Tên model: categories, products, sliders, users, ...
+  description String?  @db.VarChar(255)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  // Quan hệ n-n với role
+  rolePermissions AdminRolePermission[]
+
+  @@unique([action, resource])
+  @@index([resource])
+  @@index([isActive])
+  @@map("admin_permissions")
+}
+
+// Vai trò
+model AdminRole {
+  id          String   @id @default(cuid())
+  name        String   @unique @db.VarChar(100)
+  code        String   @unique @db.VarChar(50)
+  description String?  @db.VarChar(500)
+  isSystem    Boolean  @default(false) // Role hệ thống không sửa/xóa
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users           AdminUser[]
+  rolePermissions AdminRolePermission[]
+
+  @@index([code])
+  @@index([isActive])
+  @@index([sortOrder])
+  @@map("admin_roles")
+}
+
+// Junction: Role <-> Permission
+model AdminRolePermission {
+  id           String          @id @default(cuid())
+  roleId       String
+  permissionId String
+  role         AdminRole       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   AdminPermission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime        @default(now())
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("admin_role_permissions")
+}
+
+// Người dùng admin
+model AdminUser {
+  id           String    @id @default(cuid())
+  username     String    @unique @db.VarChar(100)
+  email        String    @unique @db.VarChar(255)
+  password     String // bcrypt hash
+  fullName     String?   @db.VarChar(200)
+  phone        String?   @db.VarChar(20)
+  address      String?   @db.VarChar(500)
+  avatar       String?   @db.VarChar(1000)
+  roleId       String
+  role         AdminRole @relation(fields: [roleId], references: [id])
+  isActive     Boolean   @default(true)
+  isSuperAdmin Boolean   @default(false) // Super admin bypass mọi kiểm tra
+  lastLoginAt  DateTime?
+  lastLoginIp  String?   @db.VarChar(50)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions     AdminSession[]
+  activityLogs AdminActivityLog[]
+
+  @@index([username])
+  @@index([email])
+  @@index([roleId])
+  @@index([isActive])
+  @@map("admin_users")
+}
+
+// Session cho JWT refresh token
+model AdminSession {
+  id           String    @id @default(cuid())
+  userId       String
+  user         AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token        String    @unique @db.Text
+  refreshToken String?   @unique @db.Text
+  deviceInfo   String?   @db.VarChar(255)
+  ipAddress    String?   @db.VarChar(50)
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}
+
+// Log hoạt động admin
+model AdminActivityLog {
+  id          String    @id @default(cuid())
+  userId      String
+  user        AdminUser @relation(fields: [userId], references: [id])
+  action      String // LOGIN | LOGOUT | CREATE | UPDATE | DELETE
+  resource    String // Tên model: products, categories, ...
+  resourceId  String? // ID của resource bị tác động
+  description String?   @db.VarChar(500)
+  ipAddress   String?   @db.VarChar(50)
+  userAgent   String?   @db.VarChar(500)
+  oldData     String?   @db.Text // JSON của dữ liệu cũ (cho UPDATE/DELETE)
+  newData     String?   @db.Text // JSON của dữ liệu mới (cho CREATE/UPDATE)
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([resourceId])
+  @@index([createdAt])
+  @@map("admin_activity_logs")
+}
+
+// ============================================================
+// PLATFORM TYPES (Dùng chung)
+// ============================================================
+enum PlatformType {
+  WEBSITE
+  FACEBOOK
+  TIKTOK
+  YOUTUBE
+}
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String  @db.VarChar(500)
+  slug        String  @unique @db.VarChar(300)
+  code        String? @unique @db.VarChar(100)
+  description String? @db.VarChar(2000)
+
+  image  String? @db.VarChar(1000)
+  icon   String? @db.VarChar(1000)
+  banner String? @db.VarChar(1000)
+
+  seoTitle       String? @db.VarChar(500)
+  seoDescription String? @db.VarChar(1000)
+  canonicalUrl   String? @db.VarChar(1000)
+  ogTitle        String? @db.VarChar(500)
+  ogDescription  String? @db.VarChar(1000)
+  ogImage        String? @db.VarChar(1000)
+  robots         String? @default("index,follow") @db.VarChar(100)
+
+  parentId String?
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+
+  level Int     @default(0)
+  path  String? @db.VarChar(1000)
+
+  sortOrder  Int     @default(0)
+  isActive   Boolean @default(true)
+  isFeatured Boolean @default(false)
+  isShowHome Boolean @default(false)
+
+  viewCount    Int @default(0)
+  clickCount   Int @default(0)
+  orderCount   Int @default(0)
+  productCount Int @default(0)
+
+  products Product[]
+
+  platformSeos   CategoryPlatformSeo[]
+  platformImages CategoryPlatformImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?  @db.VarChar(100)
+  updatedBy String?  @db.VarChar(100)
+
+  @@index([parentId])
+  @@index([slug])
+  @@index([code])
+  @@index([isActive])
+  @@index([isFeatured])
+  @@index([isShowHome])
+  @@index([level])
+  @@index([sortOrder])
+  @@map("categories")
+}
+
+model CategoryPlatformSeo {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  platform PlatformType
+
+  title        String? @db.VarChar(500)
+  description  String? @db.VarChar(5000)
+  contentCate  String? @db.Text
+  keywords     String? @db.VarChar(1000)
+  hashtags     String? @db.VarChar(1000)
+  tags         String? @db.VarChar(2000)
+  linkPosted   String? @db.VarChar(1000)
+  slug         String? @db.VarChar(300)
+  canonicalUrl String? @db.VarChar(1000)
+
+  ogTitle       String? @db.VarChar(500)
+  ogDescription String? @db.VarChar(1000)
+  ogImage       String? @db.VarChar(1000)
+
+  robots String? @default("index,follow") @db.VarChar(100)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([categoryId, platform])
+  @@index([platform])
+  @@map("category_platform_seos")
+}
+
+model CategoryPlatformImage {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  platform PlatformType
+
+  imageUrl String  @db.VarChar(1000)
+  alt      String? @db.VarChar(500)
+  title    String? @db.VarChar(500)
+  caption  String? @db.VarChar(1000)
+
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([platform])
+  @@index([sortOrder])
+  @@map("category_platform_images")
+}
+
+// ============================================================
+// KÍCH THƯỚC DÙNG CHUNG
+// ============================================================
+model ProductSize {
+  id        String   @id @default(cuid())
+  sizeLabel String   @unique @db.VarChar(100)
+  widthCm   Decimal? @db.Decimal(10, 2)
+  lengthCm  Decimal? @db.Decimal(10, 2)
+  heightCm  Decimal? @db.Decimal(10, 2)
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  variants ProductVariant[]
+
+  @@index([sortOrder])
+  @@index([isActive])
+  @@map("product_sizes")
+}
+
+// ============================================================
+// MÀU SẮC DÙNG CHUNG
+// ============================================================
+model ProductColor {
+  id        String   @id @default(cuid())
+  colorName String   @unique @db.VarChar(100)
+  colorCode String?  @db.VarChar(20)
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  variants ProductVariant[]
+
+  @@index([sortOrder])
+  @@index([isActive])
+  @@map("product_colors")
+}
+
+// ============================================================
+// SẢN PHẨM
+// ============================================================
+model Product {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  name             String  @db.VarChar(500)
+  slug             String  @unique @db.VarChar(300)
+  code             String? @unique @db.VarChar(100)
+  shortDescription String? @db.VarChar(2000)
+  description      String? @db.Text
+  specifications   String? @db.Text
+  ingredients      String? @db.Text
+  usage            String? @db.Text
+
+  brand          String? @db.VarChar(200)
+  sku            String? @unique @db.VarChar(100)
+  origin         String? @db.VarChar(200)
+  unit           String? @db.VarChar(50)
+  warrantyMonths Int?
+
+  image  String? @db.VarChar(1000)
+  icon   String? @db.VarChar(1000)
+  banner String? @db.VarChar(1000)
+
+  seoTitle       String? @db.VarChar(500)
+  seoDescription String? @db.VarChar(1000)
+  canonicalUrl   String? @db.VarChar(1000)
+  ogTitle        String? @db.VarChar(500)
+  ogDescription  String? @db.VarChar(1000)
+  ogImage        String? @db.VarChar(1000)
+  robots         String? @default("index,follow") @db.VarChar(100)
+
+  sortOrder   Int     @default(0)
+  isFeatured  Boolean @default(false)
+  isFlashSale Boolean @default(false)
+  isActive    Boolean @default(true)
+  isShowHome  Boolean @default(false)
+
+  soldCount   Int   @default(0)
+  viewCount   Int   @default(0)
+  avgRating   Float @default(0)
+  reviewCount Int   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?  @db.VarChar(100)
+  updatedBy String?  @db.VarChar(100)
+
+  images         ProductImage[]
+  media          ProductMedia[]
+  variants       ProductVariant[]
+  platformSeos   ProductSeoPlatform[]
+  platformImages ProductPlatformImage[]
+  inquiries      Inquiry[]
+
+  @@index([categoryId])
+  @@index([slug])
+  @@index([sku])
+  @@index([code])
+  @@index([sortOrder])
+  @@index([isActive, isFeatured])
+  @@index([isActive, isFlashSale])
+  @@index([isActive, isShowHome])
+  @@map("products")
+}
+
+// ============================================================
+// MEDIA CHUNG SẢN PHẨM
+// ============================================================
+model ProductImage {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url         String
+  alt         String?
+  sortOrder   Int      @default(0)
+  isThumbnail Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductMedia {
+  id               String          @id @default(cuid())
+  productId        String
+  product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantId String?
+  productVariant   ProductVariant? @relation(fields: [productVariantId], references: [id], onDelete: SetNull)
+
+  mediaType   String   @db.VarChar(20)
+  mediaUrl    String   @db.VarChar(1000)
+  altText     String?  @db.VarChar(255)
+  title       String?  @db.VarChar(255)
+  widthPx     Int?
+  heightPx    Int?
+  fileSizeKb  Int?
+  mimeType    String?  @db.VarChar(100)
+  sortOrder   Int      @default(0)
+  isThumbnail Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([productId])
+  @@index([productVariantId])
+  @@index([sortOrder])
+  @@map("product_media")
+}
+
+// ============================================================
+// BIẾN THỂ SẢN PHẨM
+// ============================================================
+model ProductVariant {
+  id             String       @id @default(cuid())
+  productId      String
+  product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productSizeId  String
+  productColorId String
+  productSize    ProductSize  @relation(fields: [productSizeId], references: [id])
+  productColor   ProductColor @relation(fields: [productColorId], references: [id])
+
+  sku     String? @unique @db.VarChar(100)
+  barcode String? @db.VarChar(100)
+
+  purchasePrice Decimal  @default(0) @db.Decimal(15, 2)
+  salePrice     Decimal  @default(0) @db.Decimal(15, 2)
+  promoPrice    Decimal? @db.Decimal(15, 2)
+
+  stockQty    Int      @default(0)
+  reservedQty Int      @default(0)
+  weightKg    Decimal? @db.Decimal(10, 2)
+
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  media ProductMedia[]
+
+  @@unique([productId, productSizeId, productColorId])
+  @@index([productId])
+  @@index([productSizeId])
+  @@index([productColorId])
+  @@map("product_variants")
+}
+
+// ============================================================
+// SEO ĐA NỀN TẢNG SẢN PHẨM
+// ============================================================
+model ProductSeoPlatform {
+  id        String       @id @default(cuid())
+  productId String
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  platform  PlatformType
+
+  title        String? @db.VarChar(500)
+  description  String? @db.VarChar(5000)
+  contentCate  String? @db.Text
+  keywords     String? @db.VarChar(2000)
+  hashtags     String? @db.VarChar(2000)
+  tags         String? @db.VarChar(2000)
+  linkPosted   String? @db.VarChar(1000)
+  slug         String? @db.VarChar(500)
+  canonicalUrl String? @db.VarChar(1000)
+  robots       String? @db.VarChar(255)
+  isNoindex    Boolean @default(false)
+  isNofollow   Boolean @default(false)
+
+  ogTitle       String? @db.VarChar(500)
+  ogDescription String? @db.VarChar(2000)
+  ogImage       String? @db.VarChar(1000)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  seoMedia ProductSeoMedia[]
+
+  @@unique([productId, platform])
+  @@index([platform])
+  @@map("product_seo_platforms")
+}
+
+// ============================================================
+// HÌNH ẢNH ĐA NỀN TẢNG SẢN PHẨM
+// ============================================================
+model ProductPlatformImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  platform PlatformType
+
+  imageUrl String  @db.VarChar(1000)
+  alt      String? @db.VarChar(500)
+  title    String? @db.VarChar(500)
+  caption  String? @db.VarChar(1000)
+
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([platform])
+  @@index([sortOrder])
+  @@map("product_platform_images")
+}
+
+// ============================================================
+// MEDIA SEO THEO NỀN TẢNG
+// ============================================================
+model ProductSeoMedia {
+  id                   String             @id @default(cuid())
+  productSeoPlatformId String
+  productSeoPlatform   ProductSeoPlatform @relation(fields: [productSeoPlatformId], references: [id], onDelete: Cascade)
+
+  mediaType String   @db.VarChar(20)
+  mediaUrl  String   @db.VarChar(1000)
+  altText   String?  @db.VarChar(255)
+  title     String?  @db.VarChar(255)
+  widthPx   Int?
+  heightPx  Int?
+  sortOrder Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([productSeoPlatformId])
+  @@index([sortOrder])
+  @@map("product_seo_media")
+}
+
+// ============================================================
+// LIÊN HỆ / YÊU CẦU TƯ VẤN
+// ============================================================
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  message   String?
+  productId String?
+  product   Product?      @relation(fields: [productId], references: [id])
+  type      InquiryType   @default(CONSULTATION)
+  status    InquiryStatus @default(NEW)
+  note      String? // Ghi chú admin
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
+  @@index([productId])
+  @@map("inquiries")
+}
+
+enum InquiryType {
+  CONSULTATION // Tư vấn
+  ORDER // Đặt hàng
+  COMPLAINT // Khiếu nại
+  OTHER
+}
+
+enum InquiryStatus {
+  NEW
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+// ============================================================
+// SLIDER / BANNER
+// ============================================================
+model Slider {
+  id        String   @id @default(cuid())
+  title     String?
+  image     String
+  link      String?
+  content   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?  @db.VarChar(100)
+  updatedBy String?  @db.VarChar(100)
+
+  @@map("sliders")
+}
+
+// ============================================================
+// TIN TỨC
+// ============================================================
+model NewsContent {
+  id                         String    @id @default(cuid())
+  newsTypeId                 BigInt?   @default(0)
+  categoryTypeId             BigInt?   @default(0)
+  levelId                    BigInt?   @default(0)
+  title                      String?   @db.VarChar(1000)
+  summary                    String?
+  content                    String?
+  sortOrder                  Int?
+  isActive                   Boolean?  @default(true)
+  isRemoved                  Boolean?  @default(false)
+  image                      String?
+  seName                     String?   @db.VarChar(255)
+  metaKeywords               String?   @db.VarChar(400)
+  metaDescription            String?
+  metaTitle                  String?   @db.VarChar(400)
+  isPublished                Boolean?  @default(true)
+  statusId                   BigInt?
+  currentHandlerId           String?   @db.Uuid
+  newTag                     String?
+  allowComments              Boolean?  @default(true)
+  viewCount                  BigInt?   @default(0)
+  commentCount               BigInt?   @default(0)
+  likeCount                  BigInt?   @default(0)
+  isNew                      Boolean?
+  isShowHome                 Boolean?  @default(true)
+  createdUserId              String?   @db.Uuid
+  createdDate                DateTime? @db.Timestamp(6)
+  lastUpdUserId              String?   @db.Uuid
+  lastUpdDate                DateTime? @db.Timestamp(6)
+  isDeleted                  Boolean?  @default(false)
+  deletedUser                String?   @db.Uuid
+  deletedDate                DateTime? @db.Timestamp(6)
+  approvalStatusId           Int?
+  isSendNotificationNow      Boolean?  @default(false)
+  isSendNotificationCampaign Boolean?  @default(false)
+  slugRedirect               String?   @db.VarChar(1000)
+  isRedirect                 Boolean?
+  seoCanonical               String?   @db.VarChar(1000)
+  seoNoindex                 Boolean?
+  publishedAt                DateTime? @db.Timestamp(6)
+  wordCount                  BigInt?
+  errorCode                  String?   @db.VarChar(50)
+  authorName                 String?   @db.VarChar(255)
+
+  @@index([newsTypeId])
+  @@index([categoryTypeId])
+  @@index([levelId])
+  @@index([isPublished])
+  @@index([isShowHome])
+  @@index([publishedAt])
+  @@index([seName])
+  @@map("news_content")
+}
+
+model NewsRelated {
+  newsId        String
+  relatedNewsId String
+
+  @@id([newsId, relatedNewsId])
+  @@map("news_related")
+}
+
+// ============================================================
+// DANH MỤC TIN TỨC
+// ============================================================
+model NewsCategory {
+  id              String    @id @default(cuid())
+  parentId        BigInt?   @default(0)
+  categoryLevel   Int?      @default(0)
+  title           String?   @db.VarChar(200)
+  summary         String?   @db.VarChar(400)
+  content         String?
+  imageUrl        String?   @db.VarChar(400)
+  sortOrder       BigInt?
+  isShowHome      Boolean?  @default(true)
+  seName          String?   @db.VarChar(255)
+  metaKeywords    String?   @db.VarChar(400)
+  metaDescription String?
+  metaTitle       String?   @db.VarChar(400)
+  isPublished     Boolean?  @default(true)
+  createdUserId   String?   @db.Uuid
+  createdDate     DateTime? @db.Timestamp(6)
+  lastUpdUserId   String?   @db.Uuid
+  lastUpdDate     DateTime? @db.Timestamp(6)
+  isDeleted       Boolean?  @default(false)
+  deletedUser     String?   @db.Uuid
+  deletedDate     DateTime? @db.Timestamp(6)
+  slugRedirect    String?   @db.VarChar(1000)
+  isRedirect      Boolean?
+  isMobile        Boolean?
+  viewCount       BigInt?
+  seoCanonical    String?   @db.VarChar(1000)
+  seoNoindex      Boolean?
+  isActive        Boolean?  @default(true)
+
+  @@map("news_category")
+}
+
+// ============================================================
+// DANH MỤC MÃ NHÚNG
+// ============================================================
+model CatalogEmbedCode {
+  id         String    @id @default(cuid())
+  title      String?   @db.VarChar(1000)
+  positionId BigInt?
+  embedCode  String?
+  note       String?   @db.VarChar(4000)
+  isActive   Boolean   @default(true)
+  createdBy  String?   @db.Uuid
+  createdAt  DateTime? @db.Timestamp(6)
+  updatedBy  String?   @db.Uuid
+  updatedAt  DateTime? @db.Timestamp(6)
+  isDeleted  Boolean   @default(false)
+  deletedBy  String?   @db.Uuid
+  deletedAt  DateTime? @db.Timestamp(6)
+
+  @@map("catalog_embed_code")
+}
+
+// ============================================================
+// DANH MỤC MỨC ĐỘ TIN TỨC
+// ============================================================
+model CatalogNewsLevel {
+  id        String    @id @default(cuid())
+  name      String?   @db.VarChar(200)
+  sortOrder Int?
+  isActive  Boolean   @default(false)
+  createdBy String?   @db.Uuid
+  createdAt DateTime? @db.Timestamp(6)
+  updatedBy String?   @db.Uuid
+  updatedAt DateTime? @db.Timestamp(6)
+  isDeleted Boolean   @default(false)
+  deletedBy String?   @db.Uuid
+  deletedAt DateTime? @db.Timestamp(6)
+
+  @@map("catalog_news_level")
+}
+
+// ============================================================
+// CẤU HÌNH HỆ THỐNG
+// ============================================================
+model SystemConfig {
+  id               String  @id @default(cuid())
+  imageUrl         String?
+  displayRowCount  Int?
+  pageTitle        String? @db.VarChar(1000)
+  keywords         String? @db.VarChar(1000)
+  metaDescription  String? @db.VarChar(1000)
+  logoUrl          String?
+  accessTimeFrom   String? @db.VarChar(50)
+  accessTimeTo     String? @db.VarChar(50)
+  holidays         String?
+  totalAccessCount BigInt?
+
+  @@map("system_config")
+}
+
+// ============================================================
+// DM_Redirect
+// ============================================================
+model CatalogRedirect {
+  id         String   @id @default(cuid())
+  urlFrom    String?  @db.VarChar(500)
+  urlTo      String?  @db.VarChar(500)
+  errorCode  String?  @db.VarChar(50)
+  isRedirect Boolean  @default(true)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  createdBy  String?  @db.VarChar(100)
+  updatedBy  String?  @db.VarChar(100)
+
+  @@index([urlFrom])
+  @@index([isActive])
+  @@map("catalog_redirect")
+}
+
+// ============================================================
+// DM_TextToLink
+// ============================================================
+model CatalogTextToLink {
+  id             String   @id @default(cuid())
+  categoryId     String?
+  keyword        String?  @db.VarChar(550)
+  priority       Int?     @default(0)
+  link           String?  @db.VarChar(1000)
+  matchCount     Int?     @default(0)
+  domain         String?  @db.VarChar(255)
+  refAttribute   String?  @db.VarChar(500)
+  otherAttribute String?  @db.VarChar(500)
+  frUnique       Boolean? @default(false)
+  matchLinks     String?  @db.Text
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  createdBy      String?  @db.VarChar(100)
+  updatedBy      String?  @db.VarChar(100)
+
+  @@index([keyword])
+  @@index([isActive])
+  @@map("catalog_textToLink")
+}
+
+// ============================================================
+// SeoConfig
+// ============================================================
+model SeoConfig {
+  id              String   @id @default(cuid())
+  pageName        String?  @db.VarChar(255)
+  title           String?  @db.VarChar(500)
+  contentBefore   String?  @db.Text
+  contentAfter    String?  @db.Text
+  image           String?  @db.VarChar(1000)
+  seName          String?  @db.VarChar(255)
+  metaTitle       String?  @db.VarChar(400)
+  metaDescription String?  @db.VarChar(1000)
+  metaKeywords    String?  @db.VarChar(400)
+  seoCanonical    String?  @db.VarChar(500)
+  seoNoindex      Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdBy       String?  @db.VarChar(100)
+  updatedBy       String?  @db.VarChar(100)
+
+  @@index([seName])
+  @@index([isActive])
+  @@index([sortOrder])
+  @@map("seo_config")
+}
+
+// ============================================================
+// Menu
+// ============================================================
+model Menu {
+  id            String    @id @default(cuid())
+  name          String?   @db.VarChar(1000)
+  menuTypeId    BigInt?
+  isActive      Boolean?
+  createdUserId String?   @db.Uuid
+  createdDate   DateTime? @db.Timestamp(6)
+  lastUpdUserId String?   @db.Uuid
+  lastUpdDate   DateTime? @db.Timestamp(6)
+  isDeleted     Boolean?  @default(false)
+  deletedUser   String?   @db.Uuid
+  deletedDate   DateTime? @db.Timestamp(6)
+
+  @@map("menu")
+}
+
+// ============================================================
+// Menu Link
+// ============================================================
+model MenuLink {
+  id            String    @id @default(cuid())
+  title         String?   @db.VarChar(1000)
+  slug          String?
+  target        String?   @db.VarChar(1000)
+  menuId        BigInt?
+  icon          String?
+  parentId      String?   @db.Uuid
+  entityId      BigInt?
+  entityName    String?   @db.VarChar(1000)
+  nofollow      Boolean?
+  level         Int?
+  sortOrder     Int?
+  createdUserId String?   @db.Uuid
+  createdDate   DateTime? @db.Timestamp(6)
+  lastUpdUserId String?   @db.Uuid
+  lastUpdDate   DateTime? @db.Timestamp(6)
+  isDeleted     Boolean?  @default(false)
+  deletedUser   String?   @db.Uuid
+  deletedDate   DateTime? @db.Timestamp(6)
+
+  @@map("menu_link")
+}
+
+// ============================================================
+// Menu Page
+// ============================================================
+model Page {
+  id               String    @id @default(cuid())
+  pageName         String?   @db.VarChar(1000)
+  title            String?   @db.VarChar(1000)
+  body             String?
+  sortOrder        Int?
+  shortDescription String?
+  image            String?   @db.VarChar(512)
+  isShowHome       Boolean?  @default(true)
+  isActive         Boolean?
+  metaKeywords     String?   @db.VarChar(400)
+  metaDescription  String?
+  metaTitle        String?   @db.VarChar(400)
+  createdUserId    String?   @db.Uuid
+  createdDate      DateTime? @db.Timestamp(6)
+  lastUpdUserId    String?   @db.Uuid
+  lastUpdDate      DateTime? @db.Timestamp(6)
+  isDeleted        Boolean?  @default(false)
+  deletedUser      String?   @db.Uuid
+  deletedDate      DateTime? @db.Timestamp(6)
+  slugRedirect     String?   @db.VarChar(1000)
+  isRedirect       Boolean?
+  seoCanonical     String?   @db.VarChar(1000)
+  seoNoindex       Boolean?
+  errorCode        String?   @db.VarChar(50)
+
+  @@index([isActive])
+  @@index([isShowHome])
+  @@index([slugRedirect])
+  @@map("page")
+}
+
+// ============================================================
+// SliderPicture
+// ============================================================
+model SliderPicture {
+  id        String  @id @default(cuid())
+  comment   String? @db.VarChar(1000)
+  name      String? @db.VarChar(1000)
+  image     String? @db.VarChar(4000)
+  sortOrder Int?
+  isActive  Boolean @default(true)
+
+  @@map("slider_picture")
+}
+
+// ============================================================
+// UrlRecord
+// ============================================================
+model UrlRecord {
+  id            String    @id @default(cuid())
+  entityId      BigInt?
+  entityName    String?
+  slug          String?   @db.VarChar(1000)
+  isActive      Boolean?
+  isDeleted     Boolean?
+  deletedUserId String?   @db.Uuid
+  deletedDate   DateTime?
+  slugRedirect  String?   @db.VarChar(1000)
+  isRedirect    Boolean?
+  errorCode     String?   @db.VarChar(50)
+
+  @@unique([slug])
+  @@index([entityId, entityName])
+  @@index([slugRedirect])
+  @@map("url_record")
+}
+
+// ============================================================
+// UrlRecord
+// ============================================================
+model UrlRecordReference {
+  id             String   @id @default(cuid())
+  entityName     String?  @db.VarChar(1000)
+  controllerName String?  @db.VarChar(1000)
+  actionName     String?  @db.VarChar(1000)
+  isActive       Boolean?
+
+  @@unique([entityName, controllerName, actionName])
+  @@index([entityName])
+  @@index([isActive])
+  @@map("Url_Record_Reference")
+}

@@ -1,0 +1,68 @@
+/**
+ * UI IMAGE TO TASK TEMPLATE
+ */
+
+export const UI_TASK_METADATA = {
+  name: '__TASK_NAME__',
+  module: '__MODULE__',
+  type: '__TYPE__',
+  source: 'ui-image',
+};
+
+export const UI_SUMMARY = `
+Mô tả UI từ ảnh ở đây.
+`;
+
+export const ASSUMPTIONS = [
+  'Nêu assumptions nếu ảnh chưa rõ',
+];
+
+export const MODULE_ANALYSIS = {
+  module: '__MODULE__',
+  referenceModule: '__REFERENCE_MODULE__',
+  affectedLayers: [__AFFECTED_LAYERS__],
+};
+
+export const TASK_GOAL = `
+__GOAL__
+`;
+
+export const REQUIREMENTS = [
+  'Requirement 1',
+];
+
+export const BUSINESS_RULES = [
+  'Business rule 1',
+];
+
+export const RELATED_FILES = {
+  filesToRead: [
+__FILES_TO_READ__
+  ],
+  filesToModify: [
+__FILES_TO_MODIFY__
+  ],
+};
+
+export const EXPECTED_FLOW = `
+User → UI → API → Service → Repository → DB → UI
+`;
+
+export const ACCEPTANCE_CRITERIA = [
+  'Criteria 1',
+];
+
+export const RISKS = [
+  'Risk 1',
+];
+
+export const TASK_CONTROL = {
+  riskLevel: '__RISK__',
+  rollbackPlan: 'Revert UI update nếu ảnh hưởng flow cũ',
+  regressionTargets: [],
+  manualQaChecklist: [],
+};
+
+export const TEST_SUGGESTION = [
+  'Manual QA 1',
+];

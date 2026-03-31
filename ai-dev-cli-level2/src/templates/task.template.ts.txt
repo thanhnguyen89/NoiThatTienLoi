@@ -1,0 +1,73 @@
+/**
+ * TASK TEMPLATE — AUTO GENERATED
+ */
+
+export const TASK_METADATA = {
+  name: '__TASK_NAME__',
+  module: '__MODULE__',
+  type: '__TYPE__',
+  priority: '__PRIORITY__',
+};
+
+export const TASK_GOAL = `
+__GOAL__
+`;
+
+export const UI_CONTEXT = {
+  screens: [],
+  description: `
+Task được tạo tự động từ CLI.
+`,
+};
+
+export const REQUIREMENTS = [
+  'Điền requirement cụ thể tại đây',
+];
+
+export const BUSINESS_RULES = [
+  'Giữ nguyên convention hiện tại',
+  'Chỉ sửa đúng phạm vi task',
+];
+
+export const RELATED_FILES = {
+  referenceModule: '__REFERENCE_MODULE__',
+  filesToRead: [
+__FILES_TO_READ__
+  ],
+  filesToModify: [
+__FILES_TO_MODIFY__
+  ],
+};
+
+export const EXPECTED_FLOW = `
+User action → API → Service → Repository → DB → UI
+`;
+
+export const ACCEPTANCE_CRITERIA = [
+  'Đúng yêu cầu task',
+  'Không làm hỏng chức năng cũ',
+  'Code đúng convention project',
+];
+
+export const CONSTRAINTS = [
+  'Không thêm thư viện mới nếu không cần',
+  'Không refactor ngoài phạm vi task',
+];
+
+export const TEST_REQUIREMENTS = [
+  'Viết test cases theo unit-test-checklist.md',
+];
+
+export const TASK_CONTROL = {
+  taskSource: 'cli-generated',
+  affectedLayers: [__AFFECTED_LAYERS__],
+  riskLevel: '__RISK__',
+  rollbackPlan: 'Revert các thay đổi của task này nếu ảnh hưởng hành vi hiện tại',
+  regressionTargets: [],
+  manualQaChecklist: [],
+};
+
+export const NOTES = `
+Module: __MODULE__
+Reference module: __REFERENCE_MODULE__
+`;

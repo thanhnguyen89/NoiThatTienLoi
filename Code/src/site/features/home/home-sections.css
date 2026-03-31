@@ -1,0 +1,77 @@
+/* ============================================================
+   HOME SECTIONS
+   ============================================================ */
+
+.home-section {
+  margin-bottom: 24px;
+}
+
+.home-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.home-section__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.home-section__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 992px) {
+  .home-section__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-section__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Category Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  transition: box-shadow 0.2s;
+}
+
+.category-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-card__image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.category-card__name {
+  font-size: 13px;
+  text-align: center;
+  color: #333;
+}
+
+/* Flash Sales */
+.flash-icon {
+  color: #e53935;
+}
