@@ -85,12 +85,15 @@ export const menuLinkRepository = {
     return prisma.menuLink.delete({ where: { id } });
   },
 
-  async updateSortOrders(updates: Array<{ id: string; sortOrder: number }>) {
+  async updateSortOrders(updates: Array<{ id: string; sortOrder: number; parentId?: string | null }>) {
     await prisma.$transaction(
       updates.map((u) =>
         prisma.menuLink.update({
           where: { id: u.id },
-          data: { sortOrder: u.sortOrder },
+          data: {
+            sortOrder: u.sortOrder,
+            ...(u.parentId !== undefined ? { parentId: u.parentId } : {}),
+          },
         })
       )
     );

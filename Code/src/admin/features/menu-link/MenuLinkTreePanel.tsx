@@ -7,7 +7,7 @@ import { MenuLinkTree, type MenuLinkNode } from './MenuLinkTree';
 interface Props {
   menuId: string;
   menuName: string;
-  initialLinks: MenuLinkNode[];
+  menuLinks: MenuLinkNode[];
   onLinksChange: (links: MenuLinkNode[]) => void;
   onEdit: (item: MenuLinkNode) => void;
 }
@@ -15,7 +15,7 @@ interface Props {
 export function MenuLinkTreePanel({
   menuId,
   menuName,
-  initialLinks,
+  menuLinks,
   onLinksChange,
   onEdit,
 }: Props) {
@@ -27,11 +27,10 @@ export function MenuLinkTreePanel({
     setSaving(true);
     try {
       // Separate local (new) items and existing items
-      const localItems = initialLinks.filter((l) => l._local);
-      const existingItems = initialLinks.filter((l) => !l._local);
+      const localItems = menuLinks.filter((l) => l._local);
+      const existingItems = menuLinks.filter((l) => !l._local);
 
-      // For now, only handle reordering existing items
-      // New local items: POST each
+      // New local items: POST each (with their current parentId from level-up/down changes)
       for (const item of localItems) {
         await fetch('/admin/api/menu-links', {
           method: 'POST',
@@ -50,10 +49,11 @@ export function MenuLinkTreePanel({
         });
       }
 
-      // Reorder existing items
+      // Reorder + update parentId for existing items (includes level-up/down parentId changes)
       const reorderUpdates = existingItems.map((item) => ({
         id: item.id,
         sortOrder: item.sortOrder ?? 0,
+        parentId: item.parentId ?? null,
       }));
 
       if (reorderUpdates.length > 0) {
@@ -74,7 +74,7 @@ export function MenuLinkTreePanel({
   }
 
   function handleClose() {
-    router.push('/admin/menu');
+    router.push('/admin/menus');
   }
 
   return (
@@ -87,7 +87,7 @@ export function MenuLinkTreePanel({
 
       {/* Tree */}
       <div className="card-body flex-grow-1 p-2" style={{ overflowY: 'auto' }}>
-        <MenuLinkTree menuLinks={initialLinks} onLinksChange={onLinksChange} onEdit={onEdit} />
+        <MenuLinkTree menuLinks={menuLinks} onLinksChange={onLinksChange} onEdit={onEdit} />
       </div>
 
       {/* Footer buttons */}

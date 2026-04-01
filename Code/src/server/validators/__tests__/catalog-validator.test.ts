@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validateCatalogEmbedCode } from '../catalog-embed-code.validator';
 import { validateCatalogNewsLevel } from '../catalog-news-level.validator';
-import { validateMenuLink } from '../menu-link.validator';
+import { validateMenuLink, validateReorderMenuLinks, menuLinkTargetEnum } from '../menu-link.validator';
 import { validateSliderPicture } from '../slider-picture.validator';
 import { validateUrlRecord } from '../url-record.validator';
 
@@ -85,7 +85,6 @@ describe('MenuLink Validator', () => {
       level: 1,
       sortOrder: 0,
       nofollow: false,
-      isActive: true,
     };
     const result = validateMenuLink(data);
     expect(result.success).toBe(true);
@@ -120,6 +119,172 @@ describe('MenuLink Validator', () => {
     if (result.success) {
       expect(result.data.nofollow).toBe(true);
     }
+  });
+
+  it('accepts all valid target values', () => {
+    for (const target of ['_self', '_blank', '_parent', '_top']) {
+      const data = { title: 'Test', target };
+      const result = validateMenuLink(data);
+      expect(result.success).toBe(true);
+    }
+  });
+
+  it('rejects invalid target values', () => {
+    for (const target of ['_none', 'self', 'blank', 'SELF', '']) {
+      const data = { title: 'Test', target };
+      const result = validateMenuLink(data);
+      expect(result.success).toBe(false);
+    }
+  });
+
+  it('rejects target with extra characters', () => {
+    const data = { title: 'Test', target: '_selfx' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects title exceeding max length', () => {
+    const data = { title: 'a'.repeat(1001) };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts title at max length', () => {
+    const data = { title: 'a'.repeat(1000) };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects slug exceeding max length', () => {
+    const data = { slug: 'a'.repeat(2001) };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts slug at max length', () => {
+    const data = { slug: 'a'.repeat(2000) };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts parentId string', () => {
+    const data = { title: 'Test', parentId: 'abc-123-uuid' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts numeric entityId', () => {
+    const data = { entityId: 456, title: 'Test' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts BigInt entityId', () => {
+    const data = { entityId: BigInt(789), title: 'Test' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts entityName string', () => {
+    const data = { title: 'Test', entityName: 'ProductCategory' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects entityName exceeding max length', () => {
+    const data = { title: 'Test', entityName: 'a'.repeat(1001) };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts level as integer', () => {
+    const data = { title: 'Test', level: 2 };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects level as non-integer', () => {
+    const data = { title: 'Test', level: 1.5 };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts sortOrder as integer', () => {
+    const data = { title: 'Test', sortOrder: 10 };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects sortOrder as non-integer', () => {
+    const data = { title: 'Test', sortOrder: 3.14 };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts icon string', () => {
+    const data = { title: 'Test', icon: 'bi-house-fill' };
+    const result = validateMenuLink(data);
+    expect(result.success).toBe(true);
+  });
+});
+
+describe('ReorderMenuLinks Validator', () => {
+  it('validates valid reorder data with parentId', () => {
+    const data = {
+      updates: [
+        { id: 'id-1', sortOrder: 1, parentId: null },
+        { id: 'id-2', sortOrder: 2, parentId: 'parent-1' },
+      ],
+    };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('validates reorder data without parentId (optional)', () => {
+    const data = {
+      updates: [
+        { id: 'id-1', sortOrder: 1 },
+        { id: 'id-2', sortOrder: 2 },
+      ],
+    };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts empty updates array', () => {
+    const data = { updates: [] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects sortOrder as non-integer', () => {
+    const data = { updates: [{ id: 'id-1', sortOrder: 1.5 }] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing id field', () => {
+    const data = { updates: [{ sortOrder: 1 }] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing sortOrder field', () => {
+    const data = { updates: [{ id: 'id-1' }] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts null parentId', () => {
+    const data = { updates: [{ id: 'id-1', sortOrder: 1, parentId: null }] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts parentId as string', () => {
+    const data = { updates: [{ id: 'id-1', sortOrder: 1, parentId: 'parent-uuid' }] };
+    const result = validateReorderMenuLinks(data);
+    expect(result.success).toBe(true);
   });
 });
 

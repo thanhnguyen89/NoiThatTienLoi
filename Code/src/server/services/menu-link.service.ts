@@ -68,7 +68,7 @@ export const menuLinkService = {
     return menuLinkRepository.deleteWithChildren(id);
   },
 
-  async reorderMenuLinks(updates: Array<{ id: string; sortOrder: number }>) {
+  async reorderMenuLinks(updates: Array<{ id: string; sortOrder: number; parentId?: string | null }>) {
     const result = validateReorderMenuLinks({ updates });
     if (!result.success) {
       throw new ValidationError('Du lieu khong hop le', result.error.flatten().fieldErrors as Record<string, string[]>);

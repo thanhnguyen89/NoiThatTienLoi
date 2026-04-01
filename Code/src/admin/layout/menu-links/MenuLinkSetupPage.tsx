@@ -14,18 +14,6 @@ interface Props {
 export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
   const [menuLinks, setMenuLinks] = useState<MenuLinkNode[]>(initialLinks);
   const [editingItem, setEditingItem] = useState<MenuLinkNode | null>(null);
-  const [pendingParentId, setPendingParentId] = useState<string | null>(null);
-
-  // Listen for add child events from tree
-  useEffect(() => {
-    function handleAddChild(e: Event) {
-      const detail = (e as CustomEvent).detail;
-      setPendingParentId(detail.parentId);
-      setEditingItem(null);
-    }
-    window.addEventListener('menuLinkAddChild', handleAddChild);
-    return () => window.removeEventListener('menuLinkAddChild', handleAddChild);
-  }, []);
 
   // Update menuLinks when initialLinks changes (e.g. after save)
   useEffect(() => {
@@ -37,7 +25,6 @@ export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
       ...item,
       id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       _local: true,
-      // Assign sortOrder = max + 1 in the same parent group, so new items go at the end
       sortOrder: item.sortOrder ?? (
         Math.max(0, ...menuLinks
           .filter((n) => n.parentId === (item.parentId ?? null))
@@ -46,7 +33,6 @@ export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
       ),
     } as MenuLinkNode;
     setMenuLinks((prev) => [...prev, newItem]);
-    setPendingParentId(null);
   }, [menuLinks]);
 
   const handleUpdate = useCallback((updated: MenuLinkNode) => {
@@ -54,12 +40,10 @@ export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
       prev.map((n) => (n.id === updated.id ? { ...updated } : n))
     );
     setEditingItem(null);
-    setPendingParentId(null);
   }, []);
 
   const handleClearEdit = useCallback(() => {
     setEditingItem(null);
-    setPendingParentId(null);
   }, []);
 
   return (
@@ -74,7 +58,6 @@ export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
               onUpdate={handleUpdate}
               editingItem={editingItem}
               onClearEdit={handleClearEdit}
-              pendingParentId={pendingParentId}
             />
           </div>
         </div>
@@ -85,7 +68,7 @@ export function MenuLinkSetupPage({ menuId, menuName, initialLinks }: Props) {
             <MenuLinkTreePanel
               menuId={menuId}
               menuName={menuName}
-              initialLinks={menuLinks}
+              menuLinks={menuLinks}
               onLinksChange={setMenuLinks}
               onEdit={(item) => setEditingItem(item)}
             />

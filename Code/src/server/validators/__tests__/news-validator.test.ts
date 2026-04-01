@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validateNews } from '../news.validator';
+import { getMenuTypeLabel } from '../menu.validator';
 import { validateNewsCategory } from '../news-category.validator';
 import { validatePage } from '../page.validator';
 import { validateMenu } from '../menu.validator';
@@ -237,6 +238,99 @@ describe('Menu Validator', () => {
     const data = { name: null };
     const result = validateMenu(data);
     expect(result.success).toBe(true);
+  });
+
+  it('accepts valid menuTypeId values', () => {
+    for (const typeId of [1, 2, 3, 4]) {
+      const data = { name: 'Menu', menuTypeId: typeId };
+      const result = validateMenu(data);
+      expect(result.success).toBe(true);
+    }
+  });
+
+  it('rejects menuTypeId values outside 1-4', () => {
+    const data = { name: 'Menu', menuTypeId: 5 };
+    const result = validateMenu(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects menuTypeId 0', () => {
+    const data = { name: 'Menu', menuTypeId: 0 };
+    const result = validateMenu(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects menuTypeId 99', () => {
+    const data = { name: 'Menu', menuTypeId: 99 };
+    const result = validateMenu(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts menuTypeId as string (coerced)', () => {
+    const data = { name: 'Menu', menuTypeId: '2' };
+    const result = validateMenu(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts menuTypeId null', () => {
+    const data = { name: 'Menu', menuTypeId: null };
+    const result = validateMenu(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('applies default isActive to true', () => {
+    const data = { name: 'Menu' };
+    const result = validateMenu(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.isActive).toBe(true);
+    }
+  });
+
+
+  it('accepts name with unicode characters', () => {
+    const data = { name: 'Menu Nội Thất Tiện Lợi', menuTypeId: 1 };
+    const result = validateMenu(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects name exceeding max length', () => {
+    const data = { name: 'a'.repeat(1001) };
+    const result = validateMenu(data);
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('getMenuTypeLabel', () => {
+  it('returns correct label for menuTypeId 1', () => {
+    expect(getMenuTypeLabel(1)).toBe('Menu Top');
+  });
+
+  it('returns correct label for menuTypeId 2', () => {
+    expect(getMenuTypeLabel(2)).toBe('Menu Footer');
+  });
+
+  it('returns correct label for menuTypeId 3', () => {
+    expect(getMenuTypeLabel(3)).toBe('Menu Left');
+  });
+
+  it('returns correct label for menuTypeId 4', () => {
+    expect(getMenuTypeLabel(4)).toBe('Menu Right');
+  });
+
+  it('returns "—" for null/undefined', () => {
+    expect(getMenuTypeLabel(null)).toBe('—');
+    expect(getMenuTypeLabel(undefined)).toBe('—');
+  });
+
+  it('returns fallback for unknown menuTypeId', () => {
+    expect(getMenuTypeLabel(99)).toBe('Loại 99');
+  });
+
+  it('handles BigInt input', () => {
+    expect(getMenuTypeLabel(BigInt(1))).toBe('Menu Top');
+    expect(getMenuTypeLabel(BigInt(2))).toBe('Menu Footer');
+    expect(getMenuTypeLabel(BigInt(99))).toBe('Loại 99');
   });
 });
 

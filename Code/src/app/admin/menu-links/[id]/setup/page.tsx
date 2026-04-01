@@ -24,15 +24,15 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const num = Number(id);
-  if (!Number.isSafeInteger(num)) return { title: 'Thiet lap lien ket menu' };
+  if (!Number.isSafeInteger(num)) return { title: 'Thiết lập liên kết menu' };
 
   try {
     const menus = await menuService.getAllMenus();
     const menu = menus.find((m) => m.menuTypeId === BigInt(id));
     const label = menu ? getMenuTypeLabel(menu.menuTypeId) : id;
-    return { title: `Thiet lap lien ket ${label}` };
+    return { title: `Thiết lập liên kết ${label}` };
   } catch {
-    return { title: 'Thiet lap lien ket menu' };
+    return { title: 'Thiết lập liên kết menu' };
   }
 }
 
@@ -51,7 +51,7 @@ export default async function MenuLinkSetupRoutePage({ params }: Props) {
     const menus = await menuService.getAllMenus();
     const menu = menus.find((m) => m.menuTypeId === BigInt(id));
     if (menu) {
-      menuName = `${menu.name || getMenuTypeLabel(menu.menuTypeId)} (${getMenuTypeLabel(menu.menuTypeId)})`;
+      menuName = `${menu.name || getMenuTypeLabel(menu.menuTypeId)}`;
     }
   } catch {
     dbError = true;

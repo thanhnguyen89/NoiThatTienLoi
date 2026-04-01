@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const menuLinkTargetEnum = z.enum(['_self', '_blank', '_parent', '_top']);
 
 export const menuLinkSchema = z.object({
+  // slug = URL field trong form (DB column)
   title: z.string().max(1000).optional().nullable(),
   slug: z.string().max(2000).optional().nullable(),
   target: menuLinkTargetEnum.optional().nullable(),
@@ -23,6 +24,7 @@ export const reorderMenuLinksSchema = z.object({
   updates: z.array(z.object({
     id: z.string(),
     sortOrder: z.number().int(),
+    parentId: z.string().optional().nullable(),
   })),
 });
 
