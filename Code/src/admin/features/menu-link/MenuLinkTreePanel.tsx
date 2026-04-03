@@ -12,6 +12,9 @@ interface Props {
   onEdit: (item: MenuLinkNode) => void;
 }
 
+type ToastType = 'success' | 'error';
+interface Toast { msg: string; type: ToastType; }
+
 export function MenuLinkTreePanel({
   menuId,
   menuName,
@@ -22,17 +25,47 @@ export function MenuLinkTreePanel({
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  function showToast(msg: string, type: ToastType) {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  }
 
   async function handleSave() {
     setSaving(true);
     try {
-      // Separate local (new) items and existing items
-      const localItems = menuLinks.filter((l) => l._local);
-      const existingItems = menuLinks.filter((l) => !l._local);
+      const idMap: Record<string, string> = {};
 
-      // New local items: POST each (with their current parentId from level-up/down changes)
-      for (const item of localItems) {
-        await fetch('/admin/api/menu-links', {
+      // Topological sort: cha trước con (dựa vào parentId)
+      const localItems = menuLinks.filter((l) => l._local);
+      const sorted: typeof localItems = [];
+      const visited = new Set<string>();
+
+      function topoSort(item: (typeof localItems)[0]) {
+        if (visited.has(item.id)) return;
+        // Nếu cha cũng là local, sort cha trước
+        if (item.parentId && String(item.parentId).startsWith('local-')) {
+          const parent = localItems.find((n) => n.id === item.parentId);
+          if (parent) topoSort(parent);
+        }
+        visited.add(item.id);
+        sorted.push(item);
+      }
+      localItems.forEach((item) => topoSort(item));
+
+      for (const item of sorted) {
+        // Resolve parentId: nếu cha cũng là local thì dùng real id từ idMap
+        const resolvedParentId = item.parentId != null
+          ? (idMap[String(item.parentId)] ?? item.parentId)
+          : null;
+
+        // Nếu parentId vẫn còn dạng local-xxx (chưa được map) thì set null
+        const finalParentId = resolvedParentId && String(resolvedParentId).startsWith('local-')
+          ? null
+          : resolvedParentId;
+
+        const res = await fetch('/admin/api/menu-links', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -40,16 +73,21 @@ export function MenuLinkTreePanel({
             slug: item.slug,
             target: item.target,
             menuId: Number(menuId),
-            parentId: item.parentId,
+            parentId: finalParentId,
             level: item.level,
             nofollow: item.nofollow,
             entityId: item.entityId != null ? Number(item.entityId) : null,
             entityName: item.entityName,
           }),
         });
+        const json = await res.json();
+        if (json?.data?.id) {
+          idMap[String(item.id)] = String(json.data.id);
+        }
       }
 
-      // Reorder + update parentId for existing items (includes level-up/down parentId changes)
+      // Reorder + update parentId cho existing items
+      const existingItems = menuLinks.filter((l) => !l._local);
       const reorderUpdates = existingItems.map((item) => ({
         id: item.id,
         sortOrder: item.sortOrder ?? 0,
@@ -65,9 +103,10 @@ export function MenuLinkTreePanel({
       }
 
       setLastSaved(new Date());
+      showToast('Lưu menu thành công!', 'success');
       router.refresh();
     } catch {
-      alert('Loi khi luu. Vui long thu lai.');
+      showToast('Lỗi khi lưu. Vui lòng thử lại.', 'error');
     } finally {
       setSaving(false);
     }
@@ -102,6 +141,22 @@ export function MenuLinkTreePanel({
           <i className="bi bi-x-lg"></i>Đóng
         </button>
       </div>
+
+      {/* Toast notification */}
+      {toast && (
+        <div style={{
+          position: 'fixed', top: 24, right: 24, zIndex: 9999,
+          background: toast.type === 'success' ? '#4caf50' : '#f44336',
+          color: '#fff', padding: '10px 20px', borderRadius: 6,
+          fontSize: 14, fontWeight: 500,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          display: 'flex', alignItems: 'center', gap: 8,
+          animation: 'fadeIn 0.2s ease',
+        }}>
+          <i className={`bi ${toast.type === 'success' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'}`}></i>
+          {toast.msg}
+        </div>
+      )}
     </div>
   );
 }

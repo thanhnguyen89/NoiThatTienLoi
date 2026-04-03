@@ -1,499 +1,567 @@
 /**
- * Feature request summary — Menu Management Module
- * Purpose: give Claude Opus / terminal agent a precise, machine-readable brief.
- *
- * Nguồn: phân tích từ nhiều ảnh UI thực tế của màn hình menu-link,
- * bao gồm ảnh tổng thể 2 panel, ảnh panel trái expanded,
- * ảnh close-up panel phải và ảnh close-up các icon action.
- *
- * GHI CHÚ QUAN TRỌNG:
- * - Phần panel phải trước đây bị mô tả sai khi gộp nhiều icon thành 3 mũi tên chung chung.
- * - Bản này chốt lại CHÍNH XÁC từng icon, từng hành vi click, từng điều kiện hiển thị.
- * - Đây là spec ưu tiên cao; nếu code hiện tại khác spec này thì phải sửa theo spec này.
+ * ============================================================
+ * TASK: Menu Management + Menu Link Setup
+ * ============================================================
  */
 
 // ============================================================
-// DIFF: VERSION SPEC CŨ → VERSION FINAL ĐÚNG
-// ============================================================
-//
-// Điểm                                Spec cũ sai / thiếu              Spec final đúng
-// ───────────────────────────────────────────────────────────────────────────────────────
-// Action tree item                    Gộp thành 3 mũi tên              Có 4 icon action riêng biệt + edit + delete
-// Icon đổi cấp                        Mô tả mơ hồ bằng ↑/⇄            Tách rõ fa-level-up-alt và fa-level-down-alt
-// Toggle expand/collapse              Chưa mô tả rõ                    Có fas fa-plus / fas fa-minus cho item có con
-// Drag & drop                         Chưa đề cập                      Có thể kéo thả vào vị trí mong muốn
-// Tree style                          Mô tả chưa chặt                  Flat list legacy, row full-width, action group bên phải
-// Child visual                        Chỉ nói icon + xanh             Là toggle cho item có con; nếu collapsed mặc định là plus
-// Root/child action visibility        Chưa đủ chi tiết                 Có rule hiển thị riêng cho từng icon
-// Promote/Demote behavior             Chưa chuẩn                        Level-up = vào thư mục con gần nhất; Level-down = ra khỏi thư mục vừa vào
+// 📋 METADATA
 // ============================================================
 
-export type MenuTypeId = 1 | 2 | 3 | 4;
-
-export type MenuLinkTarget = '_self' | '_blank' | '_parent' | '_top';
-
-export type MenuLinkSourceType =
-  | 'news-content'
-  | 'news-category'
-  | 'static-page'
-  | 'product-category'
-  | 'product'
-  | 'package-category'
-  | 'package';
-
-export type MenuTreeActionIcon =
-  | 'fas fa-chevron-up'
-  | 'fas fa-chevron-down'
-  | 'fas fa-level-up-alt'
-  | 'fas fa-level-down-alt'
-  | 'fas fa-plus'
-  | 'fas fa-minus'
-  | 'fas fa-edit'
-  | 'fas fa-trash';
-
-// ============================================================
-// MENU TYPE LABELS
-// ============================================================
-
-export const MENU_TYPE_LABELS: Record<MenuTypeId, string> = {
-  1: 'Menu Top',
-  2: 'Menu Footer',
-  3: 'Menu Left',
-  4: 'Menu Right',
+export const TASK_METADATA = {
+  taskName: 'menu-management-menu-link-setup',
+  module: 'menu',
+  type: 'feature',
+  priority: 'high',
+  source: 'screenshot',
+  assignee: '',
+  createdAt: '2026-04-02',
 };
 
 // ============================================================
-// MENU LINK SOURCE TYPES
-// Mỗi loại = 1 accordion section ở panel trái, bên dưới form
+// 🎯 MỤC TIÊU
 // ============================================================
 
-export const MENU_LINK_SOURCE_TYPES: Array<{
-  key: MenuLinkSourceType;
-  label: string;
-}> = [
-  { key: 'news-content', label: 'Nội dung tin tức' },
-  { key: 'news-category', label: 'Chuyên mục tin tức' },
-  { key: 'static-page', label: 'Trang tĩnh' },
-  { key: 'product-category', label: 'Danh mục sản phẩm' },
-  { key: 'product', label: 'Sản phẩm' },
-  { key: 'package-category', label: 'Danh mục gói cước' },
-  { key: 'package', label: 'Gói cước' },
-];
+export const TASK_GOAL = `
+Cập nhật module quản lý menu: thêm filter theo loại menu,
+hiển thị label loại menu, thêm icon Thiết lập trong cột thao tác.
+Xây dựng đầy đủ trang thiết lập liên kết menu (menu-link)
+với 2 panel, tree với icon chính xác và drag-drop.
+`;
 
 // ============================================================
-// PANEL TRÁI — CẤU TRÚC ĐẦY ĐỦ
-// ============================================================
-//
-// Layout từ trên xuống dưới:
-//
-//  ┌─────────────────────────────────────────┐
-//  │ [HEADER TEAL] Thêm/Sửa liên kết        │
-//  ├─────────────────────────────────────────┤
-//  │ Tiêu đề:                                │
-//  │ [_____ input text ________] [▼ btn]    │ ← có dropdown button bên phải
-//  │                                         │
-//  │ URL:                                    │
-//  │ [_____ input text ________________]     │
-//  │                                         │
-//  │ Target:                                 │
-//  │ [Self              ▼ select          ]  │
-//  │                                         │
-//  │ [🔄 Cập nhật]  [+ Thêm vào menu]       │ ← 2 nút LUÔN hiển thị cùng lúc
-//  ├─────────────────────────────────────────┤
-//  │ [HEADER TEAL ▶] Nội dung tin tức        │
-//  │ [HEADER TEAL ▼] Chuyên mục tin tức      │
-//  │   [___ Tìm kiếm __________] [🔍]        │
-//  │   ┌─────────────────────────────────┐   │
-//  │   │ ☑ Item 1                       │   │
-//  │   │ ☑ Item 2                       │   │
-//  │   │ ☐ Item 3                       │   │
-//  │   └──────────── [scrollbar] ───────┘   │
-//  │   [+ Thêm vào menu]                     │
-//  │ [HEADER TEAL ▶] Trang tĩnh              │
-//  │ [HEADER TEAL ▶] Danh mục sản phẩm       │
-//  │ [HEADER TEAL ▶] Sản phẩm                │
-//  │ [HEADER TEAL ▶] Danh mục gói cước       │
-//  │ [HEADER TEAL ▶] Gói cước                │
-//  └─────────────────────────────────────────┘
-//
+// 💾 DATABASE CHANGES
 // ============================================================
 
-// ============================================================
-// PANEL PHẢI — FINAL UI CHUẨN THEO ẢNH THẬT
-// ============================================================
-//
-//  ┌──────────────────────────────────────────────────────────────┐
-//  │ [HEADER TEAL] Menu top                                      │
-//  ├──────────────────────────────────────────────────────────────┤
-//  │ Trang chủ                               [▼][✏][🗑]          │
-//  │                                                              │
-//  │ [ + ] Gói cước 4G          [▲][▼][level-up][level-down][✏][🗑]
-//  │ [ + ] Gói cước DCOM        [▲][▼][level-up][level-down][✏][🗑]
-//  │ [ + ] Gói cước COMBO       [▲][▼][level-up][level-down][✏][🗑]
-//  │                                                              │
-//  │ Gói cước roaming           [▲][▼][level-up][level-down][✏][🗑]
-//  │ Tin tức                    [▲][▼][level-up][level-down][✏][🗑]
-//  │ Tổng đài Viettel           [▲][level-down][✏][🗑]            │
-//  ├──────────────────────────────────────────────────────────────┤
-//  │                                              [💾 Lưu] [⊗ Đóng]
-//  └──────────────────────────────────────────────────────────────┘
-//
-// GHI CHÚ QUAN TRỌNG:
-// - Header chỉ hiện tên menu, ví dụ: "Menu top". KHÔNG append "(Menu Top)".
-// - Danh sách là flat legacy list, không phải card tree hiện đại.
-// - Mỗi row là full width, background trắng, border mảnh, action group nằm bên phải.
-// - Nếu item có children thì phải có icon toggle expand/collapse riêng: plus / minus.
-// - plus/minus là icon tree toggle, không được gộp chung với move-up/move-down.
-// - Drag & drop phải được hỗ trợ để kéo item vào vị trí mong muốn.
-//
-// ============================================================
+export const DB_CHANGES = {
+  schemaChange: false,
 
-export const MENU_TREE_ICON_RULES = {
-  expandCollapsed: 'fas fa-plus',
-  expandExpanded: 'fas fa-minus',
-  moveUp: 'fas fa-chevron-up',
-  moveDown: 'fas fa-chevron-down',
-  moveIntoNearestFolder: 'fas fa-level-up-alt',
-  moveOutOfCurrentFolder: 'fas fa-level-down-alt',
-  edit: 'fas fa-edit',
-  delete: 'fas fa-trash',
-} as const;
+  /**
+   * Kiểm tra trước: model MenuLink có đủ fields chưa?
+   * Cần: id, menuId, parentId(nullable), title, url, target, sortOrder
+   */
+  migrations: [],
 
-export const MENU_TREE_ACTION_DESCRIPTIONS = {
-  'fas fa-plus': 'Toggle mở rộng item có con khi item đang ở trạng thái collapsed.',
-  'fas fa-minus': 'Toggle thu gọn item có con khi item đang ở trạng thái expanded.',
-  'fas fa-chevron-up': 'Di chuyển item lên trên trong cùng group anh em (cùng parentId).',
-  'fas fa-chevron-down': 'Di chuyển item xuống dưới trong cùng group anh em (cùng parentId).',
-  'fas fa-level-up-alt': 'Clickable: chuyển item vào thư mục / nhóm con gần nó nhất theo rule tree hiện tại.',
-  'fas fa-level-down-alt': 'Clickable: chuyển item ra khỏi thư mục con hiện tại, quay về cấp cha ngay phía ngoài.',
-  'fas fa-edit': 'Load item lên form panel trái để chỉnh sửa.',
-  'fas fa-trash': 'Xóa item; nếu có con thì confirm trước khi xóa.',
-} as const;
+  newModels: [],
+};
 
 // ============================================================
-// MAIN FEATURE REQUEST
+// 🔌 API CONTRACTS
 // ============================================================
 
-export const MENU_FEATURE_REQUEST = {
-  module: 'Menu Management + Menu Link',
-  goal:
-    'Cập nhật module quản lý menu để hỗ trợ lọc theo loại menu, hiển thị label loại menu, thêm action icon thiết lập, và xây dựng đầy đủ trang thiết lập liên kết menu (menu-link) theo đúng UI thực tế, bao gồm tree action chính xác, drag-drop, và toggle expand/collapse.',
-
-  context: [
-    'Trang danh sách menu: cột thao tác cần bổ sung icon Thiết lập (Sửa → Thiết lập → Xóa).',
-    'Trang menu-link gồm 2 panel ngang.',
-    'Panel trái: form Tiêu đề/URL/Target (LUÔN hiện, không toggle) + accordion 7 sources bên dưới.',
-    'Panel phải: cây menu items dạng legacy flat list, hỗ trợ root/child, 4 icon điều hướng riêng biệt, expand/collapse, edit, delete và drag-drop.',
-  ],
-
-  formModeState: [
-    'Panel trái dùng state formMode: "add" | "edit" để phân biệt hành động 2 nút.',
-    'Khi formMode = "add" (mặc định): "+ Thêm vào menu" là nút chính.',
-    'Khi formMode = "edit": "Cập nhật" là nút chính.',
-    'Click edit trên item cây → formMode = "edit", điền dữ liệu vào form.',
-    'Sau khi Cập nhật / Thêm / Hủy → formMode = "add", reset form về rỗng.',
-    'Hai nút LUÔN render cùng lúc — không toggle ẩn/hiện.',
-  ],
-
-  observedScreens: [
+export const API_CONTRACTS = {
+  endpoints: [
     {
-      name: 'menu-index',
-      purpose: 'Danh sách menu',
-      keyElements: [
-        'Nút Thêm mới',
-        'Ô tìm kiếm text',
-        'Dropdown chọn loại menu (--Chọn loại menu--)',
-        'Bảng danh sách menu',
-        'Cột thao tác: [Sửa] → [Thiết lập] → [Xóa]',
-      ],
+      method: 'GET',
+      path: '/admin/api/menus',
+      description: 'Lấy danh sách menu, hỗ trợ filter theo keyword + menuTypeId',
+      status: 'modify',
+      request: {
+        queryParams: [
+          { name: 'keyword', type: 'string', required: false },
+          { name: 'menuTypeId', type: 'number (1|2|3|4)', required: false },
+        ],
+      },
+      response: {
+        success: {
+          data: 'MenuItem[]',
+          pagination: '{ total, page, pageSize }',
+        },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'Thêm filter menuTypeId — AND với keyword. Không thay đổi response format hiện tại.',
     },
     {
-      name: 'menu-edit-modal',
-      purpose: 'Popup thêm/sửa menu',
-      keyElements: [
-        'Tên menu (input)',
-        'Loại menu (select: 1=Menu Top, 2=Menu Footer, 3=Menu Left, 4=Menu Right)',
-        'Checkbox Công khai',
-        'Nút Lưu / Đóng',
-      ],
+      method: 'PUT',
+      path: '/admin/api/menus/:id',
+      description: 'Cập nhật menu (tên, loại, công khai)',
+      status: 'existing',
+      request: {
+        pathParams: [{ name: 'id', type: 'number', required: true }],
+        body: 'Giữ nguyên như hiện tại',
+      },
+      response: { success: '{}', error: '{ error: string }' },
+      changes: 'Không thay đổi',
     },
     {
-      name: 'menu-link-page',
-      purpose: 'Trang thiết lập liên kết cho một menu cụ thể',
-      layout: 'Heading lớn trên cùng, bên dưới là 2 panel ngang (~50%/~50%) Bootstrap grid',
-      keyElements: [
-        'Heading trang: "THIẾT LẬP LIÊN KẾT MENU TOP" (tên menu thay đổi theo menu)',
-        'Panel trái luôn hiện form + accordion 7 nguồn dữ liệu.',
-        'Panel phải header teal chỉ hiện tên menu, ví dụ: "Menu top".',
-        'Panel phải hiển thị tree list dạng row phẳng, action bên phải, không phải nested card hiện đại.',
-        'Tree hỗ trợ expand/collapse, move up, move down, move into, move out, edit, delete, drag-drop.',
-      ],
-      uiDetail: [
-        'Dropdown button (▼) bên phải input Tiêu đề: Bootstrap input-group. Dùng để chọn nhanh loại nguồn link → auto-fill title+url vào form.',
-        '"Cập nhật": dùng khi formMode = "edit". Gọi PUT API update item.',
-        '"+ Thêm vào menu": dùng để tạo item mới từ dữ liệu đang có trong form. Gọi POST API.',
-        'Hai nút luôn hiển thị cùng lúc. formMode state ("add" | "edit") phân biệt hành động.',
-        'Sau khi Cập nhật hoặc Thêm xong: reset form về rỗng, formMode = "add".',
-        'Lazy load accordion: chỉ gọi API khi user mở section lần đầu.',
-        'Click item trong accordion → auto-fill Tiêu đề + URL vào form (KHÔNG tự add vào cây).',
-        'Tick nhiều checkbox → click "+ Thêm vào menu" trong section → batch add tất cả items checked vào cây.',
-        'Sau khi batch add: bỏ check tất cả checkbox trong section đó.',
-        'Tìm kiếm trong section: filter danh sách items theo keyword.',
-        'Tree row phải có 4 icon action điều hướng riêng biệt, KHÔNG được gộp chung thành 3 mũi tên.',
-        'fas fa-chevron-up: move up trong cùng parent group.',
-        'fas fa-chevron-down: move down trong cùng parent group.',
-        'fas fa-level-up-alt: clickable, chuyển item vào thư mục con gần nó nhất theo rule tree hiện tại.',
-        'fas fa-level-down-alt: clickable, chuyển item ra khỏi thư mục con vừa vào / current folder, trở về cấp cha phía ngoài.',
-        'Nếu item có con thì có icon fas fa-plus khi collapsed, fas fa-minus khi expanded.',
-        'fas fa-plus / fas fa-minus là toggle expand/collapse, không phải icon trang trí.',
-        'Drag & drop: user có thể kéo thả item vào vị trí mong muốn; thả vào root hay child đều phải cập nhật parentId + sortOrder đúng.',
-        'fas fa-edit: load item lên form panel trái, set formMode = "edit".',
-        'fas fa-trash: xóa item; nếu có con → hiện confirm dialog, có thể cascade theo rule backend.',
-        'Nút "Lưu": lưu batch toàn bộ cây (sortOrder + parentId + expanded state nếu cần giữ UI state ở client).',
-        'Nút "Đóng": navigate về /admin/menu, không lưu thay đổi chưa save.',
-      ],
+      method: 'GET',
+      path: '/admin/api/menu-links',
+      description: 'Lấy danh sách menu-link theo menuId, dạng tree',
+      status: 'new',
+      request: {
+        queryParams: [
+          { name: 'menuId', type: 'number', required: true },
+        ],
+      },
+      response: {
+        success: {
+          data: 'MenuLinkTreeItem[]',
+        },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
+    },
+    {
+      method: 'POST',
+      path: '/admin/api/menu-links',
+      description: 'Tạo 1 hoặc nhiều menu-link items',
+      status: 'new',
+      request: {
+        body: [
+          { name: 'menuId', type: 'number', required: true },
+          { name: 'title', type: 'string', required: true },
+          { name: 'url', type: 'string', required: true },
+          { name: 'target', type: 'string', required: false, default: '_self' },
+          { name: 'parentId', type: 'number|null', required: false },
+          { name: 'sortOrder', type: 'number', required: false },
+          { name: 'items', type: 'array', required: false, description: 'Batch create — array of items khi tick nhiều checkbox trong accordion' },
+        ],
+      },
+      response: {
+        success: { data: 'MenuLinkItem|MenuLinkItem[]', message: 'Thêm thành công' },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
+    },
+    {
+      method: 'PUT',
+      path: '/admin/api/menu-links/:id',
+      description: 'Cập nhật 1 menu-link item',
+      status: 'new',
+      request: {
+        pathParams: [{ name: 'id', type: 'number', required: true }],
+        body: [
+          { name: 'title', type: 'string', required: true },
+          { name: 'url', type: 'string', required: true },
+          { name: 'target', type: 'string', required: false },
+          { name: 'parentId', type: 'number|null', required: false },
+          { name: 'sortOrder', type: 'number', required: false },
+        ],
+      },
+      response: {
+        success: { data: 'MenuLinkItem', message: 'Cập nhật thành công' },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
+    },
+    {
+      method: 'DELETE',
+      path: '/admin/api/menu-links/:id',
+      description: 'Xóa menu-link item (cascade xóa children)',
+      status: 'new',
+      request: {
+        pathParams: [{ name: 'id', type: 'number', required: true }],
+      },
+      response: {
+        success: { message: 'Xóa thành công' },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
+    },
+    {
+      method: 'PUT',
+      path: '/admin/api/menu-links/reorder',
+      description: 'Batch reorder: cập nhật parentId + sortOrder hàng loạt sau drag-drop hoặc click icon',
+      status: 'new',
+      request: {
+        body: [
+          { name: 'items', type: 'array', required: true, description: '[{id, parentId, sortOrder}, ...]' },
+        ],
+      },
+      response: {
+        success: { message: 'Lưu thứ tự thành công' },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
+    },
+    {
+      method: 'GET',
+      path: '/admin/api/menu-link-sources',
+      description: 'Lấy danh sách nguồn link theo type (cho accordion panel trái)',
+      status: 'new',
+      request: {
+        queryParams: [
+          { name: 'type', type: 'string', required: true, description: 'news-content|news-category|static-page|product-category|product|package-category|package' },
+          { name: 'search', type: 'string', required: false },
+        ],
+      },
+      response: {
+        success: { data: 'SourceItem[]' },
+        error: '{ error: string, code: string }',
+      },
+      changes: 'N/A — endpoint mới',
     },
   ],
+};
 
-  uiActionRules: [
-    'Không được mô tả chung là "3 mũi tên". Đây là 4 icon điều hướng riêng biệt + toggle expand/collapse + edit + delete.',
-    'Icon điều hướng riêng biệt gồm: move-up, move-down, move-into, move-out.',
-    'move-up = fas fa-chevron-up.',
-    'move-down = fas fa-chevron-down.',
-    'move-into = fas fa-level-up-alt.',
-    'move-out = fas fa-level-down-alt.',
-    'Nếu item có children và đang collapsed → hiển thị fas fa-plus.',
-    'Nếu item có children và đang expanded → hiển thị fas fa-minus.',
-    'fas fa-plus / fas fa-minus là clickable toggle expand/collapse.',
-    'fas fa-edit và fas fa-trash là action riêng, không thuộc nhóm điều hướng.',
-    'Action buttons phải là từng button riêng biệt, không được gộp suy diễn sai logic.',
-  ],
+// ============================================================
+// 📂 FILE STRUCTURE
+// ============================================================
 
-  uiStyleRules: [
-    'Panel phải là legacy flat list style.',
-    'Mỗi item là 1 row full width, background trắng, border mảnh, chiều cao đồng đều.',
-    'Text item căn trái, action area căn phải.',
-    'Không dùng nested card UI kiểu hiện đại.',
-    'Child items phải thụt vào so với root items.',
-    'Nếu item có con thì icon plus/minus nằm ở vùng đầu row để toggle tree.',
-    'Không hiển thị badge phụ như "Mới" nếu không có trong UI gốc.',
-    'Header panel phải chỉ hiện tên menu; không thêm loại menu trong ngoặc.',
-    'Footer panel phải chứa nút Lưu và Đóng, căn phải.',
-  ],
-
-  requirements: [
-    {
-      id: 'REQ-01',
-      title: 'Thêm bộ lọc loại menu ở trang danh sách',
-      description: 'Dropdown "--Chọn loại menu--" kết hợp với ô tìm kiếm text (AND condition).',
-      acceptanceCriteria: [
-        'Chọn loại menu → chỉ hiện menu đúng loại.',
-        'Không chọn → hiện tất cả.',
-        'Kết hợp text + loại menu hoạt động đúng.',
-        'Label: 1=Menu Top, 2=Menu Footer, 3=Menu Left, 4=Menu Right.',
-      ],
-    },
-    {
-      id: 'REQ-02',
-      title: 'Chuẩn hóa hiển thị loại menu',
-      description: 'Dùng MENU_TYPE_LABELS thay vì số nguyên ở bảng, form, filter.',
-      acceptanceCriteria: [
-        'Bảng hiển thị đúng label loại menu.',
-        'Form thêm/sửa menu có select option có label rõ ràng.',
-        'Submit vẫn map đúng về menuTypeId (1|2|3|4).',
-        'Dùng 1 constant MENU_TYPE_LABELS chung cho cả 3 nơi.',
-      ],
-    },
-    {
-      id: 'REQ-03',
-      title: 'Bổ sung icon Thiết lập trong cột thao tác',
-      description: 'Thêm icon Thiết lập (thứ tự: Sửa → Thiết lập → Xóa). Click → /admin/menu-link/[menuId].',
-      acceptanceCriteria: [
-        'Mỗi dòng có icon Thiết lập (bi-gear hoặc bi-link-45deg).',
-        'Thứ tự icon trong cột: Sửa → Thiết lập → Xóa.',
-        'Click → navigate đúng route với menuId.',
-      ],
-    },
-    {
-      id: 'REQ-04',
-      title: 'Giữ nguyên luồng thêm/sửa menu hiện tại',
-      description: 'Không phá vỡ popup cập nhật menu đang có.',
-      acceptanceCriteria: [
-        'Popup thêm/sửa vẫn lưu đúng: tên menu, loại menu, công khai.',
-        'Không làm lỗi chức năng cũ.',
-      ],
-    },
-    {
-      id: 'REQ-05',
-      title: 'Panel trái: Form LUÔN hiện + Accordion sources bên dưới',
-      description: 'Form Tiêu đề/URL/Target LUÔN hiển thị (không toggle). Bên dưới là accordion 7 sources.',
-      acceptanceCriteria: [
-        'Form LUÔN render, không ẩn hiện theo state.',
-        'Input Tiêu đề có dropdown button (▼) bên phải — Bootstrap input-group.',
-        'Select Target: default "Self", đủ 4 options (_self, _blank, _parent, _top).',
-        'Nút "Cập nhật" (btn-primary) và "+ Thêm vào menu" (btn-success) LUÔN hiển thị cùng lúc, không toggle.',
-        'formMode state: "add" | "edit" — phân biệt hành động 2 nút.',
-        'Có đủ 7 accordion sections bên dưới form, header màu teal, default collapsed.',
-        'Khi expand section: hiện search input + danh sách checkbox (multi-select, scrollable) + nút "+ Thêm vào menu".',
-        'Lazy load: chỉ gọi API khi mở section lần đầu.',
-        'Tìm kiếm trong section filter danh sách items.',
-        'Tick nhiều items → bấm "+ Thêm vào menu" trong section → batch add vào cây.',
-        'Sau batch add: reset checkbox trong section.',
-        'Click 1 item trong accordion → auto-fill Tiêu đề + URL vào form (không tự add vào cây).',
-      ],
-    },
-    {
-      id: 'REQ-06',
-      title: 'Panel phải: Tree menu items với icon/action chính xác, expand/collapse và drag-drop',
-      description:
-        'Panel phải phải render đúng tree legacy UI, có 4 icon điều hướng riêng biệt, icon toggle expand/collapse cho item có con, edit/delete riêng và hỗ trợ kéo thả.',
-      acceptanceCriteria: [
-        'Header panel phải chỉ hiển thị tên menu lấy từ DB.',
-        'Tree render dạng flat legacy list, không dùng nested card UI.',
-        'Có 4 icon điều hướng riêng: fas fa-chevron-up, fas fa-chevron-down, fas fa-level-up-alt, fas fa-level-down-alt.',
-        'Không được gộp logic 4 icon trên thành "3 mũi tên".',
-        'fas fa-level-up-alt clickable: chuyển item vào thư mục con gần nó nhất theo rule tree hiện tại.',
-        'fas fa-level-down-alt clickable: chuyển item ra khỏi thư mục con hiện tại / vừa vào.',
-        'Nếu item có children và collapsed thì hiển thị fas fa-plus.',
-        'Nếu item có children và expanded thì hiển thị fas fa-minus.',
-        'Click plus/minus phải toggle được mở rộng / thu gọn children.',
-        'Item không có con thì không hiển thị plus/minus toggle.',
-        'fas fa-edit load item lên form panel trái, set formMode = "edit".',
-        'fas fa-trash xóa item; nếu có con thì confirm trước.',
-        'Có thể kéo thả item vào vị trí mong muốn trong tree.',
-        'Sau drag-drop phải cập nhật parentId, sortOrder và cấu trúc tree đúng.',
-        'Nút "Lưu" và "Đóng" nằm cuối panel, căn phải.',
-      ],
-    },
-    {
-      id: 'REQ-07',
-      title: 'Form sửa item: click edit load lên form, bấm "Cập nhật" để save',
-      description: 'Khi click edit, form panel trái load dữ liệu item. Bấm "Cập nhật" → PUT API.',
-      acceptanceCriteria: [
-        'Click edit → form điền Tiêu đề, URL, Target của item. formMode = "edit".',
-        'Bấm "Cập nhật" → PUT API update → cập nhật item trong cây.',
-        'Sau khi update: reset form về rỗng, formMode = "add".',
-        'Có thể cancel sửa để về trạng thái add.',
-      ],
-    },
-    {
-      id: 'REQ-08',
-      title: 'API backend: menu-link CRUD + reorder + drag-drop + sources',
-      description: 'Đầy đủ API endpoints cho trang menu-link, bao gồm reorder sau click icon và sau drag-drop.',
-      acceptanceCriteria: [
-        'GET  /admin/api/menu-links?menuId=xxx → [{id, title, url, target, parentId, sortOrder, children:[]}].',
-        'POST /admin/api/menu-links → tạo 1 item hoặc batch array.',
-        'PUT  /admin/api/menu-links/[id] → update title/url/target/parentId/sortOrder.',
-        'DELETE /admin/api/menu-links/[id] → xóa (cascade con hoặc báo lỗi nếu có con).',
-        'PUT  /admin/api/menu-links/reorder → nhận payload batch để update hàng loạt parentId + sortOrder sau click icon hoặc drag-drop.',
-        'GET  /admin/api/menu-link-sources?type=xxx&search=yyy → [{id, title, url}] cho accordion.',
-        'Validator Zod: title bắt buộc, target ∈ {_self,_blank,_parent,_top}, url string.',
-      ],
-    },
-  ],
-
-  businessRules: [
-    'Menu type hợp lệ: 1 (Menu Top), 2 (Menu Footer), 3 (Menu Left), 4 (Menu Right).',
-    'Filter danh sách: text AND menuType, không chọn type thì trả tất cả.',
-    'Trang menu-link: 1 menu → 1 trang /admin/menu-link/[menuId].',
-    'MenuLink hỗ trợ cấu trúc tree theo parentId; tối thiểu phải hỗ trợ root và child như UI hiện tại.',
-    'sortOrder tăng dần trong cùng parentId group.',
-    'Target mặc định _self.',
-    'Xóa item có con: confirm trước khi xóa; backend có thể cascade nếu business chấp nhận.',
-    'Accordion lazy load: gọi API khi mở section lần đầu.',
-    'Batch add từ accordion: POST nhiều MenuLink, parentId mặc định theo nơi add, sortOrder tự tăng.',
-    'Auto-fill từ accordion click: chỉ điền form, KHÔNG tự add vào cây.',
-    'Nút "+ Thêm vào menu" trong accordion section: batch add items đã check.',
-    'Nút "+ Thêm vào menu" trên form: add 1 item từ dữ liệu form.',
-    'URL cho phép absolute (https://...) hoặc relative (/san-pham/...).',
-    'Nút Lưu: save batch sortOrder + parentId toàn cây.',
-    'Nút Đóng: navigate /admin/menu, không save.',
-    'formMode = "add" | "edit" — 2 nút form LUÔN cùng hiện, phân biệt bằng formMode.',
-    'fas fa-level-up-alt: dùng để chuyển item vào thư mục con gần nhất theo rule tree hiện hành.',
-    'fas fa-level-down-alt: dùng để đưa item ra khỏi thư mục con hiện tại, về cấp cha gần nhất.',
-    'fas fa-plus / fas fa-minus chỉ hiển thị cho item có con.',
-    'Drag-drop có hiệu lực tương đương thao tác thay đổi vị trí tree và phải được lưu bằng batch reorder.',
-  ],
-
-  implementationHints: [
-    'Kiểm tra Prisma model MenuLink — cần tối thiểu: id, menuId, parentId (nullable), title, url, target, sortOrder.',
-    'Nếu thiếu field phục vụ tree / reorder → prisma migrate trước, sau đó mới code UI.',
-    'Panel grid: Bootstrap col-md-6 / col-lg-6 mỗi panel.',
-    'Form LUÔN visible — không dùng conditional render.',
-    'formMode state: "add" | "edit" — dùng để phân biệt hành động 2 nút. Luôn render cả 2 nút.',
-    'Dropdown button (▼) bên phải input Tiêu đề: Bootstrap input-group + dropdown-toggle.',
-    'Accordion: Bootstrap 5 accordion.',
-    'Checkbox list trong accordion section: render từ API, track checked bằng Set<string> state.',
-    'Lazy load tracking: Set<sectionKey> cho loadedSections.',
-    'Panel phải nên tách thành: MenuLinkTreePanel → MenuLinkTree → MenuLinkTreeRow.',
-    'Không hardcode icon logic mơ hồ; phải map explicit từng action icon.',
-    'fas fa-plus / fas fa-minus là toggle expand/collapse của item có con.',
-    'fas fa-level-up-alt và fas fa-level-down-alt là 2 action RIÊNG, không dùng chung 1 icon suy diễn.',
-    'Cần local tree state ở client để hỗ trợ click action và drag-drop trước khi bấm Lưu.',
-    'Drag & drop có thể dùng HTML5 drag events hiện có hoặc giải pháp không thêm thư viện mới.',
-    'Sau mọi thao tác click action / drag-drop, phải normalize lại sortOrder theo group.',
-    'MenuLinkSources API: 1 route với ?type=xxx để tránh nhiều endpoints.',
-    'Tái sử dụng MENU_TYPE_LABELS trong table, form, filter — không hardcode.',
-  ],
-
-  suggestedFilesToInspect: [
-    'prisma/schema.prisma — kiểm tra MenuLink model: có parentId? sortOrder? target?',
-    'src/lib/constants.ts — thêm MENU_TYPE_LABELS và icon constants nếu cần',
-    'src/lib/types.ts — thêm MenuLinkItem / MenuTreeNode type nếu cần',
-
-    'src/admin/features/menu/MenuFilters.tsx',
-    'src/admin/features/menu/MenuTable.tsx',
-    'src/admin/layout/menu/MenusPage.tsx',
-
-    'src/admin/layout/menu-links/MenuLinkSetupPage.tsx — page chính 2 panel',
-    'src/admin/features/menu-link/MenuLinkFormPanel.tsx — form Tiêu đề/URL/Target + 2 nút',
-    'src/admin/features/menu-link/MenuLinkAccordion.tsx — accordion 7 sources',
-    'src/admin/features/menu-link/MenuLinkTree.tsx — tree panel phải',
-    'src/admin/features/menu-link/MenuLinkTreeRow.tsx — 1 row tree với icon/action cụ thể',
-
-    'src/server/validators/menu-link.validator.ts',
+export const FILE_STRUCTURE = {
+  filesToCreate: [
     'src/server/repositories/menu-link.repository.ts',
     'src/server/services/menu-link.service.ts',
-
+    'src/server/validators/menu-link.validator.ts',
     'src/admin/api/menu-links/route.ts',
     'src/admin/api/menu-links/[id]/route.ts',
     'src/admin/api/menu-links/reorder/route.ts',
     'src/admin/api/menu-link-sources/route.ts',
+    'src/admin/features/menu-link/MenuLinkFormPanel.tsx',
+    'src/admin/features/menu-link/MenuLinkAccordion.tsx',
+    'src/admin/features/menu-link/MenuLinkTreePanel.tsx',
+    'src/admin/features/menu-link/MenuLinkTree.tsx',
+    'src/admin/features/menu-link/MenuLinkTreeRow.tsx',
+    'src/admin/layout/menu-links/MenuLinkSetupPage.tsx',
   ],
 
-  expectedFlow: [
-    '(Menu list) Mở /admin/menu',
-    '(Menu list) Chọn loại menu + nhập text → Tìm kiếm → danh sách lọc đúng',
-    '(Menu list) Xem cột Loại menu hiển thị label (Menu Top...)',
-    '(Menu list) Click icon Thiết lập → /admin/menu-link/[menuId]',
-    '',
-    '(Menu link) Load trang: panel phải hiện tree items, panel trái LUÔN hiện form rỗng + accordion collapsed',
-    '(Menu link) Mở accordion "Chuyên mục tin tức" → API load danh sách → tick nhiều items → "+ Thêm vào menu" → items thêm vào tree',
-    '(Menu link) Click 1 item trong accordion → Tiêu đề + URL auto-fill vào form → bấm "+ Thêm vào menu" → add 1 item',
-    '(Menu link) Click edit item trong tree → form load dữ liệu → sửa → bấm "Cập nhật"',
-    '(Menu link) Click chevron-up / chevron-down → đổi vị trí item trong cùng group',
-      '(Menu link) Click level-up-alt → chuyển item vào thư mục con gần nó nhất',
-      '(Menu link) Click level-down-alt → chuyển item ra khỏi thư mục con hiện tại',                     
-    '(Menu link) Nếu item có con → click plus/minus để thu gọn / mở rộng children',
-    '(Menu link) Kéo thả item vào vị trí mong muốn trong tree',
-    '(Menu link) Bấm "Lưu" → save batch về DB',
-    '(Menu link) Bấm "Đóng" → về /admin/menu',
+  filesToModify: [
+    {
+      path: 'src/admin/features/menu/MenuFilters.tsx',
+      changes: 'Thêm dropdown filter theo menuTypeId (HEADER / FOOTER / LEFT / RIGHT)',
+    },
+    {
+      path: 'src/admin/features/menu/MenuTable.tsx',
+      changes: 'Hiển thị label loại menu (dùng MENU_TYPE_LABELS), thêm icon Thiết lập vào cột thao tác (thứ tự: Sửa → Thiết lập → Xóa)',
+    },
   ],
 
-  notesForClaudeCode: [
-    'ĐỌC prisma/schema.prisma TRƯỚC — kiểm tra MenuLink model có đủ: parentId, sortOrder, target chưa. Nếu thiếu → migrate trước.',
-    'Xác định route menu-link hiện tại trước khi gắn link trong MenuTable.',
-    'Form panel trái: LUÔN render, không toggle.',
-    'Hai nút "Cập nhật" và "+ Thêm vào menu": LUÔN render cùng lúc — không toggle ẩn/hiện.',
-    'KHÔNG mô tả hay implement icon tree theo kiểu gộp chung "3 mũi tên".',
-    'fas fa-level-up-alt và fas fa-level-down-alt là 2 action riêng biệt, bắt buộc tách logic riêng.',
-    'fas fa-plus mặc định là collapsed state cho item có con; expanded thì dùng fas fa-minus.',
-    'Panel phải cần local tree state để xử lý expand/collapse và drag-drop trước khi save.',
-    'Cần normalize sortOrder sau mọi hành động reorder / move-into / move-out / drag-drop.',
-    'Không tự ý thêm badge hoặc text phụ không có trong UI gốc.',
-    'Priority: chốt đúng panel phải trước, vì đây là phần đang bị hiểu sai spec.',
-    'Sau khi code: liệt kê files tạo/sửa + cách test thủ công cho từng REQ.',
+  filesToRead: [
+    'prisma/schema.prisma — kiểm tra model MenuLink có đủ: parentId, sortOrder, target chưa',
+    'src/lib/constants.ts — thêm MENU_TYPE_LABELS nếu chưa có',
+    'src/lib/types.ts — thêm MenuLinkItem, MenuTreeNode types',
+    'src/admin/features/menu/MenuFilters.tsx — reference filter pattern',
+    'src/admin/features/menu/MenuTable.tsx — reference table pattern',
+  ],
+
+  filesToCheck: [
+    'src/server/routes/index.ts — đăng ký routes menu-link mới',
+    'src/admin/layout/menu/MenusPage.tsx — kiểm tra link navigate tới menu-link',
   ],
 };
 
-export default MENU_FEATURE_REQUEST;
+// ============================================================
+// 🧠 BUSINESS RULES
+// ============================================================
+
+export const BUSINESS_RULES = [
+  'menuTypeId: 1 = Menu Top, 2 = Menu Footer, 3 = Menu Left, 4 = Menu Right',
+  'Filter danh sách menu: text AND menuTypeId, không chọn type thì trả tất cả',
+  'MenuLink hỗ trợ cấu trúc tree theo parentId (nullable — root có parentId = null)',
+  'sortOrder tăng dần trong cùng parentId group',
+  'Target mặc định: _self; hợp lệ: _self | _blank | _parent | _top',
+  'URL cho phép absolute (https://...) hoặc relative (/san-pham/...)',
+  'Xóa item có con: cascade xóa children hoặc báo lỗi nếu có con (tùy business)',
+  'Accordion lazy load: chỉ gọi API khi user mở section lần đầu',
+  'Batch add từ accordion: POST nhiều MenuLink, parentId mặc định theo nơi add, sortOrder tự tăng',
+  'Click 1 item trong accordion: auto-fill Tiêu đề + URL vào form, KHÔNG tự add vào cây',
+  'formMode = "add" | "edit" — 2 nút form LUÔN cùng hiển thị, phân biệt bằng formMode',
+  'fas fa-level-up-alt: chuyển item vào thư mục con gần nhất',
+  'fas fa-level-down-alt: chuyển item ra khỏi thư mục con hiện tại, về cấp cha gần nhất',
+  'fas fa-plus / fas fa-minus: toggle expand/collapse, CHỈ hiển thị cho item có con',
+  'Nút Lưu: save batch sortOrder + parentId toàn cây (gọi PUT reorder)',
+  'Nút Đóng: navigate /admin/menu, không save',
+  'Sau mọi thao tác (move, drag-drop) → normalize sortOrder theo group',
+];
+
+// ============================================================
+// 📋 REQUIREMENTS
+// ============================================================
+
+export const REQUIREMENTS = [
+  {
+    id: 'REQ-01',
+    title: 'Filter loại menu ở trang danh sách',
+    description: 'Dropdown "--Chọn loại menu--" kết hợp với ô tìm kiếm text (AND condition)',
+    acceptanceCriteria: [
+      'AC-01: Dropdown với 4 options: Menu Top, Menu Footer, Menu Left, Menu Right',
+      'AC-02: Chọn loại → chỉ hiện menu đúng loại',
+      'AC-03: Không chọn → hiện tất cả',
+      'AC-04: Kết hợp text + loại menu filter đúng',
+    ],
+    affectedFiles: ['MenuFilters.tsx', 'menus/route.ts', 'menu.service.ts'],
+  },
+  {
+    id: 'REQ-02',
+    title: 'Hiển thị label loại menu trong bảng',
+    description: 'Dùng MENU_TYPE_LABELS thay vì số nguyên ở bảng, form, filter',
+    acceptanceCriteria: [
+      'AC-01: Bảng hiển thị đúng label: Menu Top, Menu Footer, Menu Left, Menu Right',
+      'AC-02: Dùng 1 constant MENU_TYPE_LABELS chung cho cả bảng, filter, form',
+    ],
+    affectedFiles: ['MenuTable.tsx', 'MenuFilters.tsx', 'src/lib/constants.ts'],
+  },
+  {
+    id: 'REQ-03',
+    title: 'Icon Thiết lập trong cột thao tác',
+    description: 'Thêm icon Thiết lập (thứ tự: Sửa → Thiết lập → Xóa). Click → /admin/menu-links/:menuId',
+    acceptanceCriteria: [
+      'AC-01: Mỗi dòng có icon Thiết lập (bi-gear hoặc bi-link-45deg)',
+      'AC-02: Thứ tự icon: Sửa → Thiết lập → Xóa',
+      'AC-03: Click Thiết lập → navigate đúng route với menuId',
+    ],
+    affectedFiles: ['MenuTable.tsx'],
+  },
+  {
+    id: 'REQ-04',
+    title: 'Giữ nguyên popup thêm/sửa menu hiện tại',
+    description: 'Không phá vỡ chức năng CRUD menu đang có',
+    acceptanceCriteria: [
+      'AC-01: Popup thêm/sửa vẫn lưu đúng: tên menu, loại menu, công khai',
+      'AC-02: Không làm lỗi chức năng cũ',
+    ],
+    affectedFiles: ['MenuTable.tsx (chỉ thêm icon, không sửa logic sửa/xóa)'],
+  },
+  {
+    id: 'REQ-05',
+    title: 'Panel trái: Form LUÔN hiện + Accordion 7 sources',
+    description: 'Form Tiêu đề/URL/Target LUÔN hiển thị. Bên dưới là accordion 7 nguồn dữ liệu',
+    acceptanceCriteria: [
+      'AC-01: Form LUÔN render (không toggle)',
+      'AC-02: Input Tiêu đề có dropdown button (▼) bên phải (Bootstrap input-group + dropdown-toggle)',
+      'AC-03: Select Target: default "_self", đủ 4 options',
+      'AC-04: Nút "Cập nhật" (btn-primary) và "+ Thêm vào menu" (btn-success) LUÔN hiển thị cùng lúc',
+      'AC-05: formMode state: "add" | "edit" — phân biệt hành động 2 nút',
+      'AC-06: 7 accordion sections: Nội dung tin tức, Chuyên mục tin tức, Trang tĩnh, Danh mục sản phẩm, Sản phẩm, Danh mục gói cước, Gói cước',
+      'AC-07: Khi expand section: hiện search input + checkbox list (multi-select, scrollable) + nút "+ Thêm vào menu"',
+      'AC-08: Lazy load: chỉ gọi API khi mở section lần đầu',
+      'AC-09: Tick nhiều items → bấm "+ Thêm vào menu" → batch add vào cây → reset checkbox',
+      'AC-10: Click 1 item trong accordion → auto-fill Tiêu đề + URL vào form (không tự add vào cây)',
+    ],
+    affectedFiles: [
+      'MenuLinkFormPanel.tsx',
+      'MenuLinkAccordion.tsx',
+      'MenuLinkSetupPage.tsx',
+    ],
+  },
+  {
+    id: 'REQ-06',
+    title: 'Panel phải: Tree menu items — icon/actions chính xác, expand/collapse, drag-drop',
+    description: 'Tree dạng flat legacy list, 4 icon điều hướng riêng, toggle expand/collapse, edit, delete, drag-drop',
+    acceptanceCriteria: [
+      'AC-01: Header panel phải chỉ hiển thị tên menu (ví dụ: "Menu top"), KHÔNG thêm loại trong ngoặc',
+      'AC-02: Tree dạng flat legacy list — mỗi item là 1 row full width, border mảnh, action bên phải',
+      'AC-03: 4 icon điều hướng RIÊNG BIỆT: fas fa-chevron-up, fas fa-chevron-down, fas fa-level-up-alt, fas fa-level-down-alt',
+      'AC-04: fas fa-chevron-up: move up trong cùng parent group',
+      'AC-05: fas fa-chevron-down: move down trong cùng parent group',
+      'AC-06: fas fa-level-up-alt (clickable): chuyển item vào thư mục con gần nhất',
+      'AC-07: fas fa-level-down-alt (clickable): chuyển item ra khỏi thư mục con hiện tại',
+      'AC-08: Item có con + collapsed → hiển thị fas fa-plus',
+      'AC-09: Item có con + expanded → hiển thị fas fa-minus',
+      'AC-10: Click plus/minus → toggle expand/collapse children',
+      'AC-11: Item không có con → KHÔNG hiển thị plus/minus',
+      'AC-12: fas fa-edit: load item lên form panel trái, set formMode = "edit"',
+      'AC-13: fas fa-trash: xóa item; nếu có con → confirm trước',
+      'AC-14: Drag-drop: kéo item vào vị trí mong muốn, thả vào root hay child đều cập nhật parentId + sortOrder đúng',
+      'AC-15: Nút "Lưu" và "Đóng" nằm cuối panel, căn phải',
+    ],
+    affectedFiles: [
+      'MenuLinkTreePanel.tsx',
+      'MenuLinkTree.tsx',
+      'MenuLinkTreeRow.tsx',
+      'MenuLinkSetupPage.tsx',
+    ],
+  },
+  {
+    id: 'REQ-07',
+    title: 'Edit item: click edit → load form → bấm Cập nhật → save',
+    description: 'Khi click edit, form panel trái load dữ liệu. Bấm "Cập nhật" → PUT API',
+    acceptanceCriteria: [
+      'AC-01: Click edit → form điền Tiêu đề, URL, Target của item. formMode = "edit"',
+      'AC-02: Bấm "Cập nhật" → PUT API → cập nhật item trong cây',
+      'AC-03: Sau update: reset form về rỗng, formMode = "add"',
+      'AC-04: Sau Cập nhật hoặc Thêm: reset form về rỗng, formMode = "add"',
+    ],
+    affectedFiles: ['MenuLinkFormPanel.tsx', 'MenuLinkTree.tsx'],
+  },
+  {
+    id: 'REQ-08',
+    title: 'Lưu toàn bộ tree sau thao tác',
+    description: 'Nút Lưu gọi batch reorder API, nút Đóng quay về /admin/menu không save',
+    acceptanceCriteria: [
+      'AC-01: Click "Lưu" → gọi PUT /admin/api/menu-links/reorder với payload [{id, parentId, sortOrder}, ...]',
+      'AC-02: Click "Đóng" → navigate /admin/menu, không save thay đổi',
+      'AC-03: Sau mọi action (move, drag-drop) → normalize sortOrder trong local state trước',
+    ],
+    affectedFiles: ['MenuLinkTreePanel.tsx', 'MenuLinkSetupPage.tsx', 'PUT reorder endpoint'],
+  },
+];
+
+// ============================================================
+// ⚠️ CONSTRAINTS
+// ============================================================
+
+export const CONSTRAINTS = [
+  'Không thêm thư viện mới (drag-drop dùng HTML5 drag events)',
+  'Phải tuân thủ 3-layer architecture: repository → service → api',
+  'Không sửa bất kỳ module nào ngoài menu + menu-link',
+  'UI phải dùng Bootstrap 5 convention của project',
+  'KHÔNG gộp chung 4 icon điều hướng thành "3 mũi tên" — phải tách rõ từng icon',
+  'fas fa-level-up-alt và fas fa-level-down-alt là 2 action RIÊNG BIỆT',
+  'fas fa-plus và fas fa-minus là toggle expand/collapse — không phải decoration',
+  'Form panel trái LUÔN visible — không conditional render',
+  'Hai nút "Cập nhật" và "+ Thêm vào menu" LUÔN hiển thị cùng lúc',
+  'Panel phải dùng flat legacy list style — không dùng nested card UI hiện đại',
+];
+
+// ============================================================
+// 🔄 IMPLEMENTATION ORDER
+// ============================================================
+
+export const IMPLEMENTATION_ORDER = [
+  'Bước 1: Đọc prisma/schema.prisma — kiểm tra model MenuLink có đủ fields chưa (parentId, sortOrder, target)',
+  'Bước 2: Nếu thiếu field → chạy prisma migrate dev --name add_menu_link_fields',
+  'Bước 3: Thêm MENU_TYPE_LABELS vào src/lib/constants.ts',
+  'Bước 4: Thêm MenuLinkItem, MenuTreeNode types vào src/lib/types.ts',
+  'Bước 5: Sửa MenuFilters.tsx — thêm dropdown filter menuTypeId',
+  'Bước 6: Sửa MenuTable.tsx — hiển thị label + icon Thiết lập',
+  'Bước 7: Tạo menu-link.repository.ts',
+  'Bước 8: Tạo menu-link.service.ts',
+  'Bước 9: Tạo menu-link.validator.ts',
+  'Bước 10: Tạo API routes (GET menu-links, POST, PUT/:id, DELETE/:id, PUT reorder, GET sources)',
+  'Bước 11: Test API bằng curl trước khi code UI',
+  'Bước 12: Tạo MenuLinkFormPanel.tsx (form LUÔN visible + 2 nút)',
+  'Bước 13: Tạo MenuLinkAccordion.tsx (7 sections với lazy load)',
+  'Bước 14: Tạo MenuLinkTreeRow.tsx (1 row với đúng 4 icon điều hướng + expand/collapse + edit + delete)',
+  'Bước 15: Tạo MenuLinkTree.tsx (tree với local state, expand/collapse, normalize sortOrder)',
+  'Bước 16: Tạo MenuLinkTreePanel.tsx (panel phải với header + tree + nút Lưu/Đóng)',
+  'Bước 17: Tạo MenuLinkSetupPage.tsx (layout 2 panel ngang)',
+  'Bước 18: Cập nhật route /admin/menu-links/:menuId trong routes/index.ts',
+];
+
+// ============================================================
+// 🧪 TEST STRATEGY
+// ============================================================
+
+export const TEST_STRATEGY = {
+  apiTests: [
+    'GET /admin/api/menu-links?menuId=1 — expect 200, array',
+    'GET /admin/api/menu-link-sources?type=news-category — expect 200, array',
+    'POST /admin/api/menu-links body={menuId:1,title:"Test",url:"/test"} — expect 201',
+    'POST /admin/api/menu-links body={menuId:1,items:[{title:"A",url:"/a"},{title:"B",url:"/b"}]} — expect 201, 2 items',
+    'PUT /admin/api/menu-links/1 body={title:"Updated"} — expect 200',
+    'PUT /admin/api/menu-links/reorder body={items:[{id:1,parentId:null,sortOrder:0}]} — expect 200',
+    'DELETE /admin/api/menu-links/999 — expect 404',
+    'DELETE /admin/api/menu-links/1 — expect 200 (cascade hoặc confirm)',
+  ],
+
+  manualTests: [
+    '(Menu list) Mở /admin/menu → thấy dropdown loại menu + input search',
+    '(Menu list) Chọn Menu Top → chỉ hiện menu loại Top',
+    '(Menu list) Chọn loại + nhập text → filter đúng (AND)',
+    '(Menu list) Cột Loại menu hiển thị label (Menu Top...)',
+    '(Menu list) Click icon Thiết lập → navigate /admin/menu-links/:id',
+    '(Menu link) Load trang → panel phải hiện tree items, panel trái hiện form rỗng',
+    '(Menu link) Mở accordion "Chuyên mục tin tức" → search → tick items → "+ Thêm vào menu" → items thêm vào tree',
+    '(Menu link) Click 1 item accordion → Tiêu đề + URL auto-fill vào form',
+    '(Menu link) Bấm "+ Thêm vào menu" (form) → item mới thêm vào cây',
+    '(Menu link) Click fas fa-edit → form load dữ liệu → sửa → bấm "Cập nhật"',
+    '(Menu link) Click fas fa-chevron-up → item đổi lên trên trong cùng group',
+    '(Menu link) Click fas fa-chevron-down → item đổi xuống dưới trong cùng group',
+    '(Menu link) Click fas fa-level-up-alt → item vào thư mục con',
+    '(Menu link) Click fas fa-level-down-alt → item ra khỏi thư mục con',
+    '(Menu link) Item có con → click fas fa-plus → children hiện → icon đổi fas fa-minus',
+    '(Menu link) Item có con → click fas fa-minus → children ẩn → icon đổi fas fa-plus',
+    '(Menu link) Drag-drop item vào vị trí khác → tree cập nhật',
+    '(Menu link) Click fas fa-trash → confirm → item xóa',
+    '(Menu link) Bấm "Lưu" → save batch thành công',
+    '(Menu link) Bấm "Đóng" → về /admin/menu, không save',
+  ],
+};
+
+// ============================================================
+// ⚡ ROLLBACK PLAN
+// ============================================================
+
+export const ROLLBACK_PLAN = {
+  schemaRollback: 'git checkout prisma/schema.prisma && rm -rf prisma/migrations/*/add_menu_link_fields',
+  codeRollback: 'git checkout -- src/admin/features/menu/MenuFilters.tsx src/admin/features/menu/MenuTable.tsx src/server/repositories/menu-link.repository.ts src/server/services/menu-link.service.ts src/server/validators/menu-link.validator.ts src/admin/api/menu-links src/admin/api/menu-link-sources src/admin/features/menu-link src/admin/layout/menu-links',
+  deployRollback: 'Git revert commit hoặc rollback image',
+};
+
+// ============================================================
+// 🚨 REGRESSION TARGETS
+// ============================================================
+
+export const REGRESSION_TARGETS = [
+  'Trang danh sách menu hiện tại không bị lỗi',
+  'Popup thêm/sửa menu vẫn hoạt động',
+  'Các API menu hiện tại không bị ảnh hưởng',
+  'Admin layout không bị ảnh hưởng',
+];
+
+// ============================================================
+// 📝 IMPLEMENTATION NOTES
+// ============================================================
+
+export const IMPLEMENTATION_NOTES = [
+  'Đọc prisma/schema.prisma TRƯỚC — kiểm tra MenuLink model có đủ fields chưa',
+  'Panel grid: Bootstrap col-md-6 / col-lg-6 mỗi panel',
+  'Form LUÔN visible — không dùng conditional render',
+  'formMode state: "add" | "edit" — 2 nút LUÔN render, phân biệt bằng formMode',
+  'Dropdown button (▼) bên phải input Tiêu đề: Bootstrap input-group + dropdown-toggle',
+  'Accordion: Bootstrap 5 accordion',
+  'Checkbox list trong accordion: track checked bằng Set<string>',
+  'Lazy load: Set<string> cho loadedSections',
+  'Tách panel phải: MenuLinkTreePanel → MenuLinkTree → MenuLinkTreeRow',
+  'Icon map: MOVE_CONSTANTS riêng cho từng icon — KHÔNG hardcode chung',
+  'fas fa-plus mặc định collapsed, fas fa-minus khi expanded',
+  'Local tree state ở client cho expand/collapse và drag-drop trước khi save',
+  'Drag & drop: HTML5 drag events (hiện có trong project hoặc tự implement)',
+  'Sau mọi thao tác → normalize sortOrder theo group',
+  'KHÔNG gộp 4 icon điều hướng thành "3 mũi tên"',
+  'Priority: panel phải là ưu tiên cao nhất vì đang bị hiểu sai spec',
+];
+
+// ============================================================
+// 👀 UI SCREENS
+// ============================================================
+
+export const UI_SCREENS = [
+  {
+    name: 'menu-index',
+    route: '/admin/menu',
+    description: 'Trang danh sách menu',
+    keyElements: [
+      'Nút Thêm mới',
+      'Input tìm kiếm text',
+      'Dropdown chọn loại menu (--Chọn loại menu--) với 4 options',
+      'Bảng danh sách: cột Loại menu hiển thị label (Menu Top...)',
+      'Cột thao tác: Sửa → Thiết lập → Xóa',
+    ],
+    screenshotRef: 'N/A',
+  },
+  {
+    name: 'menu-link-page',
+    route: '/admin/menu-links/:menuId',
+    description: 'Trang thiết lập liên kết menu — 2 panel ngang',
+    keyElements: [
+      'Heading: "THIẾT LẬP LIÊN KẾT MENU TOP" (tên menu thay đổi theo menu)',
+      'Panel trái: form Tiêu đề/URL/Target LUÔN hiện + 2 nút LUÔN hiện',
+      'Panel trái: dropdown button (▼) bên phải input Tiêu đề',
+      'Panel trái: accordion 7 nguồn (Nội dung tin tức → Gói cước)',
+      'Panel phải header teal: "Menu top" (chỉ tên menu, KHÔNG thêm ngoặc)',
+      'Panel phải: flat list rows, 4 icon điều hướng + expand/collapse + edit + delete',
+      'Panel phải: nút Lưu (xanh lá) và Đóng (xám), căn phải',
+    ],
+    screenshotRef: 'N/A',
+  },
+];
+
+// ============================================================
+// ✅ CHECKLIST TRƯỚC KHI GỬI PR
+// ============================================================
+
+export const PR_CHECKLIST = [
+  'Đã kiểm tra prisma/schema.prisma — MenuLink đã có đủ fields hoặc đã migrate',
+  'Đã test tất cả 7 API endpoints bằng curl/postman',
+  'Đã test UI thủ công theo manualTests',
+  'Đã verify: 4 icon điều hướng hiển thị RIÊNG BIỆT (không gộp)',
+  'Đã verify: plus/minus toggle expand/collapse CHỈ cho item có con',
+  'Đã verify: form LUÔN visible, 2 nút LUÔN hiện cùng lúc',
+  'Không sửa file ngoài module menu + menu-link',
+  'Code tuân thủ 3-layer architecture',
+  'Không thêm thư viện mới',
+  'TypeScript compilation không lỗi',
+  'SortOrder normalize đúng sau mọi thao tác',
+];

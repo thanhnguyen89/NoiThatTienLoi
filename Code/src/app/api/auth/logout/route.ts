@@ -17,10 +17,13 @@ export async function POST(request: NextRequest) {
   try {
     const token = getToken(request);
     const payload = token ? verifyAccessToken(token) : null;
-    if (payload) {
-      const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined;
-      const userAgent = request.headers.get('user-agent') || undefined;
-      await authService.logout(token, payload.userId, ip, userAgent);
+    if (payload && token) {
+      const xff = request.headers.get('x-forwarded-for');
+      const xrip = request.headers.get('x-real-ip');
+      const ua = request.headers.get('user-agent');
+      const ip: string | undefined = (xff || xrip) || undefined;
+      const userAgent: string | undefined = ua || undefined;
+      await authService.logout(token, (payload as { userId: string }).userId, ip || undefined, userAgent || undefined);
     }
 
     const response = NextResponse.json({ success: true, message: 'Đăng xuất thành công' });

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { menuService } from '@/server/services/menu.service';
 import { isAppError } from '@/server/errors';
 
-function serializeMenu(menu: Record<string, unknown>) {
+function serializeMenu(menu: unknown) {
   return JSON.parse(JSON.stringify(menu, (_, v) => typeof v === 'bigint' ? String(v) : v));
 }
 

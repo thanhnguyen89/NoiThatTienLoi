@@ -1,10 +1,10 @@
 import { seoConfigRepository } from '@/server/repositories/seo-config.repository';
 import { validateSeoConfig, type SeoConfigInput } from '@/server/validators/seo-config.validator';
-import { NotFoundError, ValidationError } from '@/server/errors';
+import { NotFoundError, ValidationError, DuplicateError } from '@/server/errors';
 
 export const seoConfigService = {
-  async getAllSeoConfigs() {
-    return seoConfigRepository.findAll();
+  async getAllSeoConfigs(keyword?: string) {
+    return seoConfigRepository.findAll(keyword);
   },
 
   async getSeoConfigById(id: string) {
@@ -15,6 +15,12 @@ export const seoConfigService = {
     const result = validateSeoConfig(input);
     if (!result.success) {
       throw new ValidationError('Dữ liệu không hợp lệ', result.error.flatten().fieldErrors as Record<string, string[]>);
+    }
+    if (result.data.seName) {
+      const existing = await seoConfigRepository.findBySeName(result.data.seName);
+      if (existing) {
+        throw new DuplicateError('seName', result.data.seName);
+      }
     }
     return seoConfigRepository.create(result.data);
   },
@@ -27,6 +33,12 @@ export const seoConfigService = {
     const result = validateSeoConfig({ ...current, ...input });
     if (!result.success) {
       throw new ValidationError('Dữ liệu không hợp lệ', result.error.flatten().fieldErrors as Record<string, string[]>);
+    }
+    if (result.data.seName && result.data.seName !== current.seName) {
+      const existing = await seoConfigRepository.findBySeName(result.data.seName);
+      if (existing) {
+        throw new DuplicateError('seName', result.data.seName);
+      }
     }
     return seoConfigRepository.update(id, result.data);
   },

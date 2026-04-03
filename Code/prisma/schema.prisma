@@ -822,7 +822,7 @@ model SeoConfig {
   createdBy       String?  @db.VarChar(100)
   updatedBy       String?  @db.VarChar(100)
 
-  @@index([seName])
+  @@unique([seName])
   @@index([isActive])
   @@index([sortOrder])
   @@map("seo_config")
@@ -857,7 +857,7 @@ model MenuLink {
   target        String?   @db.VarChar(1000)
   menuId        BigInt?
   icon          String?
-  parentId      String?   @db.Uuid
+  parentId      String?
   entityId      BigInt?
   entityName    String?   @db.VarChar(1000)
   nofollow      Boolean?

@@ -50,3 +50,23 @@ export const MENU_LINK_SOURCE_TYPES: ReadonlyArray<{
 ];
 
 export type MenuLinkSourceType = typeof MENU_LINK_SOURCE_TYPES[number]['key'];
+
+// ============================================================
+// SEO CONFIG NOTE TOKENS
+// ============================================================
+
+export const SEO_CONFIG_NOTE_TOKENS = [
+  { token: '#goicuoc#', description: 'Giá cước' },
+  { token: '#domain#', description: 'Tên miền' },
+  { token: '#thang#', description: 'Tháng hiện tại' },
+  { token: '#view#', description: 'Lượt xem' },
+  { token: '#md5#', description: 'Mã MD5' },
+  { token: '#zalo#', description: 'Zalo' },
+  { token: '#facebook#', description: 'Facebook' },
+  { token: '#mang#', description: 'Mạng xã hội' },
+  { token: '#nam#', description: 'Năm hiện tại' },
+  { token: '#tentieude#', description: 'Tiêu đề bài viết' },
+  { token: '#slug#', description: 'Slug URL' },
+  { token: '#phobien#', description: 'Phổ biến' },
+  { token: '#hotline#', description: 'Hotline' },
+] as const;

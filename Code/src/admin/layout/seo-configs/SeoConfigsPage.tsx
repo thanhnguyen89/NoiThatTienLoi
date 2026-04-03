@@ -6,7 +6,7 @@ import { SeoConfigTable } from '@/admin/features/seo-config/SeoConfigTable';
 import { SeoConfigFilters } from '@/admin/features/seo-config/SeoConfigFilters';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ keyword?: string }>;
 }
 
 export const metadata = { title: 'Quản lý cấu hình SEO' };
@@ -17,21 +17,7 @@ export default async function SeoConfigsPage({ searchParams }: Props) {
   let dbError = false;
 
   try {
-    configs = await seoConfigService.getAllSeoConfigs();
-
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      configs = configs.filter((c) =>
-        (c.pageName && c.pageName.toLowerCase().includes(kw)) ||
-        (c.title && c.title.toLowerCase().includes(kw)) ||
-        (c.seName && c.seName.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      configs = configs.filter((c) => c.isActive);
-    } else if (sp.status === 'inactive') {
-      configs = configs.filter((c) => !c.isActive);
-    }
+    configs = await seoConfigService.getAllSeoConfigs(sp.keyword);
   } catch { dbError = true; }
 
   return (
@@ -48,8 +34,7 @@ export default async function SeoConfigsPage({ searchParams }: Props) {
         <div className="card-body py-3 px-3">
           <Suspense fallback={null}>
             <SeoConfigFilters
-              defaultSearch={sp.search || ''}
-              defaultStatus={sp.status || ''}
+              defaultKeyword={sp.keyword || ''}
             />
           </Suspense>
         </div>

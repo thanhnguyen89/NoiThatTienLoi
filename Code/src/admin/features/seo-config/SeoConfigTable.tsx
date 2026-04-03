@@ -63,6 +63,7 @@ export function SeoConfigTable({ configs }: { configs: SeoConfigItem[] }) {
               <th>Url</th>
               <th>Tiêu đề</th>
               <th>Tiêu đề SEO</th>
+              <th>Tên hệ thống</th>
               <th className="text-center" style={{ width: 80 }}>Noindex</th>
               <th className="text-center" style={{ width: 80 }}>Thứ tự</th>
               <th className="text-center" style={{ width: 90 }}>Công khai</th>
@@ -73,12 +74,13 @@ export function SeoConfigTable({ configs }: { configs: SeoConfigItem[] }) {
             {configs.map((config, idx) => (
               <tr key={config.id}>
                 <td className="text-center">{idx + 1}</td>
-                <td><code className="small">{config.pageName || '—'}</code></td>
+                <td><code className="small">{config.seName || '—'}</code></td>
                 <td><div className="small fw-semibold">{config.title || '—'}</div></td>
                 <td><div className="small text-truncate" style={{ maxWidth: 200 }}>{config.metaTitle || '—'}</div></td>
+                <td><div className="small text-truncate" style={{ maxWidth: 150 }}>{config.pageName || '—'}</div></td>
                 <td className="text-center">
                   {config.seoNoindex ? (
-                    <i className="bi bi-check-lg text-danger"></i>
+                    <span className="badge bg-warning text-dark" style={{ fontSize: 11 }}>Noindex</span>
                   ) : (
                     <span className="text-muted">—</span>
                   )}

@@ -14,11 +14,25 @@ const seoConfigListSelect = {
 };
 
 export const seoConfigRepository = {
-  async findAll() {
+  async findAll(keyword?: string) {
+    const where = keyword ? {
+      OR: [
+        { seName: { contains: keyword, mode: 'insensitive' as const } },
+        { title: { contains: keyword, mode: 'insensitive' as const } },
+        { pageName: { contains: keyword, mode: 'insensitive' as const } },
+        { metaTitle: { contains: keyword, mode: 'insensitive' as const } },
+      ],
+    } : undefined;
+
     return prisma.seoConfig.findMany({
+      where,
       select: seoConfigListSelect,
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     });
+  },
+
+  async findBySeName(seName: string) {
+    return prisma.seoConfig.findFirst({ where: { seName } });
   },
 
   async findById(id: string) {

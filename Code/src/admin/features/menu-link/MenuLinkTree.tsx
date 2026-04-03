@@ -156,43 +156,45 @@ function TreeNode({
 
         {/* Action group */}
         <div style={S.actionGroup()}>
-          {/* [▲] Move up — hidden if first */}
-          {!isFirst && (
-            <button type="button" title="Lên" style={S.btn('#9e9e9e')}
-              onClick={() => onMoveUp(node, siblings, siblingIndex)}>
-              <i className="bi bi-chevron-up" style={{ fontSize: 10 }}></i>
-            </button>
-          )}
+          {/* [▲] Move up */}
+          {!isFirst
+            ? <button type="button" title="Lên" style={S.btn('#9e9e9e')} onClick={() => onMoveUp(node, siblings, siblingIndex)}>
+                <i className="bi bi-chevron-up" style={{ fontSize: 10 }}></i>
+              </button>
+            : null
+          }
 
-          {/* [▼] Move down — hidden if last */}
-          {!isLast && (
-            <button type="button" title="Xuống" style={S.btn('#9e9e9e')}
-              onClick={() => onMoveDown(node, siblings, siblingIndex)}>
-              <i className="bi bi-chevron-down" style={{ fontSize: 10 }}></i>
-            </button>
-          )}
+          {/* [▼] Move down */}
+          {!isLast
+            ? <button type="button" title="Xuống" style={S.btn('#9e9e9e')} onClick={() => onMoveDown(node, siblings, siblingIndex)}>
+                <i className="bi bi-chevron-down" style={{ fontSize: 10 }}></i>
+              </button>
+            : null
+          }
 
-          {/* [level-up] Move INTO nearest child folder */}
-          <button type="button" title="Chuyển vào nhóm con" style={S.btn('#9e9e9e')}
-            onClick={() => { console.log('level-up click', node.id, node.title); onMoveIntoNearestFolder(node); }}>
-            <i className="bi bi-arrow-90deg-up" style={{ fontSize: 10 }}></i>
-          </button>
+          {/* [→] Chuyển vào nhóm con */}
+          {(isRoot ? !isFirst : !isLast)
+            ? <button type="button" title="Chuyển vào nhóm con" style={S.btn('#9e9e9e')} onClick={() => onMoveIntoNearestFolder(node)}>
+                <i className="bi bi-arrow-return-right" style={{ fontSize: 10 }}></i>
+              </button>
+            : null
+          }
 
-          {/* [level-down] Move OUT of current folder (becomes sibling of parent) */}
-          <button type="button" title="Chuyển ra khỏi nhóm" style={S.btn('#9e9e9e')}
-            onClick={() => { console.log('level-down click', node.id, node.title, node.parentId); onMoveOutOfCurrentFolder(node); }}>
-            <i className="bi bi-arrow-90deg-down" style={{ fontSize: 10 }}></i>
-          </button>
+          {/* [←] Chuyển ra khỏi nhóm: chỉ hiện với item con */}
+          {!isRoot
+            ? <button type="button" title="Chuyển ra khỏi nhóm" style={S.btn('#9e9e9e')} onClick={() => onMoveOutOfCurrentFolder(node)}>
+                <i className="bi bi-arrow-return-left" style={{ fontSize: 10 }}></i>
+              </button>
+            : null
+          }
 
           {/* [✏] Edit */}
-          <button type="button" title="Sửa" style={S.btn('#2196f3')}
-            onClick={() => onEdit(node)}>
+          <button type="button" title="Sửa" style={S.btn('#2196f3')} onClick={() => onEdit(node)}>
             <i className="bi bi-pencil-fill" style={{ fontSize: 10 }}></i>
           </button>
 
           {/* [🗑] Delete */}
-          <button type="button" title="Xóa" style={S.btn('#f44336')}
-            onClick={() => onDelete(node)}>
+          <button type="button" title="Xóa" style={S.btn('#f44336')} onClick={() => onDelete(node)}>
             <i className="bi bi-trash-fill" style={{ fontSize: 10 }}></i>
           </button>
         </div>
@@ -313,7 +315,9 @@ export function MenuLinkTree({ menuLinks, onLinksChange, onEdit }: Props) {
     onLinksChange(normalizeSortOrders(updated));
   }, [normalizeSortOrders, onLinksChange]);
 
-  // level-up: move item INTO the previous sibling (make it a child)
+  // level-up: move item INTO a sibling folder
+  // - Root item: move into PREVIOUS sibling (item trước đó)
+  // - Child item: move into NEXT sibling (item tiếp theo)
   const moveIntoNearestFolder = useCallback((node: MenuLinkNode) => {
     const links = menuLinksRef.current;
     const allSiblings = links
@@ -321,25 +325,34 @@ export function MenuLinkTree({ menuLinks, onLinksChange, onEdit }: Props) {
       .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
     const nodeIdx = allSiblings.findIndex((n) => n.id === node.id);
 
-    // Must have a previous sibling to move into
-    if (nodeIdx <= 0) return;
-    const targetParent = allSiblings[nodeIdx - 1];
+    const isRoot = node.parentId === null;
+    let targetParent: MenuLinkNode | undefined;
 
-    // New sortOrder = end of targetParent's children
-    const folderChildren = links.filter((n) => n.parentId === targetParent.id);
+    if (isRoot) {
+      // Root: chuyển vào previous sibling
+      if (nodeIdx <= 0) return;
+      targetParent = allSiblings[nodeIdx - 1];
+    } else {
+      // Child: chuyển vào next sibling
+      if (nodeIdx >= allSiblings.length - 1) return;
+      targetParent = allSiblings[nodeIdx + 1];
+    }
+
+    if (!targetParent) return;
+
+    const folderChildren = links.filter((n) => n.parentId === targetParent!.id);
     const newSortOrder = folderChildren.length;
 
     const updated = links.map((n) =>
       n.id === node.id
-        ? { ...n, parentId: targetParent.id, sortOrder: newSortOrder, level: (targetParent.level ?? 0) + 1 }
+        ? { ...n, parentId: targetParent!.id, sortOrder: newSortOrder, level: (targetParent!.level ?? 0) + 1 }
         : n
     );
 
     onLinksChange(normalizeSortOrders(updated));
-    // Auto-expand the target parent
     setExpandedIds((prev) => {
       const next = new Set(prev);
-      next.add(targetParent.id);
+      next.add(targetParent!.id);
       return next;
     });
   }, [normalizeSortOrders, onLinksChange]);
@@ -425,6 +438,13 @@ export function MenuLinkTree({ menuLinks, onLinksChange, onEdit }: Props) {
     onLinksChange(normalizeSortOrders(updated));
   }, [normalizeSortOrders, onLinksChange]);
 
+  const rootItems = useMemo(() =>
+    menuLinks
+      .filter((n) => n.parentId === null)
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
+    [menuLinks]
+  );
+
   if (menuLinks.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '40px 20px', color: '#aaa' }}>
@@ -433,13 +453,6 @@ export function MenuLinkTree({ menuLinks, onLinksChange, onEdit }: Props) {
       </div>
     );
   }
-
-  const rootItems = useMemo(() =>
-    menuLinks
-      .filter((n) => n.parentId === null)
-      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
-    [menuLinks]
-  );
 
   return (
     <div style={{ border: '1px solid #e0e0e0', borderRadius: 4, overflow: 'hidden' }}>

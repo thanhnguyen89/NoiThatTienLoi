@@ -5,8 +5,10 @@ import { isAppError } from '@/server/errors';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined;
-    const userAgent = request.headers.get('user-agent') || undefined;
+    const xff = request.headers.get('x-forwarded-for');
+    const xrip = request.headers.get('x-real-ip');
+    const ip: string | undefined = xff ? xff : xrip ? xrip : undefined;
+    const userAgent: string | undefined = request.headers.get('user-agent') ?? undefined;
 
     const result = await authService.login(body.username, body.password, ip, userAgent);
 
