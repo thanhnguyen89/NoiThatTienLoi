@@ -20,7 +20,14 @@ body {
   color: #333;
   background: #fff;
   line-height: 1.5;
+  font-size: 14px;
 }
+
+body.bg_site_1 {
+  background: #f2f1f6;
+}
+
+ul, ol { list-style: none; }
 
 a {
   color: inherit;
