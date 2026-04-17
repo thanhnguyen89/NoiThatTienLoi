@@ -1,5 +1,29 @@
-/* ============================================================
-   FOOTER - Copy CSS từ Html/src/assets/css/pages/footer.css
-   ============================================================ */
+.footer.v2026 { background: #fff; margin-top: 30px; border-top: 1px solid #e0e0e0; }
+.footer__top { margin: 0 auto; padding: 20px 15px; display: flex; justify-content: space-between; gap: 30px; }
+.footer__col { flex: 1; }
+.f-listtel__title { font-size: 15px; font-weight: 500; color: #333; margin: 0 0 15px; }
+.f-listtel__title strong { font-weight: 700; }
+.f-listtel__content { font-size: 14px; color: #666; margin: 8px 0; line-height: 1.6; }
+.f-listtel__content span { color: #333; font-weight: 500; }
+.f-listtel__content a { color: #1F7A5C; text-decoration: none; font-weight: 600; }
+.f-listtel__content a:hover { text-decoration: underline; }
+.f-listmenu { list-style: none; padding: 0; margin: 0; }
+.f-listmenu li { margin: 8px 0; }
+.f-listmenu li a { font-size: 14px; color: #666; text-decoration: none; transition: color 0.3s; }
+.f-listmenu li a:hover { color: #1F7A5C; }
+.copyright { background: #f5f5f5; padding: 10px 15px; border-top: 1px solid #e0e0e0; }
+.copyright section { max-width: 1200px; margin: 0 auto; }
+.copyright p { font-size: 13px; color: #666; line-height: 1.8; margin: 0; text-align: center; }
 
-/* TODO: Copy nội dung từ Html/src/assets/css/pages/footer.css vào đây */
+@media (max-width: 992px) {
+  .footer__top { flex-wrap: wrap; }
+  .footer__col { flex: 0 0 48%; }
+}
+@media (max-width: 768px) {
+  .footer.v2026 { margin-top: 10px; }
+  .footer__top { flex-direction: column; padding: 15px; gap: 0; }
+  .footer__col:first-child { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 5px; }
+  .f-listmenu li a { font-size: 13px; color: #1F7A5C; }
+  .copyright { padding: 12px 15px; }
+  .copyright p { font-size: 12px; text-align: left; }
+}
