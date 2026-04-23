@@ -1,0 +1,34 @@
+{
+  "name": "content-marketing-agent",
+  "version": "1.0.0",
+  "description": "Full-Stack AI Content Agent — tự động tạo content từ từ khóa đến publish",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env src/index.js",
+    "start": "NODE_ENV=production node --env-file=.env src/index.js",
+    "pipeline": "node --env-file=.env src/orchestrator/pipeline.js",
+    "test": "node --test src/**/__tests__/*.test.js",
+    "test:agents": "node --test src/agents/__tests__/*.test.js",
+    "lint": "eslint src/ --fix",
+    "logs": "tail -f logs/$(date +%Y-%m-%d)/pipeline.log"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "tavily": "^0.2.0",
+    "openai": "^4.0.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.0",
+    "papaparse": "^5.4.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

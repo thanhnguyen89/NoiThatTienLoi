@@ -1,0 +1,53 @@
+{
+  "name": "content-marketing-agent",
+  "version": "1.0.0",
+  "description": "Full-Stack AI Content Agent: từ khóa → bài viết hoàn chỉnh đã publish",
+  "author": "Your Team",
+  "claudeCode": {
+    "minVersion": "1.0.0"
+  },
+  "includes": {
+    "skills": [
+      "skills/create-article.md",
+      "skills/bulk-content.md"
+    ],
+    "agents": [
+      "agents/researcher.md",
+      "agents/architect.md",
+      "agents/writer.md",
+      "agents/image-gen.md",
+      "agents/seo-specialist.md",
+      "agents/editor-qc.md",
+      "agents/publisher.md"
+    ],
+    "hooks": [
+      "hooks/pre-tool-use.sh",
+      "hooks/post-tool-use.sh",
+      "hooks/session-start.sh",
+      "hooks/subagent-stop.sh"
+    ],
+    "commands": [
+      "commands/run.md",
+      "commands/status.md",
+      "commands/bulk.md"
+    ]
+  },
+  "requiredEnvVars": [
+    "ANTHROPIC_API_KEY",
+    "TAVILY_API_KEY",
+    "WORDPRESS_URL",
+    "WORDPRESS_USERNAME",
+    "WORDPRESS_APP_PASSWORD"
+  ],
+  "optionalEnvVars": [
+    "OPENAI_API_KEY",
+    "FAL_API_KEY",
+    "SLACK_WEBHOOK_URL",
+    "REDIS_URL",
+    "SUPABASE_URL"
+  ],
+  "install": {
+    "postInstall": "npm install && cp .env.example .env",
+    "message": "⚠️  Nhớ điền API keys vào file .env trước khi chạy"
+  }
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Agent — Forme</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">🤖</span>
+        <h1>Content Agent</h1>
+      </div>
+      <nav>
+        <a href="#" class="nav-item active" data-view="pipeline">
+          <span>⚡</span> Pipeline
+        </a>
+        <a href="#" class="nav-item" data-view="history">
+          <span>📋</span> Lịch sử
+        </a>
+        <a href="#" class="nav-item" data-view="brand">
+          <span>🎨</span> Brand Data
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="brand-badge">Forme</div>
+        <small>Designed for how you live.</small>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Pipeline View -->
+      <div id="view-pipeline" class="view active">
+        <header class="view-header">
+          <h2>Tạo Content Mới</h2>
+          <p>Nhập từ khóa → Pipeline 7 bước → Bài viết hoàn chỉnh</p>
+        </header>
+
+        <!-- Input Form -->
+        <div class="input-card">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="keyword">Từ khóa chính</label>
+              <input type="text" id="keyword" placeholder="VD: sofa cao cấp TPHCM" autofocus>
+            </div>
+            <div class="form-group flex-1">
+              <label for="product">Sản phẩm (tuỳ chọn)</label>
+              <select id="product">
+                <option value="">— Không chọn —</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="contentType">Loại content</label>
+              <select id="contentType">
+                <option value="blog">Blog / SEO Article</option>
+                <option value="social-fb">Caption Facebook</option>
+                <option value="social-ig">Caption Instagram</option>
+              </select>
+            </div>
+          </div>
+          <button id="btn-run" class="btn-primary" onclick="runPipeline()">
+            🚀 Chạy Pipeline
+          </button>
+        </div>
+
+        <!-- Pipeline Steps -->
+        <div id="pipeline-steps" class="pipeline-steps hidden">
+          <div class="step" data-step="researcher">
+            <div class="step-header">
+              <span class="step-number">1</span>
+              <span class="step-icon">🔍</span>
+              <span class="step-name">Researcher</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="architect">
+            <div class="step-header">
+              <span class="step-number">2</span>
+              <span class="step-icon">📐</span>
+              <span class="step-name">Architect</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="writer">
+            <div class="step-header">
+              <span class="step-number">3</span>
+              <span class="step-icon">✍️</span>
+              <span class="step-name">Writer</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="imageGen">
+            <div class="step-header">
+              <span class="step-number">4</span>
+              <span class="step-icon">🖼️</span>
+              <span class="step-name">Image Gen</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="seo">
+            <div class="step-header">
+              <span class="step-number">5</span>
+              <span class="step-icon">📊</span>
+              <span class="step-name">SEO Specialist</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="editorQc">
+            <div class="step-header">
+              <span class="step-number">6</span>
+              <span class="step-icon">🧑‍💼</span>
+              <span class="step-name">Editor / QC</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="publisher">
+            <div class="step-header">
+              <span class="step-number">7</span>
+              <span class="step-icon">🚀</span>
+              <span class="step-name">Publisher</span>
+              <span class="step-status">Chờ</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+        </div>
+
+        <!-- Final Report -->
+        <div id="final-report" class="final-report hidden"></div>
+
+        <!-- Article Preview -->
+        <div id="article-preview" class="article-preview hidden">
+          <h3>📄 Preview Bài Viết</h3>
+          <div id="article-content" class="article-content"></div>
+        </div>
+      </div>
+
+      <!-- History View -->
+      <div id="view-history" class="view">
+        <header class="view-header">
+          <h2>Lịch sử Pipeline</h2>
+          <p>Chưa có dữ liệu — chạy pipeline đầu tiên để bắt đầu.</p>
+        </header>
+      </div>
+
+      <!-- Brand View -->
+      <div id="view-brand" class="view">
+        <header class="view-header">
+          <h2>Brand Data</h2>
+          <p>4 file dữ liệu nền tảng của Forme</p>
+        </header>
+        <div id="brand-tabs" class="brand-tabs">
+          <button class="tab active" data-tab="brandGuideline">Brand Guideline</button>
+          <button class="tab" data-tab="customerPersona">Customer Persona</button>
+          <button class="tab" data-tab="marketingChannels">Marketing Channels</button>
+          <button class="tab" data-tab="productCatalog">Product Catalog</button>
+        </div>
+        <div id="brand-content" class="brand-content">
+          <pre id="brand-text"></pre>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

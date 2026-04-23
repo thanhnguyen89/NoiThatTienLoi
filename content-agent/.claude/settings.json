@@ -1,0 +1,35 @@
+{
+  "rules": [
+    "Không bao giờ xóa file — chỉ archive vào /archive/",
+    "Không hardcode API key, password, token vào bất kỳ file nào",
+    "Không publish lên CMS khi chưa có xác nhận rõ ràng từ người quản lý",
+    "Không bỏ qua bước Editor/QC dù người dùng yêu cầu",
+    "Không commit thẳng lên main — luôn tạo branch mới",
+    "Không spawn subagent bên trong subagent",
+    "Mọi API call phải có retry logic tối đa 3 lần",
+    "Mọi output của agent phải là JSON hợp lệ",
+    "Humanness Score < 76 → tự động trả về Writer, không hỏi người dùng",
+    "Log toàn bộ pipeline vào /logs/YYYY-MM-DD.log"
+  ],
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Write(src/**)",
+      "Write(.claude/**)",
+      "Write(logs/**)",
+      "Write(output/**)",
+      "Bash(npm run *)",
+      "Bash(node src/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push origin main)",
+      "Write(.env)"
+    ]
+  },
+  "model_preferences": {
+    "heavy_tasks": "claude-sonnet-4-5",
+    "light_tasks": "claude-haiku-4-5-20251001",
+    "notes": "Dùng Haiku cho: classify, summarize ngắn, format JSON. Dùng Sonnet cho: research, viết bài, SEO, humanize"
+  }
+}
