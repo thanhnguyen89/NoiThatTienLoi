@@ -1,0 +1,511 @@
+/* News Layout */
+.news-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.news-main-column {
+  flex: 1;
+  min-width: 0;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.news-page-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F7A5C;
+  margin: 0 0 15px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #1F7A5C;
+  text-transform: uppercase;
+}
+
+/* Bài viết nổi bật */
+.news-featured {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding: 0 0 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.news-featured-thumb {
+  flex: 0 0 45%;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.news-featured-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.news-featured-thumb:hover img {
+  transform: scale(1.05);
+}
+
+.news-featured-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.news-featured-info h2 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+
+.news-featured-info h2 a {
+  color: #333;
+  text-decoration: none;
+}
+
+.news-featured-info h2 a:hover {
+  color: #1F7A5C;
+}
+
+.news-featured-info p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+/* Danh sách bài viết */
+.news-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.news-item-thumb {
+  flex: 0 0 200px;
+  height: 130px;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.news-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.news-item-thumb:hover img {
+  transform: scale(1.05);
+}
+
+.news-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.news-item-info h2 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.news-item-info h2 a {
+  color: #333;
+  text-decoration: none;
+}
+
+.news-item-info h2 a:hover {
+  color: #1F7A5C;
+}
+
+.news-item-info p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Meta */
+.news-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 12px;
+  color: #999;
+}
+
+.news-meta time {
+  color: #999;
+}
+
+.news-comments {
+  color: #1F7A5C;
+}
+
+/* Phân trang */
+.news-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 25px 0;
+}
+
+.news-pagination .pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.news-pagination .pagination-btn:hover,
+.news-pagination .pagination-btn.active {
+  background: #1F7A5C;
+  color: #fff;
+  border-color: #1F7A5C;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 12px 0;
+  font-size: 13px;
+}
+
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb li::after {
+  content: '›';
+  margin-left: 5px;
+  color: #999;
+}
+
+.breadcrumb li:last-child::after {
+  content: '';
+}
+
+.breadcrumb a {
+  color: #1F7A5C;
+  text-decoration: none;
+}
+
+.breadcrumb li:last-child span {
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .news-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .news-layout {
+    flex-direction: column;
+  }
+
+  .news-featured {
+    flex-direction: column;
+  }
+
+  .news-featured-thumb {
+    flex: none;
+    height: 200px;
+  }
+
+  .news-item-thumb {
+    flex: 0 0 120px;
+    height: 90px;
+  }
+
+  .news-item-info h2 {
+    font-size: 14px;
+  }
+}
+
+
+/* ========== Sidebar (tách từ product-detail) ========== */
+
+/* Right Column - Sidebar */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar-promo-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.sidebar-promo-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F7A5C;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #1F7A5C;
+  text-transform: uppercase;
+}
+
+.promo-product-item {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.3s;
+  cursor: pointer;
+  background: #fff;
+}
+
+.promo-product-item:hover {
+  border: 1px solid #ff6b00;
+}
+
+.promo-product-item:last-child {
+  margin-bottom: 0;
+}
+
+.promo-badge {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+  color: #fff;
+  padding: 3px 7px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.promo-product-item img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid #f0f0f0;
+}
+
+.promo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.promo-info h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.promo-price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price-sale {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff6b00;
+}
+
+.news-layout .price-old {
+  font-size: 11px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+/* Sidebar Contact Info */
+.sidebar-contact-info {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #f0f0f0;
+}
+
+.sidebar-contact-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F7A5C;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #1F7A5C;
+  text-transform: uppercase;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 5px 0;
+}
+
+.contact-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-text {
+  flex: 1;
+}
+
+.contact-text p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+  margin: 0;
+}
+
+.contact-phone,
+.contact-email,
+.contact-map {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: block;
+}
+
+.contact-phone {
+  color: #e74c3c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.contact-phone:hover {
+  color: #c0392b;
+}
+
+.contact-email {
+  color: #555;
+  word-break: break-all;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.contact-email:hover {
+  color: #3498db;
+}
+
+.contact-map {
+  color: #3498db;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.contact-map:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Sidebar Commitment Box */
+.sidebar-commitment-box {
+  background: linear-gradient(135deg, #679f6b 0%, #089713 100%);
+  border-radius: 8px;
+  padding: 20px 15px;
+  color: #fff;
+}
+
+.sidebar-commitment-box h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.commitment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.commitment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgb(255 255 255 / 34%);
+  padding: 12px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.commitment-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
+}
+
+.commitment-icon {
+  width: 24px;
+  height: 24px;
+  background: rgba(76, 175, 80, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.commitment-item p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #ffffff;
+  margin: 0;
+  flex: 1;
+}

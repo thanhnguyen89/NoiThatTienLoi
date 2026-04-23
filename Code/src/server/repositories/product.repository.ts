@@ -39,7 +39,6 @@ const listSelect = {
     select: { id: true, url: true, alt: true, sortOrder: true, isThumbnail: true },
     where: { isActive: true },
     orderBy: { sortOrder: 'asc' as const },
-    take: 1,
   },
   variants: {
     select: {
@@ -361,7 +360,8 @@ export const productRepository = {
         } : {}),
         ...(platformSeos?.length ? {
           platformSeos: {
-            create: platformSeos.map((seo) => ({ ...seo })),
+            // Lọc bỏ schemaJson, extraMetaJson vì model ProductSeoPlatform không có các field này
+            create: platformSeos.map(({ schemaJson, extraMetaJson, ...validSeo }) => ({ ...validSeo })),
           },
         } : {}),
         ...(platformImages?.length ? {
@@ -445,8 +445,12 @@ export const productRepository = {
       if (platformSeos !== undefined) {
         await tx.productSeoPlatform.deleteMany({ where: { productId: id } });
         if (platformSeos.length > 0) {
+          // Lọc bỏ schemaJson, extraMetaJson vì model ProductSeoPlatform không có các field này
           await tx.productSeoPlatform.createMany({
-            data: platformSeos.map((seo) => ({ ...seo, productId: id })),
+            data: platformSeos.map((seo) => {
+              const { schemaJson, extraMetaJson, ...validSeo } = seo;
+              return { ...validSeo, productId: id };
+            }),
           });
         }
       }

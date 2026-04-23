@@ -62,6 +62,7 @@ export interface ProductListItem {
   createdAt: Date;
   isFeatured: boolean;
   isFlashSale: boolean;
+  flashSaleTarget?: number | null;
   isActive: boolean;
   isShowHome: boolean;
   sortOrder: number;

@@ -11,7 +11,7 @@ import { dbSafe } from '@/lib/db-safe';
 import type { PaginatedNewsCategories } from '@/server/repositories/news-category.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; category?: string; dateFrom?: string; dateTo?: string; page?: string }>;
+  searchParams: Promise<{ search?: string; category?: string; level?: string; dateFrom?: string; dateTo?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý danh mục tin tức' };
@@ -26,22 +26,30 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
   const page = parsePageParam(sp.page);
 
   const [result, allCategories] = await Promise.all([
-    dbSafe(() =>
-      newsCategoryService.getAllCategories({
+    dbSafe(async () => {
+      const r = await newsCategoryService.getAllCategories({
         page,
         pageSize: PAGINATION.ADMIN_PAGE_SIZE,
         search: sp.search || undefined,
         dateFrom: sp.dateFrom || undefined,
         dateTo: sp.dateTo || undefined,
-      }),
-      emptyResult
-    ),
-    dbSafe(() => newsCategoryService.getAllCategories() as Promise<PaginatedNewsCategories>, emptyResult),
+        parentId: sp.category || undefined,
+        level: sp.level ? Number(sp.level) : undefined,
+      });
+      return r as unknown as PaginatedNewsCategories;
+    }, emptyResult),
+    dbSafe(async () => {
+      const r = await newsCategoryService.getAllCategories();
+      return r as unknown as PaginatedNewsCategories;
+    }, emptyResult),
   ]);
 
   const dbError = result.data.length === 0 && result.pagination.total === 0;
 
-  const filterCategories = allCategories.data.map((c) => ({ id: c.id, name: c.title || c.seName || c.id }));
+  const filterCategories = (allCategories as PaginatedNewsCategories).data.map((c) => ({ id: c.id, name: c.title || c.seName || c.id }));
+  
+  // Calculate max level for filter
+  const maxLevel = Math.max(0, ...(allCategories as PaginatedNewsCategories).data.map(c => c.categoryLevel ?? 0));
 
   return (
     <>
@@ -60,9 +68,11 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
             <NewsCategoryFilters
               defaultSearch={sp.search || ''}
               defaultCategory={sp.category || ''}
+              defaultLevel={sp.level || ''}
               defaultDateFrom={sp.dateFrom || ''}
               defaultDateTo={sp.dateTo || ''}
               categories={filterCategories}
+              maxLevel={maxLevel}
             />
           </Suspense>
         </div>

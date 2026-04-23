@@ -12,6 +12,10 @@ export const adminRoleService = {
     });
   },
 
+  async getAllRolesForDropdown() {
+    return adminRoleRepository.findAll();
+  },
+
   async getRoleById(id: string) {
     const role = await adminRoleRepository.findById(id);
     if (!role) throw new NotFoundError('Không tìm thấy vai trò');

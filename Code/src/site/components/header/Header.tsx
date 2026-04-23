@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { categoryService } from '@/server/services/category.service';
 import { dbSafe } from '@/lib/db-safe';
-import './header.css';
 
 export async function Header() {
   const categories = await dbSafe(() => categoryService.getCategoryTree(), []);
@@ -29,15 +28,29 @@ export async function Header() {
             </form>
             <div className="profile">
               <Link href="/tai-khoan" className="name-order active">
-                <i></i> Đăng nhập
+                <i className="icon-header-login"></i>
+                <span>Đăng nhập</span>
               </Link>
             </div>
             <Link href="/gio-hang" className="header__cart menu-info">
               <div className="box-cart">
                 <i className="iconnewglobal-whitecart"></i>
+                <span className="cart-number">0</span>
               </div>
               <span>Giỏ hàng</span>
             </Link>
+            <div className="header_support">
+              <a href="tel:0865993334" className="name-support">
+                <i className="icon-header-phone"></i>
+                <span>086.599.3334</span>
+              </a>
+            </div>
+            <div className="header_guarantee">
+              <a href="#" className="name-guarantee">
+                <i className="icon-header-guarantee"></i>
+                <span>Bảo hành</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -46,6 +59,7 @@ export async function Header() {
           <div className="header__main">
             <div id="hamber_menu" className="relative">
               <a className="txt_color_1 menu_hamber" href="#">
+                <i className="icon-hamber"></i>
                 DANH MỤC
               </a>
               <div id="sub_menu_web">

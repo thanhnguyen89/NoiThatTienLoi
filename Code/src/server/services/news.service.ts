@@ -4,6 +4,15 @@ import { NotFoundError, ValidationError } from '@/server/errors';
 import { createSlug } from '@/lib/utils';
 
 export const newsService = {
+  async getPublishedNews(opts?: { page?: number; pageSize?: number; isShowHome?: boolean }) {
+    return newsRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      isPublished: true,
+      isShowHome: opts?.isShowHome,
+    });
+  },
+
   async getAllNews(opts?: {
     page?: number;
     pageSize?: number;

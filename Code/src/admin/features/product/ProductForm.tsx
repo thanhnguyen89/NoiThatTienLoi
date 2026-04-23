@@ -502,6 +502,7 @@ export function ProductForm({ product, categories, sizes, colors }: Props) {
     sortOrder: String(product?.sortOrder ?? 0),
     isFeatured: product?.isFeatured ?? false,
     isFlashSale: product?.isFlashSale ?? false,
+    flashSaleTarget: String(product?.flashSaleTarget ?? ''),
     isActive: product?.isActive ?? true,
     isShowHome: product?.isShowHome ?? false,
     seoTitle: product?.seoTitle || '',
@@ -797,6 +798,7 @@ export function ProductForm({ product, categories, sizes, colors }: Props) {
       sortOrder: Number(form.sortOrder) || 0,
       isFeatured: form.isFeatured,
       isFlashSale: form.isFlashSale,
+      flashSaleTarget: form.flashSaleTarget ? Number(form.flashSaleTarget) : null,
       isActive: form.isActive,
       isShowHome: form.isShowHome,
       images: productImages,
@@ -1153,6 +1155,21 @@ export function ProductForm({ product, categories, sizes, colors }: Props) {
                   id="isFlashSale" checked={form.isFlashSale} onChange={handle} />
                 <label className="form-check-label" htmlFor="isFlashSale">Flash Sale</label>
               </div>
+              {form.isFlashSale && (
+                <div className="mb-3 ms-4">
+                  <label className="form-label small fw-semibold">Mục tiêu Flash Sale</label>
+                  <input
+                    type="number"
+                    name="flashSaleTarget"
+                    value={form.flashSaleTarget}
+                    onChange={handle}
+                    className="form-control form-control-sm"
+                    placeholder="VD: 1000"
+                    min="0"
+                  />
+                  <small className="form-text text-muted">Số lượng mục tiêu bán để tính progress bar</small>
+                </div>
+              )}
               <div className="form-check form-switch mb-3">
                 <input className="form-check-input" type="checkbox" name="isShowHome"
                   id="isShowHome" checked={form.isShowHome} onChange={handle} />

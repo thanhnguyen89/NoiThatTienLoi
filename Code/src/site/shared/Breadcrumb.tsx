@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import './breadcrumb.css';
 
 interface BreadcrumbItem {
   label: string;

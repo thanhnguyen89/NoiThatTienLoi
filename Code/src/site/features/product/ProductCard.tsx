@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { formatPrice, calcDiscountPercent, formatSoldCount } from '@/lib/utils';
 import type { ProductListItem } from '@/lib/types';
-import './product-card.css';
 
 interface ProductCardProps {
   product: ProductListItem;

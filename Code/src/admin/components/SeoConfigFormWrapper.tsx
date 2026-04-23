@@ -27,10 +27,14 @@ interface Props {
   config?: {
     id: string;
     pageName: string | null;
+    pageType: string | null;
     title: string | null;
     contentBefore: string | null;
     contentAfter: string | null;
     image: string | null;
+    icon: string | null;
+    thumbnail: string | null;
+    banner: string | null;
     seName: string | null;
     metaKeywords: string | null;
     metaDescription: string | null;
@@ -38,6 +42,9 @@ interface Props {
     isActive: boolean | null;
     seoNoindex: boolean | null;
     seoCanonical: string | null;
+    ogTitle: string | null;
+    ogDescription: string | null;
+    ogImage: string | null;
     sortOrder: number | null;
   };
 }

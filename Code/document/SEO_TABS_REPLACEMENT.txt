@@ -1,0 +1,66 @@
+REPLACE THIS SECTION (Lines ~660-1204):
+All 4 SEO tab blocks starting from "/* === SEO WEBSITE === */" 
+to just before "/* RIGHT - Trạng thái */"
+
+WITH THIS CODE:
+
+          {/* === SEO WEBSITE === */}
+          {activeTab === 'seo-web' && (
+            <PlatformSeoCard
+              platform="WEBSITE"
+              platformLabel="Website"
+              badgeLabel="WEBSITE"
+              seo={webSeo}
+              onSeoChange={setWebSeo}
+              images={webImages}
+              platformLabel2="Website"
+              uploadDesc="Người dùng có thể tải lên không giới hạn số lượng ảnh cho Website."
+              onImagesChange={setWebImages}
+            />
+          )}
+
+          {/* === FACEBOOK === */}
+          {activeTab === 'seo-fb' && (
+            <PlatformSeoCard
+              platform="FACEBOOK"
+              platformLabel="Facebook"
+              badgeLabel="FACEBOOK"
+              seo={fbSeo}
+              onSeoChange={setFbSeo}
+              images={fbImages}
+              platformLabel2="Facebook"
+              uploadDesc="Cho phép tải lên nhiều ảnh post Facebook theo từng danh mục."
+              onImagesChange={setFbImages}
+            />
+          )}
+
+          {/* === TIKTOK === */}
+          {activeTab === 'seo-tt' && (
+            <PlatformSeoCard
+              platform="TIKTOK"
+              platformLabel="TikTok"
+              badgeLabel="TIKTOK"
+              seo={ttSeo}
+              onSeoChange={setTtSeo}
+              images={ttImages}
+              platformLabel2="TikTok"
+              uploadDesc="Hỗ trợ nhiều ảnh dọc hoặc ảnh carousel cho TikTok."
+              onImagesChange={setTtImages}
+            />
+          )}
+
+          {/* === YOUTUBE === */}
+          {activeTab === 'seo-yt' && (
+            <PlatformSeoCard
+              platform="YOUTUBE"
+              platformLabel="YouTube"
+              badgeLabel="YOUTUBE"
+              seo={ytSeo}
+              onSeoChange={setYtSeo}
+              images={ytImages}
+              platformLabel2="YouTube"
+              uploadDesc="Có thể dùng cho thumbnail, ảnh minh họa hoặc ảnh cover video."
+              onImagesChange={setYtImages}
+            />
+          )}
+        </div>

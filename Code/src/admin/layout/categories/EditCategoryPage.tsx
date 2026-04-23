@@ -11,12 +11,14 @@ export default async function EditCategoryPage({ params }: Props) {
   let category: CategoryDetail | null = null;
   let categories: Array<{ id: string; name: string }> = [];
   try {
-    [category, categories] = await Promise.all([
-      categoryService.getCategoryById(id) as Promise<CategoryDetail | null>,
-      categoryService.getAdminCategories() as Promise<Array<{ id: string; name: string }>>,
+    const [cat, catResult] = await Promise.all([
+      categoryService.getCategoryById(id),
+      categoryService.getAdminCategories(),
     ]);
+    category = cat as CategoryDetail | null;
+    categories = Array.isArray(catResult) ? catResult : (catResult?.data ?? []);
   } catch {}
   if (!category) notFound();
 
-  return <DynamicCategoryFormClient category={category as CategoryDetail} parentCategories={categories ?? []} />;
+  return <DynamicCategoryFormClient category={category as CategoryDetail} parentCategories={categories} />;
 }

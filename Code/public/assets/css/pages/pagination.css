@@ -1,0 +1,50 @@
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+
+.cate-paging {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.cate-paging__list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cate-paging__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.cate-paging__link:hover {
+  border-color: #e53935;
+  color: #e53935;
+}
+
+.cate-paging__item.is-active .cate-paging__link {
+  background: #e53935;
+  border-color: #e53935;
+  color: #fff;
+}
+
+.cate-paging__item--disabled .cate-paging__link {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cate-paging__item--dots .cate-paging__link {
+  border: none;
+  cursor: default;
+}

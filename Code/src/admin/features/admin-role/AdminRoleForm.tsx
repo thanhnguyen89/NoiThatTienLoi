@@ -147,7 +147,7 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
         </nav>
         <div className="d-flex gap-2">
           <button type="button" className="btn btn-danger btn-sm" onClick={() => router.push('/admin/admin-roles')} disabled={loading}>Hủy</button>
-          <button type="submit" className="btn btn-success btn-sm" disabled={loading || role?.isSystem}>
+          <button type="submit" className="btn btn-success btn-sm" disabled={loading}>
             {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Đang lưu...</> : isEdit ? 'Cập nhật' : 'Tạo vai trò'}
           </button>
         </div>
@@ -158,6 +158,12 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
           <div className="card mb-3">
             <div className="card-header fw-semibold">Thông tin vai trò</div>
             <div className="card-body">
+              {role?.isSystem && (
+                <div className="alert alert-warning py-2 mb-3" style={{ fontSize: 13 }}>
+                  <i className="bi bi-shield-fill me-1"></i>
+                  <strong>Vai trò hệ thống:</strong> Tên và mã không thể thay đổi. Bạn có thể cập nhật mô tả, thứ tự và phân quyền.
+                </div>
+              )}
               <div className="row g-3">
                 <div className="col-md-6">
                   <div className="mb-3">
@@ -184,14 +190,14 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
                   <div className="mb-3">
                     <label className="form-label small fw-semibold">Mô tả</label>
                     <textarea name="description" value={form.description} onChange={handle}
-                      rows={2} className="form-control form-control-sm" disabled={role?.isSystem} />
+                      rows={2} className="form-control form-control-sm" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="mb-3">
                     <label className="form-label small fw-semibold">Thứ tự</label>
                     <input name="sortOrder" type="number" min="0" value={form.sortOrder} onChange={handle}
-                      className="form-control form-control-sm" disabled={role?.isSystem} />
+                      className="form-control form-control-sm" />
                   </div>
                 </div>
               </div>
@@ -229,7 +235,6 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
                               className="btn btn-link btn-sm p-0 ms-2"
                               style={{ fontSize: 10 }}
                               onClick={() => toggleAllForResource(resource)}
-                              disabled={role?.isSystem}
                             >
                               {allSelected ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
                             </button>
@@ -244,7 +249,6 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
                                   className="form-check-input"
                                   checked={selectedPermissions.has(perm.id)}
                                   onChange={() => togglePermission(perm.id)}
-                                  disabled={role?.isSystem}
                                 />
                               </td>
                             );
@@ -265,13 +269,13 @@ export function AdminRoleForm({ roles, permissions, role }: Props) {
             <div className="card-body">
               <div className="form-check form-switch mb-3">
                 <input className="form-check-input" type="checkbox" name="isActive"
-                  id="isActive" checked={form.isActive} onChange={handle} disabled={role?.isSystem} />
+                  id="isActive" checked={form.isActive} onChange={handle} />
                 <label className="form-check-label" htmlFor="isActive">Hoạt động</label>
               </div>
               {role?.isSystem && (
-                <div className="alert alert-warning py-2 mb-0" style={{ fontSize: 12 }}>
-                  <i className="bi bi-shield-fill me-1"></i>
-                  Vai trò hệ thống, không thể sửa.
+                <div className="alert alert-info py-2 mb-2" style={{ fontSize: 12 }}>
+                  <i className="bi bi-info-circle-fill me-1"></i>
+                  Vai trò hệ thống: Chỉ tên và mã không thể thay đổi.
                 </div>
               )}
               <span className={`badge mt-2 ${form.isActive ? 'bg-success' : 'bg-secondary'}`}>

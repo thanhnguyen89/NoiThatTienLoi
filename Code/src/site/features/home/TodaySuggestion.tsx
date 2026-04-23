@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { formatPrice, calcDiscountPercent, formatSoldCount } from '@/lib/utils';
 import type { ProductListItem } from '@/lib/types';
-import './home-sections.css';
 
 interface TodaySuggestionProps {
   products: ProductListItem[];
@@ -26,8 +25,12 @@ export function TodaySuggestion({ products }: TodaySuggestionProps) {
           return (
             <div key={p.id} className="ts-product-card">
               <Link href={`/san-pham/${p.slug}`} className="ts-product-thumb">
-                {p.thumbnail && (
+                {p.thumbnail ? (
                   <img src={p.thumbnail} alt={p.name} loading="lazy" />
+                ) : (
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: '#999' }}>
+                    No image
+                  </div>
                 )}
                 {discount > 0 && (
                   <span className="discount-badge">-{discount}%</span>
@@ -50,12 +53,14 @@ export function TodaySuggestion({ products }: TodaySuggestionProps) {
                   <span className="rating-count">({p.reviewCount})</span>
                   <span className="sold-count">🛒 {formatSoldCount(p.soldCount)}/tháng</span>
                 </div>
-                <div className="ts-product-progress">
-                  <div className="progress-bar">
-                    <span style={{ width: '65%' }} />
+                {p.soldCount > 0 && (
+                  <div className="ts-product-progress">
+                    <div className="progress-bar">
+                      <span style={{ width: `${Math.min(100, (p.soldCount / 100) * 100)}%` }} />
+                    </div>
+                    <span className="progress-text">{Math.min(100, Math.round((p.soldCount / 100) * 100))}%</span>
                   </div>
-                  <span className="progress-text">65%</span>
-                </div>
+                )}
               </div>
             </div>
           );

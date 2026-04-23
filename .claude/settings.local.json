@@ -54,7 +54,8 @@
       "Bash(mkdir -p \"D:\\\\Website\\\\NoiThatTienLoi\\\\Html\\\\NoiThatTienLoi\\\\Code\\\\src\\\\app\\\\admin\\\\shipping-providers\\\\new\")",
       "Bash(mkdir -p \"D:\\\\Website\\\\NoiThatTienLoi\\\\Html\\\\NoiThatTienLoi\\\\Code\\\\src\\\\app\\\\admin\\\\shipping-providers\\\\[id]\\\\edit\")",
       "Bash(ls -la src/admin/api/warehouses/route.ts src/admin/api/warehouses/[id]/route.ts src/admin/api/warehouses/[id]/toggle-active/route.ts)",
-      "WebFetch(domain:noithatdaithanh.vn)"
+      "WebFetch(domain:noithatdaithanh.vn)",
+      "Bash(ls -la \"D:/Website/NoiThatTienLoi/Html/NoiThatTienLoi/Code/src/app/\\(site\\)/\")"
     ]
   }
 }

@@ -10,7 +10,7 @@ export const metadata = { title: 'Chỉnh sửa vai trò' };
 
 export default async function EditAdminRolePage({ params }: Props) {
   const { id } = await params;
-  let [role, roles, permissions] = await Promise.all([
+  let [role, rolesResult, permissions] = await Promise.all([
     adminRoleService.getRoleById(id),
     adminRoleService.getAllRoles(),
     adminRoleService.getAllPermissions(),
@@ -19,7 +19,7 @@ export default async function EditAdminRolePage({ params }: Props) {
 
   return (
     <DynamicAdminRoleFormClient
-      roles={roles}
+      roles={rolesResult.data}
       permissions={permissions}
       role={{
         id: role.id,

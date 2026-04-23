@@ -4,8 +4,12 @@ import { DynamicNewsCategoryFormClient } from '@/admin/components/NewsCategoryFo
 export const metadata = { title: 'Thêm danh mục tin tức mới' };
 
 export default async function NewNewsCategoryPage() {
-  const parentCategories = await newsCategoryService.getAllCategories();
-  const options = parentCategories.map((c) => ({ id: c.id, title: c.title }));
+  const result = await newsCategoryService.getAllCategories();
+  const options = result.data.map((c) => ({ 
+    id: c.id, 
+    title: c.title,
+    categoryLevel: c.categoryLevel ?? 0,
+  }));
 
   return <DynamicNewsCategoryFormClient parentCategories={options} />;
 }

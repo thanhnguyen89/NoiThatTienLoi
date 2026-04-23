@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import './home-sections.css';
 
 const KEYWORDS = [
   'Giường ngủ', 'Tủ quần áo', 'Bàn làm việc', 'Ghế văn phòng', 'Kệ tivi',

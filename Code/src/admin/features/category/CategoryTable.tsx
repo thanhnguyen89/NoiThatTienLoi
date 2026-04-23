@@ -29,7 +29,23 @@ function formatDate(date: Date) {
 
 export function CategoryTable({ categories }: { categories: CategoryItem[] }) {
   const router = useRouter();
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [bulkLoading, setBulkLoading] = useState(false);
+
+  const allSelected = categories.length > 0 && selectedIds.size === categories.length;
+
+  function toggleAll() {
+    if (allSelected) setSelectedIds(new Set());
+    else setSelectedIds(new Set(categories.map((c) => c.id)));
+  }
+
+  function toggle(id: string) {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedIds(next);
+  }
 
   async function handleDelete(cat: CategoryItem) {
     if (!confirm(`Xóa danh mục "${cat.name}"?`)) return;
@@ -41,6 +57,40 @@ export function CategoryTable({ categories }: { categories: CategoryItem[] }) {
       router.refresh();
     } catch { alert('Lỗi kết nối'); }
     finally { setDeletingId(null); }
+  }
+
+  async function handleBulkDelete() {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`Xóa ${selectedIds.size} danh mục đã chọn?\nHành động này không thể hoàn tác.`)) return;
+    setBulkLoading(true);
+    try {
+      const promises = [...selectedIds].map((id) =>
+        fetch(`/admin/api/categories/${id}`, { method: 'DELETE' }).then((r) => r.json())
+      );
+      await Promise.allSettled(promises);
+      setSelectedIds(new Set());
+      router.refresh();
+    } catch { alert('Lỗi kết nối'); }
+    finally { setBulkLoading(false); }
+  }
+
+  async function handleBulkToggleActive(active: boolean) {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`${active ? 'Kích hoạt' : 'Ẩn'} ${selectedIds.size} danh mục đã chọn?`)) return;
+    setBulkLoading(true);
+    try {
+      const promises = [...selectedIds].map((id) =>
+        fetch(`/admin/api/categories/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isActive: active }),
+        }).then((r) => r.json())
+      );
+      await Promise.allSettled(promises);
+      setSelectedIds(new Set());
+      router.refresh();
+    } catch { alert('Lỗi kết nối'); }
+    finally { setBulkLoading(false); }
   }
 
   if (!categories.length) {
@@ -60,10 +110,33 @@ export function CategoryTable({ categories }: { categories: CategoryItem[] }) {
 
   return (
     <>
+      {selectedIds.size > 0 && (
+        <div className="alert alert-warning d-flex align-items-center gap-3 mb-2 py-2 px-3 flex-wrap">
+          <span className="fw-semibold">Đã chọn: <strong>{selectedIds.size}</strong> danh mục</span>
+          <div className="d-flex gap-2">
+            <button className="btn btn-sm btn-success" disabled={bulkLoading} onClick={() => handleBulkToggleActive(true)}>
+              <i className="bi bi-check-circle me-1"></i>Công khai
+            </button>
+            <button className="btn btn-sm btn-secondary" disabled={bulkLoading} onClick={() => handleBulkToggleActive(false)}>
+              <i className="bi bi-eye-slash me-1"></i>Ẩn
+            </button>
+            <button className="btn btn-sm btn-danger" disabled={bulkLoading} onClick={handleBulkDelete}>
+              <i className="bi bi-trash me-1"></i>Xóa
+            </button>
+          </div>
+          <button className="btn btn-sm btn-light ms-auto" onClick={() => setSelectedIds(new Set())}>
+            <i className="bi bi-x-lg me-1"></i>Bỏ chọn
+          </button>
+        </div>
+      )}
+
       <div className="table-responsive">
         <table className="table table-bordered mb-0 w-100">
           <thead>
             <tr>
+              <th className="text-center" style={{ width: 40 }}>
+                <input type="checkbox" checked={allSelected} onChange={toggleAll} style={{ width: 16, height: 16, cursor: 'pointer' }} />
+              </th>
               <th className="text-center" style={{ width: 50 }}>STT</th>
               <th style={{ width: 100 }}>Mã danh mục</th>
               <th>Tên danh mục</th>
@@ -78,7 +151,10 @@ export function CategoryTable({ categories }: { categories: CategoryItem[] }) {
           </thead>
           <tbody>
             {categories.map((cat, idx) => (
-              <tr key={cat.id}>
+              <tr key={cat.id} className={selectedIds.has(cat.id) ? 'table-active' : ''}>
+                <td className="text-center">
+                  <input type="checkbox" checked={selectedIds.has(cat.id)} onChange={() => toggle(cat.id)} style={{ width: 16, height: 16, cursor: 'pointer' }} />
+                </td>
                 <td className="text-center">{idx + 1}</td>
                 <td><code className="small">{cat.code || '—'}</code></td>
                 <td>

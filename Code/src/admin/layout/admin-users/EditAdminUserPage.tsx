@@ -13,7 +13,7 @@ export default async function EditAdminUserPage({ params }: Props) {
   const { id } = await params;
   let [user, roles] = await Promise.all([
     adminUserService.getUserById(id),
-    adminRoleService.getAllRoles(),
+    adminRoleService.getAllRolesForDropdown(),
   ]);
   if (!user) notFound();
 

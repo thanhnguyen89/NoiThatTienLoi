@@ -3,6 +3,10 @@ import { validateSlider, type SliderInput } from '@/server/validators/slider.val
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const sliderService = {
+  async getActiveSliders() {
+    return sliderRepository.findAll();
+  },
+
   async getAllSliders(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
     const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
     return sliderRepository.findAllPaginated({

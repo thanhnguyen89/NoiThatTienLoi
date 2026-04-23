@@ -13,11 +13,16 @@ export default async function EditNewsCategoryPage({ params }: Props) {
   } catch {}
   if (!newsCategory) notFound();
 
-  const parentCategories = await newsCategoryService.getAllCategories();
-  const options = parentCategories.map((c) => ({ id: String(c.id), title: c.title }));
+  const parentCategoriesResult = await newsCategoryService.getAllCategories();
+  const options = parentCategoriesResult.data.map((c) => ({ 
+    id: c.id, 
+    title: c.title,
+    categoryLevel: c.categoryLevel ?? 0,
+  }));
 
   const mappedCategory = newsCategory ? {
     ...(newsCategory as unknown as Record<string, unknown>),
+    parentId: newsCategory.parentId,
     sortOrder: Number(newsCategory.sortOrder ?? 0),
     viewCount: Number(newsCategory.viewCount ?? 0),
   } : null;

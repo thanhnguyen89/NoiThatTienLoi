@@ -5,7 +5,10 @@ export const metadata = { title: 'Thêm danh mục mới' };
 
 export default async function NewCategoryPage() {
   let categories: Array<{ id: string; name: string }> = [];
-  try { categories = await categoryService.getAdminCategories(); } catch {}
+  try {
+    const result = await categoryService.getAdminCategories();
+    categories = Array.isArray(result) ? result : (result?.data ?? []);
+  } catch {}
 
   return <DynamicCategoryFormClient parentCategories={categories} />;
 }

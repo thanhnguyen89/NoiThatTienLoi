@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import type { CategoryTree } from '@/lib/types';
-import './home-sections.css';
 
 const ITEM_W = 131; // 120px + 11px gap
 const VISIBLE = 8;

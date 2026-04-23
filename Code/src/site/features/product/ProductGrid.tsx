@@ -1,6 +1,5 @@
 import { ProductCard } from './ProductCard';
 import type { ProductListItem } from '@/lib/types';
-import './product-grid.css';
 
 interface ProductGridProps {
   products: ProductListItem[];

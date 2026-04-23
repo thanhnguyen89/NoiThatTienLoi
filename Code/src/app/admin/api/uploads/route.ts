@@ -23,22 +23,28 @@ export async function GET(request: NextRequest) {
 
     const imageFiles = files.filter((f) => IMAGE_EXTS.some((e) => f.toLowerCase().endsWith(e)));
 
-    const total = imageFiles.length;
-    const totalPages = Math.ceil(total / limit);
-    const start = (page - 1) * limit;
-    const paginatedFiles = imageFiles.slice(start, start + limit);
-
-    const images = await Promise.all(
-      paginatedFiles.map(async (file) => {
+    // Get all images with metadata first
+    const allImages = await Promise.all(
+      imageFiles.map(async (file) => {
         let size: number | null = null;
+        let mtime: number | null = null;
         try {
           const s = await stat(path.join(targetDir, file));
           size = s.size;
+          mtime = s.mtimeMs; // Modification time in milliseconds
         } catch {}
         const urlPath = folder ? `/uploads/${folder}/${file}` : `/uploads/${file}`;
-        return { name: file, url: urlPath, size, folder: folder || 'root' };
+        return { name: file, url: urlPath, size, mtime, folder: folder || 'root' };
       })
     );
+
+    // Sort by modification time (newest first)
+    allImages.sort((a, b) => (b.mtime || 0) - (a.mtime || 0));
+
+    const total = allImages.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const images = allImages.slice(start, start + limit);
 
     return NextResponse.json({ success: true, data: images, total, page, limit, totalPages });
   } catch (error) {

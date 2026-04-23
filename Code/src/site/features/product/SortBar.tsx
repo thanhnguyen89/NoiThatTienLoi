@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { PRODUCT_SORT_OPTIONS } from '@/lib/constants';
 import type { ProductSortField } from '@/lib/types';
-import './sort-bar.css';
 
 interface SortBarProps {
   currentSort: ProductSortField;

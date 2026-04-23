@@ -31,8 +31,9 @@ export async function GET(request: NextRequest) {
 
     switch (type) {
       case 'news-content': {
-        const news = await newsService.getAllNews();
-        const items = news.map((n: Record<string, unknown>) => ({
+        const newsResult = await newsService.getAllNews();
+        const newsData = Array.isArray(newsResult) ? newsResult : (newsResult as { data: unknown[] }).data ?? [];
+        const items = newsData.map((n: Record<string, unknown>) => ({
           id: String(n.id),
           title: n.title ?? '',
           url: `/tin-tuc/${n.seName ?? n.id}`,
@@ -41,8 +42,9 @@ export async function GET(request: NextRequest) {
       }
 
       case 'news-category': {
-        const cats = await newsCategoryService.getAllCategories();
-        const items = cats.map((c: Record<string, unknown>) => ({
+        const catsResult = await newsCategoryService.getAllCategories();
+        const catsData = Array.isArray(catsResult) ? catsResult : (catsResult as { data: unknown[] }).data ?? [];
+        const items = catsData.map((c: Record<string, unknown>) => ({
           id: String(c.id),
           title: c.title ?? '',
           url: `/chuyen-muc/${c.seName ?? c.id}`,
@@ -51,8 +53,9 @@ export async function GET(request: NextRequest) {
       }
 
       case 'static-page': {
-        const pages = await pageService.getAllPages();
-        const items = pages.map((p: Record<string, unknown>) => ({
+        const pagesResult = await pageService.getAllPages();
+        const pagesData = Array.isArray(pagesResult) ? pagesResult : (pagesResult as { data: unknown[] }).data ?? [];
+        const items = pagesData.map((p: Record<string, unknown>) => ({
           id: String(p.id),
           title: p.pageName ?? p.title ?? '',
           url: `/${p.seName ?? p.id}`,
@@ -61,8 +64,9 @@ export async function GET(request: NextRequest) {
       }
 
       case 'product-category': {
-        const cats = await categoryService.getAdminCategories();
-        const items = cats.map((c: Record<string, unknown>) => ({
+        const catsResult = await categoryService.getAdminCategories();
+        const catsData = Array.isArray(catsResult) ? catsResult : (catsResult as { data: unknown[] }).data ?? [];
+        const items = catsData.map((c: Record<string, unknown>) => ({
           id: String(c.id),
           title: c.name ?? '',
           url: `/danh-muc/${c.slug ?? c.id}`,

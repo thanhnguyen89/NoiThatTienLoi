@@ -1,53 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const files = formData.getAll('files') as File[];
+    const file = formData.get('file') as File;
 
-    if (!files.length) {
-      return NextResponse.json({ success: false, error: 'Không có file nào' }, { status: 400 });
+    if (!file) {
+      return NextResponse.json({ success: false, error: 'No file uploaded' }, { status: 400 });
     }
 
-    const results: Array<{ name: string; url?: string; error?: string }> = [];
-
-    const folder = formData.get('folder') as string | null;
-    const uploadRoot = path.join(process.cwd(), 'public', 'uploads');
-    const uploadDir = folder ? path.join(uploadRoot, folder) : uploadRoot;
-    await mkdir(uploadDir, { recursive: true });
-
-    for (const file of files) {
-      if (file.size > MAX_SIZE) {
-        results.push({ name: file.name, error: `File quá lớn (max ${MAX_SIZE / 1024 / 1024}MB)` });
-        continue;
-      }
-
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        results.push({ name: file.name, error: 'Định dạng không được hỗ trợ' });
-        continue;
-      }
-
-      const ext = file.name.split('.').pop() || 'jpg';
-      // Giữ tên gốc, thêm timestamp prefix để tránh trùng
-      const baseName = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u1E00-\u1EFF]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'image';
-      const fileName = `${Date.now()}-${baseName}.${ext}`;
-      const filePath = path.join(uploadDir, fileName);
-
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await writeFile(filePath, buffer);
-
-      const urlPath = folder ? `/uploads/${folder}/${fileName}` : `/uploads/${fileName}`;
-      results.push({ name: file.name, url: urlPath });
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ success: false, error: 'Invalid file type. Only images allowed.' }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, data: results });
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      return NextResponse.json({ success: false, error: 'File too large. Max 5MB.' }, { status: 400 });
+    }
+
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // Generate unique filename
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const ext = file.name.split('.').pop();
+    const filename = `${timestamp}-${randomStr}.${ext}`;
+
+    // Create upload directory if not exists
+    const uploadDir = join(process.cwd(), 'public', 'uploads', 'news-categories');
+    if (!existsSync(uploadDir)) {
+      await mkdir(uploadDir, { recursive: true });
+    }
+
+    // Save file
+    const filepath = join(uploadDir, filename);
+    await writeFile(filepath, buffer);
+
+    // Return public URL
+    const url = `/uploads/news-categories/${filename}`;
+
+    return NextResponse.json({ success: true, url }, { status: 200 });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ success: false, error: 'Lỗi khi upload' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Upload failed' }, { status: 500 });
   }
 }

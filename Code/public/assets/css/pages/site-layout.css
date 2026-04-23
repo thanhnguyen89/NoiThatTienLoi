@@ -1,0 +1,48 @@
+/* ============================================================
+   SITE LAYOUT
+   ============================================================ */
+
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 0;
+  padding-bottom: 40px;
+}
+
+/* ============================================================
+   CATEGORY PAGE
+   ============================================================ */
+
+.cate-page {
+  margin-top: 8px;
+}
+
+.cate-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cate-heading__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+.cate-heading__count {
+  font-size: 14px;
+  color: #888;
+}
+
+.cate-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}

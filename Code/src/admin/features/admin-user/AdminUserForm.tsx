@@ -171,7 +171,7 @@ export function AdminUserForm({ roles, user }: Props) {
                     <label className="form-label small fw-semibold">Vai trò <span className="text-danger">*</span></label>
                     <select name="roleId" value={form.roleId} onChange={handle} className={`form-select form-select-sm ${errors.roleId ? 'is-invalid' : ''}`}>
                       <option value="">— Chọn vai trò —</option>
-                      {roles.map((r) => <option key={r.id} value={r.id}>{r.name} ({r.code})</option>)}
+                      {Array.isArray(roles) && roles.map((r) => <option key={r.id} value={r.id}>{r.name} ({r.code})</option>)}
                     </select>
                     {errors.roleId && <div className="invalid-feedback d-block">{errors.roleId}</div>}
                   </div>

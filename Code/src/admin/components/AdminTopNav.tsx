@@ -9,14 +9,14 @@ interface MenuItem { label: string; icon?: string; href?: string; children?: Sub
 
 const nav: MenuItem[] = [
   {
-    label: 'Hệ thống', icon: 'bi-gear',
+    label: 'Hệ thống', icon: 'bi-gear-fill',
     children: [
       { label: 'Cấu hình hệ thống', href: '/admin/system-config' },
       { label: 'Menu', href: '/admin/menus' }
     ]
   },
   {
-    label: 'Quản lý cấp quyền', icon: 'bi-people',
+    label: 'Quản lý cấp quyền', icon: 'bi-shield-lock-fill',
     children: [
       { label: 'Người dùng', href: '/admin/admin-users' },
       { label: 'Vai trò', href: '/admin/admin-roles' },
@@ -24,7 +24,7 @@ const nav: MenuItem[] = [
     ]
   },
   {
-    label: 'Quản lý nội dung', icon: 'bi-gear-wide-connected',
+    label: 'Quản lý nội dung', icon: 'bi-file-earmark-text-fill',
     children: [
       { label: 'Cấu hình seo', href: '/admin/seo-configs' },
       { label: 'Cấu hình Redirect', href: '/admin/catalog-redirects' },
@@ -33,7 +33,7 @@ const nav: MenuItem[] = [
     ]
   },
   {
-    label: 'Quản lý sản phẩm', icon: 'bi-gear-wide-connected',
+    label: 'Quản lý sản phẩm', icon: 'bi-box-seam-fill',
     children: [
       { label: 'Màu sắc', href: '/admin/product-colors' },
       { label: 'Kích thước', href: '/admin/product-sizes' },
@@ -42,17 +42,18 @@ const nav: MenuItem[] = [
     ]
   },
   {
-    label: 'eCommerce', icon: 'bi-cart3',
+    label: 'eCommerce', icon: 'bi-cart-fill',
     children: [
-      { label: 'kho', href: '/admin/warehouses' },
+      { label: 'Kho', href: '/admin/warehouses' },
       { label: 'Đơn vị vận chuyển', href: '/admin/shipping-providers' },
       { label: 'Thành viên', href: '/admin/members' },
       { label: 'Đơn hàng', href: '/admin/orders' },    
     ]
   },
-  { label: 'Quản lý trang', icon: 'bi-chat-left-text', href: '/admin/pages' },
-  { label: 'Quản lý Slider', icon: 'bi-chat-left-text', href: '/admin/sliders' },
-  { label: 'Quản lý Mã nhúng', icon: 'bi-chat-left-text', href: '/admin/catalog-embed-codes' },
+  { label: 'Quản lý trang', icon: 'bi-file-earmark-richtext-fill', href: '/admin/pages' },
+  { label: 'Quản lý Slider', icon: 'bi-images', href: '/admin/sliders' },
+  { label: 'Quản lý Mã nhúng', icon: 'bi-code-square', href: '/admin/catalog-embed-codes' },
+  { label: 'Quản lý url', icon: 'bi-link-45deg', href: '/admin/url-records' },
 ];
 
 export function AdminTopNav() {

@@ -8,7 +8,9 @@ interface Props {
   defaultCategory: string;
   defaultDateFrom: string;
   defaultDateTo: string;
+  defaultLevel: string;
   categories: Array<{ id: string; name: string }>;
+  maxLevel: number;
 }
 
 export function NewsCategoryFilters({
@@ -16,7 +18,9 @@ export function NewsCategoryFilters({
   defaultCategory,
   defaultDateFrom,
   defaultDateTo,
+  defaultLevel,
   categories,
+  maxLevel,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -25,6 +29,7 @@ export function NewsCategoryFilters({
   const [category, setCategory] = useState(defaultCategory);
   const [dateFrom, setDateFrom] = useState(defaultDateFrom);
   const [dateTo, setDateTo] = useState(defaultDateTo);
+  const [level, setLevel] = useState(defaultLevel);
 
   const push = useCallback((o: Record<string, string | undefined>) => {
     const p = new URLSearchParams(searchParams.toString());
@@ -36,9 +41,9 @@ export function NewsCategoryFilters({
 
   return (
     <>
-      {/* Hàng 1: Từ khóa | Danh mục */}
+      {/* Hàng 1: Từ khóa | Danh mục | Level */}
       <div className="row g-2 mb-2">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <label className="form-label">Từ khóa</label>
           <input
             type="text"
@@ -48,7 +53,7 @@ export function NewsCategoryFilters({
             className="form-control form-control-sm"
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-5">
           <label className="form-label">Danh mục</label>
           <select
             className="form-select form-select-sm"
@@ -58,6 +63,19 @@ export function NewsCategoryFilters({
             <option value="">Tất cả</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-2">
+          <label className="form-label">Cấp độ</label>
+          <select
+            className="form-select form-select-sm"
+            value={level}
+            onChange={(e) => setLevel(e.target.value)}
+          >
+            <option value="">Tất cả</option>
+            {Array.from({ length: maxLevel + 1 }, (_, i) => (
+              <option key={i} value={i}>Level {i}</option>
             ))}
           </select>
         </div>
@@ -89,6 +107,7 @@ export function NewsCategoryFilters({
             onClick={() => push({
               search: search.trim() || undefined,
               category: category || undefined,
+              level: level || undefined,
               dateFrom: dateFrom || undefined,
               dateTo: dateTo || undefined,
             })}
@@ -101,9 +120,10 @@ export function NewsCategoryFilters({
             onClick={() => {
               setSearch('');
               setCategory('');
+              setLevel('');
               setDateFrom('');
               setDateTo('');
-              push({ search: undefined, category: undefined, dateFrom: undefined, dateTo: undefined });
+              push({ search: undefined, category: undefined, level: undefined, dateFrom: undefined, dateTo: undefined });
             }}
           >
             <i className="bi bi-arrow-counterclockwise me-1"></i>Làm mới

@@ -31,11 +31,13 @@ interface CategoryOption {
 interface Props {
   newsCategory?: {
     id: string;
-    parentId: bigint | null;
+    parentId: string | null;
     title: string | null;
     summary: string | null;
     content: string | null;
     imageUrl: string | null;
+    icon: string | null;
+    banner: string | null;
     seName: string | null;
     sortOrder: number | null;
     isShowHome: boolean | null;
@@ -50,6 +52,30 @@ interface Props {
     viewCount: number | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    categoryLevel: number | null;
+    isMobile: boolean | null;
+    ogTitle: string | null;
+    ogDescription: string | null;
+    ogImage: string | null;
+    robots: string | null;
+    fbTitle: string | null;
+    fbDescription: string | null;
+    fbKeywords: string | null;
+    fbHashtags: string | null;
+    fbImage: string | null;
+    fbLinkPosted: string | null;
+    ttTitle: string | null;
+    ttDescription: string | null;
+    ttKeywords: string | null;
+    ttHashtags: string | null;
+    ttImage: string | null;
+    ttLinkPosted: string | null;
+    ytTitle: string | null;
+    ytDescription: string | null;
+    ytTags: string | null;
+    ytHashtags: string | null;
+    ytImage: string | null;
+    ytLinkPosted: string | null;
   };
   parentCategories?: CategoryOption[];
 }

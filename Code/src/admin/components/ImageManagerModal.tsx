@@ -6,6 +6,7 @@ interface ImageItem {
   name: string;
   url: string;
   size: number | null;
+  mtime: number | null;
   folder: string;
 }
 
@@ -57,22 +58,38 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
   const [searchQuery, setSearchQuery] = useState('');
 
   // Sort state
-  const [sortBy, setSortBy] = useState<'name' | 'date'>('name');
-  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [sortBy, setSortBy] = useState<'name' | 'date'>('date');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toolbarUploadRef = useRef<HTMLInputElement>(null);
 
+  // Initialize when modal opens
   useEffect(() => {
     if (isOpen) {
       setSelected(initialUrl || null);
       setSelectedMulti([]);
       setPage(1);
       setSearchQuery('');
+      setActiveFolder('');
       fetchFolders();
+      fetchImages('', 1);
+    } else {
+      // Cancel any pending requests when modal closes
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+    }
+  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch images when folder changes (but not on initial open)
+  useEffect(() => {
+    if (isOpen && activeFolder !== undefined) {
+      setPage(1);
       fetchImages(activeFolder, 1);
     }
-  }, [isOpen, activeFolder]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [activeFolder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchFolders() {
     try {
@@ -128,10 +145,30 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
       if (activeFolder) fd.append('folder', activeFolder);
       const res = await fetch('/admin/api/upload', { method: 'POST', body: fd });
       const json = await res.json();
-      if (json.success) {
-        setPage(1);
-        await fetchImages(activeFolder, 1);
-        setTab('library');
+      if (json.success && json.data) {
+        // Optimistic update: add new images to the top of the list
+        const newImages: ImageItem[] = json.data
+          .filter((item: any) => item.url) // Only successful uploads
+          .map((item: any) => ({
+            name: item.url.split('/').pop() || '',
+            url: item.url,
+            size: null,
+            mtime: Date.now(), // Current timestamp for newly uploaded images
+            folder: activeFolder || 'root'
+          }));
+
+        // If on page 1, prepend new images to existing list (no refresh)
+        if (page === 1) {
+          setImages(prev => [...newImages, ...prev]);
+          setTotal(prev => prev + newImages.length);
+        } else {
+          // If on other pages, go back to page 1 and fetch
+          setPage(1);
+          await fetchImages(activeFolder, 1);
+        }
+
+        // Switch to library tab if currently on upload tab
+        if (tab === 'upload') setTab('library');
       }
     } catch {} finally {
       setUploading(false);
@@ -242,7 +279,7 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
   ).slice().sort((a, b) => {
     const cmp = sortBy === 'name'
       ? a.name.localeCompare(b.name)
-      : (a.size ?? 0) - (b.size ?? 0);
+      : (a.mtime ?? 0) - (b.mtime ?? 0);
     return sortDir === 'asc' ? cmp : -cmp;
   });
 
@@ -269,9 +306,12 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
   return (
     <div
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      onClick={(e) => { if (e.target === e.currentTarget) { onClose(); setSelected(null); setSelectedMulti([]); } }}
+      onClick={(e) => { if (e.target === e.currentTarget) { e.preventDefault(); e.stopPropagation(); onClose(); setSelected(null); setSelectedMulti([]); } }}
     >
-      <div style={{ background: '#fff', borderRadius: 8, width: 1000, maxWidth: '95vw', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 8px 32px rgba(0,0,0,0.2)', overflow: 'hidden' }}>
+      <div
+        onClick={(e) => { e.stopPropagation(); }}
+        style={{ background: '#fff', borderRadius: 8, width: 1000, maxWidth: '95vw', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 8px 32px rgba(0,0,0,0.2)', overflow: 'hidden' }}
+      >
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid #e9ecef', background: '#f8f9fa', flexShrink: 0 }}>
@@ -336,7 +376,8 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
                 {/* All images */}
                 <button
-                  onClick={() => setActiveFolder('')}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveFolder(''); }}
+                  type="button"
                   style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '6px 12px', background: activeFolder === '' ? '#e7f1ff' : 'transparent', border: 'none', cursor: 'pointer', fontSize: 13, color: activeFolder === '' ? '#0d6efd' : '#495057', fontWeight: activeFolder === '' ? 500 : 400, textAlign: 'left' }}
                 >
                   <i className="bi bi-grid-3x3-gap" style={{ fontSize: 14 }}></i>
@@ -360,7 +401,7 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
                     ) : (
                       <div
                         style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px 5px 12px', background: activeFolder === folder.path ? '#e7f1ff' : 'transparent', cursor: 'pointer' }}
-                        onClick={() => setActiveFolder(folder.path)}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveFolder(folder.path); }}
                       >
                         <i className="bi bi-folder" style={{ fontSize: 14, color: activeFolder === folder.path ? '#0d6efd' : '#ffc107', flexShrink: 0 }}></i>
                         <span style={{ flex: 1, fontSize: 13, color: activeFolder === folder.path ? '#0d6efd' : '#495057', fontWeight: activeFolder === folder.path ? 500 : 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{folder.name}</span>
@@ -398,7 +439,8 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '6px 10px', borderBottom: '1px solid #e9ecef', flexWrap: 'wrap' }}>
                   {/* Add file */}
                   <button
-                    onClick={() => toolbarUploadRef.current?.click()}
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toolbarUploadRef.current?.click(); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: '1px solid #c3e6cb', borderRadius: 4, background: '#d4edda', cursor: 'pointer', fontSize: 12, color: '#155724', fontWeight: 500 }}
                   >
                     <i className="bi bi-file-earmark-plus"></i> Thêm ảnh
@@ -409,8 +451,9 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
                   {/* Preview */}
                   <button
+                    type="button"
                     disabled={!hasSelection}
-                    onClick={() => { const url = multiSelect ? selectedMulti[0] : selected; url && window.open(url, '_blank'); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); const url = multiSelect ? selectedMulti[0] : selected; url && window.open(url, '_blank'); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: '1px solid #bee5eb', borderRadius: 4, background: hasSelection ? '#d1ecf1' : '#f8f9fa', cursor: hasSelection ? 'pointer' : 'not-allowed', fontSize: 12, color: hasSelection ? '#0c5460' : '#adb5bd', fontWeight: 500 }}
                   >
                     <i className="bi bi-eye"></i> Xem
@@ -418,8 +461,11 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
                   {/* Rename */}
                   <button
+                    type="button"
                     disabled={multiSelect ? selectedMulti.length !== 1 : !selected}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       const url = multiSelect ? selectedMulti[0] : selected;
                       if (!url) return;
                       const img = images.find((i) => i.url === url);
@@ -432,8 +478,9 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
                   {/* Delete */}
                   <button
+                    type="button"
                     disabled={!hasSelection}
-                    onClick={() => { const url = multiSelect ? selectedMulti[0] : selected; url && deleteImage(url); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); const url = multiSelect ? selectedMulti[0] : selected; url && deleteImage(url); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: '1px solid #f5c6cb', borderRadius: 4, background: hasSelection ? '#f8d7da' : '#f8f9fa', cursor: hasSelection ? 'pointer' : 'not-allowed', fontSize: 12, color: hasSelection ? '#721c24' : '#adb5bd', fontWeight: 500 }}
                   >
                     <i className="bi bi-trash"></i> Xóa
@@ -443,8 +490,9 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
                   {/* Select / Insert */}
                   <button
+                    type="button"
                     disabled={!hasSelection}
-                    onClick={handleInsert}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleInsert(); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: '1px solid #c3e6cb', borderRadius: 4, background: hasSelection ? '#28a745' : '#f8f9fa', cursor: hasSelection ? 'pointer' : 'not-allowed', fontSize: 12, color: hasSelection ? '#fff' : '#adb5bd', fontWeight: 500 }}
                   >
                     <i className="bi bi-check2"></i> Chọn{multiSelect && selectedMulti.length > 0 ? ` (${selectedMulti.length})` : ''}
@@ -456,25 +504,27 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
                   {/* Order by */}
                   <span style={{ fontSize: 12, color: '#6c757d', whiteSpace: 'nowrap' }}>Sắp xếp:</span>
                   <button
-                    onClick={() => { if (sortBy === 'name') setSortDir(d => d === 'asc' ? 'desc' : 'asc'); else setSortBy('name'); }}
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (sortBy === 'name') setSortDir(d => d === 'asc' ? 'desc' : 'asc'); else setSortBy('name'); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '2px 8px', border: '1px solid #dee2e6', borderRadius: 3, background: sortBy === 'name' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 12, color: sortBy === 'name' ? '#0d6efd' : '#495057' }}
                   >
                     <i className={`bi bi-arrow-${sortBy === 'name' && sortDir === 'desc' ? 'down' : 'up'}`} style={{ fontSize: 10 }}></i> Tên
                   </button>
                   <button
-                    onClick={() => { if (sortBy === 'date') setSortDir(d => d === 'asc' ? 'desc' : 'asc'); else setSortBy('date'); }}
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (sortBy === 'date') setSortDir(d => d === 'asc' ? 'desc' : 'asc'); else setSortBy('date'); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '2px 8px', border: '1px solid #dee2e6', borderRadius: 3, background: sortBy === 'date' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 12, color: sortBy === 'date' ? '#0d6efd' : '#495057' }}
                   >
-                    <i className={`bi bi-arrow-${sortBy === 'date' && sortDir === 'desc' ? 'down' : 'up'}`} style={{ fontSize: 10 }}></i> Kích thước
+                    <i className={`bi bi-arrow-${sortBy === 'date' && sortDir === 'desc' ? 'down' : 'up'}`} style={{ fontSize: 10 }}></i> Ngày tải lên
                   </button>
 
                   <div style={{ width: 1, height: 18, background: '#dee2e6' }} />
 
                   {/* View toggle */}
-                  <button onClick={() => setView('grid')} title="Lưới" style={{ padding: '2px 6px', border: '1px solid #dee2e6', borderRadius: 3, background: view === 'grid' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 14, color: view === 'grid' ? '#0d6efd' : '#6c757d' }}>
+                  <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setView('grid'); }} title="Lưới" style={{ padding: '2px 6px', border: '1px solid #dee2e6', borderRadius: 3, background: view === 'grid' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 14, color: view === 'grid' ? '#0d6efd' : '#6c757d' }}>
                     <i className="bi bi-grid-3x3-gap"></i>
                   </button>
-                  <button onClick={() => setView('list')} title="Danh sách" style={{ padding: '2px 6px', border: '1px solid #dee2e6', borderRadius: 3, background: view === 'list' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 14, color: view === 'list' ? '#0d6efd' : '#6c757d' }}>
+                  <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setView('list'); }} title="Danh sách" style={{ padding: '2px 6px', border: '1px solid #dee2e6', borderRadius: 3, background: view === 'list' ? '#e7f1ff' : '#fff', cursor: 'pointer', fontSize: 14, color: view === 'list' ? '#0d6efd' : '#6c757d' }}>
                     <i className="bi bi-list-ul"></i>
                   </button>
 

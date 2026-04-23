@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ImageManagerModal } from './ImageManagerModal';
 
 interface Props {
@@ -12,6 +12,49 @@ interface Props {
 
 export function SingleImageUploader({ value, onChange, label, defaultSrc }: Props) {
   const [showManager, setShowManager] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Chỉ chấp nhận file ảnh!');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File quá lớn! Tối đa 5MB.');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/admin/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || 'Upload failed');
+      }
+
+      onChange(json.url);
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Upload thất bại! Vui lòng thử lại.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }
 
   return (
     <div>
@@ -19,12 +62,38 @@ export function SingleImageUploader({ value, onChange, label, defaultSrc }: Prop
       <div className="d-flex gap-2">
         <button
           type="button"
+          className="btn btn-sm btn-outline-primary"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+        >
+          {uploading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-1"></span>
+              Đang tải...
+            </>
+          ) : (
+            <>
+              <i className="bi bi-upload me-1"></i>Upload
+            </>
+          )}
+        </button>
+        <button
+          type="button"
           className="btn btn-sm btn-outline-secondary"
           onClick={() => setShowManager(true)}
+          disabled={uploading}
         >
           <i className="bi bi-images me-1"></i>Chọn ảnh
         </button>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+      />
 
       {value ? (
         <div style={{ marginTop: 8, position: 'relative', display: 'inline-block' }}>

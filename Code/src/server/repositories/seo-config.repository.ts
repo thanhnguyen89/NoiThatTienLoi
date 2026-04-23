@@ -4,6 +4,7 @@ import type { SeoConfigInput } from '@/server/validators/seo-config.validator';
 const seoConfigListSelect = {
   id: true,
   pageName: true,
+  pageType: true,
   title: true,
   seName: true,
   metaTitle: true,
@@ -90,9 +91,15 @@ export const seoConfigRepository = {
         contentBefore: true,
         contentAfter: true,
         image: true,
+        icon: true,
+        thumbnail: true,
+        banner: true,
         metaKeywords: true,
         metaDescription: true,
         seoCanonical: true,
+        ogTitle: true,
+        ogDescription: true,
+        ogImage: true,
       },
     });
   },

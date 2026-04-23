@@ -4,9 +4,9 @@ import { DynamicAdminRoleFormClient } from '@/admin/components/AdminRoleFormWrap
 export const metadata = { title: 'Thêm vai trò mới' };
 
 export default async function NewAdminRolePage() {
-  const [roles, permissions] = await Promise.all([
+  const [rolesResult, permissions] = await Promise.all([
     adminRoleService.getAllRoles(),
     adminRoleService.getAllPermissions(),
   ]);
-  return <DynamicAdminRoleFormClient roles={roles} permissions={permissions} />;
+  return <DynamicAdminRoleFormClient roles={rolesResult.data} permissions={permissions} />;
 }

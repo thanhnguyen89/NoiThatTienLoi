@@ -396,10 +396,11 @@ model Product {
   isActive    Boolean @default(true)
   isShowHome  Boolean @default(false)
 
-  soldCount   Int   @default(0)
-  viewCount   Int   @default(0)
-  avgRating   Float @default(0)
-  reviewCount Int   @default(0)
+  soldCount      Int   @default(0)
+  viewCount      Int   @default(0)
+  avgRating      Float @default(0)
+  reviewCount    Int   @default(0)
+  flashSaleTarget Int?  @default(0) // Mục tiêu số lượng bán cho flash sale (để tính progress bar)
 
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -770,13 +771,50 @@ model NewsCategory {
   summary         String?   @db.VarChar(400)
   content         String?
   imageUrl        String?   @db.VarChar(400)
+  icon            String?   @db.VarChar(1000)
+  banner          String?   @db.VarChar(1000)
   sortOrder       BigInt?
   isShowHome      Boolean?  @default(true)
   seName          String?   @db.VarChar(255)
+  // SEO Website
   metaKeywords    String?   @db.VarChar(400)
-  metaDescription String?
-  metaTitle       String?   @db.VarChar(400)
+  metaDescription String?   @db.VarChar(160)
+  metaTitle       String?   @db.VarChar(60)
+  seoCanonical    String?   @db.VarChar(1000)
+  seoNoindex      Boolean?
+  ogTitle         String?   @db.VarChar(200)
+  ogDescription   String?   @db.VarChar(300)
+  ogImage         String?   @db.VarChar(1000)
+  robots          String?   @default("index,follow") @db.VarChar(100)
+  // SEO Facebook
+  fbTitle         String?   @db.VarChar(500)
+  fbDescription   String?   @db.VarChar(2000)
+  fbKeywords      String?   @db.VarChar(1000)
+  fbHashtags      String?   @db.VarChar(1000)
+  fbImage         String?   @db.VarChar(1000)
+  fbLinkPosted    String?   @db.VarChar(1000)
+  // SEO TikTok
+  ttTitle         String?   @db.VarChar(500)
+  ttDescription   String?   @db.VarChar(2000)
+  ttKeywords      String?   @db.VarChar(1000)
+  ttHashtags      String?   @db.VarChar(1000)
+  ttImage         String?   @db.VarChar(1000)
+  ttLinkPosted    String?   @db.VarChar(1000)
+  // SEO YouTube
+  ytTitle         String?   @db.VarChar(500)
+  ytDescription   String?   @db.VarChar(2000)
+  ytTags          String?   @db.VarChar(2000)
+  ytHashtags      String?   @db.VarChar(1000)
+  ytImage         String?   @db.VarChar(1000)
+  ytLinkPosted    String?   @db.VarChar(1000)
+  // Redirect
+  slugRedirect    String?   @db.VarChar(1000)
+  isRedirect      Boolean?
+  // Misc
   isPublished     Boolean?  @default(true)
+  isMobile        Boolean?
+  viewCount       BigInt?
+  isActive        Boolean?  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime?
   createdBy String?  @db.VarChar(100)
@@ -784,13 +822,6 @@ model NewsCategory {
   isDeleted Boolean?  @default(false)
   deletedBy String?   @db.VarChar(100)
   deletedAt DateTime? @db.Timestamp(6)
-  slugRedirect    String?   @db.VarChar(1000)
-  isRedirect      Boolean?
-  isMobile        Boolean?
-  viewCount       BigInt?
-  seoCanonical    String?   @db.VarChar(1000)
-  seoNoindex      Boolean?
-  isActive        Boolean?  @default(true)
 
   @@map("news_category")
 }
@@ -918,16 +949,23 @@ model CatalogTextToLink {
 model SeoConfig {
   id              String   @id @default(cuid())
   pageName        String?  @db.VarChar(255)
+  pageType        String?  @db.VarChar(50)   // homepage | category | product | page | blog | contact
   title           String?  @db.VarChar(500)
   contentBefore   String?  @db.Text
   contentAfter    String?  @db.Text
   image           String?  @db.VarChar(1000)
+  icon            String?  @db.VarChar(1000)
+  thumbnail       String?  @db.VarChar(1000)
+  banner          String?  @db.VarChar(1000)
   seName          String?  @db.VarChar(255)
-  metaTitle       String?  @db.VarChar(400)
-  metaDescription String?  @db.VarChar(1000)
+  metaTitle       String?  @db.VarChar(60)
+  metaDescription String?  @db.VarChar(160)
   metaKeywords    String?  @db.VarChar(400)
   seoCanonical    String?  @db.VarChar(500)
   seoNoindex      Boolean  @default(false)
+  ogTitle         String?  @db.VarChar(200)
+  ogDescription   String?  @db.VarChar(300)
+  ogImage         String?  @db.VarChar(1000)
   sortOrder       Int      @default(0)
   isActive        Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -941,6 +979,7 @@ model SeoConfig {
   @@unique([seName])
   @@index([isActive])
   @@index([sortOrder])
+  @@index([pageType])
   @@map("seo_config")
 }
 

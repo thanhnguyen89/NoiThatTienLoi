@@ -4,6 +4,6 @@ import { DynamicAdminUserFormClient } from '@/admin/components/AdminUserFormWrap
 export const metadata = { title: 'Thêm người dùng mới' };
 
 export default async function NewAdminUserPage() {
-  const roles = await adminRoleService.getAllRoles();
+  const roles = await adminRoleService.getAllRolesForDropdown();
   return <DynamicAdminUserFormClient roles={roles} />;
 }
