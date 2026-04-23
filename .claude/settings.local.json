@@ -29,7 +29,32 @@
       "Bash(npx tsx -e \":*)",
       "Bash(npx tsx --tsconfig tsconfig.json -e \":*)",
       "Bash(curl -s -X POST http://localhost:3001/api/auth/login -H \"Content-Type: application/json\" -d '{\"\"\"\"username\"\"\"\":\"\"\"\"admin\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"admin123\"\"\"\"}' -v)",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(node -e \"const { PrismaClient } = require\\(''@prisma/client''\\); const p = new PrismaClient\\(\\); p.systemConfig.findFirst\\(\\).then\\(r => { console.log\\(Object.keys\\(r || {}\\).join\\('', ''\\)\\); p.$disconnect\\(\\); }\\).catch\\(e => { console.error\\(e.message\\); p.$disconnect\\(\\); }\\);\")",
+      "Bash(npm test:*)",
+      "Bash(netstat -ano)",
+      "Bash(node -e \"require\\(''./src/lib/prisma''\\).prisma.$queryRaw\\\\`SELECT 1\\\\`.then\\(\\(\\)=>console.log\\(''OK''\\)\\).catch\\(e=>console.error\\(e.message\\)\\)\")",
+      "Bash(node -e \"const{prisma}=require\\(''./src/lib/prisma''\\);prisma.$queryRaw\\\\`SELECT 1\\\\`.then\\(\\(\\)=>console.log\\(''OK''\\)\\).catch\\(e=>console.error\\(e.message\\)\\)\")",
+      "Bash(curl -s http://localhost:3000/admin/api/pages)",
+      "Bash(curl -v http://localhost:3000/admin/api/pages)",
+      "Bash(node -e \"process.env.NODE_ENV=''production'';process.env.DATABASE_URL=''postgresql://postgres:123456@localhost:5432/NoiThatMinhQui'';const{prisma}=require\\(''./src/lib/prisma''\\);prisma.page.count\\(\\).then\\(r=>{console.log\\(''count:'',r\\);process.exit\\(0\\)}\\).catch\\(e=>{console.error\\(e.message\\);process.exit\\(1\\)}\\)\")",
+      "Bash(node test-db.js)",
+      "Bash(tasklist)",
+      "Bash(curl:*)",
+      "Bash(taskkill //F //PID 15452)",
+      "Bash(taskkill //F //PID 16768)",
+      "Bash(taskkill //F //PID 21772)",
+      "Bash(taskkill //F //PID 11580)",
+      "Bash(taskkill //F //PID 14364)",
+      "Bash(psql \"postgresql://postgres:123456@localhost:5432/noithattienloi?sslmode=disable\" -c \"SELECT column_name, data_type, character_maximum_length FROM information_schema.columns WHERE table_name = ''catalog_embed_code'' ORDER BY ordinal_position;\")",
+      "Bash(findstr /i \"node\")",
+      "Bash(findstr /i \"news admin\")",
+      "mcp__ide__getDiagnostics",
+      "Bash(mkdir -p \"D:\\\\Website\\\\NoiThatTienLoi\\\\Html\\\\NoiThatTienLoi\\\\Code\\\\src\\\\app\\\\admin\\\\shipping-providers\")",
+      "Bash(mkdir -p \"D:\\\\Website\\\\NoiThatTienLoi\\\\Html\\\\NoiThatTienLoi\\\\Code\\\\src\\\\app\\\\admin\\\\shipping-providers\\\\new\")",
+      "Bash(mkdir -p \"D:\\\\Website\\\\NoiThatTienLoi\\\\Html\\\\NoiThatTienLoi\\\\Code\\\\src\\\\app\\\\admin\\\\shipping-providers\\\\[id]\\\\edit\")",
+      "Bash(ls -la src/admin/api/warehouses/route.ts src/admin/api/warehouses/[id]/route.ts src/admin/api/warehouses/[id]/toggle-active/route.ts)",
+      "WebFetch(domain:noithatdaithanh.vn)"
     ]
   }
 }

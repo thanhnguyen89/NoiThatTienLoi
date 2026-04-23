@@ -3,8 +3,14 @@ import { validateProductSize, type ProductSizeInput } from '@/server/validators/
 import { NotFoundError, ValidationError, DuplicateError, ConflictError } from '@/server/errors';
 
 export const productSizeService = {
-  async getAllSizes() {
-    return productSizeRepository.findAll();
+  async getAllSizes(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return productSizeRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getSizeById(id: string) {

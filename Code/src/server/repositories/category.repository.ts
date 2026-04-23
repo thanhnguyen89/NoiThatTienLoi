@@ -17,7 +17,13 @@ const categoryListSelect = {
   isShowHome: true,
   viewCount: true,
   createdAt: true,
+  updatedAt: true,
   robots: true,
+  createdBy: true,
+  updatedBy: true,
+  isDeleted: true,
+  deletedBy: true,
+  deletedAt: true,
   _count: {
     select: { products: true },
   },
@@ -38,12 +44,56 @@ const categoryDetailSelect = {
   },
 };
 
+export interface PaginatedCategories {
+  data: Awaited<ReturnType<typeof categoryRepository.findAllFlat>>;
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const categoryRepository = {
+  async findAllFlatPaginated(opts?: { page?: number; pageSize?: number; search?: string; isActive?: boolean; parentId?: string | null }) {
+    const page = opts?.page ?? 1;
+    const pageSize = opts?.pageSize ?? 20;
+    const where: Record<string, unknown> = { isDeleted: false };
+    if (opts?.search) {
+      where.OR = [
+        { name: { contains: opts.search, mode: 'insensitive' } },
+        { slug: { contains: opts.search, mode: 'insensitive' } },
+      ];
+    }
+    if (opts?.isActive !== undefined) where.isActive = opts.isActive;
+    if (opts?.parentId !== undefined) where.parentId = opts.parentId;
+
+    const [result, total] = await Promise.all([
+      prisma.category.findMany({
+        where,
+        select: {
+          ...categoryListSelect,
+          parent: { select: { id: true, name: true } },
+        },
+        orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.category.count({ where }),
+    ]);
+
+    return {
+      data: result,
+      pagination: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    };
+  },
+
   async findAll(onlyActive = false) {
     const activeFilter = onlyActive ? { isActive: true } : undefined;
 
     return prisma.category.findMany({
       where: {
+        isDeleted: false,
         parentId: null,
         ...activeFilter,
       },
@@ -51,7 +101,7 @@ export const categoryRepository = {
         ...categoryListSelect,
         children: {
           select: categoryListSelect,
-          where: activeFilter,
+          where: { isDeleted: false, ...activeFilter },
           orderBy: { sortOrder: 'asc' as const },
         },
       },
@@ -61,6 +111,7 @@ export const categoryRepository = {
 
   async findAllFlat() {
     return prisma.category.findMany({
+      where: { isDeleted: false },
       select: {
         ...categoryListSelect,
         parent: { select: { id: true, name: true } },
@@ -71,7 +122,7 @@ export const categoryRepository = {
 
   async findBySlug(slug: string) {
     return prisma.category.findUnique({
-      where: { slug },
+      where: { slug, isDeleted: false },
       select: {
         ...categoryListSelect,
         description: true,
@@ -94,7 +145,7 @@ export const categoryRepository = {
 
   async findById(id: string) {
     const category = await prisma.category.findUnique({
-      where: { id },
+      where: { id, isDeleted: false },
       select: {
         ...categoryDetailSelect,
         platformSeos: true,
@@ -104,12 +155,14 @@ export const categoryRepository = {
     return category;
   },
 
-  async create(data: CategoryInput) {
+  async create(data: CategoryInput, createdBy?: string) {
     const { parentId, platformSeos, platformImages, ...rest } = data;
 
     return prisma.category.create({
       data: {
         ...rest,
+        createdBy: createdBy ?? null,
+        isDeleted: false,
         ...(parentId ? { parent: { connect: { id: parentId } } } : {}),
         ...(platformSeos?.length ? {
           platformSeos: {
@@ -129,7 +182,7 @@ export const categoryRepository = {
     });
   },
 
-  async update(id: string, data: Partial<CategoryInput>) {
+  async update(id: string, data: Partial<CategoryInput>, updatedBy?: string) {
     const { parentId, platformSeos, platformImages, ...rest } = data;
 
     return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
@@ -155,6 +208,7 @@ export const categoryRepository = {
         where: { id },
         data: {
           ...rest,
+          updatedBy: updatedBy ?? null,
           ...(parentId !== undefined
             ? parentId
               ? { parent: { connect: { id: parentId } } }
@@ -169,8 +223,15 @@ export const categoryRepository = {
     });
   },
 
-  async delete(id: string) {
-    return prisma.category.delete({ where: { id } });
+  async delete(id: string, deletedBy?: string) {
+    return prisma.category.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+        deletedBy: deletedBy ?? null,
+        deletedAt: new Date(),
+      },
+    });
   },
 
   async hasChildren(id: string) {

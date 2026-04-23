@@ -12,7 +12,23 @@ export async function POST(request: NextRequest) {
     }
 
     const tokens = await authService.refreshToken(refreshToken);
-    return NextResponse.json({ success: true, data: tokens });
+
+    const response = NextResponse.json({ success: true, data: tokens });
+    response.cookies.set('admin_token', tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour
+    });
+    response.cookies.set('admin_refresh', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour
+    });
+    return response;
   } catch (error) {
     if (isAppError(error)) {
       return NextResponse.json(

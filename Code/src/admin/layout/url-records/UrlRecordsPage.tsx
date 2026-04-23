@@ -2,37 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { urlRecordService } from '@/server/services/url-record.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { UrlRecordTable } from '@/admin/features/url-record/UrlRecordTable';
 import { UrlRecordFilters } from '@/admin/features/url-record/UrlRecordFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedUrlRecords } from '@/server/repositories/url-record.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quan ly UrlRecord' };
 
+const emptyResult: PaginatedUrlRecords = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function UrlRecordsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let records: Awaited<ReturnType<typeof urlRecordService.getAllUrlRecords>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    records = await urlRecordService.getAllUrlRecords();
+  const result = await dbSafe(() =>
+    urlRecordService.getAllUrlRecords({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      records = records.filter((r) =>
-        (r.slug && r.slug.toLowerCase().includes(kw)) ||
-        (r.entityName && r.entityName.toLowerCase().includes(kw)) ||
-        (r.entityId !== null && r.entityId !== undefined && r.entityId.toString().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      records = records.filter((r) => r.isActive);
-    } else if (sp.status === 'inactive') {
-      records = records.filter((r) => !r.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -57,7 +60,7 @@ export default async function UrlRecordsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SACH URLRECORD
+          DANH SACH URLRECORD ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -77,7 +80,9 @@ export default async function UrlRecordsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <UrlRecordTable records={records} />
+          <UrlRecordTable records={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/url-records" />
         </div>
       </div>
     </>

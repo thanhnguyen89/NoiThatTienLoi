@@ -23,6 +23,11 @@ const DynamicNewsForm = dynamic(
   }
 );
 
+interface CategoryOption {
+  id: string;
+  title: string | null;
+}
+
 interface Props {
   news?: {
     id: string;
@@ -44,7 +49,16 @@ interface Props {
     slugRedirect: string | null;
     seoCanonical: string | null;
     seoNoindex: boolean | null;
+    isRedirect: boolean | null;
+    authorName: string | null;
+    publishedAt: Date | string | null;
+    viewCount: number | null;
+    commentCount: number | null;
+    likeCount: number | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
   };
+  categories?: CategoryOption[];
 }
 
 export function DynamicNewsFormClient(props: Props) {

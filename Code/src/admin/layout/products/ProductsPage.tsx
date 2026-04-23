@@ -4,10 +4,11 @@ import { Suspense } from 'react';
 import { productService } from '@/server/services/product.service';
 import { categoryService } from '@/server/services/category.service';
 import { parsePageParam } from '@/lib/utils';
-import { Pagination } from '@/admin/shared/Pagination';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { PAGINATION } from '@/lib/constants';
 import { ProductFilters } from '@/admin/features/product/ProductFilters';
-import { ProductTable } from '@/admin/features/product/ProductTable';
+import { ProductStatsCards } from '@/admin/features/product/ProductStatsCards';
+import { ProductTabsWrapper } from '@/admin/features/product/ProductTabsWrapper';
 import { dbSafe } from '@/lib/db-safe';
 import type { PaginatedResult, ProductListItem } from '@/lib/types';
 
@@ -38,7 +39,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   const page = parsePageParam(sp.page);
   const statusFilter = sp.status === 'inactive' ? false : sp.status === 'active' ? true : undefined;
 
-  const [result, categories] = await Promise.all([
+  const [result, categories, stats] = await Promise.all([
     dbSafe(() => productService.getProductsAdmin({
       page,
       pageSize: PAGINATION.ADMIN_PAGE_SIZE,
@@ -51,12 +52,16 @@ export default async function ProductsPage({ searchParams }: Props) {
       colorId: sp.colorId || undefined,
     }), emptyResult),
     dbSafe(() => categoryService.getAllCategories() as Promise<Array<{ id: string; name: string }>>, []),
+    dbSafe(() => productService.getProductStats(), { total: 0, active: 0, inactive: 0, featured: 0 }),
   ]);
 
   const dbError = result === emptyResult && categories.length === 0;
 
   return (
     <>
+      {/* THỐNG KÊ */}
+      <ProductStatsCards stats={stats} />
+
       {/* THÔNG TIN TÌM KIẾM */}
       <div className="card mb-3">
         <div className="card-header-custom">
@@ -85,10 +90,10 @@ export default async function ProductsPage({ searchParams }: Props) {
         </div>
       </div>
 
-      {/* DANH SÁCH SẢN PHẨM */}
+      {/* TABS: DANH SÁCH SẢN PHẨM & SẢN PHẨM BÁN CHẠY */}
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH SẢN PHẨM ({result.pagination.total})
+          QUẢN LÝ SẢN PHẨM
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -108,15 +113,11 @@ export default async function ProductsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <ProductTable products={result.data} />
-
-          <div className="mt-2">
-            <Pagination
-              currentPage={result.pagination.page}
-              totalPages={result.pagination.totalPages}
-              basePath="/admin/products"
-            />
-          </div>
+          {/* TAB NAVIGATION & PAGINATION */}
+          <ProductTabsWrapper
+            products={result.data}
+            paginationElement={<AdminPagination pagination={result.pagination} baseUrl="/admin/products" />}
+          />
         </div>
       </div>
     </>

@@ -11,8 +11,8 @@ interface UrlRecordDetail {
   slug: string | null;
   isActive: boolean | null;
   isDeleted: boolean | null;
-  deletedUserId: string | null;
-  deletedDate: Date | string | null;
+  deletedBy: string | null;
+  deletedAt: Date | string | null;
   slugRedirect: string | null;
   isRedirect: boolean | null;
   errorCode: string | null;
@@ -47,8 +47,8 @@ export function UrlRecordForm({ record }: Props) {
     slug: record?.slug || '',
     isActive: record?.isActive ?? true,
     isDeleted: record?.isDeleted ?? false,
-    deletedUserId: record?.deletedUserId || '',
-    deletedDate: formatDateForInput(record?.deletedDate),
+    deletedBy: record?.deletedBy || '',
+    deletedAt: formatDateForInput(record?.deletedAt),
     slugRedirect: record?.slugRedirect || '',
     isRedirect: record?.isRedirect ?? false,
     errorCode: record?.errorCode || '',
@@ -74,8 +74,8 @@ export function UrlRecordForm({ record }: Props) {
         slug: form.slug.trim() || null,
         isActive: form.isActive,
         isDeleted: form.isDeleted,
-        deletedUserId: form.deletedUserId.trim() || null,
-        deletedDate: form.deletedDate ? new Date(form.deletedDate).toISOString() : null,
+        deletedBy: form.deletedBy.trim() || null,
+        deletedAt: form.deletedAt ? new Date(form.deletedAt).toISOString() : null,
         slugRedirect: form.slugRedirect.trim() || null,
         isRedirect: form.isRedirect,
         errorCode: form.errorCode.trim() || null,
@@ -180,21 +180,21 @@ export function UrlRecordForm({ record }: Props) {
                   />
                 </div>
                 <div className="col-6">
-                  <label className="form-label small fw-semibold">Deleted User ID</label>
+                  <label className="form-label small fw-semibold">Deleted By</label>
                   <input
-                    name="deletedUserId"
-                    value={form.deletedUserId}
+                    name="deletedBy"
+                    value={form.deletedBy}
                     onChange={handle}
                     placeholder="UUID"
                     className="form-control form-control-sm"
                   />
                 </div>
                 <div className="col-6">
-                  <label className="form-label small fw-semibold">Deleted Date</label>
+                  <label className="form-label small fw-semibold">Deleted At</label>
                   <input
-                    name="deletedDate"
+                    name="deletedAt"
                     type="datetime-local"
-                    value={form.deletedDate}
+                    value={form.deletedAt}
                     onChange={handle}
                     className="form-control form-control-sm"
                   />

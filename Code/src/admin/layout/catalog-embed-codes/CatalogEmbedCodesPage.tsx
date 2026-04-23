@@ -2,37 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { catalogEmbedCodeService } from '@/server/services/catalog-embed-code.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { CatalogEmbedCodeTable } from '@/admin/features/catalog-embed-code/CatalogEmbedCodeTable';
 import { CatalogEmbedCodeFilters } from '@/admin/features/catalog-embed-code/CatalogEmbedCodeFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedCatalogEmbedCodes } from '@/server/repositories/catalog-embed-code.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Mã nhúng' };
 
+const emptyResult: PaginatedCatalogEmbedCodes = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function CatalogEmbedCodesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let embedCodes: Awaited<ReturnType<typeof catalogEmbedCodeService.getAllEmbedCodes>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    embedCodes = await catalogEmbedCodeService.getAllEmbedCodes();
+  const result = await dbSafe(() =>
+    catalogEmbedCodeService.getAllEmbedCodes({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      embedCodes = embedCodes.filter((e) =>
-        (e.title && e.title.toLowerCase().includes(kw)) ||
-        (e.embedCode && e.embedCode.toLowerCase().includes(kw)) ||
-        (e.note && e.note.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      embedCodes = embedCodes.filter((e) => e.isActive);
-    } else if (sp.status === 'inactive') {
-      embedCodes = embedCodes.filter((e) => !e.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -57,7 +60,7 @@ export default async function CatalogEmbedCodesPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH MÃ NHÚNG
+          DANH SÁCH MÃ NHÚNG ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -77,7 +80,12 @@ export default async function CatalogEmbedCodesPage({ searchParams }: Props) {
             </div>
           )}
 
-          <CatalogEmbedCodeTable embedCodes={embedCodes} />
+          <CatalogEmbedCodeTable embedCodes={result.data.map((e) => ({
+            ...e,
+            positionId: e.positionId != null ? Number(e.positionId) : null,
+          }))} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/catalog-embed-codes" />
         </div>
       </div>
     </>

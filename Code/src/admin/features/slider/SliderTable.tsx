@@ -57,7 +57,6 @@ export function SliderTable({ sliders }: { sliders: SliderItem[] }) {
           <thead>
             <tr>
               <th className="text-center" style={{ width: 50 }}>STT</th>
-              <th style={{ width: 80 }}>Hình ảnh</th>
               <th>Tiêu đề</th>
               <th>Link</th>
               <th style={{ width: 100 }}>Ngày tạo</th>
@@ -70,17 +69,6 @@ export function SliderTable({ sliders }: { sliders: SliderItem[] }) {
             {sliders.map((slider, idx) => (
               <tr key={slider.id}>
                 <td className="text-center">{idx + 1}</td>
-                <td className="text-center">
-                  {slider.image ? (
-                    <img
-                      src={slider.image}
-                      alt={slider.title || 'slider'}
-                      style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4 }}
-                    />
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
-                </td>
                 <td>
                   <div className="fw-semibold small">{slider.title || <span className="text-muted">Không tiêu đề</span>}</div>
                 </td>

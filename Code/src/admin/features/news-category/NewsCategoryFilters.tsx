@@ -5,15 +5,26 @@ import { useState, useCallback } from 'react';
 
 interface Props {
   defaultSearch: string;
-  defaultPublished: string;
+  defaultCategory: string;
+  defaultDateFrom: string;
+  defaultDateTo: string;
+  categories: Array<{ id: string; name: string }>;
 }
 
-export function NewsCategoryFilters({ defaultSearch, defaultPublished }: Props) {
+export function NewsCategoryFilters({
+  defaultSearch,
+  defaultCategory,
+  defaultDateFrom,
+  defaultDateTo,
+  categories,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(defaultSearch);
-  const [isPublished, setIsPublished] = useState(defaultPublished);
+  const [category, setCategory] = useState(defaultCategory);
+  const [dateFrom, setDateFrom] = useState(defaultDateFrom);
+  const [dateTo, setDateTo] = useState(defaultDateTo);
 
   const push = useCallback((o: Record<string, string | undefined>) => {
     const p = new URLSearchParams(searchParams.toString());
@@ -25,7 +36,7 @@ export function NewsCategoryFilters({ defaultSearch, defaultPublished }: Props) 
 
   return (
     <>
-      {/* Hàng 1: Từ khóa | Xuất bản */}
+      {/* Hàng 1: Từ khóa | Danh mục */}
       <div className="row g-2 mb-2">
         <div className="col-md-6">
           <label className="form-label">Từ khóa</label>
@@ -38,27 +49,48 @@ export function NewsCategoryFilters({ defaultSearch, defaultPublished }: Props) 
           />
         </div>
         <div className="col-md-6">
-          <label className="form-label">Xuất bản</label>
+          <label className="form-label">Danh mục</label>
           <select
             className="form-select form-select-sm"
-            value={isPublished}
-            onChange={(e) => setIsPublished(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">Tất cả</option>
-            <option value="true">Có</option>
-            <option value="false">Không</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
           </select>
         </div>
       </div>
-      {/* Hàng 2: Nút */}
+      {/* Hàng 2: Từ ngày | Đến ngày | Nút */}
       <div className="row g-2 align-items-end">
-        <div className="col-md-12 d-flex gap-2 justify-content-end">
+        <div className="col-md-3">
+          <label className="form-label">Từ ngày</label>
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(e) => setDateFrom(e.target.value)}
+            className="form-control form-control-sm"
+          />
+        </div>
+        <div className="col-md-3">
+          <label className="form-label">Đến ngày</label>
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(e) => setDateTo(e.target.value)}
+            className="form-control form-control-sm"
+          />
+        </div>
+        <div className="col-md-6 d-flex gap-2 justify-content-end">
           <button
             type="button"
             className="btn btn-sm btn-search"
             onClick={() => push({
               search: search.trim() || undefined,
-              isPublished: isPublished || undefined,
+              category: category || undefined,
+              dateFrom: dateFrom || undefined,
+              dateTo: dateTo || undefined,
             })}
           >
             <i className="bi bi-search me-1"></i>Tìm kiếm
@@ -68,8 +100,10 @@ export function NewsCategoryFilters({ defaultSearch, defaultPublished }: Props) 
             className="btn btn-sm btn-reset"
             onClick={() => {
               setSearch('');
-              setIsPublished('');
-              push({ search: undefined, isPublished: undefined });
+              setCategory('');
+              setDateFrom('');
+              setDateTo('');
+              push({ search: undefined, category: undefined, dateFrom: undefined, dateTo: undefined });
             }}
           >
             <i className="bi bi-arrow-counterclockwise me-1"></i>Làm mới

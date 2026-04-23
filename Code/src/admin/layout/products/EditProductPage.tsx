@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { productService } from '@/server/services/product.service';
 import { categoryService } from '@/server/services/category.service';
 import { ProductForm } from '@/admin/features/product/ProductForm';
+import { ProductSalesStats } from '@/admin/features/product/ProductSalesStats';
 import { dbSafe } from '@/lib/db-safe';
 
 interface Props {
@@ -43,6 +44,11 @@ export default async function EditProductPage({ params }: Props) {
         </Link>
         <h1 style={{ fontSize: 20, fontWeight: 600 }}>Chỉnh sửa: {product.name}</h1>
       </div>
+
+      {/* Thống kê bán hàng */}
+      <ProductSalesStats productId={id} productName={product.name} />
+
+      {/* Form chỉnh sửa */}
       <ProductForm
         product={product}
         categories={categories}

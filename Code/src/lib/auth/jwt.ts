@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'noithattienloi-secret-key-change-i
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'noithattienloi-refresh-secret-change-in-production';
 
 const ACCESS_TOKEN_EXPIRES = '15m';
-const REFRESH_TOKEN_EXPIRES_DAYS = 7;
+const REFRESH_TOKEN_EXPIRES_DAYS = 1 / 24; // 1 hour
 
 export interface JwtPayload {
   userId: string;

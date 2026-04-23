@@ -72,7 +72,7 @@ export const authService = {
         fullName: user.fullName,
         role: { name: user.role.name, code: user.role.code },
       },
-      tokens: { accessToken, refreshToken, expiresIn: 15 * 60 },
+      tokens: { accessToken, refreshToken, expiresIn: 60 * 60 }, // 1 hour
     };
   },
 

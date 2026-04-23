@@ -13,5 +13,14 @@ export default async function EditNewsCategoryPage({ params }: Props) {
   } catch {}
   if (!newsCategory) notFound();
 
-  return <DynamicNewsCategoryFormClient newsCategory={newsCategory as any} />;
+  const parentCategories = await newsCategoryService.getAllCategories();
+  const options = parentCategories.map((c) => ({ id: String(c.id), title: c.title }));
+
+  const mappedCategory = newsCategory ? {
+    ...(newsCategory as unknown as Record<string, unknown>),
+    sortOrder: Number(newsCategory.sortOrder ?? 0),
+    viewCount: Number(newsCategory.viewCount ?? 0),
+  } : null;
+
+  return <DynamicNewsCategoryFormClient newsCategory={mappedCategory as Parameters<typeof DynamicNewsCategoryFormClient>[0]['newsCategory']} parentCategories={options} />;
 }

@@ -5,8 +5,14 @@ import { hashPassword, isStrongPassword } from '@/lib/auth/password';
 import { NotFoundError, ValidationError, ConflictError } from '@/server/errors';
 
 export const adminUserService = {
-  async getAllUsers() {
-    return adminUserRepository.findAll();
+  async getAllUsers(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return adminUserRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getUserById(id: string) {

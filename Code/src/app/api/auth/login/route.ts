@@ -14,6 +14,22 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({ success: true, data: result }, { status: 200 });
 
+    response.cookies.set('admin_token', result.tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour
+    });
+
+    response.cookies.set('admin_refresh', result.tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour
+    });
+
     return response;
   } catch (error) {
     if (isAppError(error)) {

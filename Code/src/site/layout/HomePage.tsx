@@ -13,43 +13,22 @@ import { HomeNews } from '@/site/features/home/HomeNews';
 import { SearchKeywords } from '@/site/features/home/SearchKeywords';
 import { FooterContent } from '@/site/features/home/FooterContent';
 
-export const metadata: Metadata = { title: 'Trang chủ - Nội Thất Tiện Lợi' };
+export const metadata: Metadata = { title: 'Trang chủ' };
 
 export default async function HomePage() {
-  const [flashSaleProducts, featuredProducts, categories, allNews, sliders] =
-    await Promise.all([
-      dbSafe(() => productService.getFlashSaleProducts(10), []),
-      dbSafe(() => productService.getFeaturedProducts(15), []),
-      dbSafe(() => categoryService.getCategoryTree(), []),
-      dbSafe(() => newsService.getAllNews(), []),
-      dbSafe(() => sliderService.getAllSliders(), []),
-    ]);
-
-  const homeNews = (allNews as { id: string; isActive: boolean; isShowHome: boolean; title: string; summary: string | null; image: string | null; seName: string }[])
-    .filter((n) => n.isActive && n.isShowHome)
-    .slice(0, 4);
-
-  const activeSliders = (sliders as { id: string; title: string | null; image: string; link: string | null; isActive: boolean }[])
-    .filter((s) => s.isActive)
-    .slice(0, 5);
+  const [flashSaleProducts, featuredProducts, categories] = await Promise.all([
+    dbSafe(() => productService.getFlashSaleProducts(8), []),
+    dbSafe(() => productService.getFeaturedProducts(12), []),
+    dbSafe(() => categoryService.getCategoryTree(), []),
+  ]);
 
   return (
-    <>
-      <div className="container">
-        <HomeSlider slides={activeSliders} />
-        <FlashSales products={flashSaleProducts} />
-        <CategoryGrid categories={categories} />
-        <BestSellers products={featuredProducts} />
-        <div className="banner-home-qc">
-          <img src="/images/ghe-nhua.jpg" alt="Ghế nhựa khuyến mãi" />
-        </div>
-        <TodaySuggestion products={featuredProducts} />
-        <HomeNews news={homeNews} />
-        <SearchKeywords />
-      </div>
-      <div className="container">
-        <FooterContent />
-      </div>
-    </>
+    <div className="container">
+      <section className="home-slider">{/* TODO: Slider */}</section>
+      <FlashSales products={flashSaleProducts} />
+      <CategoryGrid categories={categories} />
+      <BestSellers products={featuredProducts} />
+      <TodaySuggestion products={featuredProducts} />
+    </div>
   );
 }

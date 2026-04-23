@@ -1,7 +1,40 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(node node_modulesprismabuildindex.js generate)",
+      "Bash(cd:*)",
+      "Bash(psql -U postgres -d NoiThatMinhQui -c \"SELECT column_name FROM information_schema.columns WHERE table_name = ''news_category'' ORDER BY ordinal_position;\")",
+      "Bash(node -e \":*)",
+      "Bash(curl -s http://localhost:3000/admin/api/uploads)",
+      "Bash(curl -s http://localhost:3000/admin/api/uploads/folders)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir -p \"D:/Website/NoiThatTienLoi/Html/NoiThatTienLoi/Code/src/app/admin/api/shipping-providers/[id]/shipments\")",
+      "Bash(mkdir -p \"D:/Website/NoiThatTienLoi/Html/NoiThatTienLoi/Code/src/app/admin/api/shipping-providers/[id]/stats\")",
+      "Bash(npx ts-node:*)",
+      "Bash(psql:*)",
+      "Bash(node compare-schema.mjs)",
+      "Bash(npm ls:*)",
+      "Bash(findstr \"DATABASE_URL\")",
+      "Bash(findstr /i \"DATABASE\")",
+      "Bash(PGPASSWORD=123456 psql -h localhost -U postgres -d NoiThatMinhQui -c \"SELECT table_name FROM information_schema.tables WHERE table_schema = ''public'' ORDER BY table_name;\")",
+      "Bash(tasklist)",
+      "Bash(findstr /i \"node\")",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(findstr /n \"model Warehouse\\\\|contactName\\\\|contactPhone\\\\|provinceName\\\\|districtName\\\\|wardName\" prismaschema.prisma)",
+      "Bash(findstr /i \"model warehouse contact\")",
+      "Bash(node -e \"const { PrismaClient } = require\\(''@prisma/client''\\); const prisma = new PrismaClient\\(\\); prisma.warehouse.findMany\\({ take: 3, select: { id: true, code: true, name: true } }\\).then\\(r => { console.log\\(''Warehouses found:'', r.length\\); console.log\\(JSON.stringify\\(r\\)\\); prisma.$disconnect\\(\\); }\\).catch\\(e => { console.error\\(''Error:'', e.message\\); prisma.$disconnect\\(\\); }\\)\")",
+      "Bash(node test-warehouse.js)",
+      "Bash(del:*)",
+      "Bash(curl -s \"http://localhost:3000/admin/api/warehouses?page=1\")",
+      "Bash(curl:*)",
+      "Bash(node -e \"const { PrismaClient } = require\\(''./node_modules/.prisma/client''\\); const prisma = new PrismaClient\\(\\); prisma.warehouse.findMany\\({ take: 2 }\\).then\\(r => console.log\\(''count:'', r.length, ''first:'', r[0] ? r[0].name : ''none''\\)\\).catch\\(e => console.error\\(''FAIL:'', e.message\\)\\).finally\\(\\(\\) => prisma.$disconnect\\(\\)\\);\")",
+      "Bash(ls -la D:WebsiteNoiThatTienLoiHtmlNoiThatTienLoiCodenode_modules.prismaclient/*.d.ts)",
+      "Bash(node test-pg.js)",
+      "Bash(grep '\"\"prisma\"\"' package.json)",
+      "Bash(find \"D:/Website/NoiThatTienLoi/Html/NoiThatTienLoi/Code/src/app/\\(site\\)/api\" -type f -name \"*.ts\")",
+      "Bash(find \"D:/Website/NoiThatTienLoi/Html/NoiThatTienLoi/Code/src/app/\\(site\\)\" -type f -name \"*.tsx\")"
     ]
   }
 }

@@ -14,7 +14,13 @@ interface NewsItem {
   isActive: boolean | null;
   isNew: boolean | null;
   viewCount: bigint | null;
-  createdDate: Date | null;
+  commentCount: bigint | null;
+  likeCount: bigint | null;
+  authorName: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  isRedirect: boolean | null;
+  slugRedirect: string | null;
 }
 
 function formatDate(date: Date | null) {
@@ -23,7 +29,7 @@ function formatDate(date: Date | null) {
   return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 }
 
-export function NewsTable({ news }: { news: NewsItem[] }) {
+export function NewsTable({ news }: { news: NewsItem[]; categories?: unknown[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -61,15 +67,16 @@ export function NewsTable({ news }: { news: NewsItem[] }) {
           <thead>
             <tr>
               <th className="text-center" style={{ width: 50 }}>STT</th>
-              <th>Tieu de</th>
-              <th style={{ width: 80 }}>Hinh</th>
+              <th>Tiêu đề</th>
+              <th style={{ width: 80 }}>Hình</th>
               <th style={{ width: 150 }}>Slug</th>
-              <th className="text-center" style={{ width: 80 }}>Xuat ban</th>
-              <th className="text-center" style={{ width: 80 }}>Trang chu</th>
-              <th className="text-center" style={{ width: 90 }}>Luot xem</th>
-              <th style={{ width: 120 }}>Tac gia</th>
-              <th style={{ width: 110 }}>Ngay tao</th>
-              <th className="text-center" style={{ width: 100 }}>Thao tac</th>
+              <th className="text-center" style={{ width: 60 }}>Xuất bản</th>
+              <th className="text-center" style={{ width: 60 }}>Trạng thái</th>
+              <th className="text-center" style={{ width: 60 }}>HM</th>
+              <th className="text-center" style={{ width: 70 }}>Xem</th>
+              <th style={{ width: 120 }}>Tác giả</th>
+              <th style={{ width: 110 }}>Ngày tạo</th>
+              <th className="text-center" style={{ width: 100 }}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -79,7 +86,10 @@ export function NewsTable({ news }: { news: NewsItem[] }) {
                 <td>
                   <div className="fw-semibold small">{item.title || '—'}</div>
                   {item.isNew === true && (
-                    <span className="badge bg-danger" style={{ fontSize: 10 }}>Moi</span>
+                    <span className="badge bg-danger" style={{ fontSize: 10 }}>Mới</span>
+                  )}
+                  {item.isRedirect && (
+                    <span className="badge bg-warning ms-1" style={{ fontSize: 10 }}>Chuyển hướng</span>
                   )}
                 </td>
                 <td className="text-center">
@@ -98,18 +108,26 @@ export function NewsTable({ news }: { news: NewsItem[] }) {
                   {item.isPublished ? (
                     <i className="bi bi-check-lg text-success"></i>
                   ) : (
-                    <span className="text-muted">—</span>
+                    <i className="bi bi-dash text-muted"></i>
+                  )}
+                </td>
+                <td className="text-center">
+                  {item.isActive ? (
+                    <i className="bi bi-check-lg text-success"></i>
+                  ) : (
+                    <i className="bi bi-dash text-muted"></i>
                   )}
                 </td>
                 <td className="text-center">
                   {item.isShowHome ? (
                     <i className="bi bi-check-lg text-success"></i>
                   ) : (
-                    <span className="text-muted">—</span>
+                    <i className="bi bi-dash text-muted"></i>
                   )}
                 </td>
                 <td className="text-center">{item.viewCount ? Number(item.viewCount) : '—'}</td>
-                <td>{formatDate(item.createdDate)}</td>
+                <td className="small">{item.authorName || '—'}</td>
+                <td>{formatDate(item.createdAt)}</td>
                 <td className="text-center">
                   <Link href={`/admin/news/${item.id}/edit`} className="btn-edit me-1">
                     <i className="bi bi-pencil-fill"></i>

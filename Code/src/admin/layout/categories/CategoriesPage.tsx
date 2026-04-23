@@ -2,41 +2,51 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { categoryService } from '@/server/services/category.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { CategoryTable } from '@/admin/features/category/CategoryTable';
 import { CategoryFilters } from '@/admin/features/category/CategoryFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedCategories } from '@/server/repositories/category.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string; parentId?: string; fromDate?: string; toDate?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    status?: string;
+    parentId?: string;
+    fromDate?: string;
+    toDate?: string;
+  }>;
 }
 
 export const metadata = { title: 'Quản lý danh mục' };
 
+const emptyResult: PaginatedCategories = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function CategoriesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let categories: Awaited<ReturnType<typeof categoryService.getAdminCategories>> = [];
-  let all: typeof categories = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    all = await categoryService.getAdminCategories();
-    categories = [...all];
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      categories = categories.filter((c: typeof categories[number]) => c.name.toLowerCase().includes(kw) || c.slug.toLowerCase().includes(kw));
-    }
-    if (sp.status === 'active') categories = categories.filter((c: typeof categories[number]) => c.isActive);
-    else if (sp.status === 'inactive') categories = categories.filter((c: typeof categories[number]) => !c.isActive);
-    if (sp.parentId) categories = categories.filter((c: typeof categories[number]) => c.parentId === sp.parentId);
-    if (sp.fromDate) {
-      const from = new Date(sp.fromDate);
-      categories = categories.filter((c: typeof categories[number]) => new Date(c.createdAt) >= from);
-    }
-    if (sp.toDate) {
-      const to = new Date(sp.toDate);
-      to.setHours(23, 59, 59, 999);
-      categories = categories.filter((c: typeof categories[number]) => new Date(c.createdAt) <= to);
-    }
-  } catch { dbError = true; }
+  const [result, allCategories] = await Promise.all([
+    dbSafe(() =>
+      categoryService.getAdminCategories({
+        page,
+        pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+        search: sp.search || undefined,
+        isActive: sp.status || undefined,
+        parentId: sp.parentId || undefined,
+      }),
+      emptyResult
+    ),
+    dbSafe(() => categoryService.getAdminCategories({ pageSize: 9999 }) as Promise<PaginatedCategories>, emptyResult),
+  ]);
+
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -55,7 +65,7 @@ export default async function CategoriesPage({ searchParams }: Props) {
             <CategoryFilters
               defaultSearch={sp.search || ''}
               defaultStatus={sp.status || ''}
-              categories={all.map((c: typeof all[number]) => ({ id: c.id, name: c.name }))}
+              categories={allCategories.data.map((c) => ({ id: c.id, name: c.name }))}
             />
           </Suspense>
         </div>
@@ -64,7 +74,7 @@ export default async function CategoriesPage({ searchParams }: Props) {
       {/* DANH SÁCH CHUYÊN MỤC */}
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH CHUYÊN MỤC
+          DANH SÁCH CHUYÊN MỤC ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -87,7 +97,9 @@ export default async function CategoriesPage({ searchParams }: Props) {
           )}
 
           {/* Table */}
-          <CategoryTable categories={categories} />
+          <CategoryTable categories={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/categories" />
         </div>
       </div>
     </>

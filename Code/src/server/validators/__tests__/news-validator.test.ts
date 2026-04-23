@@ -58,7 +58,7 @@ describe('News Validator', () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.isActive).toBe(true);
-      expect(result.data.isPublished).toBe(true);
+      expect(result.data.isPublished).toBe(false);
       expect(result.data.isShowHome).toBe(true);
       expect(result.data.isRemoved).toBe(false);
       expect(result.data.allowComments).toBe(true);
@@ -118,47 +118,131 @@ describe('NewsCategory Validator', () => {
       content: '<p>Nội dung</p>',
       imageUrl: '/uploads/cat.jpg',
       seName: 'danh-muc-tin-tuc',
-      isPublished: true,
       isShowHome: true,
+      isActive: true,
+      sortOrder: 5,
     };
     const result = validateNewsCategory(data);
     expect(result.success).toBe(true);
   });
 
-  it('accepts empty data', () => {
+  it('accepts empty data (required fields validated at form layer)', () => {
     const data = {};
     const result = validateNewsCategory(data);
     expect(result.success).toBe(true);
   });
 
-  it('applies default values', () => {
-    const data = {};
+  it('accepts empty title (trimmed/validated at form layer)', () => {
+    const data = { title: '', seName: 'danh-muc' };
     const result = validateNewsCategory(data);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.isPublished).toBe(true);
+      expect(result.data.title).toBe('');
+    }
+  });
+
+  it('accepts null title (validated at form layer)', () => {
+    const data = { title: null as unknown as string, seName: 'danh-muc' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts empty seName (validated at form layer)', () => {
+    const data = { title: 'Danh mục', seName: '' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts null seName (validated at form layer)', () => {
+    const data = { title: 'Danh mục', seName: null as unknown as string };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects title exceeding 200 characters', () => {
+    const data = { title: 'a'.repeat(201), seName: 'danh-muc' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts title with exactly 200 characters', () => {
+    const data = { title: 'a'.repeat(200), seName: 'danh-muc' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts title with whitespace', () => {
+    const data = { title: '  Danh mục tin tức  ', seName: 'danh-muc' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.title).toBe('  Danh mục tin tức  ');
+    }
+  });
+
+  it('applies default values', () => {
+    const data = { title: 'Danh mục', seName: 'danh-muc' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
       expect(result.data.isShowHome).toBe(true);
+      expect(result.data.isActive).toBe(true);
+      expect(result.data.seoNoindex).toBe(false);
     }
   });
 
   it('accepts nullable fields as null', () => {
     const data = {
-      title: null,
+      title: 'Danh mục',
+      seName: 'danh-muc',
       summary: null,
       imageUrl: null,
-      seName: null,
+      metaTitle: null,
+      metaDescription: null,
+      metaKeywords: null,
+      slugRedirect: null,
+      seoCanonical: null,
     };
     const result = validateNewsCategory(data);
     expect(result.success).toBe(true);
   });
 
   it('validates sortOrder as integer', () => {
-    const data = { sortOrder: 5 };
+    const data = { title: 'Danh mục', seName: 'danh-muc', sortOrder: 5 };
     const result = validateNewsCategory(data);
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.sortOrder).toBe(5);
     }
+  });
+
+  it('coerces sortOrder from string', () => {
+    const data = { title: 'Danh mục', seName: 'danh-muc', sortOrder: '10' };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.sortOrder).toBe(10);
+    }
+  });
+
+  it('accepts seoNoindex as true', () => {
+    const data = { title: 'Danh mục', seName: 'danh-muc', seoNoindex: true };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.seoNoindex).toBe(true);
+    }
+  });
+
+  it('accepts slugRedirect and seoCanonical', () => {
+    const data = {
+      title: 'Danh mục',
+      seName: 'danh-muc',
+      slugRedirect: '/old-slug',
+      seoCanonical: 'https://example.com/canonical',
+    };
+    const result = validateNewsCategory(data);
+    expect(result.success).toBe(true);
   });
 });
 
@@ -215,6 +299,80 @@ describe('Page Validator', () => {
     if (result.success) {
       expect(result.data.sortOrder).toBe(10);
     }
+  });
+
+  it('accepts isRedirect with redirect fields', () => {
+    const data = {
+      isRedirect: true,
+      slugRedirect: '/old-page',
+      errorCode: '301',
+      seoCanonical: 'https://example.com/canonical',
+    };
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.isRedirect).toBe(true);
+      expect(result.data.slugRedirect).toBe('/old-page');
+      expect(result.data.errorCode).toBe('301');
+      expect(result.data.seoCanonical).toBe('https://example.com/canonical');
+    }
+  });
+
+  it('accepts errorCode 302', () => {
+    const data = { isRedirect: true, errorCode: '302' };
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.errorCode).toBe('302');
+    }
+  });
+
+  it('rejects invalid errorCode', () => {
+    const data = { errorCode: '200' };
+    const result = validatePage(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects invalid errorCode string', () => {
+    const data = { errorCode: 'abc' };
+    const result = validatePage(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts isRedirect as false (default)', () => {
+    const data = {};
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.isRedirect).toBe(false);
+    }
+  });
+
+  it('accepts seoNoindex as true', () => {
+    const data = { seoNoindex: true };
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.seoNoindex).toBe(true);
+    }
+  });
+
+  it('accepts slugRedirect max length', () => {
+    const data = { slugRedirect: '/a'.repeat(200) };
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts metaTitle with max length', () => {
+    const data = { metaTitle: 'a'.repeat(400) };
+    const result = validatePage(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects metaTitle exceeding max length', () => {
+    const data = { metaTitle: 'a'.repeat(401) };
+    const result = validatePage(data);
+    expect(result.success).toBe(false);
   });
 });
 
@@ -337,50 +495,48 @@ describe('getMenuTypeLabel', () => {
 describe('SystemConfig Validator', () => {
   it('validates valid config data', () => {
     const data = {
-      pageTitle: 'Nội Thất Tiện Lợi',
-      keywords: 'noi-that,trang-tri',
-      metaDescription: 'Mô tả website',
-      displayRowCount: 20,
-      accessTimeFrom: '08:00',
-      accessTimeTo: '18:00',
-      holidays: 'T7,CN',
+      general: {
+        pageTitle: 'Nội Thất Tiện Lợi',
+        keywords: 'noi-that,trang-tri',
+        metaDescription: 'Mô tả website',
+        displayRowCount: 20,
+        accessTimeFrom: '08:00',
+        accessTimeTo: '18:00',
+      },
+      mail: {},
+      info: {},
     };
     const result = validateSystemConfig(data);
     expect(result.success).toBe(true);
   });
 
   it('accepts empty data', () => {
-    const data = {};
+    const data = { general: {}, mail: {}, info: {} };
     const result = validateSystemConfig(data);
     expect(result.success).toBe(true);
   });
 
   it('validates displayRowCount as positive integer', () => {
-    const data = { displayRowCount: 50 };
+    const data = { general: { displayRowCount: 50 }, mail: {}, info: {} };
     const result = validateSystemConfig(data);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.displayRowCount).toBe(50);
+      expect(result.data.general.displayRowCount).toBe(50);
     }
   });
 
   it('accepts null for all string fields', () => {
     const data = {
-      pageTitle: null,
-      keywords: null,
-      metaDescription: null,
-      logoUrl: null,
-      imageUrl: null,
-      accessTimeFrom: null,
-      accessTimeTo: null,
-      holidays: null,
+      general: {
+        pageTitle: null,
+        keywords: null,
+        metaDescription: null,
+        accessTimeFrom: null,
+        accessTimeTo: null,
+      },
+      mail: {},
+      info: {},
     };
-    const result = validateSystemConfig(data);
-    expect(result.success).toBe(true);
-  });
-
-  it('accepts totalAccessCount', () => {
-    const data = { totalAccessCount: 1000 };
     const result = validateSystemConfig(data);
     expect(result.success).toBe(true);
   });

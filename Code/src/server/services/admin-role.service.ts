@@ -4,8 +4,12 @@ import { validateAdminRole } from '@/server/validators/admin-role.validator';
 import { NotFoundError, ValidationError, ConflictError } from '@/server/errors';
 
 export const adminRoleService = {
-  async getAllRoles() {
-    return adminRoleRepository.findAll();
+  async getAllRoles(opts?: { page?: number; pageSize?: number; search?: string }) {
+    return adminRoleRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+    });
   },
 
   async getRoleById(id: string) {

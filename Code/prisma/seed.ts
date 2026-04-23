@@ -57,6 +57,25 @@ async function main() {
 
   console.log(`✅ Created ${permissions.length} permissions`);
 
+  // ── 1b. Create UrlRecordReference (danh mục entity cho url_record) ─────────
+  const urlRecordReferences = [
+    { entityName: 'Product', controllerName: 'Product', actionName: 'Detail', urlPattern: '/san-pham/{slug}', description: 'Trang chi tiết sản phẩm', isActive: true },
+    { entityName: 'Category', controllerName: 'Category', actionName: 'List', urlPattern: '/danh-muc/{slug}', description: 'Trang danh sách sản phẩm theo danh mục', isActive: true },
+    { entityName: 'Page', controllerName: 'Page', actionName: 'View', urlPattern: '/{slug}', description: 'Trang tĩnh', isActive: true },
+    { entityName: 'News', controllerName: 'News', actionName: 'Detail', urlPattern: '/tin-tuc/{slug}', description: 'Trang chi tiết tin tức', isActive: true },
+    { entityName: 'NewsCategory', controllerName: 'NewsCategory', actionName: 'List', urlPattern: '/tin-tuc/{slug}', description: 'Trang danh sách tin tức theo danh mục', isActive: true },
+  ];
+
+  for (const ref of urlRecordReferences) {
+    await prisma.urlRecordReference.upsert({
+      where: { entityName_controllerName_actionName: { entityName: ref.entityName, controllerName: ref.controllerName, actionName: ref.actionName } },
+      update: { urlPattern: ref.urlPattern, description: ref.description, isActive: ref.isActive },
+      create: ref,
+    });
+  }
+
+  console.log('✅ Created UrlRecordReference entries');
+
   // ── 2. Create Roles ───────────────────────────────────────────────────────
 
   // SUPER_ADMIN — full access, bypass

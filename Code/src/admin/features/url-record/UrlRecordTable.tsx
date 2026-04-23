@@ -11,8 +11,8 @@ interface UrlRecordItem {
   slug: string | null;
   isActive: boolean | null;
   isDeleted: boolean | null;
-  deletedUserId: string | null;
-  deletedDate: Date | null;
+  deletedBy: string | null;
+  deletedAt: Date | null;
   slugRedirect: string | null;
   isRedirect: boolean | null;
   errorCode: string | null;

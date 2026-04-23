@@ -3,12 +3,13 @@ import { z } from 'zod';
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const newsSchema = z.object({
+  categoryId: z.string().optional().nullable(),
   title: z.string().max(1000).optional().nullable(),
   summary: z.string().optional().nullable(),
   content: z.string().optional().nullable(),
   sortOrder: z.coerce.number().min(0).default(0),
   isActive: z.boolean().default(true),
-  isPublished: z.boolean().default(true),
+  isPublished: z.boolean().default(false),
   isShowHome: z.boolean().default(true),
   image: z.string().optional().nullable(),
   seName: z.string().max(255).optional().nullable(),

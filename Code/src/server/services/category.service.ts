@@ -3,6 +3,7 @@ import { validateCategory, type CategoryInput } from '@/server/validators/catego
 import { createSlug } from '@/lib/utils';
 import type { CategoryTree } from '@/lib/types';
 import { NotFoundError, ValidationError, DuplicateError, ConflictError } from '@/server/errors';
+import { urlRecordReferenceService } from './url-record-reference.service';
 
 export const categoryService = {
   async getCategoryTree(): Promise<CategoryTree[]> {
@@ -14,8 +15,15 @@ export const categoryService = {
     return categoryRepository.findAll(false);
   },
 
-  async getAdminCategories() {
-    return categoryRepository.findAllFlat();
+  async getAdminCategories(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string; parentId?: string | null }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return categoryRepository.findAllFlatPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+      parentId: opts?.parentId,
+    });
   },
 
   async getCategoryById(id: string) {
@@ -45,7 +53,18 @@ export const categoryService = {
       throw new DuplicateError('Slug', result.data.slug);
     }
 
-    return categoryRepository.create(result.data);
+    const category = await categoryRepository.create(result.data);
+
+    // Lưu slug vào url_record
+    if (category.id && result.data.slug) {
+      await urlRecordReferenceService.syncUrlRecord(
+        BigInt(category.id),
+        'Category',
+        result.data.slug
+      );
+    }
+
+    return category;
   },
 
   async updateCategory(id: string, input: Record<string, unknown>) {
@@ -74,7 +93,18 @@ export const categoryService = {
       }
     }
 
-    return categoryRepository.update(id, result.data);
+    const category = await categoryRepository.update(id, result.data);
+
+    // Cập nhật slug trong url_record nếu slug thay đổi
+    if (result.data.slug && result.data.slug !== current.slug) {
+      await urlRecordReferenceService.updateUrlRecord(
+        BigInt(category.id),
+        'Category',
+        result.data.slug
+      );
+    }
+
+    return category;
   },
 
   async deleteCategory(id: string) {
@@ -92,6 +122,9 @@ export const categoryService = {
     if (hasProducts) {
       throw new ConflictError('Không thể xóa danh mục đang có sản phẩm');
     }
+
+    // Xóa slug trong url_record
+    await urlRecordReferenceService.deleteUrlRecord(BigInt(id), 'Category');
 
     return categoryRepository.delete(id);
   },

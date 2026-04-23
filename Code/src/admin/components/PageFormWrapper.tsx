@@ -39,6 +39,8 @@ interface PageItem {
   slugRedirect: string | null;
   seoCanonical: string | null;
   seoNoindex: boolean | null;
+  isRedirect: boolean | null;
+  errorCode: string | null;
 }
 
 interface Props {

@@ -13,7 +13,7 @@ interface PageItem {
   isActive: boolean | null;
   isShowHome: boolean | null;
   sortOrder: number | null;
-  createdDate: Date | null;
+  createdAt: Date | null;
 }
 
 function formatDate(date: Date | null) {
@@ -107,7 +107,7 @@ export function PageTable({ pages }: { pages: PageItem[] }) {
                     <span className="text-muted">—</span>
                   )}
                 </td>
-                <td>{formatDate(page.createdDate)}</td>
+                <td>{formatDate(page.createdAt)}</td>
                 <td className="text-center">
                   <Link href={`/admin/pages/${page.id}/edit`} className="btn-edit me-1">
                     <i className="bi bi-pencil-fill"></i>

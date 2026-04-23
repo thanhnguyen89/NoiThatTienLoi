@@ -2,36 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { productColorService } from '@/server/services/product-color.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { ProductColorTable } from '@/admin/features/product-color/ProductColorTable';
 import { ProductColorFilters } from '@/admin/features/product-color/ProductColorFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedProductColors } from '@/server/repositories/product-color.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý màu sắc' };
 
+const emptyResult: PaginatedProductColors = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function ProductColorsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let colors: Awaited<ReturnType<typeof productColorService.getAllColors>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    colors = await productColorService.getAllColors();
+  const result = await dbSafe(() =>
+    productColorService.getAllColors({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      colors = colors.filter((c) =>
-        c.colorName.toLowerCase().includes(kw) ||
-        (c.colorCode && c.colorCode.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      colors = colors.filter((c) => c.isActive);
-    } else if (sp.status === 'inactive') {
-      colors = colors.filter((c) => !c.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -56,7 +60,7 @@ export default async function ProductColorsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH MÀU SẮC
+          DANH SÁCH MÀU SẮC ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -76,7 +80,9 @@ export default async function ProductColorsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <ProductColorTable colors={colors} />
+          <ProductColorTable colors={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/product-colors" />
         </div>
       </div>
     </>

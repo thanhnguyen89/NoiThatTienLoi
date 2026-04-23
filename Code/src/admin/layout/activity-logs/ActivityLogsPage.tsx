@@ -1,36 +1,42 @@
 export const dynamic = 'force-dynamic';
 import { Suspense } from 'react';
 import { adminActivityLogRepository } from '@/server/repositories/admin-activity-log.repository';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { ActivityLogTable } from '@/admin/features/activity-log/ActivityLogTable';
 import { ActivityLogFilters } from '@/admin/features/activity-log/ActivityLogFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedActivityLogs } from '@/server/repositories/admin-activity-log.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; action?: string; fromDate?: string; toDate?: string }>;
+  searchParams: Promise<{ action?: string; fromDate?: string; toDate?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Nhật ký hoạt động' };
 
+const emptyResult: PaginatedActivityLogs = {
+  items: [],
+  total: 0,
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function ActivityLogsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let logs = { items: [] as Awaited<ReturnType<typeof adminActivityLogRepository.findAll>>['items'], total: 0 };
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    logs = await adminActivityLogRepository.findAll(100, 0);
+  const result = await dbSafe(() =>
+    adminActivityLogRepository.findAllPaginated({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      action: sp.action || undefined,
+      dateFrom: sp.fromDate || undefined,
+      dateTo: sp.toDate || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.action) {
-      logs.items = logs.items.filter((l) => l.action === sp.action);
-    }
-    if (sp.fromDate) {
-      const from = new Date(sp.fromDate);
-      logs.items = logs.items.filter((l) => new Date(l.createdAt) >= from);
-    }
-    if (sp.toDate) {
-      const to = new Date(sp.toDate);
-      to.setHours(23, 59, 59, 999);
-      logs.items = logs.items.filter((l) => new Date(l.createdAt) <= to);
-    }
-  } catch { dbError = true; }
+  const dbError = result.items.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -56,7 +62,7 @@ export default async function ActivityLogsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          NHẬT KÝ HOẠT ĐỘNG
+          NHẬT KÝ HOẠT ĐỘNG ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -69,7 +75,9 @@ export default async function ActivityLogsPage({ searchParams }: Props) {
               Không thể kết nối database.
             </div>
           )}
-          <ActivityLogTable logs={logs.items} />
+          <ActivityLogTable logs={result.items} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/activity-logs" />
         </div>
       </div>
     </>

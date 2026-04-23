@@ -2,31 +2,46 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { newsCategoryService } from '@/server/services/news-category.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { NewsCategoryTable } from '@/admin/features/news-category/NewsCategoryTable';
 import { NewsCategoryFilters } from '@/admin/features/news-category/NewsCategoryFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedNewsCategories } from '@/server/repositories/news-category.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; isPublished?: string }>;
+  searchParams: Promise<{ search?: string; category?: string; dateFrom?: string; dateTo?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý danh mục tin tức' };
 
+const emptyResult: PaginatedNewsCategories = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function NewsCategoriesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let categories: Awaited<ReturnType<typeof newsCategoryService.getAllCategories>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    categories = await newsCategoryService.getAllCategories();
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      categories = categories.filter((c) =>
-        (c.title?.toLowerCase().includes(kw) ?? false) || (c.seName && c.seName.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.isPublished === 'true') categories = categories.filter((c) => c.isPublished);
-    else if (sp.isPublished === 'false') categories = categories.filter((c) => !c.isPublished);
-  } catch { dbError = true; }
+  const [result, allCategories] = await Promise.all([
+    dbSafe(() =>
+      newsCategoryService.getAllCategories({
+        page,
+        pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+        search: sp.search || undefined,
+        dateFrom: sp.dateFrom || undefined,
+        dateTo: sp.dateTo || undefined,
+      }),
+      emptyResult
+    ),
+    dbSafe(() => newsCategoryService.getAllCategories() as Promise<PaginatedNewsCategories>, emptyResult),
+  ]);
+
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
+
+  const filterCategories = allCategories.data.map((c) => ({ id: c.id, name: c.title || c.seName || c.id }));
 
   return (
     <>
@@ -44,7 +59,10 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
           <Suspense fallback={null}>
             <NewsCategoryFilters
               defaultSearch={sp.search || ''}
-              defaultPublished={sp.isPublished || ''}
+              defaultCategory={sp.category || ''}
+              defaultDateFrom={sp.dateFrom || ''}
+              defaultDateTo={sp.dateTo || ''}
+              categories={filterCategories}
             />
           </Suspense>
         </div>
@@ -53,7 +71,7 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
       {/* DANH SÁCH CHUYÊN MỤC TIN TỨC */}
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH DANH MỤC TIN TỨC
+          DANH SÁCH DANH MỤC TIN TỨC ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -76,7 +94,9 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
           )}
 
           {/* Table */}
-          <NewsCategoryTable categories={categories} />
+          <NewsCategoryTable categories={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/news-categories" />
         </div>
       </div>
     </>

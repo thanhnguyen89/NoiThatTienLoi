@@ -27,10 +27,14 @@ interface Props {
   embedCode?: {
     id: string;
     title: string | null;
-    positionId: bigint | null;
+    positionId: number | null;
     embedCode: string | null;
     note: string | null;
     isActive: boolean | null;
+    createdBy: string | null;
+    createdAt: Date | null;
+    updatedBy: string | null;
+    updatedAt: Date | null;
   };
 }
 

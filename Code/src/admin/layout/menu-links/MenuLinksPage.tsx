@@ -2,45 +2,41 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { menuLinkService } from '@/server/services/menu-link.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { MenuLinkTable } from '@/admin/features/menu-link/MenuLinkTable';
 import { MenuLinkFilters } from '@/admin/features/menu-link/MenuLinkFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedMenuLinks } from '@/server/repositories/menu-link.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string; menuId?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; menuId?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quan ly Menu Link' };
 
+const emptyResult: PaginatedMenuLinks = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function MenuLinksPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let menuLinks: Awaited<ReturnType<typeof menuLinkService.getAllMenuLinks>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    menuLinks = await menuLinkService.getAllMenuLinks();
+  const result = await dbSafe(() =>
+    menuLinkService.getAllMenuLinks({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+      menuId: sp.menuId || undefined,
+    }),
+    emptyResult
+  );
 
-    // Filter theo menuId (neu co) — chi parse BigInt neu la so hop le
-    if (sp.menuId) {
-      const num = Number(sp.menuId);
-      if (!isNaN(num) && Number.isSafeInteger(num)) {
-        const tid = BigInt(sp.menuId);
-        menuLinks = menuLinks.filter((r) => r.menuId === tid);
-      }
-    }
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      menuLinks = menuLinks.filter((r) =>
-        (r.title && r.title.toLowerCase().includes(kw)) ||
-        (r.slug && r.slug.toLowerCase().includes(kw)) ||
-        (r.entityName && r.entityName.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      menuLinks = menuLinks.filter((r) => !r.nofollow);
-    } else if (sp.status === 'inactive') {
-      menuLinks = menuLinks.filter((r) => r.nofollow);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -79,7 +75,7 @@ export default async function MenuLinksPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SACH MENU LINK
+          DANH SACH MENU LINK ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -99,7 +95,9 @@ export default async function MenuLinksPage({ searchParams }: Props) {
             </div>
           )}
 
-          <MenuLinkTable menuLinks={menuLinks} />
+          <MenuLinkTable menuLinks={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/menu-links" />
         </div>
       </div>
     </>

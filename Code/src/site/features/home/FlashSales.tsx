@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { formatPrice, calcDiscountPercent } from '@/lib/utils';
 import type { ProductListItem } from '@/lib/types';
-import './home-sections.css';
 
 const CARD_W = 243; // 228px + 15px gap
 const VISIBLE = 4;
@@ -82,8 +81,12 @@ export function FlashSales({ products }: FlashSalesProps) {
               return (
                 <div key={p.id} className="product-card">
                   <Link href={`/san-pham/${p.slug}`} className="product-thumb">
-                    {p.thumbnail && (
+                    {p.thumbnail ? (
                       <img src={p.thumbnail} alt={p.name} loading="lazy" />
+                    ) : (
+                      <div style={{ width: '100%', height: '180px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: '#999' }}>
+                        No image
+                      </div>
                     )}
                     {discount > 0 && (
                       <span className="discount-badge">-{discount}%</span>
@@ -99,12 +102,14 @@ export function FlashSales({ products }: FlashSalesProps) {
                         <span className="price-old">{formatPrice(p.comparePrice)}</span>
                       )}
                     </div>
-                    <div className="product-progress">
-                      <div className="flash-progress-bar">
-                        <span style={{ width: '70%' }} />
+                    {p.soldCount > 0 && (
+                      <div className="product-progress">
+                        <div className="flash-progress-bar">
+                          <span style={{ width: `${Math.min(100, (p.soldCount / 100) * 100)}%` }} />
+                        </div>
+                        <span className="flash-progress-text">{Math.min(100, Math.round((p.soldCount / 100) * 100))}%</span>
                       </div>
-                      <span className="flash-progress-text">70%</span>
-                    </div>
+                    )}
                   </div>
                 </div>
               );

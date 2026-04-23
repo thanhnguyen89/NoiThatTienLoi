@@ -3,14 +3,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { toast } from '@/admin/components/Toast';
 
 interface EmbedCodeDetail {
   id: string;
   title: string | null;
-  positionId: bigint | null;
+  positionId: number | null;
   embedCode: string | null;
   note: string | null;
   isActive: boolean | null;
+  createdBy: string | null;
+  createdAt: Date | null;
+  updatedBy: string | null;
+  updatedAt: Date | null;
 }
 
 interface Props {
@@ -34,6 +39,11 @@ export function CatalogEmbedCodeForm({ embedCode }: Props) {
     isActive: embedCode?.isActive ?? true,
   });
 
+  const [auditInfo, setAuditInfo] = useState({
+    createdAt: embedCode?.createdAt || null,
+    updatedAt: embedCode?.updatedAt || null,
+  });
+
   function handle(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
     const v = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
@@ -55,9 +65,13 @@ export function CatalogEmbedCodeForm({ embedCode }: Props) {
         isActive: form.isActive,
       };
       const url = isEdit ? `/admin/api/catalog-embed-codes/${embedCode!.id}` : '/admin/api/catalog-embed-codes';
+      const token = localStorage.getItem('admin_token') || '';
       const res = await fetch(url, {
         method: isEdit ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
       const json = await res.json();
@@ -69,8 +83,11 @@ export function CatalogEmbedCodeForm({ embedCode }: Props) {
         } else setGlobalError(json.error || 'Lỗi');
         return;
       }
-      router.push('/admin/catalog-embed-codes');
-      router.refresh();
+      toast(isEdit ? 'Cập nhật thành công' : 'Tạo mới thành công', 'success');
+      setTimeout(() => {
+        router.push('/admin/catalog-embed-codes');
+        router.refresh();
+      }, 800);
     } catch { setGlobalError('Lỗi kết nối'); }
     finally { setLoading(false); }
   }
@@ -113,15 +130,18 @@ export function CatalogEmbedCodeForm({ embedCode }: Props) {
                 {errors.title && <div className="invalid-feedback d-block">{errors.title}</div>}
               </div>
               <div className="mb-3">
-                <label className="form-label small fw-semibold">Vị trí (Position ID)</label>
-                <input
+                <label className="form-label small fw-semibold">Vị trí mã nhúng</label>
+                <select
                   name="positionId"
-                  type="number"
                   value={form.positionId}
                   onChange={handle}
-                  placeholder="VD: 1"
-                  className={`form-control form-control-sm ${errors.positionId ? 'is-invalid' : ''}`}
-                />
+                  className={`form-select form-select-sm ${errors.positionId ? 'is-invalid' : ''}`}
+                >
+                  <option value="">— Chọn vị trí —</option>
+                  <option value="1">Thẻ Header</option>
+                  <option value="2">Thẻ Body</option>
+                  <option value="3">Thẻ Footer</option>
+                </select>
                 {errors.positionId && <div className="invalid-feedback d-block">{errors.positionId}</div>}
               </div>
               <div className="mb-3">
@@ -171,6 +191,16 @@ export function CatalogEmbedCodeForm({ embedCode }: Props) {
               <span className={`badge ${form.isActive ? 'bg-success' : 'bg-secondary'}`}>
                 {form.isActive ? '● Active' : '● Hidden'}
               </span>
+              {(auditInfo.createdAt || auditInfo.updatedAt) && (
+                <div className="mt-3 small text-muted">
+                  {auditInfo.createdAt && (
+                    <div>Ngày tạo: {new Date(auditInfo.createdAt).toLocaleString('vi-VN')}</div>
+                  )}
+                  {auditInfo.updatedAt && (
+                    <div>Ngày cập nhật: {new Date(auditInfo.updatedAt).toLocaleString('vi-VN')}</div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

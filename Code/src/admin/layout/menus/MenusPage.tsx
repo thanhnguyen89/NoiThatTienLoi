@@ -2,39 +2,41 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { menuService } from '@/server/services/menu.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { MenuTable } from '@/admin/features/menu/MenuTable';
 import { MenuFilters } from '@/admin/features/menu/MenuFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedMenus } from '@/server/repositories/menu.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string; menuTypeId?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; menuTypeId?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Menu' };
 
+const emptyResult: PaginatedMenus = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function MenusPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let menus: Awaited<ReturnType<typeof menuService.getAllMenus>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    menus = await menuService.getAllMenus();
+  const result = await dbSafe(() =>
+    menuService.getAllMenus({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+      menuTypeId: sp.menuTypeId || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      menus = menus.filter((m) =>
-        m.name && m.name.toLowerCase().includes(kw)
-      );
-    }
-    if (sp.menuTypeId) {
-      const tid = BigInt(sp.menuTypeId);
-      menus = menus.filter((m) => m.menuTypeId === tid);
-    }
-    if (sp.status === 'active') {
-      menus = menus.filter((m) => m.isActive);
-    } else if (sp.status === 'inactive') {
-      menus = menus.filter((m) => !m.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -60,7 +62,7 @@ export default async function MenusPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH MENU
+          DANH SÁCH MENU ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -80,7 +82,9 @@ export default async function MenusPage({ searchParams }: Props) {
             </div>
           )}
 
-          <MenuTable menus={menus} />
+          <MenuTable menus={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/menus" />
         </div>
       </div>
     </>

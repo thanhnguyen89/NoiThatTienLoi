@@ -2,35 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { catalogNewsLevelService } from '@/server/services/catalog-news-level.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { CatalogNewsLevelTable } from '@/admin/features/catalog-news-level/CatalogNewsLevelTable';
 import { CatalogNewsLevelFilters } from '@/admin/features/catalog-news-level/CatalogNewsLevelFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedCatalogNewsLevels } from '@/server/repositories/catalog-news-level.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Mức độ Tin tức' };
 
+const emptyResult: PaginatedCatalogNewsLevels = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function CatalogNewsLevelsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let levels: Awaited<ReturnType<typeof catalogNewsLevelService.getAll>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    levels = await catalogNewsLevelService.getAll();
+  const result = await dbSafe(() =>
+    catalogNewsLevelService.getAll({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      levels = levels.filter((l) =>
-        (l.name && l.name.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      levels = levels.filter((l) => l.isActive);
-    } else if (sp.status === 'inactive') {
-      levels = levels.filter((l) => !l.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -55,7 +60,7 @@ export default async function CatalogNewsLevelsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH MỨC ĐỘ TIN TỨC
+          DANH SÁCH MỨC ĐỘ TIN TỨC ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -75,7 +80,9 @@ export default async function CatalogNewsLevelsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <CatalogNewsLevelTable levels={levels} />
+          <CatalogNewsLevelTable levels={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/catalog-news-levels" />
         </div>
       </div>
     </>

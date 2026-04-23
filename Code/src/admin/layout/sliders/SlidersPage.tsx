@@ -2,36 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { sliderService } from '@/server/services/slider.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { SliderTable } from '@/admin/features/slider/SliderTable';
 import { SliderFilters } from '@/admin/features/slider/SliderFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedSliders } from '@/server/repositories/slider.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Slider' };
 
+const emptyResult: PaginatedSliders = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function SlidersPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let sliders: Awaited<ReturnType<typeof sliderService.getAllSliders>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    sliders = await sliderService.getAllSliders();
+  const result = await dbSafe(() =>
+    sliderService.getAllSliders({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      sliders = sliders.filter((s) =>
-        (s.title && s.title.toLowerCase().includes(kw)) ||
-        (s.link && s.link.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      sliders = sliders.filter((s) => s.isActive);
-    } else if (sp.status === 'inactive') {
-      sliders = sliders.filter((s) => !s.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -56,7 +60,7 @@ export default async function SlidersPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH SLIDER
+          DANH SÁCH SLIDER ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -76,7 +80,9 @@ export default async function SlidersPage({ searchParams }: Props) {
             </div>
           )}
 
-          <SliderTable sliders={sliders} />
+          <SliderTable sliders={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/sliders" />
         </div>
       </div>
     </>

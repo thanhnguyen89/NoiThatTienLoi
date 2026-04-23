@@ -19,11 +19,34 @@ const emptyResult: PaginatedResult<ProductListItem> = {
   pagination: { page: 1, pageSize: 12, total: 0, totalPages: 0 },
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const sp = await searchParams;
+  const page = parsePageParam(sp.page);
+
   const category = await dbSafe(() => categoryService.getCategoryBySlug(slug), null);
   if (!category) return {};
-  return { title: category.name, description: category.description || `Danh mục ${category.name}` };
+
+  const pageTitle = page > 1 ? ` - Trang ${page}` : '';
+
+  return {
+    title: `${category.name}${pageTitle} - Nội Thất Tiện Lợi`,
+    description: category.description || `Mua ${category.name} chất lượng cao, giá tốt tại Nội Thất Tiện Lợi. Giao hàng toàn quốc, bảo hành chính hãng. Xem ngay các sản phẩm ${category.name} hot nhất!`,
+    keywords: [category.name, 'nội thất', 'giường sắt', 'giường xếp', 'nội thất tiện lợi'],
+    openGraph: {
+      title: `${category.name} - Nội Thất Tiện Lợi`,
+      description: category.description || `Danh mục ${category.name}`,
+      type: 'website',
+      locale: 'vi_VN',
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: `/danh-muc/${slug}${page > 1 ? `?page=${page}` : ''}`,
+    },
+  };
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {

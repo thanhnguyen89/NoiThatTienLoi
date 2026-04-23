@@ -3,817 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UI → Task Generator | Nội Thất Tiện Lợi</title>
+<title>UI → Task Generator v2 | Nội Thất Tiện Lợi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-/* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* ── Design tokens ── */
-:root {
-  --bg:          #0e1016;
-  --bg2:         #161922;
-  --bg3:         #1e2230;
-  --border:      #272c3d;
-  --border2:     #343a52;
-  --text:        #dde1ed;
-  --text2:       #8890aa;
-  --text3:       #525a73;
-  --accent:      #5b79ff;
-  --accent-h:    #3d5ce0;
-  --accent-dim:  #151d4a;
-  --green:       #38c98a;
-  --green-dim:   #0a2e1e;
-  --red:         #f05252;
-  --red-dim:     #2d0f0f;
-  --warn:        #f5a623;
-  --r:           8px;
-  --r-sm:        5px;
-}
-
-/* ── Base ── */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ── Header ── */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.logo {
-  width: 30px; height: 30px;
-  background: var(--accent);
-  border-radius: 7px;
-  display: grid; place-items: center;
-  font-size: 13px; font-weight: 700; color: #fff;
-  flex-shrink: 0;
-}
-.header h1 { font-size: 14px; font-weight: 600; letter-spacing: -.2px; }
-.header p  { font-size: 11px; color: var(--text3); margin-top: 1px; }
-.chip {
-  margin-left: auto;
-  font-size: 10px; padding: 3px 9px;
-  background: var(--accent-dim); color: var(--accent);
-  border: 1px solid rgba(91,121,255,.35);
-  border-radius: 20px; white-space: nowrap;
-}
-
-/* ── Main 2-col layout ── */
-.workspace {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* ── Panel shared ── */
-.panel {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-right: 1px solid var(--border);
-}
-.panel:last-child { border-right: none; }
-
-.panel-head {
-  padding: 14px 20px 0;
-  flex-shrink: 0;
-}
-.panel-label {
-  font-size: 10px; font-weight: 600; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--text3);
-  margin-bottom: 12px;
-}
-
-.panel-body {
-  flex: 1; overflow-y: auto;
-  padding: 0 20px 20px;
-}
-.panel-body::-webkit-scrollbar { width: 4px; }
-.panel-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-/* ── Drop zone ── */
-.drop-zone {
-  position: relative;
-  border: 1.5px dashed var(--border2);
-  border-radius: var(--r);
-  padding: 30px 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .15s, background .15s;
-  background: var(--bg2);
-}
-.drop-zone:hover, .drop-zone.drag-over {
-  border-color: var(--accent);
-  background: var(--accent-dim);
-}
-.drop-zone input[type="file"] {
-  position: absolute; inset: 0;
-  opacity: 0; cursor: pointer;
-  width: 100%; height: 100%;
-}
-.drop-icon { font-size: 24px; margin-bottom: 8px; }
-.drop-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
-.drop-hint  { font-size: 11px; color: var(--text3); line-height: 1.6; }
-.drop-hint kbd {
-  display: inline-block;
-  padding: 1px 5px;
-  background: var(--bg3); border: 1px solid var(--border2);
-  border-radius: 3px; font-size: 10px; font-family: monospace;
-}
-
-/* ── Preview ── */
-.preview-wrap {
-  margin-top: 12px;
-  border-radius: var(--r);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  position: relative;
-  background: var(--bg3);
-}
-.preview-wrap img {
-  width: 100%; display: block;
-  max-height: 200px; object-fit: contain;
-}
-.preview-remove {
-  position: absolute; top: 7px; right: 7px;
-  background: rgba(0,0,0,.75); border: 1px solid var(--border2);
-  color: var(--text2); border-radius: 20px;
-  padding: 2px 9px; font-size: 11px; cursor: pointer;
-  transition: color .12s;
-}
-.preview-remove:hover { color: var(--red); }
-
-/* ── Form controls ── */
-.field { margin-top: 14px; }
-.field label {
-  display: block; font-size: 11px; color: var(--text3);
-  margin-bottom: 5px; letter-spacing: .4px;
-}
-textarea, select {
-  width: 100%;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--r-sm); color: var(--text);
-  padding: 9px 11px; font-size: 12px;
-  font-family: inherit; outline: none;
-  transition: border-color .14s;
-}
-textarea { min-height: 76px; resize: vertical; line-height: 1.6; }
-textarea#extraDesc { min-height: 220px; }
-
-.label-important {
-  color: var(--warn); font-size: 10px; margin-left: 4px;
-}
-.desc-hint {
-  font-size: 11px; color: var(--text2); line-height: 1.6;
-  margin-bottom: 8px;
-}
-.desc-hint em { color: var(--accent); font-style: normal; font-weight: 500; }
-
-.template-bar {
-  display: flex; gap: 6px; margin-bottom: 8px;
-}
-.template-bar select {
-  flex: 1; font-size: 11px; padding: 6px 9px;
-}
-.btn-clear {
-  background: var(--bg3); border: 1px solid var(--border2);
-  color: var(--text3); border-radius: var(--r-sm);
-  padding: 4px 10px; font-size: 12px; cursor: pointer;
-  transition: color .12s, border-color .12s;
-}
-.btn-clear:hover { color: var(--red); border-color: var(--red); }
-textarea:focus, select:focus { border-color: var(--accent); }
-select option { background: var(--bg2); }
-
-.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-/* ── Info box ── */
-.info-box {
-  margin-top: 14px;
-  background: var(--accent-dim);
-  border: 1px solid rgba(91,121,255,.25);
-  border-radius: var(--r-sm);
-  padding: 10px 13px;
-  font-size: 11px; color: var(--accent); line-height: 1.7;
-}
-
-/* ── Generate button ── */
-.gen-btn {
-  margin-top: 14px; width: 100%;
-  padding: 11px;
-  background: var(--accent); color: #fff;
-  border: none; border-radius: var(--r-sm);
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  transition: background .14s, opacity .14s;
-}
-.gen-btn:hover:not(:disabled) { background: var(--accent-h); }
-.gen-btn:disabled { opacity: .45; cursor: not-allowed; }
-
-.spinner {
-  width: 13px; height: 13px;
-  border: 2px solid rgba(255,255,255,.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .65s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Error ── */
-.error-box {
-  margin-top: 10px;
-  background: var(--red-dim); border: 1px solid rgba(240,82,82,.35);
-  border-radius: var(--r-sm); padding: 10px 13px;
-  font-size: 12px; color: #f08080; line-height: 1.6;
-}
-
-/* ── Output panel ── */
-.out-head {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px 12px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.out-actions { display: flex; gap: 7px; }
-
-.btn-sm {
-  padding: 4px 12px;
-  background: transparent;
-  border: 1px solid var(--border2); color: var(--text2);
-  border-radius: 20px; font-size: 11px; cursor: pointer;
-  display: flex; align-items: center; gap: 5px;
-  transition: color .12s, border-color .12s;
-  font-family: inherit;
-}
-.btn-sm:hover { color: var(--text); border-color: var(--text3); }
-.btn-sm.ok    { color: var(--green); border-color: var(--green); }
-
-/* ── Code block ── */
-.code-wrap {
-  flex: 1; overflow: hidden;
-  position: relative;
-}
-.code-scroll {
-  height: 100%; overflow-y: auto; overflow-x: auto;
-  padding: 16px 20px;
-}
-.code-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
-.code-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-pre {
-  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
-  font-size: 12px; line-height: 1.75;
-  color: var(--text); white-space: pre;
-  min-height: 100%;
-}
-
-/* cursor blink khi đang stream */
-.streaming::after {
-  content: '▋';
-  color: var(--accent);
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-
-/* ── Placeholder ── */
-.placeholder {
-  height: 100%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 10px; color: var(--text3);
-}
-.placeholder-icon { font-size: 40px; opacity: .3; }
-.placeholder p { font-size: 13px; }
-.placeholder span { font-size: 11px; color: var(--text3); }
-
-/* ── Scrollbar for panel body ── */
-.panel-body::-webkit-scrollbar { width: 4px; }
-.panel-body::-webkit-scrollbar-track { background: transparent; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0e1016;--bg2:#161922;--bg3:#1e2230;--border:#272c3d;--border2:#343a52;
+--text:#dde1ed;--text2:#8890aa;--text3:#525a73;--accent:#5b79ff;--accent-h:#3d5ce0;
+--accent-dim:#151d4a;--green:#38c98a;--green-dim:#0a2e1e;--red:#f05252;--red-dim:#2d0f0f;
+--warn:#f5a623;--r:8px;--r-sm:5px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;align-items:center;gap:12px;padding:12px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff}
+.header h1{font-size:14px;font-weight:600}.header p{font-size:11px;color:var(--text3);margin-top:1px}
+.chip{margin-left:auto;font-size:10px;padding:3px 9px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(91,121,255,.35);border-radius:20px}
+.workspace{display:grid;grid-template-columns:600px 1fr;flex:1;overflow:hidden}
+.panel{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+.panel:last-child{border-right:none}
+.panel-head{padding:12px 18px 0;flex-shrink:0}
+.panel-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.panel-body{flex:1;overflow-y:auto;padding:0 18px 18px}
+.panel-body::-webkit-scrollbar{width:4px}.panel-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <header class="header">
   <div class="logo">UI</div>
-  <div>
-    <h1>UI → Task Generator</h1>
-    <p>Nội Thất Tiện Lợi — sinh task.ts từ ảnh giao diện</p>
-  </div>
-  <div class="chip">Claude Opus 4.6</div>
+  <div><h1>UI → Task Generator v2</h1><p>1 ảnh → 5 file theo vai trò</p></div>
+  <div class="chip">Claude → JSON → Build</div>
 </header>
-
-<!-- WORKSPACE -->
 <div class="workspace">
+<!-- LEFT -->
+<div class="panel">
+<div class="panel-head"><div class="panel-label">Input</div></div>
+<div class="panel-body">
+<style>
+.drop-zone{position:relative;border:1.5px dashed var(--border2);border-radius:var(--r);padding:24px 14px;text-align:center;cursor:pointer;background:var(--bg2);transition:border-color .15s,background .15s}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);background:var(--accent-dim)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:22px;margin-bottom:6px}.drop-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.drop-hint{font-size:10px;color:var(--text3);line-height:1.5}
+.drop-hint kbd{padding:1px 4px;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;font-size:9px;font-family:monospace}
+.preview-wrap{margin-top:10px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);position:relative;background:var(--bg3)}
+.preview-wrap img{width:100%;display:block;max-height:180px;object-fit:contain}
+.preview-remove{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.75);border:1px solid var(--border2);color:var(--text2);border-radius:20px;padding:2px 8px;font-size:10px;cursor:pointer}
+.field{margin-top:12px}.field label{display:block;font-size:10px;color:var(--text3);margin-bottom:4px;letter-spacing:.4px}
+textarea,select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);padding:8px 10px;font-size:11px;font-family:inherit;outline:none;transition:border-color .14s}
+textarea{min-height:60px;resize:vertical;line-height:1.5}textarea#extraDesc{min-height:160px}
+textarea:focus,select:focus{border-color:var(--accent)}select option{background:var(--bg2)}
+.label-imp{color:var(--warn);font-size:9px;margin-left:3px}
+.desc-hint{font-size:10px;color:var(--text2);line-height:1.5;margin-bottom:6px}
+.desc-hint em{color:var(--accent);font-style:normal;font-weight:500}
+.tpl-bar{display:flex;gap:5px;margin-bottom:6px}.tpl-bar select{flex:1;font-size:10px;padding:5px 8px}
+.btn-x{background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:var(--r-sm);padding:3px 8px;font-size:11px;cursor:pointer}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.info-box{margin-top:12px;background:var(--accent-dim);border:1px solid rgba(91,121,255,.25);border-radius:var(--r-sm);padding:8px 11px;font-size:10px;color:var(--accent);line-height:1.6}
+.gen-btn{margin-top:12px;width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .14s,opacity .14s}
+.gen-btn:hover:not(:disabled){background:var(--accent-h)}.gen-btn:disabled{opacity:.45;cursor:not-allowed}
+.spinner{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{margin-top:8px;background:var(--red-dim);border:1px solid rgba(240,82,82,.35);border-radius:var(--r-sm);padding:8px 11px;font-size:11px;color:#f08080;line-height:1.5}
+.valid-ok{margin-top:6px;font-size:10px;color:var(--green)}.valid-err{margin-top:6px;font-size:10px;color:var(--red)}
+/* RIGHT panel */
+.out-head{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;flex-wrap:wrap}
+.main-tabs{display:flex;gap:2px}
+.main-tab{padding:5px 14px;background:transparent;border:1px solid var(--border2);color:var(--text3);border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .12s}
+.main-tab:hover{color:var(--text);border-color:var(--text3)}
+.main-tab.active{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.out-actions{display:flex;gap:6px}
+.btn-sm{padding:4px 10px;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:20px;font-size:10px;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:inherit;transition:color .12s,border-color .12s}
+.btn-sm:hover{color:var(--text);border-color:var(--text3)}.btn-sm.ok{color:var(--green);border-color:var(--green)}
+.code-wrap{flex:1;overflow:hidden;position:relative}
+.code-scroll{height:100%;overflow-y:auto;overflow-x:auto;padding:14px 18px}
+.code-scroll::-webkit-scrollbar{width:4px;height:4px}.code-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+pre{font-family:'JetBrains Mono','Fira Code','SF Mono',monospace;font-size:11px;line-height:1.7;color:var(--text);white-space:pre;min-height:100%}
+.streaming::after{content:'▋';color:var(--accent);animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.placeholder{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3)}
+.placeholder-icon{font-size:36px;opacity:.3}.placeholder p{font-size:12px}.placeholder span{font-size:10px}
+/* JSON syntax highlight */
+.json-key{color:#7ec8e3}.json-str{color:#98c379}.json-num{color:#d19a66}.json-bool{color:#c678dd}.json-null{color:#e06c75}
+/* File cards */
+.file-cards{display:flex;flex-direction:column;gap:10px;padding:14px 18px;overflow-y:auto;height:100%}
+.file-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.file-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.file-card-title{font-size:12px;font-weight:600}.file-card-role{font-size:10px;color:var(--text3)}
+.file-card-actions{display:flex;gap:5px}
+.file-card-btn{padding:3px 10px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:14px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .12s}
+.file-card-btn:hover{color:var(--accent);border-color:var(--accent)}
+.file-card-desc{font-size:10px;color:var(--text3);line-height:1.5}
+</style>
 
-  <!-- LEFT — INPUT -->
-  <div class="panel">
-    <div class="panel-head">
-      <div class="panel-label">Input</div>
+<div class="drop-zone" id="dropZone">
+  <input type="file" id="fileInput" accept="image/*">
+  <div class="drop-icon">🖼️</div>
+  <div class="drop-title">Kéo thả ảnh UI vào đây</div>
+  <div class="drop-hint">hoặc <strong>click</strong> chọn file · <kbd>Ctrl</kbd>+<kbd>V</kbd> paste</div>
+</div>
+<div class="preview-wrap" id="previewWrap" style="display:none">
+  <img id="previewImg" src="" alt="preview">
+  <button class="preview-remove" id="removeBtn">✕</button>
+</div>
+<div class="field">
+  <label>MÔ TẢ BỔ SUNG <span class="label-imp">★ quan trọng</span></label>
+  <div class="desc-hint">Ảnh = <em>trông thế nào</em> · Mô tả = <em>hoạt động thế nào</em></div>
+  <div class="tpl-bar">
+    <select id="tplSelect"><option value="">📝 Mẫu prompt sẵn...</option></select>
+    <button class="btn-x" id="clearBtn">✕</button>
+  </div>
+  <textarea id="extraDesc" rows="10" placeholder="HIỆN TẠI:&#10;- ...&#10;CẦN THÊM:&#10;- ...&#10;FIELD/BIẾN:&#10;- ...&#10;ROUTE:&#10;- ...&#10;GHI CHÚ:&#10;- ..."></textarea>
+</div>
+<div class="row-2">
+  <div class="field"><label>MODULE</label>
+    <select id="moduleSelect">
+      <option value="">-- Auto --</option>
+      <option>menu</option><option>menu-link</option><option>category</option><option>product</option>
+      <option>slider</option><option>news</option><option>page</option><option>admin-user</option>
+      <option>admin-role</option><option>seo-config</option><option>inquiry</option><option>system-config</option>
+    </select>
+  </div>
+  <div class="field"><label>LOẠI TASK</label>
+    <select id="taskType">
+      <option value="feature">feature</option><option value="bugfix">bugfix</option>
+      <option value="enhancement">enhancement</option><option value="refactor">refactor</option>
+    </select>
+  </div>
+</div>
+<div class="field"><label>PRIORITY</label>
+  <select id="priority"><option value="medium">medium</option><option value="high">high</option><option value="low">low</option></select>
+</div>
+<div class="info-box">ℹ️ Claude phân tích 1 lần → JSON → JS build <strong>5 file</strong> theo vai trò</div>
+<button class="gen-btn" id="genBtn" disabled><span id="genBtnIcon">✦</span><span id="genBtnText">Nhập mô tả hoặc chọn ảnh</span></button>
+<div id="validStatus"></div>
+<div class="error-box" id="errorBox" style="display:none"></div>
+</div></div>
+
+<!-- RIGHT -->
+<div class="panel" style="border-right:none">
+  <div class="out-head">
+    <div class="main-tabs" id="mainTabs" style="display:none">
+      <button class="main-tab active" data-view="json" onclick="showView('json')">🔍 JSON Raw</button>
+      <button class="main-tab" data-view="files" onclick="showView('files')">📁 Files (5)</button>
     </div>
-    <div class="panel-body">
-
-      <!-- Drop zone -->
-      <div class="drop-zone" id="dropZone">
-        <input type="file" id="fileInput" accept="image/*">
-        <div class="drop-icon">🖼️</div>
-        <div class="drop-title">Kéo thả ảnh UI vào đây</div>
-        <div class="drop-hint">
-          hoặc <strong>click</strong> để chọn file<br>
-          hoặc <kbd>Ctrl</kbd>+<kbd>V</kbd> để paste từ clipboard
-        </div>
-      </div>
-
-      <!-- Preview -->
-      <div class="preview-wrap" id="previewWrap" style="display:none">
-        <img id="previewImg" src="" alt="UI preview">
-        <button class="preview-remove" id="removeBtn">✕ Xóa</button>
-      </div>
-
-      <!-- Mô tả bổ sung -->
-      <div class="field">
-        <label>MÔ TẢ BỔ SUNG <span class="label-important">★ quan trọng</span></label>
-        <div class="desc-hint">Ảnh cho AI biết <em>trông như thế nào</em>, mô tả cho AI biết <em>hoạt động như thế nào</em>. Hai thứ kết hợp mới đủ để sinh task chính xác.</div>
-        <div class="template-bar">
-          <select id="templateSelect">
-            <option value="">📝 Chọn mẫu prompt sẵn...</option>
-          </select>
-          <button class="btn-clear" id="clearDescBtn" title="Xóa nội dung">✕</button>
-        </div>
-        <textarea id="extraDesc" rows="14"
-          placeholder="Chọn mẫu prompt ở trên hoặc tự viết theo cấu trúc:
-
-HIỆN TẠI:
-- [những gì đang có, đang hoạt động]
-
-CẦN THÊM:
-- [những gì muốn thêm hoặc thay đổi]
-
-FIELD/BIẾN:
-- [tên field thật trong code nếu biết]
-
-ROUTE:
-- [URL thật của các màn hình liên quan]
-
-GHI CHÚ:
-- [rule đặc biệt, constraint, hoặc hành vi ẩn]"></textarea>
-      </div>
-
-      <!-- Module + Task type -->
-      <div class="row-2">
-        <div class="field">
-          <label>MODULE</label>
-          <select id="moduleSelect">
-            <option value="">-- Tự nhận diện --</option>
-            <option value="menu">menu</option>
-            <option value="category">category</option>
-            <option value="product">product</option>
-            <option value="slider">slider</option>
-            <option value="news">news</option>
-            <option value="page">page</option>
-            <option value="admin-user">admin-user</option>
-            <option value="admin-role">admin-role</option>
-            <option value="seo-config">seo-config</option>
-            <option value="catalog-redirect">catalog-redirect</option>
-            <option value="inquiry">inquiry</option>
-            <option value="system-config">system-config</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>LOẠI TASK</label>
-          <select id="taskType">
-            <option value="feature">feature</option>
-            <option value="bugfix">bugfix</option>
-            <option value="enhancement">enhancement</option>
-            <option value="refactor">refactor</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Priority -->
-      <div class="field">
-        <label>PRIORITY</label>
-        <select id="priority">
-          <option value="medium">medium</option>
-          <option value="high">high</option>
-          <option value="low">low</option>
-        </select>
-      </div>
-
-      <!-- Info -->
-      <div class="info-box">
-        ℹ️ AI sẽ phân tích ảnh + mô tả bổ sung để sinh <strong>task.ts</strong> đầy đủ:
-        requirements · business rules · related files · acceptance criteria · risks · QA checklist
-      </div>
-
-      <!-- Generate -->
-      <button class="gen-btn" id="genBtn" disabled>
-        <span id="genBtnIcon">✦</span>
-        <span id="genBtnText">Chọn ảnh trước</span>
-      </button>
-
-      <!-- Error -->
-      <div class="error-box" id="errorBox" style="display:none"></div>
-
+    <div class="panel-label" id="outLabel" style="margin-bottom:0">Output</div>
+    <div class="out-actions" id="outActions" style="display:none">
+      <button class="btn-sm" id="zipBtn" onclick="downloadZip()">📦 Download All (.zip)</button>
     </div>
   </div>
-
-  <!-- RIGHT — OUTPUT -->
-  <div class="panel" style="border-right:none">
-    <div class="out-head">
-      <div class="panel-label" style="margin-bottom:0">Output — feature_request.ts</div>
-      <div class="out-actions" id="outActions" style="display:none">
-        <button class="btn-sm" id="copyBtn" onclick="copyCode()">📋 Copy</button>
-        <button class="btn-sm" id="downloadBtn" onclick="downloadFile()">⬇ Download</button>
-        <button class="btn-sm" id="saveBtn" onclick="saveToTasks()">💾 Save to tasks/</button>
-        <button class="btn-sm" id="toggleJsonBtn" onclick="toggleJson()">🔍 Xem JSON phân tích</button>
-      </div>
+  <div class="code-wrap" id="codeWrap">
+    <div class="placeholder" id="placeholder">
+      <div class="placeholder-icon">📄</div>
+      <p>Upload ảnh và nhấn Generate</p>
+      <span>1 API call → 5 file tự động</span>
     </div>
-
-    <div class="code-wrap">
-      <!-- Placeholder -->
-      <div class="placeholder" id="placeholder">
-        <div class="placeholder-icon">📄</div>
-        <p>Upload ảnh và nhấn Generate</p>
-        <span>File task.ts sẽ xuất hiện ở đây</span>
-      </div>
-
-      <!-- Code output -->
-      <div class="code-scroll" id="codeScroll" style="display:none">
-        <pre id="codeOutput"></pre>
-      </div>
-    </div>
+    <!-- JSON view -->
+    <div class="code-scroll" id="jsonView" style="display:none"><pre id="jsonOutput"></pre></div>
+    <!-- Files view -->
+    <div class="file-cards" id="filesView" style="display:none"></div>
   </div>
-
+</div>
 </div>
 
+<script src="ai-validator.js"></script>
+<script src="prompt-builder.js"></script>
+<script src="artifact-builders.js"></script>
 <script>
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
-let imageBase64 = null;
-let imageMime   = null;
-let outputCode  = '';
-let analysisData = null;  // JSON phân tích từ pass 1
-let showingJson  = false;
+const $=id=>document.getElementById(id);
+let imageBase64=null,imageMime=null,analysisJson=null,builtFiles={},currentView='json';
 
-// ─────────────────────────────────────────────
-// ELEMENTS
-// ─────────────────────────────────────────────
-const dropZone    = document.getElementById('dropZone');
-const fileInput   = document.getElementById('fileInput');
-const previewWrap = document.getElementById('previewWrap');
-const previewImg  = document.getElementById('previewImg');
-const removeBtn   = document.getElementById('removeBtn');
-const genBtn      = document.getElementById('genBtn');
-const genBtnText  = document.getElementById('genBtnText');
-const genBtnIcon  = document.getElementById('genBtnIcon');
-const errorBox    = document.getElementById('errorBox');
-const placeholder = document.getElementById('placeholder');
-const codeScroll  = document.getElementById('codeScroll');
-const codeOutput  = document.getElementById('codeOutput');
-const outActions  = document.getElementById('outActions');
-const copyBtn     = document.getElementById('copyBtn');
+// ── Image ──
+function loadImage(f){if(!f||!f.type.startsWith('image/'))return showError('File không hợp lệ');imageMime=f.type;const r=new FileReader();r.onload=e=>{imageBase64=e.target.result.split(',')[1];$('previewImg').src=e.target.result;$('previewWrap').style.display='block';updateGenBtn();$('genBtnIcon').textContent='✦';hideError()};r.readAsDataURL(f)}
+$('fileInput').addEventListener('change',e=>{if(e.target.files[0])loadImage(e.target.files[0])});
+$('dropZone').addEventListener('dragover',e=>{e.preventDefault();$('dropZone').classList.add('drag-over')});
+$('dropZone').addEventListener('dragleave',()=>$('dropZone').classList.remove('drag-over'));
+$('dropZone').addEventListener('drop',e=>{e.preventDefault();$('dropZone').classList.remove('drag-over');if(e.dataTransfer.files[0])loadImage(e.dataTransfer.files[0])});
+document.addEventListener('paste',e=>{for(const i of(e.clipboardData?.items||[]))if(i.type.startsWith('image/')){loadImage(i.getAsFile());break}});
+$('removeBtn').addEventListener('click',()=>{imageBase64=imageMime=null;$('previewWrap').style.display='none';$('fileInput').value='';updateGenBtn()});
 
-// ─────────────────────────────────────────────
-// IMAGE HANDLING
-// ─────────────────────────────────────────────
-function loadImage(file) {
-  if (!file || !file.type.startsWith('image/')) {
-    showError('File không hợp lệ. Vui lòng chọn ảnh (PNG, JPG, WEBP, GIF).');
-    return;
-  }
-  imageMime = file.type;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const dataUrl = e.target.result;
-    imageBase64 = dataUrl.split(',')[1];
-    previewImg.src = dataUrl;
-    previewWrap.style.display = 'block';
-    genBtn.disabled = false;
-    genBtnText.textContent = 'Generate Task File';
-    genBtnIcon.textContent = '✦';
-    hideError();
-  };
-  reader.readAsDataURL(file);
+// ── Enable Generate when image OR text available ──
+function updateGenBtn(){
+  var hasImage=!!imageBase64;
+  var hasText=$('extraDesc').value.trim().length>10;
+  $('genBtn').disabled=!(hasImage||hasText);
+  if(hasImage) $('genBtnText').textContent='Generate';
+  else if(hasText) $('genBtnText').textContent='Generate (text only)';
+  else $('genBtnText').textContent='Nhập mô tả hoặc chọn ảnh';
+}
+$('extraDesc').addEventListener('input',updateGenBtn);
+
+// ── Templates ──
+let TPL={};
+(async()=>{try{TPL=await(await fetch('/api/templates')).json();const s=$('tplSelect');s.innerHTML='<option value="">📝 Mẫu prompt sẵn...</option>';for(const[k,t]of Object.entries(TPL)){const o=document.createElement('option');o.value=k;o.textContent=t.label;s.appendChild(o)}}catch{}})();
+$('tplSelect').addEventListener('change',function(){if(this.value&&TPL[this.value])$('extraDesc').value=TPL[this.value].content;this.value=''});
+$('clearBtn').addEventListener('click',()=>{$('extraDesc').value=''});
+
+function showError(m){$('errorBox').textContent='⚠ '+m;$('errorBox').style.display='block'}
+function hideError(){$('errorBox').style.display='none'}
+
+// ── JSON syntax highlight ──
+function highlightJson(json){
+  const s=JSON.stringify(json,null,2);
+  return s.replace(/("(?:\\.|[^"\\])*")\s*:/g,'<span class="json-key">$1</span>:')
+    .replace(/:\s*("(?:\\.|[^"\\])*")/g,': <span class="json-str">$1</span>')
+    .replace(/:\s*(\d+\.?\d*)/g,': <span class="json-num">$1</span>')
+    .replace(/:\s*(true|false)/g,': <span class="json-bool">$1</span>')
+    .replace(/:\s*(null)/g,': <span class="json-null">$1</span>');
 }
 
-// Click để chọn file
-fileInput.addEventListener('change', e => {
-  if (e.target.files[0]) loadImage(e.target.files[0]);
-});
-
-// Drag & drop
-dropZone.addEventListener('dragover', e => {
-  e.preventDefault();
-  dropZone.classList.add('drag-over');
-});
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.classList.remove('drag-over');
-  if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
-});
-
-// Ctrl+V paste
-document.addEventListener('paste', e => {
-  const items = e.clipboardData?.items;
-  if (!items) return;
-  for (const item of items) {
-    if (item.type.startsWith('image/')) {
-      loadImage(item.getAsFile());
-      break;
-    }
-  }
-});
-
-// Xóa ảnh
-removeBtn.addEventListener('click', () => {
-  imageBase64 = null; imageMime = null;
-  previewWrap.style.display = 'none';
-  previewImg.src = '';
-  fileInput.value = '';
-  genBtn.disabled = true;
-  genBtnText.textContent = 'Chọn ảnh trước';
-  genBtnIcon.textContent = '✦';
-});
-
-// ─────────────────────────────────────────────
-// PROMPT TEMPLATES (loaded from server)
-// ─────────────────────────────────────────────
-let PROMPT_TEMPLATES = {};
-
-const templateSelect = document.getElementById('templateSelect');
-const clearDescBtn   = document.getElementById('clearDescBtn');
-
-// Load templates từ server
-(async function loadTemplates() {
-  try {
-    const res = await fetch('/api/templates');
-    PROMPT_TEMPLATES = await res.json();
-    // Render options từ server data
-    templateSelect.innerHTML = '<option value="">📝 Chọn mẫu prompt sẵn...</option>';
-    for (const [key, tpl] of Object.entries(PROMPT_TEMPLATES)) {
-      const opt = document.createElement('option');
-      opt.value = key;
-      opt.textContent = tpl.label;
-      templateSelect.appendChild(opt);
-    }
-  } catch (e) {
-    console.warn('Không load được templates:', e.message);
-  }
-})();
-
-templateSelect.addEventListener('change', () => {
-  const key = templateSelect.value;
-  if (key && PROMPT_TEMPLATES[key]) {
-    document.getElementById('extraDesc').value = PROMPT_TEMPLATES[key].content;
-  }
-  templateSelect.value = '';
-});
-
-clearDescBtn.addEventListener('click', () => {
-  document.getElementById('extraDesc').value = '';
-});
-
-// ─────────────────────────────────────────────
-// ERROR HELPERS
-// ─────────────────────────────────────────────
-function showError(msg) {
-  errorBox.textContent = '⚠ ' + msg;
-  errorBox.style.display = 'block';
+// ── Views ──
+function showView(v){
+  currentView=v;
+  $('jsonView').style.display=v==='json'?'block':'none';
+  $('filesView').style.display=v==='files'?'flex':'none';
+  $('mainTabs').querySelectorAll('.main-tab').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
 }
-function hideError() {
-  errorBox.style.display = 'none';
-}
-
-// ─────────────────────────────────────────────
-// GENERATE (system prompt loaded server-side)
-// ─────────────────────────────────────────────
-genBtn.addEventListener('click', generate);
-
-async function generate() {
-  if (!imageBase64) return;
-  hideError();
-
-  const module   = document.getElementById('moduleSelect').value;
-  const taskType = document.getElementById('taskType').value;
-  const priority = document.getElementById('priority').value;
-  const extra    = document.getElementById('extraDesc').value.trim();
-
-  // Build user prompt
-  const parts = ['Phân tích ảnh UI này. Trả về JSON mô tả chi tiết.'];
-  if (module)   parts.push(`Module: ${module}`);
-  if (taskType) parts.push(`Loại task: ${taskType}`);
-  if (priority) parts.push(`Priority: ${priority}`);
-  if (extra)    parts.push(`=== MÔ TẢ BỔ SUNG TỪ DEVELOPER (ưu tiên cao) ===\n${extra}`);
-  parts.push('Chỉ trả về JSON thuần. Không markdown. Không giải thích. Không backtick.');
-  const userPrompt = parts.join('\n');
-
-  // UI: loading state
-  genBtn.disabled = true;
-  genBtnIcon.innerHTML = '<div class="spinner"></div>';
-  genBtnText.textContent = 'Pass 1/2 — Đang phân tích ảnh...';
-  analysisData = null;
-  showingJson = false;
-
-  placeholder.style.display = 'none';
-  codeScroll.style.display = 'block';
-  codeOutput.textContent = '';
-  codeOutput.classList.add('streaming');
-  outActions.style.display = 'none';
-
-  try {
-    // Gửi 1 request — server xử lý 2 pass
-    genBtnText.textContent = 'Pass 1/2 — Phân tích ảnh...';
-
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-opus-4-6',
-        max_tokens: 8192,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: imageMime, data: imageBase64 },
-            },
-            { type: 'text', text: userPrompt },
-          ],
-        }],
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || `Server trả về lỗi ${res.status}`);
-    }
-
-    // Lưu analysis JSON nếu có
-    if (data.analysis) {
-      analysisData = data.analysis;
-    }
-
-    outputCode = (data.content || [])
-      .map(b => b.text || '')
-      .join('')
-      .replace(/^```(?:typescript|ts)?\n?/, '')
-      .replace(/\n?```$/, '')
-      .trim();
-
-    codeOutput.classList.remove('streaming');
-    codeOutput.textContent = outputCode;
-    outActions.style.display = 'flex';
-    codeScroll.scrollTop = 0;
-
-    // Hiện warning nếu pass 1 fail
-    if (data.pass === 1) {
-      showError('Pass 1 không trả JSON hợp lệ. Hiển thị raw output để debug. Thử lại hoặc chỉnh mô tả bổ sung.');
-    }
-
-  } catch (err) {
-    codeOutput.classList.remove('streaming');
-    codeOutput.textContent = '';
-    codeScroll.style.display = 'none';
-    placeholder.style.display = 'flex';
-    showError('Lỗi: ' + err.message);
-  } finally {
-    genBtn.disabled = false;
-    genBtnIcon.textContent = '✦';
-    genBtnText.textContent = 'Generate lại';
-  }
-}
-
-// ─────────────────────────────────────────────
-// TOGGLE JSON VIEW
-// ─────────────────────────────────────────────
-const toggleJsonBtn = document.getElementById('toggleJsonBtn');
-
-function toggleJson() {
-  if (!analysisData && !outputCode) return;
-  showingJson = !showingJson;
-  if (showingJson && analysisData) {
-    codeOutput.textContent = JSON.stringify(analysisData, null, 2);
-    toggleJsonBtn.textContent = '📄 Xem Task .ts';
-    toggleJsonBtn.classList.add('ok');
-  } else {
-    codeOutput.textContent = outputCode;
-    toggleJsonBtn.textContent = '🔍 Xem JSON phân tích';
-    toggleJsonBtn.classList.remove('ok');
-  }
-  codeScroll.scrollTop = 0;
-}
-
-// ─────────────────────────────────────────────
-// COPY
-// ─────────────────────────────────────────────
-function copyCode() {
-  if (!outputCode) return;
-  navigator.clipboard.writeText(outputCode).then(() => {
-    copyBtn.classList.add('ok');
-    copyBtn.textContent = '✓ Copied!';
-    setTimeout(() => {
-      copyBtn.classList.remove('ok');
-      copyBtn.innerHTML = '📋 Copy';
-    }, 2000);
-  }).catch(() => {
-    // Fallback cho browser cũ
-    const ta = document.createElement('textarea');
-    ta.value = outputCode;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    copyBtn.classList.add('ok');
-    copyBtn.textContent = '✓ Copied!';
-    setTimeout(() => {
-      copyBtn.classList.remove('ok');
-      copyBtn.innerHTML = '📋 Copy';
-    }, 2000);
+</script>
+<script>
+// ── Render file cards ──
+function renderFileCards(){
+  const container=$('filesView');
+  container.innerHTML='';
+  FILE_DEFS.forEach(fd=>{
+    const card=document.createElement('div');card.className='file-card';
+    card.innerHTML=`
+      <div class="file-card-head">
+        <div><span class="file-card-title">${fd.label}</span> <span class="file-card-role">${fd.role}</span></div>
+        <div class="file-card-actions">
+          <button class="file-card-btn" onclick="previewFile('${fd.key}')">👁 Preview</button>
+          <button class="file-card-btn" onclick="downloadFile('${fd.key}')">⬇ Download</button>
+        </div>
+      </div>
+      <div class="file-card-desc">${fd.filename}</div>`;
+    container.appendChild(card);
   });
 }
 
-// ─────────────────────────────────────────────
-// FILENAME HELPER
-// ─────────────────────────────────────────────
-function getTaskFilename() {
-  const module   = document.getElementById('moduleSelect').value || 'ui';
-  const taskType = document.getElementById('taskType').value;
-  // Format: admin_[module]_[type]_request.ts (giống admin_menu_feature_request.ts)
-  return `admin_${module.replace(/-/g, '_')}_${taskType}_request.ts`;
+function previewFile(key){
+  $('jsonOutput').textContent=builtFiles[key]||'';
+  showView('json');
 }
 
-// ─────────────────────────────────────────────
-// DOWNLOAD
-// ─────────────────────────────────────────────
-function downloadFile() {
-  if (!outputCode) return;
-  const filename = getTaskFilename();
-  const blob = new Blob([outputCode], { type: 'text/plain;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+function downloadFile(key){
+  const fd=FILE_DEFS.find(f=>f.key===key);if(!fd)return;
+  const mod=($('moduleSelect').value||'ui').replace(/-/g,'_');
+  dl(`${mod}_${fd.filename}`,builtFiles[key]||'');
 }
 
-// ─────────────────────────────────────────────
-// SAVE TO document/tasks/
-// ─────────────────────────────────────────────
-const saveBtn = document.getElementById('saveBtn');
+function dl(name,content){
+  const b=new Blob([content],{type:'text/plain;charset=utf-8'});
+  const u=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(u);
+}
 
-async function saveToTasks() {
-  if (!outputCode) return;
-  const filename = getTaskFilename();
+// ── Download All as ZIP ──
+async function downloadZip(){
+  const mod=($('moduleSelect').value||'ui').replace(/-/g,'_');
+  const zip=new JSZip();
+  zip.file(`${mod}_analysis.json`,JSON.stringify(analysisJson,null,2));
+  FILE_DEFS.forEach(fd=>zip.file(`${mod}_${fd.filename}`,builtFiles[fd.key]||''));
+  const blob=await zip.generateAsync({type:'blob'});
+  dl(`${mod}_task_files.zip`,null);
+  // use blob directly
+  const u=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=u;a.download=`${mod}_task_files.zip`;document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(u);
+}
 
-  saveBtn.textContent = '⏳ Saving...';
-  saveBtn.disabled = true;
+// ── Generate ──
+$('genBtn').addEventListener('click',async()=>{
+  var hasImage=!!imageBase64;
+  var hasText=$('extraDesc').value.trim().length>10;
+  if(!hasImage&&!hasText)return;
+  hideError();$('validStatus').innerHTML='';
+  var prompt=buildUiAnalysisPrompt({
+    extraDesc:$('extraDesc').value.trim(),
+    selectedModule:$('moduleSelect').value,
+    taskType:$('taskType').value,
+    priority:$('priority').value,
+    hasImage:hasImage,
+  });
 
-  try {
-    const res = await fetch('/api/save-task', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename, content: outputCode }),
+  // Build messages content
+  var content=[];
+  if(hasImage){
+    content.push({type:'image',source:{type:'base64',media_type:imageMime,data:imageBase64}});
+  }
+  content.push({type:'text',text:prompt});
+
+  $('genBtn').disabled=true;
+  $('genBtnIcon').innerHTML='<div class="spinner"></div>';
+  $('genBtnText').textContent=hasImage?'Đang phân tích ảnh...':'Đang phân tích text...';
+  $('placeholder').style.display='none';
+  $('jsonView').style.display='block';$('filesView').style.display='none';
+  $('jsonOutput').textContent='';$('jsonOutput').classList.add('streaming');
+  $('outActions').style.display='none';$('mainTabs').style.display='none';$('outLabel').style.display='';
+
+  try{
+    var res=await fetch('/api/generate',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:4096,
+        messages:[{role:'user',content:content}]
+      })
     });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || 'Lỗi khi lưu file');
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||`Lỗi ${res.status}`);
+    if(!data.ok){
+      $('jsonOutput').classList.remove('streaming');
+      $('jsonOutput').textContent=data.raw||'Không có dữ liệu';
+      showError('Claude không trả JSON hợp lệ');return;
     }
 
-    saveBtn.classList.add('ok');
-    saveBtn.textContent = `✓ Saved: ${data.path}`;
-    setTimeout(() => {
-      saveBtn.classList.remove('ok');
-      saveBtn.textContent = '💾 Save to tasks/';
-      saveBtn.disabled = false;
-    }, 3000);
-  } catch (err) {
-    showError('Save lỗi: ' + err.message);
-    saveBtn.textContent = '💾 Save to tasks/';
-    saveBtn.disabled = false;
+    analysisJson=data.analysis;
+    const errors=validateUiTaskJson(analysisJson);
+    if(errors.length){
+      $('validStatus').innerHTML=`<div class="valid-err">⚠ ${errors.join(', ')}</div>`;
+    }else{
+      $('validStatus').innerHTML='<div class="valid-ok">✓ JSON hợp lệ — đã build 5 file</div>';
+    }
+
+    $('genBtnText').textContent='Building files...';
+    builtFiles=buildAllArtifacts(analysisJson);
+
+    $('jsonOutput').classList.remove('streaming');
+    $('jsonOutput').innerHTML=highlightJson(analysisJson);
+    renderFileCards();
+    $('mainTabs').style.display='flex';$('outLabel').style.display='none';
+    $('outActions').style.display='flex';
+    currentView='json';showView('json');
+
+  }catch(err){
+    $('jsonOutput').classList.remove('streaming');$('jsonOutput').textContent='';
+    $('jsonView').style.display='none';$('placeholder').style.display='flex';
+    showError('Lỗi: '+err.message);
+  }finally{
+    $('genBtn').disabled=false;$('genBtnIcon').textContent='✦';$('genBtnText').textContent='Generate lại';updateGenBtn();
   }
-}
+});
 </script>
 </body>
 </html>

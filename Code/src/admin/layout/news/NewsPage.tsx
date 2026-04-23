@@ -2,41 +2,57 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { newsService } from '@/server/services/news.service';
+import { newsCategoryService } from '@/server/services/news-category.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { NewsTable } from '@/admin/features/news/NewsTable';
 import { NewsFilters } from '@/admin/features/news/NewsFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedNews } from '@/server/repositories/news.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; isPublished?: string; isShowHome?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    isPublished?: string;
+    isShowHome?: string;
+    categoryId?: string;
+    dateFrom?: string;
+    dateTo?: string;
+  }>;
 }
 
 export const metadata = { title: 'Quan ly tin tuc' };
 
+const emptyResult: PaginatedNews = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function NewsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let news: Awaited<ReturnType<typeof newsService.getAllNews>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    news = await newsService.getAllNews();
-    // Apply filters
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      news = news.filter((n: typeof news[number]) =>
-        (n.title?.toLowerCase().includes(kw) || false) ||
-        (n.seName?.toLowerCase().includes(kw) || false)
-      );
-    }
-    if (sp.isPublished === 'published') {
-      news = news.filter((n: typeof news[number]) => n.isPublished);
-    } else if (sp.isPublished === 'unpublished') {
-      news = news.filter((n: typeof news[number]) => !n.isPublished);
-    }
-    if (sp.isShowHome === 'home') {
-      news = news.filter((n: typeof news[number]) => n.isShowHome);
-    } else if (sp.isShowHome === 'nothome') {
-      news = news.filter((n: typeof news[number]) => !n.isShowHome);
-    }
-  } catch { dbError = true; }
+  const [result, allCategories] = await Promise.all([
+    dbSafe(() =>
+      newsService.getAllNews({
+        page,
+        pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+        search: sp.search || undefined,
+        isPublished: sp.isPublished || undefined,
+        isShowHome: sp.isShowHome || undefined,
+        dateFrom: sp.dateFrom || undefined,
+        dateTo: sp.dateTo || undefined,
+      }),
+      emptyResult
+    ),
+    dbSafe(() => newsCategoryService.getAllCategories() as Promise<Array<{ id: string; title: string | null }>>, []),
+  ]);
+
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
+
+  const categories = allCategories.map((c) => ({ id: c.id, title: c.title }));
 
   return (
     <>
@@ -56,6 +72,10 @@ export default async function NewsPage({ searchParams }: Props) {
               defaultSearch={sp.search || ''}
               defaultPublished={sp.isPublished || ''}
               defaultShowHome={sp.isShowHome || ''}
+              defaultCategoryId={sp.categoryId || ''}
+              defaultDateFrom={sp.dateFrom || ''}
+              defaultDateTo={sp.dateTo || ''}
+              categories={categories}
             />
           </Suspense>
         </div>
@@ -64,7 +84,7 @@ export default async function NewsPage({ searchParams }: Props) {
       {/* DANH SACH TIN TUC */}
       <div className="card">
         <div className="card-header-custom">
-          DANH SACH TIN TUC
+          DANH SACH TIN TUC ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -87,7 +107,9 @@ export default async function NewsPage({ searchParams }: Props) {
           )}
 
           {/* Table */}
-          <NewsTable news={news} />
+          <NewsTable news={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/news" />
         </div>
       </div>
     </>

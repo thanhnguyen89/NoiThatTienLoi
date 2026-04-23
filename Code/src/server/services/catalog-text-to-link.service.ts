@@ -3,8 +3,14 @@ import { validateCatalogTextToLink, type CatalogTextToLinkInput } from '@/server
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const catalogTextToLinkService = {
-  async getAll() {
-    return catalogTextToLinkRepository.findAll();
+  async getAll(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return catalogTextToLinkRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getById(id: string) {

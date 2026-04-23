@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createSlug } from '@/lib/utils';
 import Link from 'next/link';
 import { SingleImageUploader } from '@/admin/components/SingleImageUploader';
 import { RichTextEditor } from '@/admin/components/RichTextEditor';
+import { toast } from '@/admin/components/Toast';
 
-interface NewsItem {
+interface NewsDetail {
   id: string;
   title: string | null;
   summary: string | null;
@@ -27,24 +28,29 @@ interface NewsItem {
   slugRedirect: string | null;
   seoCanonical: string | null;
   seoNoindex: boolean | null;
+  isRedirect: boolean | null;
+  authorName: string | null;
+  publishedAt: Date | string | null;
+  viewCount: number | null;
+  commentCount: number | null;
+  likeCount: number | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}
+
+interface CategoryOption {
+  id: string;
+  title: string | null;
 }
 
 interface Props {
-  news?: NewsItem;
+  news?: NewsDetail;
+  categories?: CategoryOption[];
 }
 
-type TabId = 'basic' | 'seo' | 'status';
-
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'basic', label: 'Thong tin' },
-  { id: 'seo', label: 'SEO' },
-  { id: 'status', label: 'Trang thai' },
-];
-
-export function NewsForm({ news }: Props) {
+export function NewsForm({ news, categories = [] }: Props) {
   const router = useRouter();
   const isEdit = !!news;
-  const [activeTab, setActiveTab] = useState<TabId>('basic');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [globalError, setGlobalError] = useState('');
@@ -59,9 +65,6 @@ export function NewsForm({ news }: Props) {
     metaTitle: news?.metaTitle || '',
     metaDescription: news?.metaDescription || '',
     metaKeywords: news?.metaKeywords || '',
-    slugRedirect: news?.slugRedirect || '',
-    seoCanonical: news?.seoCanonical || '',
-    seoNoindex: news?.seoNoindex ?? false,
     isPublished: news?.isPublished ?? true,
     isShowHome: news?.isShowHome ?? false,
     isActive: news?.isActive ?? true,
@@ -69,7 +72,28 @@ export function NewsForm({ news }: Props) {
     allowComments: news?.allowComments ?? true,
     newTag: news?.newTag || '',
     sortOrder: String(news?.sortOrder ?? 0),
+    slugRedirect: news?.slugRedirect || '',
+    seoCanonical: news?.seoCanonical || '',
+    seoNoindex: news?.seoNoindex ?? false,
+    isRedirect: news?.isRedirect ?? false,
+    authorName: news?.authorName || '',
+    publishedAt: news?.publishedAt ? (typeof news.publishedAt === 'string' ? news.publishedAt : new Date(news.publishedAt).toISOString().slice(0, 16)) : '',
+    viewCount: String(news?.viewCount ?? 0),
+    commentCount: String(news?.commentCount ?? 0),
+    likeCount: String(news?.likeCount ?? 0),
   });
+
+  const [auditInfo] = useState({
+    createdAt: news?.createdAt || null,
+    updatedAt: news?.updatedAt || null,
+  });
+
+  // Enable/disable redirect fields
+  useEffect(() => {
+    if (!form.isRedirect) {
+      setForm((p) => ({ ...p, slugRedirect: '' }));
+    }
+  }, [form.isRedirect]);
 
   function handle(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
@@ -83,6 +107,11 @@ export function NewsForm({ news }: Props) {
     setGlobalError('');
   }
 
+  function handleRedirectToggle(e: React.ChangeEvent<HTMLInputElement>) {
+    const checked = e.target.checked;
+    setForm((p) => ({ ...p, isRedirect: checked, slugRedirect: checked ? p.slugRedirect : '' }));
+  }
+
   function buildPayload() {
     return {
       title: form.title.trim() || null,
@@ -93,9 +122,6 @@ export function NewsForm({ news }: Props) {
       metaTitle: form.metaTitle.trim() || null,
       metaDescription: form.metaDescription.trim() || null,
       metaKeywords: form.metaKeywords.trim() || null,
-      slugRedirect: form.slugRedirect.trim() || null,
-      seoCanonical: form.seoCanonical.trim() || null,
-      seoNoindex: form.seoNoindex,
       isPublished: form.isPublished,
       isShowHome: form.isShowHome,
       isActive: form.isActive,
@@ -103,24 +129,38 @@ export function NewsForm({ news }: Props) {
       allowComments: form.allowComments,
       newTag: form.newTag.trim() || null,
       sortOrder: Number(form.sortOrder) || 0,
+      slugRedirect: form.slugRedirect.trim() || null,
+      seoCanonical: form.seoCanonical.trim() || null,
+      seoNoindex: form.seoNoindex,
+      isRedirect: form.isRedirect,
+      authorName: form.authorName.trim() || null,
+      publishedAt: form.publishedAt || null,
+      viewCount: Number(form.viewCount) || 0,
+      commentCount: Number(form.commentCount) || 0,
+      likeCount: Number(form.likeCount) || 0,
     };
   }
 
   async function submit(ev: React.FormEvent) {
     ev.preventDefault();
     const e: Record<string, string> = {};
-    if (!form.title.trim()) e.title = 'Bat buoc';
-    if (!form.seName.trim()) e.seName = 'Bat buoc';
-    else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(form.seName)) e.seName = 'Slug khong hop le';
-    if (Object.keys(e).length) { setErrors(e); setActiveTab('basic'); return; }
+    if (!form.title.trim()) e.title = 'Bắt buộc';
+    if (!form.seName.trim()) e.seName = 'Bắt buộc';
+    else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(form.seName)) e.seName = 'Slug không hợp lệ';
+    if (form.isRedirect && !form.slugRedirect.trim()) e.slugRedirect = 'Bắt buộc khi bật chuyển hướng';
+    if (Object.keys(e).length) { setErrors(e); return; }
 
     setLoading(true); setGlobalError('');
     try {
       const payload = buildPayload();
       const url = isEdit ? `/admin/api/news/${news.id}` : '/admin/api/news';
+      const token = localStorage.getItem('admin_token') || '';
       const res = await fetch(url, {
         method: isEdit ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
       const json = await res.json();
@@ -129,11 +169,15 @@ export function NewsForm({ news }: Props) {
           const fe: Record<string, string> = {};
           Object.entries(json.errors).forEach(([k, v]) => { fe[k] = Array.isArray(v) ? (v as string[])[0] : String(v); });
           setErrors(fe);
-        } else setGlobalError(json.error || 'Loi');
+        } else setGlobalError(json.error || 'Lỗi');
         return;
       }
-      router.push('/admin/news'); router.refresh();
-    } catch { setGlobalError('Loi ket noi'); }
+      toast(isEdit ? 'Cập nhật thành công' : 'Tạo mới thành công', 'success');
+      setTimeout(() => {
+        router.push('/admin/news');
+        router.refresh();
+      }, 800);
+    } catch { setGlobalError('Lỗi kết nối'); }
     finally { setLoading(false); }
   }
 
@@ -146,219 +190,212 @@ export function NewsForm({ news }: Props) {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item"><Link href="/admin">eCommerce</Link></li>
-            <li className="breadcrumb-item"><Link href="/admin/news">Tin tuc</Link></li>
-            <li className="breadcrumb-item active">{isEdit ? form.title || 'Chinh sua' : 'Them moi'}</li>
+            <li className="breadcrumb-item"><Link href="/admin/news">Tin tức</Link></li>
+            <li className="breadcrumb-item active">{isEdit ? (form.title || 'Chỉnh sửa') : 'Thêm mới'}</li>
           </ol>
         </nav>
         <div className="d-flex gap-2">
-          <button type="button" className="btn btn-danger btn-sm" onClick={() => router.push('/admin/news')} disabled={loading}>Huy</button>
+          <button type="button" className="btn btn-danger btn-sm" onClick={() => router.push('/admin/news')} disabled={loading}>Hủy</button>
           <button type="submit" className="btn btn-success btn-sm" disabled={loading}>
-            {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Dang luu...</> : isEdit ? 'Cap nhat' : 'Tao tin tuc'}
+            {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Đang lưu...</> : isEdit ? 'Cập nhật' : 'Tạo tin tức'}
           </button>
         </div>
       </div>
 
-      {/* Tabs */}
-      <ul className="nav nav-tabs mb-3">
-        {TABS.map((tab) => (
-          <li className="nav-item" key={tab.id}>
-            <button type="button" className={`nav-link ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id)}>
-              {tab.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-
       <div className="row g-3">
-        <div className="col-12 col-lg-9">
-
-          {/* === THONG TIN CO BAN === */}
-          {activeTab === 'basic' && (
-            <>
-              <div className="card mb-3">
-                <div className="card-header fw-semibold">Thong tin co ban</div>
-                <div className="card-body">
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Tieu de <span className="text-danger">*</span></label>
-                    <input name="title" value={form.title} onChange={handle}
-                      placeholder="VD: Xu huong noi that 2025" className={`form-control form-control-sm ${errors.title ? 'is-invalid' : ''}`} />
-                    {errors.title && <div className="invalid-feedback d-block">{errors.title}</div>}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Slug <span className="text-danger">*</span></label>
-                    <div className="d-flex align-items-center gap-2">
-                      <input name="seName" value={form.seName} onChange={handle}
-                        placeholder="xu-huong-noi-that-2025" className={`form-control form-control-sm ${errors.seName ? 'is-invalid' : ''}`} />
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" id="autoSlug"
-                          checked={autoSlug} onChange={(e) => setAutoSlug(e.target.checked)} />
-                        <label className="form-check-label small" htmlFor="autoSlug">Auto</label>
-                      </div>
-                    </div>
-                    {errors.seName && <div className="invalid-feedback d-block">{errors.seName}</div>}
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Tom tat</label>
-                    <textarea name="summary" value={form.summary} onChange={handle}
-                      rows={3} placeholder="Tom tat ngan gan bai viet..." className="form-control form-control-sm" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Noi dung</label>
-                    <RichTextEditor
-                      value={form.content || ''}
-                      onChange={(val) => setForm((p) => ({ ...p, content: val }))}
-                      placeholder="Nhap noi dung bai viet..."
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <SingleImageUploader
-                      value={form.image}
-                      onChange={(url) => setForm((p) => ({ ...p, image: url }))}
-                      label="Hinh anh"
-                      defaultSrc="/admin/assets/images/default-image_100.png"
-                    />
-                  </div>
-                  <div className="row g-3">
-                    <div className="col-6">
-                      <label className="form-label small fw-semibold">Tag moi</label>
-                      <input name="newTag" value={form.newTag} onChange={handle}
-                        placeholder="VD: Hot, New" className="form-control form-control-sm" />
-                    </div>
-                    <div className="col-6">
-                      <label className="form-label small fw-semibold">Thu tu</label>
-                      <input name="sortOrder" type="number" min="0" value={form.sortOrder} onChange={handle}
-                        className="form-control form-control-sm" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* === SEO === */}
-          {activeTab === 'seo' && (
-            <>
-              <div className="card mb-3">
-                <div className="card-header fw-semibold">SEO Website</div>
-                <div className="card-body">
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Meta Title</label>
-                    <input name="metaTitle" value={form.metaTitle} onChange={handle}
-                      placeholder="SEO title hien thi tren Google" className="form-control form-control-sm" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Meta Description</label>
-                    <textarea name="metaDescription" value={form.metaDescription} onChange={handle}
-                      rows={3} placeholder="Mo ta ngan gon cho Google" className="form-control form-control-sm" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Meta Keywords</label>
-                    <input name="metaKeywords" value={form.metaKeywords} onChange={handle}
-                      placeholder="keyword1, keyword2, keyword3" className="form-control form-control-sm" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Slug Redirect</label>
-                    <input name="slugRedirect" value={form.slugRedirect} onChange={handle}
-                      placeholder="/tin-tuc/ten-cu" className="form-control form-control-sm" />
-                  </div>
-                  <div className="row g-3">
-                    <div className="col-6">
-                      <label className="form-label small fw-semibold">Canonical URL</label>
-                      <input name="seoCanonical" value={form.seoCanonical} onChange={handle}
-                        placeholder="https://example.com/canonical-url" className="form-control form-control-sm" />
-                    </div>
-                    <div className="col-6 d-flex align-items-end">
-                      <div className="form-check form-switch">
-                        <input className="form-check-input" type="checkbox" name="seoNoindex"
-                          id="seoNoindex" checked={form.seoNoindex} onChange={handle} />
-                        <label className="form-check-label" htmlFor="seoNoindex">Noindex</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* === TRANG THAI === */}
-          {activeTab === 'status' && (
-            <>
-              <div className="card mb-3">
-                <div className="card-header fw-semibold">Trang thai hien thi</div>
-                <div className="card-body">
-                  <div className="form-check form-switch mb-2">
-                    <input className="form-check-input" type="checkbox" name="isActive"
-                      id="isActive" checked={form.isActive} onChange={handle} />
-                    <label className="form-check-label" htmlFor="isActive">Hien thi</label>
-                  </div>
-                  <div className="form-check form-switch mb-2">
-                    <input className="form-check-input" type="checkbox" name="isPublished"
-                      id="isPublished" checked={form.isPublished} onChange={handle} />
-                    <label className="form-check-label" htmlFor="isPublished">Xuat ban</label>
-                  </div>
-                  <div className="form-check form-switch mb-2">
-                    <input className="form-check-input" type="checkbox" name="isShowHome"
-                      id="isShowHome" checked={form.isShowHome} onChange={handle} />
-                    <label className="form-check-label" htmlFor="isShowHome">Hien thi trang chu</label>
-                  </div>
-                  <div className="form-check form-switch mb-2">
-                    <input className="form-check-input" type="checkbox" name="isNew"
-                      id="isNew" checked={form.isNew} onChange={handle} />
-                    <label className="form-check-label" htmlFor="isNew">Danh dau moi</label>
-                  </div>
-                  <div className="form-check form-switch mb-3">
-                    <input className="form-check-input" type="checkbox" name="allowComments"
-                      id="allowComments" checked={form.allowComments} onChange={handle} />
-                    <label className="form-check-label" htmlFor="allowComments">Cho phep binh luan</label>
-                  </div>
-                  <span className={`badge ${form.isActive ? 'bg-success' : 'bg-secondary'}`}>
-                    {form.isActive ? '● Active' : '● Hidden'}
-                  </span>
-                  <span className={`badge ${form.isPublished ? 'bg-primary ms-2' : 'bg-warning ms-2'}`}>
-                    {form.isPublished ? '● Published' : '● Draft'}
-                  </span>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* RIGHT - Quick info */}
-        <div className="col-12 col-lg-3">
-          <div className="card">
-            <div className="card-header fw-semibold">Trang thai</div>
+        {/* === COL-MD-8: THÔNG TIN === */}
+        <div className="col-md-8">
+          <div className="card mb-3">
+            <div className="card-header-custom fw-semibold">THÔNG TIN BÀI VIẾT</div>
             <div className="card-body">
-              <div className="d-flex flex-column gap-2">
-                <div className="d-flex justify-content-between small">
-                  <span className="text-muted">Hien thi:</span>
-                  <span className={`fw-semibold ${form.isActive ? 'text-success' : 'text-danger'}`}>
-                    {form.isActive ? 'Co' : 'Khong'}
-                  </span>
-                </div>
-                <div className="d-flex justify-content-between small">
-                  <span className="text-muted">Xuat ban:</span>
-                  <span className={`fw-semibold ${form.isPublished ? 'text-success' : 'text-warning'}`}>
-                    {form.isPublished ? 'Co' : 'Khong'}
-                  </span>
-                </div>
-                <div className="d-flex justify-content-between small">
-                  <span className="text-muted">Trang chu:</span>
-                  <span className="fw-semibold">
-                    {form.isShowHome ? 'Co' : 'Khong'}
-                  </span>
-                </div>
-                <div className="d-flex justify-content-between small">
-                  <span className="text-muted">Binh luan:</span>
-                  <span className="fw-semibold">
-                    {form.allowComments ? 'Cho phep' : 'Khong'}
-                  </span>
-                </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Tiêu đề <span className="text-danger">*</span></label>
+                <input name="title" value={form.title} onChange={handle}
+                  placeholder="VD: Xu hướng nội thất 2025" maxLength={60}
+                  className={`form-control form-control-sm ${errors.title ? 'is-invalid' : ''}`} />
+                {errors.title && <div className="invalid-feedback d-block">{errors.title}</div>}
               </div>
-              <p className="text-muted mt-3" style={{ fontSize: 12 }}>
-                Cac truong SEO giup bai viet tot hon tren cong cu tim kiem.
-              </p>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Tóm tắt</label>
+                <textarea name="summary" value={form.summary} onChange={handle}
+                  rows={10} className="form-control form-control-sm" placeholder="Tóm tắt ngắn gọn bài viết..." />
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Nội dung</label>
+                <RichTextEditor
+                  value={form.content || ''}
+                  onChange={(val) => setForm((p) => ({ ...p, content: val }))}
+                  placeholder="Nhập nội dung bài viết..."
+                />
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* === COL-MD-4: MEDIA + SEO === */}
+        <div className="col-md-4">
+
+          {/* Card Media */}
+          <div className="card mb-3">
+            <div className="card-header-custom fw-semibold">MEDIA</div>
+            <div className="card-body">
+              <div className="mb-3">
+                <SingleImageUploader
+                  value={form.image}
+                  onChange={(url) => setForm((p) => ({ ...p, image: url }))}
+                  label="Hình ảnh"
+                  defaultSrc="/admin/assets/images/default-image_100.png"
+                />
+              </div>
+              <div className="row g-2">
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Lượt xem</label>
+                  <input name="viewCount" type="number" min="0" value={form.viewCount} onChange={handle}
+                    className="form-control form-control-sm" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Thứ tự</label>
+                  <input name="sortOrder" type="number" min="0" value={form.sortOrder} onChange={handle}
+                    className="form-control form-control-sm" />
+                </div>
+              </div>
+              <div className="row g-2 mt-1">
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Bình luận</label>
+                  <input name="commentCount" type="number" min="0" value={form.commentCount} onChange={handle}
+                    className="form-control form-control-sm" />
+                </div>
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Lượt thích</label>
+                  <input name="likeCount" type="number" min="0" value={form.likeCount} onChange={handle}
+                    className="form-control form-control-sm" />
+                </div>
+              </div>
+              <div className="mb-2 mt-2">
+                <label className="form-label small fw-semibold">Tag mới</label>
+                <input name="newTag" value={form.newTag} onChange={handle}
+                  placeholder="VD: Hot, New" className="form-control form-control-sm" />
+              </div>
+              <div className="form-check form-switch mb-2">
+                <input className="form-check-input" type="checkbox" name="isShowHome"
+                  id="isShowHome" checked={form.isShowHome} onChange={handle} />
+                <label className="form-check-label" htmlFor="isShowHome">Hiển thị trang chủ</label>
+              </div>
+              <div className="form-check form-switch mb-2">
+                <input className="form-check-input" type="checkbox" name="isNew"
+                  id="isNew" checked={form.isNew} onChange={handle} />
+                <label className="form-check-label" htmlFor="isNew">Đánh dấu mới</label>
+              </div>
+              <div className="form-check form-switch">
+                <input className="form-check-input" type="checkbox" name="isActive"
+                  id="isActive" checked={form.isActive} onChange={handle} />
+                <label className="form-check-label" htmlFor="isActive">Kích hoạt</label>
+              </div>
+            </div>
+          </div>
+           {/* Card Trạng thái */}
+          <div className="card mb-3">
+            <div className="card-header-custom fw-semibold">TRẠNG THÁI</div>
+            <div className="card-body">
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Ngày xuất bản</label>
+                <input name="publishedAt" type="datetime-local" value={form.publishedAt} onChange={handle}
+                  className="form-control form-control-sm" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Tác giả</label>
+                <input name="authorName" value={form.authorName} onChange={handle}
+                  placeholder="Tên tác giả" className="form-control form-control-sm" />
+              </div>
+              <div className="form-check form-switch mb-2">
+                <input className="form-check-input" type="checkbox" name="isPublished"
+                  id="isPublished" checked={form.isPublished} onChange={handle} />
+                <label className="form-check-label" htmlFor="isPublished">Xuất bản</label>
+              </div>
+              <div className="form-check form-switch mb-3">
+                <input className="form-check-input" type="checkbox" name="allowComments"
+                  id="allowComments" checked={form.allowComments} onChange={handle} />
+                <label className="form-check-label" htmlFor="allowComments">Cho phép bình luận</label>
+              </div>
+              <span className={`badge ${form.isActive ? 'bg-success' : 'bg-secondary'}`}>
+                {form.isActive ? '● Active' : '● Hidden'}
+              </span>
+              <span className={`badge ${form.isPublished ? 'bg-primary ms-1' : 'bg-warning ms-1'}`}>
+                {form.isPublished ? '● Published' : '● Draft'}
+              </span>
+            </div>
+          </div>          
+          {/* Card SEO */}
+          <div className="card mb-3">
+            <div className="card-header-custom fw-semibold">SEO</div>
+            <div className="card-body">
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">URL (Slug) <span className="text-danger">*</span></label>
+                <input name="seName" value={form.seName} onChange={handle}
+                  placeholder="xu-huong-noi-that-2025"
+                  className={`form-control form-control-sm ${errors.seName ? 'is-invalid' : ''}`} />
+                {errors.seName && <div className="invalid-feedback d-block">{errors.seName}</div>}
+                <div className="form-check mt-1">
+                  <input className="form-check-input" type="checkbox" id="autoSlug"
+                    checked={autoSlug} onChange={(e) => setAutoSlug(e.target.checked)} />
+                  <label className="form-check-label small" htmlFor="autoSlug">Tự động tạo slug</label>
+                </div>
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Tiêu đề SEO</label>
+                <input name="metaTitle" value={form.metaTitle} onChange={handle}
+                  placeholder="SEO title cho trang" className="form-control form-control-sm" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Mô tả SEO</label>
+                <textarea name="metaDescription" value={form.metaDescription} onChange={handle} rows={3}
+                  className="form-control form-control-sm" placeholder="Mô tả SEO cho trang" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Từ khóa</label>
+                <input name="metaKeywords" value={form.metaKeywords} onChange={handle}
+                  placeholder="keyword1, keyword2, keyword3" className="form-control form-control-sm" />
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">SEO Canonical</label>
+                <input name="seoCanonical" value={form.seoCanonical} onChange={handle}
+                  placeholder="https://..." className="form-control form-control-sm" />
+              </div>
+              <div className="form-check form-switch mb-2">
+                <input className="form-check-input" type="checkbox" name="seoNoindex"
+                  id="seoNoindex" checked={form.seoNoindex} onChange={handle} />
+                <label className="form-check-label" htmlFor="seoNoindex">SEO NoIndex</label>
+              </div>
+              <div className="form-check form-switch mb-3">
+                <input className="form-check-input" type="checkbox" name="isRedirect"
+                  id="isRedirect" checked={form.isRedirect} onChange={handleRedirectToggle} />
+                <label className="form-check-label" htmlFor="isRedirect">Chuyển hướng</label>
+              </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">URL chuyển hướng</label>
+                <input name="slugRedirect" value={form.slugRedirect} onChange={handle}
+                  placeholder="/url-cu" disabled={!form.isRedirect}
+                  className={`form-control form-control-sm ${!form.isRedirect ? 'bg-light' : ''} ${errors.slugRedirect ? 'is-invalid' : ''}`} />
+                {errors.slugRedirect && <div className="invalid-feedback d-block">{errors.slugRedirect}</div>}
+              </div>
+            </div>
+          </div>
+
+          {/* Audit info */}
+          {(auditInfo.createdAt || auditInfo.updatedAt) && (
+            <div className="card">
+              <div className="card-body py-2">
+                <div className="small text-muted">
+                  {auditInfo.createdAt && (
+                    <div>Ngày tạo: {new Date(auditInfo.createdAt).toLocaleString('vi-VN')}</div>
+                  )}
+                  {auditInfo.updatedAt && (
+                    <div>Ngày cập nhật: {new Date(auditInfo.updatedAt).toLocaleString('vi-VN')}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </form>

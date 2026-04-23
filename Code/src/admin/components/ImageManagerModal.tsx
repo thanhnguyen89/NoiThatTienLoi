@@ -34,6 +34,13 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
   const [activeFolder, setActiveFolder] = useState<string>('');
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [limit] = useState(20);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   // Folder actions state
   const [showCreateFolder, setShowCreateFolder] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
@@ -60,15 +67,12 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
     if (isOpen) {
       setSelected(initialUrl || null);
       setSelectedMulti([]);
+      setPage(1);
+      setSearchQuery('');
       fetchFolders();
-      fetchImages(activeFolder);
+      fetchImages(activeFolder, 1);
     }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen) fetchImages(activeFolder);
-    setSearchQuery('');
-  }, [activeFolder]);
+  }, [isOpen, activeFolder]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchFolders() {
     try {
@@ -78,17 +82,40 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
     } catch {}
   }
 
-  async function fetchImages(folder: string) {
+  async function fetchImages(folder: string, pageNum?: number) {
+    // Cancel any in-flight request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    const targetPage = pageNum ?? page;
     setLoading(true);
     try {
-      const q = folder ? `?folder=${encodeURIComponent(folder)}` : '';
-      const res = await fetch(`/admin/api/uploads${q}`);
+      const q = new URLSearchParams();
+      if (folder) q.set('folder', folder);
+      q.set('page', String(targetPage));
+      q.set('limit', String(limit));
+      const res = await fetch(`/admin/api/uploads?${q}`, { signal: controller.signal });
       const json = await res.json();
-      if (json.success) setImages(json.data);
-    } catch {
-      setImages([]);
+      if (json.success) {
+        setImages(json.data);
+        setTotal(json.total);
+        setTotalPages(json.totalPages);
+        // Clamp page to valid range (handles empty last page after deletion)
+        const safePage = Math.min(json.page, json.totalPages || 1);
+        setPage(safePage);
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        setImages([]);
+      }
     } finally {
       setLoading(false);
+      // Scroll main content to top on page change
+      const mainContent = document.querySelector('[data-image-modal-content]') as HTMLElement;
+      if (mainContent) mainContent.scrollTop = 0;
     }
   }
 
@@ -102,7 +129,8 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
       const res = await fetch('/admin/api/upload', { method: 'POST', body: fd });
       const json = await res.json();
       if (json.success) {
-        await fetchImages(activeFolder);
+        setPage(1);
+        await fetchImages(activeFolder, 1);
         setTab('library');
       }
     } catch {} finally {
@@ -361,7 +389,7 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
           )}
 
           {/* Main content */}
-          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+          <div data-image-modal-content style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
 
             {/* Toolbar — 2 rows like file manager */}
             {tab === 'library' && (
@@ -467,7 +495,7 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
                   </div>
 
                   <span style={{ fontSize: 11, color: '#adb5bd', whiteSpace: 'nowrap', marginLeft: 'auto' }}>
-                    {searchQuery ? `${filteredImages.length}/${images.length}` : images.length} ảnh
+                    {searchQuery ? `${filteredImages.length}/${total}` : total} ảnh
                   </span>
                 </div>
               </div>
@@ -619,7 +647,33 @@ export function ImageManagerModal({ isOpen, onClose, onSelect, onSelectMultiple,
 
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 16px', borderTop: '1px solid #e9ecef', background: '#f8f9fa', flexShrink: 0 }}>
-          <div style={{ fontSize: 12, color: '#6c757d' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12, color: '#6c757d' }}>
+            {/* Pagination */}
+            {tab === 'library' && totalPages > 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <button
+                  disabled={page <= 1 || loading}
+                  onClick={() => fetchImages(activeFolder, page - 1)}
+                  style={{ padding: '2px 8px', border: '1px solid #dee2e6', borderRadius: 3, background: page <= 1 ? '#f8f9fa' : '#fff', cursor: page <= 1 ? 'not-allowed' : 'pointer', fontSize: 12, color: page <= 1 ? '#adb5bd' : '#495057' }}
+                >
+                  <i className="bi bi-chevron-left"></i>
+                </button>
+                <span style={{ fontSize: 12, color: '#495057', minWidth: 60, textAlign: 'center' }}>
+                  {page}/{totalPages}
+                </span>
+                <button
+                  disabled={page >= totalPages || loading}
+                  onClick={() => fetchImages(activeFolder, page + 1)}
+                  style={{ padding: '2px 8px', border: '1px solid #dee2e6', borderRadius: 3, background: page >= totalPages ? '#f8f9fa' : '#fff', cursor: page >= totalPages ? 'not-allowed' : 'pointer', fontSize: 12, color: page >= totalPages ? '#adb5bd' : '#495057' }}
+                >
+                  <i className="bi bi-chevron-right"></i>
+                </button>
+              </div>
+            )}
+            <span style={{ fontSize: 11, color: '#adb5bd' }}>
+              {total} ảnh
+            </span>
+
             {multiSelect && selectedMulti.length > 0 ? (
               <span style={{ fontSize: 11, background: '#e7f1ff', padding: '2px 8px', borderRadius: 4, color: '#0d6efd' }}>
                 Đã chọn {selectedMulti.length} ảnh

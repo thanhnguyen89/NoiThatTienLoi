@@ -12,11 +12,12 @@ interface ProductSizeItem {
   heightCm: number | null;
   sortOrder: number;
   isActive: boolean;
-  createdAt: Date;
+  createdAt: Date | null;
   _count: { variants: number };
 }
 
-function formatDate(date: Date) {
+function formatDate(date: Date | null | undefined) {
+  if (!date) return '—';
   const d = new Date(date);
   return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 }

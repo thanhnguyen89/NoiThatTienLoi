@@ -2,36 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { sliderPictureService } from '@/server/services/slider-picture.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { SliderPictureTable } from '@/admin/features/slider-picture/SliderPictureTable';
 import { SliderPictureFilters } from '@/admin/features/slider-picture/SliderPictureFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedSliderPictures } from '@/server/repositories/slider-picture.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý hình ảnh Slider' };
 
+const emptyResult: PaginatedSliderPictures = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function SliderPicturesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let pictures: Awaited<ReturnType<typeof sliderPictureService.getAllSliderPictures>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    pictures = await sliderPictureService.getAllSliderPictures();
+  const result = await dbSafe(() =>
+    sliderPictureService.getAllSliderPictures({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      pictures = pictures.filter((p) =>
-        (p.name && p.name.toLowerCase().includes(kw)) ||
-        (p.comment && p.comment.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      pictures = pictures.filter((p) => p.isActive);
-    } else if (sp.status === 'inactive') {
-      pictures = pictures.filter((p) => !p.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -56,7 +60,7 @@ export default async function SliderPicturesPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH HÌNH ẢNH SLIDER
+          DANH SÁCH HÌNH ẢNH SLIDER ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -76,7 +80,9 @@ export default async function SliderPicturesPage({ searchParams }: Props) {
             </div>
           )}
 
-          <SliderPictureTable pictures={pictures} />
+          <SliderPictureTable pictures={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/slider-pictures" />
         </div>
       </div>
     </>

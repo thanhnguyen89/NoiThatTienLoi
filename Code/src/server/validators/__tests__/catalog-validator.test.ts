@@ -18,25 +18,61 @@ describe('CatalogEmbedCode Validator', () => {
     expect(result.success).toBe(true);
   });
 
-  it('accepts empty data', () => {
+  it('rejects empty data (title required)', () => {
     const data = {};
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing title', () => {
+    const data = { embedCode: '<div>code</div>' };
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects missing embedCode', () => {
+    const data = { title: 'Test' };
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects empty title string', () => {
+    const data = { title: '   ', embedCode: '<div>x</div>' };
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects title exceeding max length', () => {
+    const data = { title: 'a'.repeat(201), embedCode: '<div>x</div>' };
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts title at max length', () => {
+    const data = { title: 'a'.repeat(200), embedCode: '<div>x</div>' };
     const result = validateCatalogEmbedCode(data);
     expect(result.success).toBe(true);
   });
 
   it('accepts null for optional fields', () => {
     const data = {
-      title: null,
+      title: 'Test',
       positionId: null,
-      embedCode: null,
+      embedCode: '<div>x</div>',
       note: null,
     };
     const result = validateCatalogEmbedCode(data);
     expect(result.success).toBe(true);
   });
 
-  it('validates isActive default', () => {
-    const data = {};
+  it('accepts positionId as integer', () => {
+    const data = { title: 'Test', positionId: 1, embedCode: '<div>x</div>' };
+    const result = validateCatalogEmbedCode(data);
+    expect(result.success).toBe(true);
+  });
+
+  it('validates isActive default to true', () => {
+    const data = { title: 'Test', embedCode: '<div>x</div>' };
     const result = validateCatalogEmbedCode(data);
     expect(result.success).toBe(true);
     if (result.success) {

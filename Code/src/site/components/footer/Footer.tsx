@@ -55,7 +55,7 @@ export function Footer() {
       </div>
       <div className="copyright">
         <section>
-          <p>Copyright © noithattienloi.vn. All rights reserved.</p>
+          <p>Copyright © noithatminhqui.vn. All rights reserved.</p>
         </section>
       </div>
     </footer>

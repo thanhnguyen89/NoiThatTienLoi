@@ -22,10 +22,16 @@ const nav: NavItem[] = [
     ]
   },
   { label: 'Yêu cầu tư vấn', icon: 'bi-chat-left-text', href: '/admin/inquiries' },
+  { label: 'Đơn hàng', icon: 'bi-receipt', href: '/admin/orders' },
+  { label: 'Đơn vị vận chuyển', icon: 'bi-truck', href: '/admin/shipping-providers' },
+  { label: 'Kho hàng', icon: 'bi-house-door', href: '/admin/warehouses' },
+  { label: 'Thành viên', icon: 'bi-people-fill', href: '/admin/members' },
   { type: 'section', label: 'NỘI DUNG' },
-  { label: 'Tin tức', icon: 'bi-newspaper', href: '/admin/posts' },
+  { label: 'Tin tức', icon: 'bi-newspaper', href: '/admin/news' },
   { label: 'Danh mục tin tức', icon: 'bi-folder', href: '/admin/news-categories' },
   { label: 'Slider', icon: 'bi-images', href: '/admin/sliders' },
+  { type: 'section', label: 'CẤU HÌNH' },
+  { label: 'Cấu hình hệ thống', icon: 'bi-gear', href: '/admin/system-config' },
 ];
 
 export function AdminSidebar() {

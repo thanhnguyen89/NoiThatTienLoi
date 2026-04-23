@@ -2,36 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { catalogRedirectService } from '@/server/services/catalog-redirect.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { CatalogRedirectTable } from '@/admin/features/catalog-redirect/CatalogRedirectTable';
 import { CatalogRedirectFilters } from '@/admin/features/catalog-redirect/CatalogRedirectFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedCatalogRedirects } from '@/server/repositories/catalog-redirect.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Redirect' };
 
+const emptyResult: PaginatedCatalogRedirects = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function CatalogRedirectsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let redirects: Awaited<ReturnType<typeof catalogRedirectService.getAllRedirects>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    redirects = await catalogRedirectService.getAllRedirects();
+  const result = await dbSafe(() =>
+    catalogRedirectService.getAllRedirects({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      redirects = redirects.filter((r) =>
-        (r.urlFrom && r.urlFrom.toLowerCase().includes(kw)) ||
-        (r.urlTo && r.urlTo.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      redirects = redirects.filter((r) => r.isActive);
-    } else if (sp.status === 'inactive') {
-      redirects = redirects.filter((r) => !r.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -56,7 +60,7 @@ export default async function CatalogRedirectsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH REDIRECT
+          DANH SÁCH REDIRECT ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -76,7 +80,9 @@ export default async function CatalogRedirectsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <CatalogRedirectTable redirects={redirects} />
+          <CatalogRedirectTable redirects={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/catalog-redirects" />
         </div>
       </div>
     </>

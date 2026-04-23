@@ -90,7 +90,7 @@ export function MenuLinkTreePanel({
       const existingItems = menuLinks.filter((l) => !l._local);
       const reorderUpdates = existingItems.map((item) => ({
         id: item.id,
-        sortOrder: item.sortOrder ?? 0,
+        sortOrder: Math.round(item.sortOrder ?? 0),
         parentId: item.parentId ?? null,
       }));
 

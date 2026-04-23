@@ -10,7 +10,46 @@ const sliderPictureListSelect = {
   isActive: true,
 };
 
+export interface PaginatedSliderPictures {
+  data: Awaited<ReturnType<typeof sliderPictureRepository.findAll>>;
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const sliderPictureRepository = {
+  async findAllPaginated(opts?: { page?: number; pageSize?: number; search?: string; isActive?: boolean }) {
+    const page = opts?.page ?? 1;
+    const pageSize = opts?.pageSize ?? 20;
+    const where: Record<string, unknown> = {};
+    if (opts?.search) {
+      where.OR = [
+        { name: { contains: opts.search, mode: 'insensitive' } },
+        { comment: { contains: opts.search, mode: 'insensitive' } },
+      ];
+    }
+    if (opts?.isActive !== undefined) where.isActive = opts.isActive;
+
+    const [result, total] = await Promise.all([
+      prisma.sliderPicture.findMany({
+        where,
+        select: sliderPictureListSelect,
+        orderBy: { sortOrder: 'asc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.sliderPicture.count({ where }),
+    ]);
+
+    return {
+      data: result,
+      pagination: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    };
+  },
+
   async findAll() {
     return prisma.sliderPicture.findMany({
       select: sliderPictureListSelect,

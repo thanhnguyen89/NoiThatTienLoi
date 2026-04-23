@@ -2,31 +2,39 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { adminRoleService } from '@/server/services/admin-role.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { AdminRoleTable } from '@/admin/features/admin-role/AdminRoleTable';
 import { AdminRoleFilters } from '@/admin/features/admin-role/AdminRoleFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedAdminRoles } from '@/server/repositories/admin-role.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string }>;
+  searchParams: Promise<{ search?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý vai trò' };
 
+const emptyResult: PaginatedAdminRoles = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function AdminRolesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let roles: Awaited<ReturnType<typeof adminRoleService.getAllRoles>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    roles = await adminRoleService.getAllRoles();
+  const result = await dbSafe(() =>
+    adminRoleService.getAllRoles({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      roles = roles.filter((r) =>
-        (r.name && r.name.toLowerCase().includes(kw)) ||
-        (r.code && r.code.toLowerCase().includes(kw))
-      );
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -48,7 +56,7 @@ export default async function AdminRolesPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH VAI TRÒ
+          DANH SÁCH VAI TRÒ ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -68,7 +76,9 @@ export default async function AdminRolesPage({ searchParams }: Props) {
             </div>
           )}
 
-          <AdminRoleTable roles={roles} />
+          <AdminRoleTable roles={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/admin-roles" />
         </div>
       </div>
     </>

@@ -26,6 +26,12 @@ const listSelect = {
   avgRating: true,
   reviewCount: true,
   createdAt: true,
+  updatedAt: true,
+  createdBy: true,
+  updatedBy: true,
+  isDeleted: true,
+  deletedBy: true,
+  deletedAt: true,
   category: {
     select: { id: true, name: true, slug: true },
   },
@@ -34,6 +40,16 @@ const listSelect = {
     where: { isActive: true },
     orderBy: { sortOrder: 'asc' as const },
     take: 1,
+  },
+  variants: {
+    select: {
+      salePrice: true,
+      promoPrice: true,
+      isDefault: true,
+      isActive: true,
+    },
+    where: { isActive: true },
+    orderBy: { isDefault: 'desc' as const },
   },
   _count: {
     select: { variants: { where: { isActive: true } } },
@@ -129,7 +145,9 @@ const detailSelect = {
 // ============================================================
 
 function buildWhere(params: ProductFilterParams) {
-  const where: Record<string, unknown> = {};
+  const where: Record<string, unknown> = {
+    isDeleted: false,
+  };
 
   if (params.isActive !== undefined) where.isActive = params.isActive;
   if (params.isFeatured) where.isFeatured = true;
@@ -212,6 +230,7 @@ export const productRepository = {
 
   async findAllFlat() {
     return prisma.product.findMany({
+      where: { isDeleted: false },
       select: {
         id: true,
         name: true,
@@ -222,14 +241,14 @@ export const productRepository = {
   },
 
   async findBySlug(slug: string) {
-    return prisma.product.findUnique({ where: { slug }, select: detailSelect });
+    return prisma.product.findUnique({ where: { slug, isDeleted: false }, select: detailSelect });
   },
 
   async findById(id: string) {
-    return prisma.product.findUnique({ where: { id }, select: detailSelect });
+    return prisma.product.findUnique({ where: { id, isDeleted: false }, select: detailSelect });
   },
 
-  async create(data: ProductInput) {
+  async create(data: ProductInput, createdBy?: string) {
     const {
       images,
       variants,
@@ -280,6 +299,8 @@ export const productRepository = {
     return prisma.product.create({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
+        createdBy: createdBy ?? null,
+        isDeleted: false,
         name,
         slug: slug || undefined,
         code: code || undefined,
@@ -367,7 +388,7 @@ export const productRepository = {
     });
   },
 
-  async update(id: string, data: Partial<ProductInput>) {
+  async update(id: string, data: Partial<ProductInput>, updatedBy?: string) {
     const {
       images,
       variants,
@@ -452,7 +473,10 @@ export const productRepository = {
 
       return tx.product.update({
         where: { id },
-        data: rest as Record<string, unknown>,
+        data: {
+          ...rest as Record<string, unknown>,
+          updatedBy: updatedBy ?? null,
+        },
         include: {
           images: true,
           variants: true,
@@ -463,8 +487,15 @@ export const productRepository = {
     });
   },
 
-  async delete(id: string) {
-    return prisma.product.delete({ where: { id } });
+  async delete(id: string, deletedBy?: string) {
+    return prisma.product.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+        deletedBy: deletedBy ?? null,
+        deletedAt: new Date(),
+      },
+    });
   },
 
   async hasVariants(id: string) {
@@ -499,6 +530,109 @@ export const productRepository = {
       where: { isActive: true },
       select: { id: true, colorName: true, colorCode: true },
       orderBy: { sortOrder: 'asc' },
+    });
+  },
+
+  async getStats() {
+    const [total, active, inactive, featured] = await Promise.all([
+      prisma.product.count({ where: { isDeleted: false } }),
+      prisma.product.count({ where: { isDeleted: false, isActive: true } }),
+      prisma.product.count({ where: { isDeleted: false, isActive: false } }),
+      prisma.product.count({ where: { isDeleted: false, isFeatured: true } }),
+    ]);
+    return { total, active, inactive, featured };
+  },
+
+  async getSalesByPeriod(productId: string, period: 'day' | 'week' | 'month' | 'year') {
+    const now = new Date();
+    let startDate: Date;
+
+    switch (period) {
+      case 'day':
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        break;
+      case 'week':
+        const dayOfWeek = now.getDay();
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek);
+        break;
+      case 'month':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        break;
+      case 'year':
+        startDate = new Date(now.getFullYear(), 0, 1);
+        break;
+    }
+
+    const result = await prisma.orderItem.aggregate({
+      where: {
+        productId,
+        order: {
+          isDeleted: false,
+          orderStatus: { in: ['delivered', 'completed'] },
+          placedAt: {
+            gte: startDate,
+            lte: now,
+          },
+        },
+      },
+      _sum: {
+        quantity: true,
+      },
+    });
+
+    return result._sum.quantity || 0;
+  },
+
+  async getSalesStatistics(productId: string) {
+    const now = new Date();
+
+    const [today, thisWeek, thisMonth, thisYear] = await Promise.all([
+      productRepository.getSalesByPeriod(productId, 'day'),
+      productRepository.getSalesByPeriod(productId, 'week'),
+      productRepository.getSalesByPeriod(productId, 'month'),
+      productRepository.getSalesByPeriod(productId, 'year'),
+    ]);
+
+    return {
+      today,
+      thisWeek,
+      thisMonth,
+      thisYear,
+    };
+  },
+
+  async getTopSellingProducts(limit = 10) {
+    const result = await prisma.orderItem.groupBy({
+      by: ['productId'],
+      where: {
+        order: {
+          isDeleted: false,
+          orderStatus: { in: ['delivered', 'completed'] },
+        },
+      },
+      _sum: {
+        quantity: true,
+      },
+      orderBy: {
+        _sum: {
+          quantity: 'desc',
+        },
+      },
+      take: limit,
+    });
+
+    const productIds = result.map((r) => r.productId);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds }, isDeleted: false },
+      select: listSelect,
+    });
+
+    return result.map((r) => {
+      const product = products.find((p) => p.id === r.productId);
+      return {
+        product,
+        totalSold: r._sum.quantity || 0,
+      };
     });
   },
 };

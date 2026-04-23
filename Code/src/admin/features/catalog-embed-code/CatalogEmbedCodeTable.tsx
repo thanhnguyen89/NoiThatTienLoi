@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from '@/admin/components/Toast';
 
 interface EmbedCodeItem {
   id: string;
   title: string | null;
-  positionId: bigint | null;
+  positionId: number | null;
   embedCode: string | null;
   note: string | null;
   isActive: boolean;
@@ -23,6 +24,14 @@ function formatDate(date: Date | null | undefined) {
   return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 }
 
+function positionName(id: number | null | undefined) {
+  if (id === null || id === undefined) return '—';
+  if (id === 1) return 'Thẻ Header';
+  if (id === 2) return 'Thẻ Body';
+  if (id === 3) return 'Thẻ Footer';
+  return String(id);
+}
+
 export function CatalogEmbedCodeTable({ embedCodes }: { embedCodes: EmbedCodeItem[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -31,11 +40,16 @@ export function CatalogEmbedCodeTable({ embedCodes }: { embedCodes: EmbedCodeIte
     if (!confirm(`Xóa mã nhúng "${item.title || 'Không có tiêu đề'}"?`)) return;
     setDeletingId(item.id);
     try {
-      const res = await fetch(`/admin/api/catalog-embed-codes/${item.id}`, { method: 'DELETE' });
+      const token = localStorage.getItem('admin_token') || '';
+      const res = await fetch(`/admin/api/catalog-embed-codes/${item.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const json = await res.json();
-      if (!res.ok) { alert(json.error || 'Lỗi'); return; }
+      if (!res.ok) { toast(json.error || 'Lỗi khi xóa', 'danger'); return; }
+      toast('Đã xóa mã nhúng', 'success');
       router.refresh();
-    } catch { alert('Lỗi kết nối'); }
+    } catch { toast('Lỗi kết nối', 'danger'); }
     finally { setDeletingId(null); }
   }
 
@@ -75,7 +89,7 @@ export function CatalogEmbedCodeTable({ embedCodes }: { embedCodes: EmbedCodeIte
                 <td className="text-center">{idx + 1}</td>
                 <td>{item.title ?? '—'}</td>
                 <td className="text-center">
-                  {item.positionId !== null ? String(item.positionId) : '—'}
+                  {positionName(item.positionId)}
                 </td>
                 <td>
                   {item.embedCode ? (

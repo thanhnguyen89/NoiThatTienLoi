@@ -13,6 +13,12 @@ const adminUserListSelect = {
   isSuperAdmin: true,
   lastLoginAt: true,
   createdAt: true,
+  updatedAt: true,
+  createdBy: true,
+  updatedBy: true,
+  isDeleted: true,
+  deletedBy: true,
+  deletedAt: true,
   role: {
     select: {
       id: true,
@@ -48,10 +54,50 @@ const adminUserDetailSelect = {
   },
 };
 
+export interface PaginatedAdminUsers {
+  data: Awaited<ReturnType<typeof adminUserRepository.findAll>>;
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const adminUserRepository = {
+  async findAllPaginated(opts?: { page?: number; pageSize?: number; search?: string; isActive?: boolean }) {
+    const page = opts?.page ?? 1;
+    const pageSize = opts?.pageSize ?? 20;
+    const where: Record<string, unknown> = { isDeleted: false };
+    if (opts?.search) {
+      where.OR = [
+        { username: { contains: opts.search, mode: 'insensitive' } },
+        { email: { contains: opts.search, mode: 'insensitive' } },
+        { fullName: { contains: opts.search, mode: 'insensitive' } },
+      ];
+    }
+    if (opts?.isActive !== undefined) where.isActive = opts.isActive;
+
+    const [result, total] = await Promise.all([
+      prisma.adminUser.findMany({
+        where,
+        select: adminUserListSelect,
+        orderBy: [{ isSuperAdmin: 'desc' }, { createdAt: 'desc' }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.adminUser.count({ where }),
+    ]);
+
+    return {
+      data: result,
+      pagination: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    };
+  },
+
   async findByUsername(username: string) {
     return prisma.adminUser.findUnique({
-      where: { username },
+      where: { username, isDeleted: false },
       select: {
         id: true,
         roleId: true,
@@ -85,26 +131,27 @@ export const adminUserRepository = {
 
   async findByEmail(email: string) {
     return prisma.adminUser.findUnique({
-      where: { email },
+      where: { email, isDeleted: false },
       select: { id: true, email: true },
     });
   },
 
   async findById(id: string) {
     return prisma.adminUser.findUnique({
-      where: { id },
+      where: { id, isDeleted: false },
       select: adminUserDetailSelect,
     });
   },
 
   async findAll() {
     return prisma.adminUser.findMany({
+      where: { isDeleted: false },
       select: adminUserListSelect,
       orderBy: [{ isSuperAdmin: 'desc' }, { createdAt: 'desc' }],
     });
   },
 
-  async create(data: AdminUserInput & { password: string }) {
+  async create(data: AdminUserInput & { password: string }, createdBy?: string) {
     return prisma.adminUser.create({
       data: {
         username: data.username,
@@ -117,25 +164,36 @@ export const adminUserRepository = {
         roleId: data.roleId,
         isActive: data.isActive,
         isSuperAdmin: data.isSuperAdmin,
+        createdBy: createdBy ?? null,
+        isDeleted: false,
       },
       select: adminUserListSelect,
     });
   },
 
-  async update(id: string, data: Partial<AdminUserInput & { password?: string }>) {
+  async update(id: string, data: Partial<AdminUserInput & { password?: string }>, updatedBy?: string) {
     const { password, ...rest } = data;
     return prisma.adminUser.update({
-      where: { id },
+      where: { id, isDeleted: false },
       data: {
         ...rest,
         ...(password ? { password } : {}),
+        updatedBy: updatedBy ?? null,
       },
       select: adminUserListSelect,
     });
   },
 
-  async delete(id: string) {
-    return prisma.adminUser.delete({ where: { id } });
+  async delete(id: string, deletedBy?: string) {
+    return prisma.adminUser.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+        deletedBy: deletedBy ?? null,
+        deletedAt: new Date(),
+      },
+      select: adminUserListSelect,
+    });
   },
 
   async updateLastLogin(id: string, ip?: string) {

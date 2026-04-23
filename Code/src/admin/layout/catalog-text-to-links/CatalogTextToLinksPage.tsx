@@ -3,40 +3,43 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { catalogTextToLinkService } from '@/server/services/catalog-text-to-link.service';
 import { categoryService } from '@/server/services/category.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { CatalogTextToLinkTable } from '@/admin/features/catalog-text-to-link/CatalogTextToLinkTable';
 import { CatalogTextToLinkFilters } from '@/admin/features/catalog-text-to-link/CatalogTextToLinkFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedCatalogTextToLinks } from '@/server/repositories/catalog-text-to-link.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý Text To Link' };
 
+const emptyResult: PaginatedCatalogTextToLinks = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function CatalogTextToLinksPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let items: Awaited<ReturnType<typeof catalogTextToLinkService.getAll>> = [];
-  let categories: Array<{ id: string; name: string }> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    [items, categories] = await Promise.all([
-      catalogTextToLinkService.getAll(),
-      categoryService.getAdminCategories() as Promise<Array<{ id: string; name: string }>>,
-    ]);
+  const [result, categories] = await Promise.all([
+    dbSafe(() =>
+      catalogTextToLinkService.getAll({
+        page,
+        pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+        search: sp.search || undefined,
+        isActive: sp.status || undefined,
+      }),
+      emptyResult
+    ),
+    dbSafe(() => categoryService.getAdminCategories({ pageSize: 9999 }) as Promise<{ data: Array<{ id: string; name: string }>; pagination: { total: number } }>, { data: [], pagination: { total: 0 } }),
+  ]);
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      items = items.filter((item) =>
-        (item.keyword && item.keyword.toLowerCase().includes(kw)) ||
-        (item.link && item.link.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      items = items.filter((item) => item.isActive);
-    } else if (sp.status === 'inactive') {
-      items = items.filter((item) => !item.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -54,7 +57,7 @@ export default async function CatalogTextToLinksPage({ searchParams }: Props) {
             <CatalogTextToLinkFilters
               defaultSearch={sp.search || ''}
               defaultStatus={sp.status || ''}
-              categories={categories}
+              categories={categories.data}
             />
           </Suspense>
         </div>
@@ -62,7 +65,7 @@ export default async function CatalogTextToLinksPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH TEXT TO LINK
+          DANH SÁCH TEXT TO LINK ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -82,7 +85,9 @@ export default async function CatalogTextToLinksPage({ searchParams }: Props) {
             </div>
           )}
 
-          <CatalogTextToLinkTable items={items} categories={categories} />
+          <CatalogTextToLinkTable items={result.data} categories={categories.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/catalog-text-to-links" />
         </div>
       </div>
     </>

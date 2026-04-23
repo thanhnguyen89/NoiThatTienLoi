@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { inquiryService } from '@/server/services/inquiry.service';
 import { parsePageParam } from '@/lib/utils';
 import { INQUIRY_STATUS_LABELS, INQUIRY_TYPE_LABELS } from '@/lib/constants';
-import { Pagination } from '@/admin/shared/Pagination';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { dbSafe } from '@/lib/db-safe';
 import type { PaginatedResult } from '@/lib/types';
 
@@ -72,11 +72,7 @@ export default async function InquiriesPage({ searchParams }: Props) {
           ))}
         </tbody>
       </table>
-      <Pagination
-        currentPage={result.pagination.page}
-        totalPages={result.pagination.totalPages}
-        basePath="/admin/inquiries"
-      />
+      <AdminPagination pagination={result.pagination} baseUrl="/admin/inquiries" />
     </div>
   );
 }

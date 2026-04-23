@@ -18,10 +18,14 @@ export default async function EditCatalogEmbedCodePage({ params }: Props) {
       embedCode={{
         id: embedCode.id,
         title: embedCode.title,
-        positionId: embedCode.positionId,
+        positionId: Number(embedCode.positionId),
         embedCode: embedCode.embedCode,
         note: embedCode.note,
         isActive: embedCode.isActive,
+        createdBy: embedCode.createdBy,
+        createdAt: embedCode.createdAt,
+        updatedBy: embedCode.updatedBy,
+        updatedAt: embedCode.updatedAt,
       }}
     />
   );

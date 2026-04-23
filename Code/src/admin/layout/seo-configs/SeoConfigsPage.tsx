@@ -2,23 +2,39 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { seoConfigService } from '@/server/services/seo-config.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { SeoConfigTable } from '@/admin/features/seo-config/SeoConfigTable';
 import { SeoConfigFilters } from '@/admin/features/seo-config/SeoConfigFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedSeoConfigs } from '@/server/repositories/seo-config.repository';
 
 interface Props {
-  searchParams: Promise<{ keyword?: string }>;
+  searchParams: Promise<{ keyword?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý cấu hình SEO' };
 
+const emptyResult: PaginatedSeoConfigs = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function SeoConfigsPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let configs: Awaited<ReturnType<typeof seoConfigService.getAllSeoConfigs>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    configs = await seoConfigService.getAllSeoConfigs(sp.keyword);
-  } catch { dbError = true; }
+  const result = await dbSafe(() =>
+    seoConfigService.getAllSeoConfigs({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      keyword: sp.keyword || undefined,
+    }),
+    emptyResult
+  );
+
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -42,7 +58,7 @@ export default async function SeoConfigsPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH CẤU HÌNH SEO
+          DANH SÁCH CẤU HÌNH SEO ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -62,7 +78,9 @@ export default async function SeoConfigsPage({ searchParams }: Props) {
             </div>
           )}
 
-          <SeoConfigTable configs={configs} />
+          <SeoConfigTable configs={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/seo-configs" />
         </div>
       </div>
     </>

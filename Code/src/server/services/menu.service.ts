@@ -3,8 +3,15 @@ import { validateMenu } from '@/server/validators/menu.validator';
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const menuService = {
-  async getAllMenus() {
-    return menuRepository.findAll();
+  async getAllMenus(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string; menuTypeId?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return menuRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+      menuTypeId: opts?.menuTypeId,
+    });
   },
 
   async getMenuById(id: string) {

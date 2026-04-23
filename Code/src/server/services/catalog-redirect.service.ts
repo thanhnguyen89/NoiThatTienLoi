@@ -3,8 +3,14 @@ import { validateCatalogRedirect, type CatalogRedirectInput } from '@/server/val
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const catalogRedirectService = {
-  async getAllRedirects() {
-    return catalogRedirectRepository.findAll();
+  async getAllRedirects(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return catalogRedirectRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getRedirectById(id: string) {

@@ -3,8 +3,14 @@ import { validateProductColor, type ProductColorInput } from '@/server/validator
 import { NotFoundError, ValidationError, DuplicateError, ConflictError } from '@/server/errors';
 
 export const productColorService = {
-  async getAllColors() {
-    return productColorRepository.findAll();
+  async getAllColors(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return productColorRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getColorById(id: string) {

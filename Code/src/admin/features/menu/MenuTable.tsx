@@ -10,7 +10,7 @@ interface MenuItem {
   name: string | null;
   menuTypeId: bigint | null;
   isActive: boolean | null;
-  createdDate: Date | null;
+  createdAt: Date | null;
 }
 
 function formatDate(date: Date | null | undefined) {
@@ -85,7 +85,7 @@ export function MenuTable({ menus }: { menus: MenuItem[] }) {
                     <span className="badge bg-secondary">● Ẩn</span>
                   )}
                 </td>
-                <td className="text-center">{formatDate(item.createdDate)}</td>
+                <td className="text-center">{formatDate(item.createdAt)}</td>
                 <td className="text-center">
                   <Link
                     href={item.menuTypeId != null ? `/admin/menu-links/${String(item.menuTypeId)}/setup` : '#'}

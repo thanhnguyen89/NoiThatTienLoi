@@ -30,8 +30,8 @@ interface UrlRecordDetail {
   slug: string | null;
   isActive: boolean | null;
   isDeleted: boolean | null;
-  deletedUserId: string | null;
-  deletedDate: Date | string | null;
+  deletedBy: string | null;
+  deletedAt: Date | string | null;
   slugRedirect: string | null;
   isRedirect: boolean | null;
   errorCode: string | null;

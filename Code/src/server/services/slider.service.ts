@@ -3,8 +3,14 @@ import { validateSlider, type SliderInput } from '@/server/validators/slider.val
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const sliderService = {
-  async getAllSliders() {
-    return sliderRepository.findAll();
+  async getAllSliders(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return sliderRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getSliderById(id: string) {

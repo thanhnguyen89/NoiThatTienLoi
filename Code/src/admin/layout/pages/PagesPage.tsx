@@ -2,32 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { pageService } from '@/server/services/page.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { PageTable } from '@/admin/features/page/PageTable';
 import { PageFilters } from '@/admin/features/page/PageFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedPages } from '@/server/repositories/page.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý trang' };
 
+const emptyResult: PaginatedPages = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function PagesPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let pages: Awaited<ReturnType<typeof pageService.getAllPages>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    pages = await pageService.getAllPages();
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      pages = pages.filter((p) =>
-        (p.pageName?.toLowerCase().includes(kw) || false) ||
-        (p.title?.toLowerCase().includes(kw) || false)
-      );
-    }
-    if (sp.status === 'active') pages = pages.filter((p) => p.isActive);
-    else if (sp.status === 'inactive') pages = pages.filter((p) => !p.isActive);
-  } catch { dbError = true; }
+  const result = await dbSafe(() =>
+    pageService.getAllPages({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
+
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -54,7 +62,7 @@ export default async function PagesPage({ searchParams }: Props) {
       {/* DANH SÁCH TRANG */}
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH TRANG
+          DANH SÁCH TRANG ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -77,7 +85,9 @@ export default async function PagesPage({ searchParams }: Props) {
           )}
 
           {/* Table */}
-          <PageTable pages={pages} />
+          <PageTable pages={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/pages" />
         </div>
       </div>
     </>

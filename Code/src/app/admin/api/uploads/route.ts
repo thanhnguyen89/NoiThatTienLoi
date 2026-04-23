@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const folder = searchParams.get('folder') || '';
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20', 10)));
 
     const uploadRoot = path.join(process.cwd(), 'public', 'uploads');
     const targetDir = folder ? path.join(uploadRoot, folder) : uploadRoot;
@@ -16,24 +18,29 @@ export async function GET(request: NextRequest) {
     try {
       files = await readdir(targetDir);
     } catch {
-      return NextResponse.json({ success: true, data: [] });
+      return NextResponse.json({ success: true, data: [], total: 0, page, limit, totalPages: 0 });
     }
 
+    const imageFiles = files.filter((f) => IMAGE_EXTS.some((e) => f.toLowerCase().endsWith(e)));
+
+    const total = imageFiles.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const paginatedFiles = imageFiles.slice(start, start + limit);
+
     const images = await Promise.all(
-      files
-        .filter((f) => IMAGE_EXTS.some((e) => f.toLowerCase().endsWith(e)))
-        .map(async (file) => {
-          let size: number | null = null;
-          try {
-            const s = await stat(path.join(targetDir, file));
-            size = s.size;
-          } catch {}
-          const urlPath = folder ? `/uploads/${folder}/${file}` : `/uploads/${file}`;
-          return { name: file, url: urlPath, size, folder: folder || 'root' };
-        })
+      paginatedFiles.map(async (file) => {
+        let size: number | null = null;
+        try {
+          const s = await stat(path.join(targetDir, file));
+          size = s.size;
+        } catch {}
+        const urlPath = folder ? `/uploads/${folder}/${file}` : `/uploads/${file}`;
+        return { name: file, url: urlPath, size, folder: folder || 'root' };
+      })
     );
 
-    return NextResponse.json({ success: true, data: images });
+    return NextResponse.json({ success: true, data: images, total, page, limit, totalPages });
   } catch (error) {
     console.error('List uploads error:', error);
     return NextResponse.json({ success: false, error: 'Lỗi khi đọc thư mục' }, { status: 500 });

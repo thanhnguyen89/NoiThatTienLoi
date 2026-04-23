@@ -2,37 +2,40 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { adminUserService } from '@/server/services/admin-user.service';
+import { parsePageParam } from '@/lib/utils';
+import { PAGINATION } from '@/lib/constants';
+import { AdminPagination } from '@/admin/shared/AdminPagination';
 import { AdminUserTable } from '@/admin/features/admin-user/AdminUserTable';
 import { AdminUserFilters } from '@/admin/features/admin-user/AdminUserFilters';
+import { dbSafe } from '@/lib/db-safe';
+import type { PaginatedAdminUsers } from '@/server/repositories/admin-user.repository';
 
 interface Props {
-  searchParams: Promise<{ search?: string; status?: string }>;
+  searchParams: Promise<{ search?: string; status?: string; page?: string }>;
 }
 
 export const metadata = { title: 'Quản lý người dùng' };
 
+const emptyResult: PaginatedAdminUsers = {
+  data: [],
+  pagination: { page: 1, pageSize: PAGINATION.ADMIN_PAGE_SIZE, total: 0, totalPages: 0 },
+};
+
 export default async function AdminUsersPage({ searchParams }: Props) {
   const sp = await searchParams;
-  let users: Awaited<ReturnType<typeof adminUserService.getAllUsers>> = [];
-  let dbError = false;
+  const page = parsePageParam(sp.page);
 
-  try {
-    users = await adminUserService.getAllUsers();
+  const result = await dbSafe(() =>
+    adminUserService.getAllUsers({
+      page,
+      pageSize: PAGINATION.ADMIN_PAGE_SIZE,
+      search: sp.search || undefined,
+      isActive: sp.status || undefined,
+    }),
+    emptyResult
+  );
 
-    if (sp.search) {
-      const kw = sp.search.toLowerCase();
-      users = users.filter((u) =>
-        (u.username && u.username.toLowerCase().includes(kw)) ||
-        (u.email && u.email.toLowerCase().includes(kw)) ||
-        (u.fullName && u.fullName.toLowerCase().includes(kw))
-      );
-    }
-    if (sp.status === 'active') {
-      users = users.filter((u) => u.isActive);
-    } else if (sp.status === 'inactive') {
-      users = users.filter((u) => !u.isActive);
-    }
-  } catch { dbError = true; }
+  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>
@@ -57,7 +60,7 @@ export default async function AdminUsersPage({ searchParams }: Props) {
 
       <div className="card">
         <div className="card-header-custom">
-          DANH SÁCH NGƯỜI DÙNG
+          DANH SÁCH NGƯỜI DÙNG ({result.pagination.total})
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -77,7 +80,9 @@ export default async function AdminUsersPage({ searchParams }: Props) {
             </div>
           )}
 
-          <AdminUserTable users={users} />
+          <AdminUserTable users={result.data} />
+
+          <AdminPagination pagination={result.pagination} baseUrl="/admin/admin-users" />
         </div>
       </div>
     </>

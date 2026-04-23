@@ -23,27 +23,35 @@ const DynamicNewsCategoryForm = dynamic(
   }
 );
 
+interface CategoryOption {
+  id: string;
+  title: string | null;
+}
+
 interface Props {
   newsCategory?: {
     id: string;
-    title: string;
+    parentId: bigint | null;
+    title: string | null;
     summary: string | null;
     content: string | null;
     imageUrl: string | null;
-    seName: string;
-    sortOrder: number;
-    isPublished: boolean;
-    isShowHome: boolean;
-    isActive: boolean;
+    seName: string | null;
+    sortOrder: number | null;
+    isShowHome: boolean | null;
+    isActive: boolean | null;
     metaTitle: string | null;
     metaDescription: string | null;
     metaKeywords: string | null;
     slugRedirect: string | null;
     seoCanonical: string | null;
-    seoNoindex: boolean;
-    createdDate: Date;
-    updatedDate: Date | null;
+    seoNoindex: boolean | null;
+    isRedirect: boolean | null;
+    viewCount: number | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
   };
+  parentCategories?: CategoryOption[];
 }
 
 export function DynamicNewsCategoryFormClient(props: Props) {

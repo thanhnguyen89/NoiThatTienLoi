@@ -12,6 +12,12 @@ const inquiryListSelect = {
   status: true,
   note: true,
   createdAt: true,
+  updatedAt: true,
+  createdBy: true,
+  updatedBy: true,
+  isDeleted: true,
+  deletedBy: true,
+  deletedAt: true,
   product: {
     select: { id: true, name: true, slug: true },
   },
@@ -23,7 +29,7 @@ export const inquiryRepository = {
     const pageSize = params.pageSize || PAGINATION.ADMIN_PAGE_SIZE;
     const skip = (page - 1) * pageSize;
 
-    const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = { isDeleted: false };
     if (params.status) where.status = params.status;
     if (params.type) where.type = params.type;
     if (params.search) {
@@ -51,18 +57,32 @@ export const inquiryRepository = {
   },
 
   async findById(id: string) {
-    return prisma.inquiry.findUnique({ where: { id }, select: inquiryListSelect });
+    return prisma.inquiry.findUnique({ where: { id, isDeleted: false }, select: inquiryListSelect });
   },
 
-  async create(data: Record<string, unknown>) {
-    return prisma.inquiry.create({ data: data as never, select: inquiryListSelect });
+  async create(data: Record<string, unknown>, createdBy?: string) {
+    return prisma.inquiry.create({
+      data: { ...data, createdBy: createdBy ?? null, isDeleted: false } as never,
+      select: inquiryListSelect,
+    });
   },
 
-  async update(id: string, data: Record<string, unknown>) {
-    return prisma.inquiry.update({ where: { id }, data: data as never, select: inquiryListSelect });
+  async update(id: string, data: Record<string, unknown>, updatedBy?: string) {
+    return prisma.inquiry.update({
+      where: { id, isDeleted: false },
+      data: { ...data, updatedBy: updatedBy ?? null } as never,
+      select: inquiryListSelect,
+    });
   },
 
-  async delete(id: string) {
-    return prisma.inquiry.delete({ where: { id } });
+  async delete(id: string, deletedBy?: string) {
+    return prisma.inquiry.update({
+      where: { id },
+      data: {
+        isDeleted: true,
+        deletedBy: deletedBy ?? null,
+        deletedAt: new Date(),
+      },
+    });
   },
 };

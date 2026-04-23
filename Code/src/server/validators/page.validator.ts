@@ -16,7 +16,7 @@ export const pageSchema = z.object({
   isRedirect: z.boolean().default(false),
   seoCanonical: z.string().max(1000).optional().nullable(),
   seoNoindex: z.boolean().default(false),
-  errorCode: z.string().max(50).optional().nullable(),
+  errorCode: z.enum(['301', '302']).optional().nullable(),
 });
 
 export type PageInput = z.infer<typeof pageSchema>;

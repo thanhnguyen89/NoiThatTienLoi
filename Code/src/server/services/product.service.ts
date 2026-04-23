@@ -3,6 +3,7 @@ import { validateProduct, type ProductInput } from '@/server/validators/product.
 import { createSlug } from '@/lib/utils';
 import type { ProductFilterParams, PaginatedResult, ProductListItem, ProductDetail } from '@/lib/types';
 import { NotFoundError, ValidationError, DuplicateError, ConflictError } from '@/server/errors';
+import { urlRecordReferenceService } from './url-record-reference.service';
 
 // ============================================================
 // TRANSFORM helpers
@@ -11,13 +12,24 @@ import { NotFoundError, ValidationError, DuplicateError, ConflictError } from '@
 type AnyRow = any;
 
 function toListItem(raw: AnyRow): ProductListItem {
+  // Lấy giá từ variant (ưu tiên variant default, nếu không có thì lấy variant đầu tiên)
+  const variants = raw.variants || [];
+  const defaultVariant = variants.find((v: AnyRow) => v.isDefault && v.isActive);
+  const firstVariant = variants.find((v: AnyRow) => v.isActive);
+  const variant = defaultVariant || firstVariant;
+
+  const salePrice = variant ? Number(variant.salePrice) : 0;
+  const promoPrice = variant?.promoPrice ? Number(variant.promoPrice) : null;
+  const price = promoPrice || salePrice;
+  const comparePrice = promoPrice ? salePrice : null;
+
   return {
     id: raw.id,
     name: raw.name,
     slug: raw.slug,
     sku: raw.sku || null,
-    price: 0, // Giá nằm ở variant
-    comparePrice: null,
+    price,
+    comparePrice,
     brand: raw.brand || null,
     thumbnail: raw.images?.[0]?.url || null,
     avgRating: raw.avgRating,
@@ -169,6 +181,10 @@ export const productService = {
     };
   },
 
+  async getProductStats() {
+    return productRepository.getStats();
+  },
+
   async getProductBySlug(slug: string): Promise<ProductDetail | null> {
     const product = await productRepository.findBySlug(slug);
     if (!product || !product.isActive) return null;
@@ -202,6 +218,16 @@ export const productService = {
 
     // Tạo product
     const product = await productRepository.create(data as ProductInput);
+
+    // Lưu slug vào url_record
+    if (product.id && data.slug) {
+      await urlRecordReferenceService.syncUrlRecord(
+        BigInt(product.id),
+        'Product',
+        data.slug as string
+      );
+    }
+
     return toDetail(product);
   },
 
@@ -224,7 +250,18 @@ export const productService = {
       data.slug = createSlug(input.name as string);
     }
 
+    // Cập nhật product
     const product = await productRepository.update(id, data as Partial<ProductInput>);
+
+    // Cập nhật slug trong url_record nếu slug thay đổi
+    if (data.slug && data.slug !== current.slug) {
+      await urlRecordReferenceService.updateUrlRecord(
+        BigInt(product.id),
+        'Product',
+        data.slug as string
+      );
+    }
+
     return toDetail(product);
   },
 
@@ -233,6 +270,9 @@ export const productService = {
     if (!current) {
       throw new NotFoundError('Không tìm thấy sản phẩm');
     }
+
+    // Xóa slug trong url_record
+    await urlRecordReferenceService.deleteUrlRecord(BigInt(id), 'Product');
 
     return productRepository.delete(id);
   },
@@ -257,5 +297,17 @@ export const productService = {
 
   async getColors() {
     return productRepository.getColors();
+  },
+
+  async getProductSalesStatistics(productId: string) {
+    return productRepository.getSalesStatistics(productId);
+  },
+
+  async getTopSellingProducts(limit = 10) {
+    const result = await productRepository.getTopSellingProducts(limit);
+    return result.map((r) => ({
+      product: r.product ? toListItem(r.product as AnyRow) : null,
+      totalSold: r.totalSold,
+    }));
   },
 };

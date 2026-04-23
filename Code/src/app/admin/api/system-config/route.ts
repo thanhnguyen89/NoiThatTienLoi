@@ -7,7 +7,9 @@ export async function GET() {
     const config = await systemConfigService.getConfig();
     return NextResponse.json({ success: true, data: config });
   } catch (error) {
-    if (isAppError(error)) return NextResponse.json({ success: false, error: error.message }, { status: error.statusCode });
+    if (isAppError(error)) {
+      return NextResponse.json({ success: false, error: error.message }, { status: error.statusCode });
+    }
     console.error('GET /admin/api/system-config error:', error);
     return NextResponse.json({ success: false, error: 'Lỗi server' }, { status: 500 });
   }
@@ -19,7 +21,12 @@ export async function PUT(request: NextRequest) {
     const config = await systemConfigService.saveConfig(body);
     return NextResponse.json({ success: true, data: config });
   } catch (error) {
-    if (isAppError(error)) return NextResponse.json({ success: false, error: error.message, code: error.code }, { status: error.statusCode });
+    if (isAppError(error)) {
+      return NextResponse.json(
+        { success: false, error: error.message, code: error.code, errors: (error as any).errors },
+        { status: error.statusCode }
+      );
+    }
     console.error('PUT /admin/api/system-config error:', error);
     return NextResponse.json({ success: false, error: 'Lỗi server' }, { status: 500 });
   }

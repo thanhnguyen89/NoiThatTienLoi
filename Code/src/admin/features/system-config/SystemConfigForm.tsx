@@ -1,234 +1,427 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { SingleImageUploader } from '@/admin/components/SingleImageUploader';
+import { toast } from '@/admin/components/Toast';
+
+// ─── Types ────────────────────────────────────────────────────────────────
 
 interface SystemConfigData {
-  id?: string;
-  imageUrl: string | null;
-  displayRowCount: number | null;
-  pageTitle: string | null;
-  keywords: string | null;
-  metaDescription: string | null;
-  logoUrl: string | null;
-  accessTimeFrom: string | null;
-  accessTimeTo: string | null;
-  holidays: string | null;
+  general: GeneralFields;
+  mail: MailFields;
+  info: InfoFields;
+}
+
+interface GeneralFields {
+  uploadPath?: string | null;
+  accessTimeFrom?: string | null;
+  accessTimeTo?: string | null;
+  displayRowCount?: number | null;
+  pageTitle?: string | null;
+  keywords?: string | null;
+  metaDescription?: string | null;
+  socialFacebook?: string | null;
+  socialZalo?: string | null;
+  socialTwitter?: string | null;
+  socialYouTube?: string | null;
+  socialTiktok?: string | null;
+}
+
+interface MailFields {
+  mailFrom?: string | null;
+  mailFromName?: string | null;
+  mailHost?: string | null;
+  mailPort?: number | null;
+  mailUsername?: string | null;
+  mailSecure?: boolean;
+}
+
+interface InfoFields {
+  unitName?: string | null;
+  unitShortName?: string | null;
+  unitAddress?: string | null;
+  unitPhone?: string | null;
+  unitFax?: string | null;
+  unitEmail?: string | null;
+  unitWebsite?: string | null;
+  copyright?: string | null;
+  websiteContent?: string | null;
 }
 
 interface Props {
-  config?: SystemConfigData;
+  initialConfig: SystemConfigData | null;
+  onSuccess?: () => void;
 }
 
-export function SystemConfigForm({ config }: Props) {
-  const router = useRouter();
-  const isEdit = !!config;
+// ─── Defaults ─────────────────────────────────────────────────────────────
+
+const DEFAULT_GENERAL: GeneralFields = {};
+const DEFAULT_MAIL: MailFields = {};
+const DEFAULT_INFO: InfoFields = {};
+
+function mergeDefaults(data: SystemConfigData | null): SystemConfigData {
+  return {
+    general: { ...DEFAULT_GENERAL, ...data?.general },
+    mail: { ...DEFAULT_MAIL, ...data?.mail },
+    info: { ...DEFAULT_INFO, ...data?.info },
+  };
+}
+
+// ─── CollapsibleCard ───────────────────────────────────────────────────────
+
+function CollapsibleCard({
+  title,
+  icon,
+  children,
+  isOpen,
+  onToggle,
+  headerActions,
+}: {
+  title: string;
+  icon: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+  headerActions?: React.ReactNode;
+}) {
+  return (
+    <div className="card mb-3">
+      <div
+        className="card-header d-flex justify-content-between align-items-center"
+        style={{ cursor: 'pointer', userSelect: 'none' }}
+        onClick={onToggle}
+      >
+        <div className="d-flex align-items-center gap-2">
+          <i className={`bi ${icon}`}></i>
+          <span className="fw-semibold">{title}</span>
+        </div>
+        <div className="d-flex align-items-center gap-2">
+          {headerActions}
+          <i className={`bi ${isOpen ? 'bi-dash-lg' : 'bi-plus-lg'}`} style={{ fontSize: 18 }}></i>
+        </div>
+      </div>
+      {isOpen && <div className="card-body">{children}</div>}
+    </div>
+  );
+}
+
+// ─── FormSection ──────────────────────────────────────────────────────────
+
+function FieldInput({
+  label,
+  name,
+  value,
+  onChange,
+  type = 'text',
+  placeholder,
+  max,
+  rows,
+}: {
+  label: string;
+  name: string;
+  value?: string | number | null;
+  onChange: (name: string, val: string) => void;
+  type?: string;
+  placeholder?: string;
+  max?: number;
+  rows?: number;
+}) {
+  const shared = {
+    name,
+    value: value ?? '',
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(name, e.target.value),
+    className: 'form-control form-control-sm',
+    placeholder,
+  };
+  return (
+    <div className="mb-3">
+      <label className="form-label small fw-semibold">{label}</label>
+      {type === 'textarea' ? (
+        <textarea {...shared} rows={rows ?? 3} maxLength={max} />
+      ) : (
+        <input {...shared} type={type} max={max} maxLength={max} />
+      )}
+    </div>
+  );
+}
+
+// ─── SystemConfigForm ─────────────────────────────────────────────────────
+
+export function SystemConfigForm({ initialConfig, onSuccess }: Props) {
+  const merged = mergeDefaults(initialConfig ?? null);
+
+  const [general, setGeneral] = useState<GeneralFields>(merged.general);
+  const [mail, setMail] = useState<MailFields>(merged.mail);
+  const [info, setInfo] = useState<InfoFields>(merged.info);
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [reloading, setReloading] = useState(false);
 
-  const [form, setForm] = useState({
-    pageTitle: config?.pageTitle || '',
-    keywords: config?.keywords || '',
-    metaDescription: config?.metaDescription || '',
-    logoUrl: config?.logoUrl || '',
-    displayRowCount: String(config?.displayRowCount ?? 20),
-    accessTimeFrom: config?.accessTimeFrom || '',
-    accessTimeTo: config?.accessTimeTo || '',
-    holidays: config?.holidays || '',
-    imageUrl: config?.imageUrl || '',
-  });
+  const [collapsed, setCollapsed] = useState({ general: true, mail: true, info: true });
 
-  function handle(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-    setGlobalError('');
+  function toggleCard(key: keyof typeof collapsed) {
+    setCollapsed((p) => ({ ...p, [key]: !p[key] }));
   }
 
-  async function submit(ev: React.FormEvent) {
-    ev.preventDefault();
+  async function handleReload() {
+    setReloading(true);
+    try {
+      const res = await fetch('/admin/api/system-config');
+      const json = await res.json();
+      if (json.success && json.data) {
+        const d = json.data as SystemConfigData;
+        setGeneral(d.general);
+        setMail(d.mail);
+        setInfo(d.info);
+      }
+    } catch {}
+    finally { setReloading(false); }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
     setLoading(true);
-    setGlobalError('');
+    setErrors({});
     try {
       const res = await fetch('/admin/api/system-config', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pageTitle: form.pageTitle.trim() || null,
-          keywords: form.keywords.trim() || null,
-          metaDescription: form.metaDescription.trim() || null,
-          logoUrl: form.logoUrl || null,
-          displayRowCount: form.displayRowCount ? Number(form.displayRowCount) : null,
-          accessTimeFrom: form.accessTimeFrom || null,
-          accessTimeTo: form.accessTimeTo || null,
-          holidays: form.holidays.trim() || null,
-          imageUrl: form.imageUrl || null,
-        }),
+        body: JSON.stringify({ general, mail, info }),
       });
       const json = await res.json();
       if (!res.ok) {
-        setGlobalError(json.error || 'Lỗi khi lưu cấu hình');
+        if (json.errors) setErrors(json.errors as Record<string, string>);
+        toast(json.error || 'Lỗi khi lưu cấu hình', 'error');
         return;
       }
-      router.push('/admin/system-config');
-      router.refresh();
+      toast('Lưu cấu hình thành công!', 'success');
     } catch {
-      setGlobalError('Lỗi kết nối');
+      toast('Lỗi kết nối', 'error');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={submit} noValidate>
-      {globalError && <div className="alert alert-danger py-2">{globalError}</div>}
+    <form onSubmit={handleSubmit}>
+      {globalError && <div className="alert alert-danger py-2 mb-3">{globalError}</div>}
 
-      {/* Top bar */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb mb-0">
-            <li className="breadcrumb-item"><Link href="/admin">eCommerce</Link></li>
-            <li className="breadcrumb-item"><Link href="/admin/system-config">Cấu hình</Link></li>
-            <li className="breadcrumb-item active">{isEdit ? 'Chỉnh sửa' : 'Cấu hình hệ thống'}</li>
-          </ol>
-        </nav>
-        <div className="d-flex gap-2">
-          <button type="button" className="btn btn-danger btn-sm" onClick={() => router.push('/admin/system-config')} disabled={loading}>Hủy</button>
-          <button type="submit" className="btn btn-success btn-sm" disabled={loading}>
-            {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Đang lưu...</> : 'Lưu cấu hình'}
-          </button>
-        </div>
-      </div>
-
-      <div className="row g-3">
-        <div className="col-12 col-lg-8">
-
-          {/* === THÔNG TIN SEO === */}
-          <div className="card mb-3">
-            <div className="card-header fw-semibold">Thông tin SEO</div>
-            <div className="card-body">
-              <div className="mb-3">
-                <label className="form-label small fw-semibold">Page Title</label>
-                <input
-                  name="pageTitle"
-                  value={form.pageTitle}
-                  onChange={handle}
-                  placeholder="VD: Nội Thất Tiện Lợi - Nội thất giá tốt"
-                  className="form-control form-control-sm"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label small fw-semibold">Keywords</label>
-                <textarea
-                  name="keywords"
-                  value={form.keywords}
-                  onChange={handle}
-                  rows={3}
-                  placeholder="VD: noi that, giuong ngu, ban ghe"
-                  className="form-control form-control-sm"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label small fw-semibold">Meta Description</label>
-                <textarea
-                  name="metaDescription"
-                  value={form.metaDescription}
-                  onChange={handle}
-                  rows={3}
-                  placeholder="Mô tả ngắn gọn về website, tối đa 160 ký tự"
-                  className="form-control form-control-sm"
-                />
-              </div>
-            </div>
+      {/* General Card */}
+      <CollapsibleCard
+        title="Cấu hình chung"
+        icon="bi-sliders"
+        isOpen={collapsed.general}
+        onToggle={() => toggleCard('general')}
+      >
+        <div className="row">
+          <div className="col-md-6">
+            <FieldInput label="Đường dẫn upload hình ảnh" name="uploadPath" value={general.uploadPath} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="/uploads" />
+            <FieldInput label="Từ giờ (HH:MM)" name="accessTimeFrom" value={general.accessTimeFrom} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="08:00" />
+            <FieldInput label="Đến giờ (HH:MM)" name="accessTimeTo" value={general.accessTimeTo} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="22:00" />
+            <FieldInput label="Số hàng hiển thị tìm kiếm" name="displayRowCount" value={general.displayRowCount} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v ? Number(v) : null }))} type="number" placeholder="20" />
           </div>
-
-          {/* === THÔNG TIN HIỂN THỊ === */}
-          <div className="card mb-3">
-            <div className="card-header fw-semibold">Thông tin hiển thị</div>
-            <div className="card-body">
-              <div className="row g-3">
-                <div className="col-6">
-                  <label className="form-label small fw-semibold">Số dòng hiển thị / trang</label>
-                  <input
-                    name="displayRowCount"
-                    type="number"
-                    min="1"
-                    max="100"
-                    value={form.displayRowCount}
-                    onChange={handle}
-                    className="form-control form-control-sm"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* === THỜI GIAN TRUY CẬP === */}
-          <div className="card mb-3">
-            <div className="card-header fw-semibold">Thời gian truy cập</div>
-            <div className="card-body">
-              <div className="row g-3">
-                <div className="col-6">
-                  <label className="form-label small fw-semibold">Từ giờ</label>
-                  <input
-                    name="accessTimeFrom"
-                    value={form.accessTimeFrom}
-                    onChange={handle}
-                    placeholder="VD: 08:00"
-                    className="form-control form-control-sm"
-                  />
-                </div>
-                <div className="col-6">
-                  <label className="form-label small fw-semibold">Đến giờ</label>
-                  <input
-                    name="accessTimeTo"
-                    value={form.accessTimeTo}
-                    onChange={handle}
-                    placeholder="VD: 22:00"
-                    className="form-control form-control-sm"
-                  />
-                </div>
-              </div>
-              <div className="mt-3">
-                <label className="form-label small fw-semibold">Ngày nghỉ</label>
-                <input
-                  name="holidays"
-                  value={form.holidays}
-                  onChange={handle}
-                  placeholder="VD: Thứ 7, Chủ nhật"
-                  className="form-control form-control-sm"
-                />
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* RIGHT - Hình ảnh */}
-        <div className="col-12 col-lg-4">
-          <div className="card">
-            <div className="card-header fw-semibold">Hình ảnh</div>
-            <div className="card-body">
-              <div className="mb-3">
-                <SingleImageUploader
-                  value={form.logoUrl}
-                  onChange={(url) => setForm((p) => ({ ...p, logoUrl: url }))}
-                  label="Logo"
-                  defaultSrc="/admin/assets/images/default-image_100.png"
-                />
-              </div>
-              <div>
-                <SingleImageUploader
-                  value={form.imageUrl}
-                  onChange={(url) => setForm((p) => ({ ...p, imageUrl: url }))}
-                  label="Hình ảnh"
-                  defaultSrc="/admin/assets/images/default-image_100.png"
-                />
-              </div>
-            </div>
+          <div className="col-md-6">
+            <FieldInput label="Tiêu đề SEO" name="pageTitle" value={general.pageTitle} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="Nội Thất Tiện Lợi" rows={2} />
+            <FieldInput label="Từ khóa SEO" name="keywords" value={general.keywords} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="noi that, giuong ngu" rows={2} />
+            <FieldInput label="Mô tả SEO" name="metaDescription" value={general.metaDescription} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="Mô tả ngắn gọn..." rows={2} />
           </div>
         </div>
+        <div className="row mt-2">
+          <div className="col-md-6">
+            <FieldInput label="Facebook" name="socialFacebook" value={general.socialFacebook} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="https://facebook.com/..." />
+            <FieldInput label="Zalo" name="socialZalo" value={general.socialZalo} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="https://zalo.me/..." />
+            <FieldInput label="Twitter / X" name="socialTwitter" value={general.socialTwitter} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="https://x.com/..." />
+          </div>
+          <div className="col-md-6">
+            <FieldInput label="YouTube" name="socialYouTube" value={general.socialYouTube} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="https://youtube.com/..." />
+            <FieldInput label="TikTok" name="socialTiktok" value={general.socialTiktok} onChange={(n, v) => setGeneral((g) => ({ ...g, [n]: v || null }))} placeholder="https://tiktok.com/..." />
+          </div>
+        </div>
+      </CollapsibleCard>
+
+      {/* Mail Card */}
+      <MailSection
+        data={mail}
+        onChange={setMail}
+      />
+
+      {/* Info Card */}
+      <InfoSection
+        data={info}
+        onChange={setInfo}
+        onReload={handleReload}
+        isReloading={reloading}
+      />
+
+      {/* Nút Lưu */}
+      <div className="d-flex justify-content-end mt-3">
+        <button type="submit" className="btn btn-success" disabled={loading}>
+          {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Đang lưu...</> : <><i className="bi bi-check2 me-1"></i>Lưu cấu hình</>}
+        </button>
       </div>
     </form>
+  );
+}
+
+// ─── MailSection ──────────────────────────────────────────────────────────
+
+function MailSection({
+  data,
+  onChange,
+}: {
+  data: MailFields;
+  onChange: (m: MailFields) => void;
+}) {
+  const set = (name: string, val: string) => onChange({ ...data, [name]: val || null });
+  const setNum = (name: string, val: string) => onChange({ ...data, [name]: val ? Number(val) : null });
+  const [showPwChange, setShowPwChange] = useState(false);
+  const [newPw, setNewPw] = useState('');
+  const [pwLoading, setPwLoading] = useState(false);
+
+  async function handlePwChange() {
+    if (!newPw.trim()) return;
+    setPwLoading(true);
+    try {
+      const res = await fetch('/admin/api/system-config/mail-password', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newPassword: newPw }),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        toast('Đổi mật khẩu thành công!', 'success');
+        setNewPw('');
+        setShowPwChange(false);
+      } else {
+        toast(json.error || 'Lỗi', 'error');
+      }
+    } catch {
+      toast('Lỗi kết nối', 'error');
+    } finally {
+      setPwLoading(false);
+    }
+  }
+
+  return (
+    <CollapsibleCard title="Cấu hình mail" icon="bi-envelope" isOpen={true} onToggle={() => {}}>
+      <div className="row">
+        <div className="col-md-6">
+          <FieldInput label="Địa chỉ email" name="mailFrom" value={data.mailFrom} onChange={set} type="email" placeholder="no-reply@example.com" />
+          <FieldInput label="Tên hiển thị" name="mailFromName" value={data.mailFromName} onChange={set} placeholder="Nội Thất Tiện Lợi" />
+          <FieldInput label="SMTP Host" name="mailHost" value={data.mailHost} onChange={set} placeholder="smtp.gmail.com" />
+        </div>
+        <div className="col-md-6">
+          <FieldInput label="Port" name="mailPort" value={data.mailPort} onChange={setNum} type="number" placeholder="587" />
+          <FieldInput label="Người dùng" name="mailUsername" value={data.mailUsername} onChange={set} placeholder="user@gmail.com" />
+          <div className="mb-3">
+            <label className="form-label small fw-semibold">Mật khẩu</label>
+            <div className="d-flex gap-2 align-items-center">
+              <input type="password" value="••••••••" disabled className="form-control form-control-sm" style={{ maxWidth: 200 }} />
+              <button
+                type="button"
+                className="btn btn-success btn-sm"
+                onClick={() => setShowPwChange(true)}
+              >
+                <i className="bi bi-key me-1"></i>Đổi mật khẩu
+              </button>
+            </div>
+          </div>
+          <div className="form-check mb-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="mailSecure"
+              checked={data.mailSecure ?? false}
+              onChange={(e) => onChange({ ...data, mailSecure: e.target.checked })}
+            />
+            <label className="form-check-label" htmlFor="mailSecure">Sử dụng SSL/TLS (port 465)</label>
+          </div>
+        </div>
+      </div>
+      {showPwChange && (
+        <div className="border rounded p-3 mt-2 bg-light">
+          <div className="mb-2 fw-semibold small">Đổi mật khẩu SMTP</div>
+          <div className="d-flex gap-2 align-items-end">
+            <div className="flex-grow-1">
+              <input
+                type="password"
+                value={newPw}
+                onChange={(e) => setNewPw(e.target.value)}
+                placeholder="Nhập mật khẩu mới"
+                className="form-control form-control-sm"
+              />
+            </div>
+            <button type="button" className="btn btn-success btn-sm" disabled={pwLoading || !newPw.trim()} onClick={handlePwChange}>
+              {pwLoading ? <span className="spinner-border spinner-border-sm"></span> : 'Lưu'}
+            </button>
+            <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setShowPwChange(false); setNewPw(''); }}>
+              Hủy
+            </button>
+          </div>
+        </div>
+      )}
+    </CollapsibleCard>
+  );
+}
+
+// ─── InfoSection ──────────────────────────────────────────────────────────
+
+function InfoSection({
+  data,
+  onChange,
+  onReload,
+  isReloading,
+}: {
+  data: InfoFields;
+  onChange: (i: InfoFields) => void;
+  onReload: () => void;
+  isReloading: boolean;
+}) {
+  const set = (name: string, val: string) => onChange({ ...data, [name]: val || null });
+
+  return (
+    <CollapsibleCard
+      title="Thông tin chung"
+      icon="bi-building"
+      isOpen={true}
+      onToggle={() => {}}
+      headerActions={
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-secondary"
+          title="Làm mới"
+          disabled={isReloading}
+          onClick={(e) => { e.stopPropagation(); onReload(); }}
+        >
+          <i className={`bi bi-arrow-clockwise${isReloading ? ' fa-spin' : ''}`}></i>
+        </button>
+      }
+    >
+      <div className="row">
+        <div className="col-md-6">
+          <FieldInput label="Tên đơn vị" name="unitName" value={data.unitName} onChange={set} placeholder="Công ty TNHH Nội Thất Tiện Lợi" />
+          <FieldInput label="Tên viết tắt" name="unitShortName" value={data.unitShortName} onChange={set} placeholder="NTL" />
+          <FieldInput label="Địa chỉ" name="unitAddress" value={data.unitAddress} onChange={set} placeholder="123 Đường ABC, Quận 1, TP.HCM" rows={2} />
+          <FieldInput label="Điện thoại" name="unitPhone" value={data.unitPhone} onChange={set} placeholder="0901 234 567" />
+          <FieldInput label="Fax" name="unitFax" value={data.unitFax} onChange={set} placeholder="028 1234 5678" />
+        </div>
+        <div className="col-md-6">
+          <FieldInput label="Email" name="unitEmail" value={data.unitEmail} onChange={set} type="email" placeholder="contact@example.com" />
+          <FieldInput label="Website" name="unitWebsite" value={data.unitWebsite} onChange={set} placeholder="https://noithattienloi.vn" />
+          <FieldInput label="Copyright" name="copyright" value={data.copyright} onChange={set} placeholder="© 2026 Nội Thất Tiện Lợi" />
+          <div className="mb-3">
+            <label className="form-label small fw-semibold">Nội dung website</label>
+            <textarea
+              name="websiteContent"
+              value={data.websiteContent ?? ''}
+              onChange={(e) => set('websiteContent', e.target.value)}
+              rows={4}
+              className="form-control form-control-sm"
+              placeholder="Giới thiệu ngắn về website..."
+            />
+          </div>
+        </div>
+      </div>
+    </CollapsibleCard>
   );
 }

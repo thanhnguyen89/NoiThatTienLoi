@@ -3,8 +3,14 @@ import { validateSliderPicture, type SliderPictureInput } from '@/server/validat
 import { NotFoundError, ValidationError } from '@/server/errors';
 
 export const sliderPictureService = {
-  async getAllSliderPictures() {
-    return sliderPictureRepository.findAll();
+  async getAllSliderPictures(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string }) {
+    const isActive = opts?.isActive === 'active' ? true : opts?.isActive === 'inactive' ? false : undefined;
+    return sliderPictureRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive,
+    });
   },
 
   async getSliderPictureById(id: string) {

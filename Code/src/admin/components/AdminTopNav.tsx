@@ -9,6 +9,13 @@ interface MenuItem { label: string; icon?: string; href?: string; children?: Sub
 
 const nav: MenuItem[] = [
   {
+    label: 'Hệ thống', icon: 'bi-gear',
+    children: [
+      { label: 'Cấu hình hệ thống', href: '/admin/system-config' },
+      { label: 'Menu', href: '/admin/menus' }
+    ]
+  },
+  {
     label: 'Quản lý cấp quyền', icon: 'bi-people',
     children: [
       { label: 'Người dùng', href: '/admin/admin-users' },
@@ -17,32 +24,35 @@ const nav: MenuItem[] = [
     ]
   },
   {
+    label: 'Quản lý nội dung', icon: 'bi-gear-wide-connected',
+    children: [
+      { label: 'Cấu hình seo', href: '/admin/seo-configs' },
+      { label: 'Cấu hình Redirect', href: '/admin/catalog-redirects' },
+      { label: 'Danh mục tin tức', href: '/admin/news-categories' },
+      { label: 'Tin tức', href: '/admin/news' },
+    ]
+  },
+  {
+    label: 'Quản lý sản phẩm', icon: 'bi-gear-wide-connected',
+    children: [
+      { label: 'Màu sắc', href: '/admin/product-colors' },
+      { label: 'Kích thước', href: '/admin/product-sizes' },
+      { label: 'Danh mục sản phẩm', href: '/admin/categories' },
+      { label: 'Sản phẩm', href: '/admin/products' },
+    ]
+  },
+  {
     label: 'eCommerce', icon: 'bi-cart3',
     children: [
-      { label: 'Sản phẩm', href: '/admin/products' },
-      { label: 'Danh mục', href: '/admin/categories' },
-      { label: 'Kích thước', href: '/admin/product-sizes' },
-      { label: 'Màu sắc', href: '/admin/product-colors' },
+      { label: 'kho', href: '/admin/warehouses' },
+      { label: 'Đơn vị vận chuyển', href: '/admin/shipping-providers' },
+      { label: 'Thành viên', href: '/admin/members' },
+      { label: 'Đơn hàng', href: '/admin/orders' },    
     ]
   },
-  { label: 'Yêu cầu tư vấn', icon: 'bi-chat-left-text', href: '/admin/inquiries' },
-  { label: 'Slider', icon: 'bi-images', href: '/admin/sliders' },
-  {
-    label: 'Menu', icon: 'bi-menu-button-wide',
-    children: [
-      { label: 'Menu', href: '/admin/menus' },
-      { label: 'Menu Link', href: '/admin/menu-links' },
-    ]
-  },
-  { label: 'Danh mục tin tức', icon: 'bi-folder', href: '/admin/news-categories' },
-  { label: 'SEO', icon: 'bi-search', href: '/admin/seo-configs' },
-  {
-    label: 'Cấu hình', icon: 'bi-gear',
-    children: [
-      { label: 'Redirect URL', href: '/admin/catalog-redirects' },
-      { label: 'Text To Link', href: '/admin/catalog-text-to-links' },
-    ]
-  },
+  { label: 'Quản lý trang', icon: 'bi-chat-left-text', href: '/admin/pages' },
+  { label: 'Quản lý Slider', icon: 'bi-chat-left-text', href: '/admin/sliders' },
+  { label: 'Quản lý Mã nhúng', icon: 'bi-chat-left-text', href: '/admin/catalog-embed-codes' },
 ];
 
 export function AdminTopNav() {

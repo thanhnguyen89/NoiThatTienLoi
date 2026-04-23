@@ -3,8 +3,12 @@ import { validateSeoConfig, type SeoConfigInput } from '@/server/validators/seo-
 import { NotFoundError, ValidationError, DuplicateError } from '@/server/errors';
 
 export const seoConfigService = {
-  async getAllSeoConfigs(keyword?: string) {
-    return seoConfigRepository.findAll(keyword);
+  async getAllSeoConfigs(opts?: { page?: number; pageSize?: number; keyword?: string }) {
+    return seoConfigRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      keyword: opts?.keyword,
+    });
   },
 
   async getSeoConfigById(id: string) {

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { newsService } from '@/server/services/news.service';
+import { newsCategoryService } from '@/server/services/news-category.service';
 import { DynamicNewsFormClient } from '@/admin/components/NewsFormWrapper';
 
 interface Props { params: Promise<{ id: string }>; }
@@ -13,5 +14,11 @@ export default async function EditNewsPage({ params }: Props) {
   } catch {}
   if (!news) notFound();
 
-  return <DynamicNewsFormClient news={news} />;
+  const allCategories = await newsCategoryService.getAllCategories();
+  const categories = allCategories.map((c: { id: string; title: string | null }) => ({
+    id: c.id,
+    title: c.title,
+  }));
+
+  return <DynamicNewsFormClient news={news as Parameters<typeof DynamicNewsFormClient>[0]['news']} categories={categories} />;
 }

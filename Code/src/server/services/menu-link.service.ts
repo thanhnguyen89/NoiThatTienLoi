@@ -7,9 +7,15 @@ function serializeMenuLink(item: Record<string, unknown>) {
 }
 
 export const menuLinkService = {
-  async getAllMenuLinks() {
-    const items = await menuLinkRepository.findAll();
-    return items.map(serializeMenuLink);
+  async getAllMenuLinks(opts?: { page?: number; pageSize?: number; search?: string; isActive?: string; menuId?: string }) {
+    const items = await menuLinkRepository.findAllPaginated({
+      page: opts?.page,
+      pageSize: opts?.pageSize,
+      search: opts?.search,
+      isActive: opts?.isActive,
+      menuId: opts?.menuId,
+    });
+    return { ...items, data: items.data.map(serializeMenuLink) };
   },
 
   async getMenuLinksByMenuId(menuId: string) {
