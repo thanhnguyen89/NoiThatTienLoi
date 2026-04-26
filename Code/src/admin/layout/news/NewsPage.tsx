@@ -34,7 +34,7 @@ export default async function NewsPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, allCategories] = await Promise.all([
+  const [resultWrapper, allCategoriesWrapper] = await Promise.all([
     dbSafe(() =>
       newsService.getAllNews({
         page,
@@ -50,16 +50,18 @@ export default async function NewsPage({ searchParams }: Props) {
     dbSafe(() => newsCategoryService.getAllCategories() as Promise<Array<{ id: string; title: string | null }>>, []),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultWrapper.data;
+  const allCategories = allCategoriesWrapper.data;
+  const dbError = resultWrapper.hasError;
 
-  const categories = allCategories.map((c) => ({ id: c.id, title: c.title }));
+  const categories = Array.isArray(allCategories) ? allCategories.map((c) => ({ id: c.id, title: c.title })) : [];
 
   return (
     <>
       {/* THONG TIN TIM KIEM */}
       <div className="card mb-3">
         <div className="card-header-custom">
-          THONG TIN TIM KIEM
+          THÔNG TIN TÌM KIẾM
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>
@@ -94,7 +96,7 @@ export default async function NewsPage({ searchParams }: Props) {
           {/* Nut them moi */}
           <div className="mb-2">
             <Link href="/admin/news/new" className="btn-add">
-              <i className="bi bi-plus-lg me-1"></i>Them moi
+              <i className="bi bi-plus-lg me-1"></i>Thêm mới
             </Link>
           </div>
 

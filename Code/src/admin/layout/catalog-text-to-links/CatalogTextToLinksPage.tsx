@@ -26,7 +26,7 @@ export default async function CatalogTextToLinksPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, categories] = await Promise.all([
+  const [resultWrapper, categoriesWrapper] = await Promise.all([
     dbSafe(() =>
       catalogTextToLinkService.getAll({
         page,
@@ -39,7 +39,9 @@ export default async function CatalogTextToLinksPage({ searchParams }: Props) {
     dbSafe(() => categoryService.getAdminCategories({ pageSize: 9999 }) as Promise<{ data: Array<{ id: string; name: string }>; pagination: { total: number } }>, { data: [], pagination: { total: 0 } }),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultWrapper.data;
+  const categories = categoriesWrapper.data;
+  const dbError = resultWrapper.hasError;
 
   return (
     <>

@@ -7,12 +7,12 @@ import { dbSafe } from '@/lib/db-safe';
 export const metadata = { title: 'Thêm sản phẩm mới' };
 
 export default async function NewProductPage() {
-  const categories = await dbSafe(
+  const { data: categories } = await dbSafe(
     () => categoryService.getAllCategories() as Promise<Array<{ id: string; name: string }>>,
     []
   );
-  const sizes = await dbSafe(() => productService.getSizes(), []);
-  const colors = await dbSafe(() => productService.getColors(), []);
+  const { data: sizes } = await dbSafe(() => productService.getSizes(), []);
+  const { data: colors } = await dbSafe(() => productService.getColors(), []);
 
   const sizesFormatted = sizes.map((s: { id: string; sizeLabel: string; widthCm: unknown; lengthCm: unknown; heightCm: unknown }) => ({
     id: s.id,

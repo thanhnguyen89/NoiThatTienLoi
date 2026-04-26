@@ -25,7 +25,7 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, allCategories] = await Promise.all([
+  const [resultWrapper, allCategoriesWrapper] = await Promise.all([
     dbSafe(async () => {
       const r = await newsCategoryService.getAllCategories({
         page,
@@ -44,7 +44,9 @@ export default async function NewsCategoriesPage({ searchParams }: Props) {
     }, emptyResult),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultWrapper.data;
+  const allCategories = allCategoriesWrapper.data;
+  const dbError = resultWrapper.hasError;
 
   const filterCategories = (allCategories as PaginatedNewsCategories).data.map((c) => ({ id: c.id, name: c.title || c.seName || c.id }));
   

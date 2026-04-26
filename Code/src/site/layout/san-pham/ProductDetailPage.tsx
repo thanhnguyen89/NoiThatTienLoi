@@ -13,7 +13,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = await dbSafe(() => productService.getProductBySlug(slug), null);
+  const { data: product } = await dbSafe(() => productService.getProductBySlug(slug), null);
   if (!product) return {};
 
   // Lấy giá từ variant
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = await dbSafe(() => productService.getProductBySlug(slug), null);
+  const { data: product } = await dbSafe(() => productService.getProductBySlug(slug), null);
 
   if (!product) {
     return (

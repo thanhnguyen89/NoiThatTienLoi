@@ -21,7 +21,7 @@ async function main() {
 
   const categoryIds: Record<string, string> = {};
   for (const cat of categories) {
-    const existing = await prisma.category.findFirst({ where: { slug: cat.slug } });
+    const existing = await prisma.category.findUnique({ where: { slug: cat.slug } });
     if (!existing) {
       const created = await prisma.category.create({ data: cat });
       categoryIds[cat.slug] = created.id;
@@ -47,7 +47,7 @@ async function main() {
 
   const sizeIds: string[] = [];
   for (const size of sizes) {
-    const existing = await prisma.productSize.findFirst({ where: { sizeLabel: size.sizeLabel } });
+    const existing = await prisma.productSize.findUnique({ where: { sizeLabel: size.sizeLabel } });
     if (!existing) {
       const created = await prisma.productSize.create({ data: size });
       sizeIds.push(created.id);
@@ -75,7 +75,7 @@ async function main() {
 
   const colorIds: string[] = [];
   for (const color of colors) {
-    const existing = await prisma.productColor.findFirst({ where: { colorName: color.colorName } });
+    const existing = await prisma.productColor.findUnique({ where: { colorName: color.colorName } });
     if (!existing) {
       const created = await prisma.productColor.create({ data: color });
       colorIds.push(created.id);
@@ -112,7 +112,7 @@ async function main() {
   const productIds: string[] = [];
   for (const product of products) {
     const catId = categoryIds[product.categorySlug];
-    const existing = await prisma.product.findFirst({ where: { slug: product.slug } });
+    const existing = await prisma.product.findUnique({ where: { slug: product.slug } });
     if (!existing) {
       const created = await prisma.product.create({
         data: {

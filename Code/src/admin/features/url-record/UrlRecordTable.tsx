@@ -52,7 +52,7 @@ export function UrlRecordTable({ records }: { records: UrlRecordItem[] }) {
           <tr>
             <td className="text-center text-muted py-4">
               <i className="bi bi-link fs-1 d-block mb-2"></i>
-              Chua co UrlRecord nao.
+              Chưa có UrlRecord nao.
             </td>
           </tr>
         </tbody>
@@ -75,7 +75,7 @@ export function UrlRecordTable({ records }: { records: UrlRecordItem[] }) {
               <th className="text-center">Redirect</th>
               <th className="text-center">Active</th>
               <th className="text-center">Deleted</th>
-              <th className="text-center" style={{ width: 110 }}>Thao tac</th>
+              <th className="text-center" style={{ width: 110 }}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -102,7 +102,7 @@ export function UrlRecordTable({ records }: { records: UrlRecordItem[] }) {
                 </td>
                 <td className="text-center">
                   {item.isActive ? (
-                    <span className="badge bg-success">Hoat dong</span>
+                    <span className="badge bg-success">Hoạt động</span>
                   ) : (
                     <span className="badge bg-secondary">An</span>
                   )}

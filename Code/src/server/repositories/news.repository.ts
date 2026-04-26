@@ -25,6 +25,36 @@ const newsListSelect = {
   authorName: true,
   isRedirect: true,
   slugRedirect: true,
+  // 28 fields mới
+  authorId: true,
+  authorEmail: true,
+  authorAvatar: true,
+  tags: true,
+  categoryName: true,
+  categorySlug: true,
+  readingTime: true,
+  featuredImage: true,
+  featuredImageAlt: true,
+  featuredImageCaption: true,
+  galleryImages: true,
+  videoUrl: true,
+  videoThumbnail: true,
+  audioUrl: true,
+  relatedNewsIds: true,
+  externalUrl: true,
+  isExternalLink: true,
+  openInNewTab: true,
+  isFeatured: true,
+  isBreakingNews: true,
+  isPinned: true,
+  expiryDate: true,
+  scheduledPublishDate: true,
+  lastModifiedBy: true,
+  revisionNumber: true,
+  contentFormat: true,
+  customCss: true,
+  customJs: true,
+  jsonData: true,
 } as const;
 
 function toPlain<T extends object>(row: T): T {
@@ -53,7 +83,12 @@ export const newsRepository = {
   }) {
     const page = opts?.page ?? 1;
     const pageSize = opts?.pageSize ?? 20;
-    const where: Record<string, unknown> = { isDeleted: false };
+    const where: Record<string, unknown> = { 
+      OR: [
+        { isDeleted: false },
+        { isDeleted: null }
+      ]
+    };
     if (opts?.search) {
       where.OR = [
         { title: { contains: opts.search, mode: 'insensitive' } },
@@ -90,7 +125,12 @@ export const newsRepository = {
 
   async findAll() {
     const result = await prisma.newsContent.findMany({
-      where: { isDeleted: false },
+      where: { 
+        OR: [
+          { isDeleted: false },
+          { isDeleted: null }
+        ]
+      },
       select: newsListSelect,
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     });
@@ -99,7 +139,13 @@ export const newsRepository = {
 
   async findById(id: string) {
     const result = await prisma.newsContent.findFirst({
-      where: { id, isDeleted: false },
+      where: { 
+        id,
+        OR: [
+          { isDeleted: false },
+          { isDeleted: null }
+        ]
+      },
     });
     return result ? toPlain(result) : null;
   },
@@ -113,7 +159,11 @@ export const newsRepository = {
         commentCount: data.commentCount != null ? BigInt(data.commentCount) : BigInt(0),
         likeCount: data.likeCount != null ? BigInt(data.likeCount) : BigInt(0),
         wordCount: data.wordCount != null ? BigInt(data.wordCount) : null,
+        readingTime: data.readingTime != null ? BigInt(data.readingTime) : null,
+        revisionNumber: data.revisionNumber != null ? BigInt(data.revisionNumber) : BigInt(0),
         publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
+        expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
+        scheduledPublishDate: data.scheduledPublishDate ? new Date(data.scheduledPublishDate) : null,
         createdBy: userId,
         isDeleted: false,
       } as Parameters<typeof prisma.newsContent.create>[0]['data'],
@@ -130,7 +180,11 @@ export const newsRepository = {
         commentCount: data.commentCount != null ? BigInt(data.commentCount) : undefined,
         likeCount: data.likeCount != null ? BigInt(data.likeCount) : undefined,
         wordCount: data.wordCount != null ? BigInt(data.wordCount) : undefined,
+        readingTime: data.readingTime != null ? BigInt(data.readingTime) : undefined,
+        revisionNumber: data.revisionNumber != null ? BigInt(data.revisionNumber) : undefined,
         publishedAt: data.publishedAt !== undefined ? (data.publishedAt ? new Date(data.publishedAt) : null) : undefined,
+        expiryDate: data.expiryDate !== undefined ? (data.expiryDate ? new Date(data.expiryDate) : null) : undefined,
+        scheduledPublishDate: data.scheduledPublishDate !== undefined ? (data.scheduledPublishDate ? new Date(data.scheduledPublishDate) : null) : undefined,
         updatedBy: userId,
       } as Parameters<typeof prisma.newsContent.update>[0]['data'],
     });

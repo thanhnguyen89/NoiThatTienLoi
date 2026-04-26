@@ -25,19 +25,14 @@ export default async function SeoConfigsPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  let dbError = false;
-  let result = emptyResult;
-  
-  try {
-    result = await seoConfigService.getAllSeoConfigs({
+  const { data: result, hasError: dbError } = await dbSafe(() =>
+    seoConfigService.getAllSeoConfigs({
       page,
       pageSize: PAGINATION.ADMIN_PAGE_SIZE,
       keyword: sp.keyword || undefined,
-    });
-  } catch (error) {
-    console.error('Database error:', error);
-    dbError = true;
-  }
+    }),
+    emptyResult
+  );
 
   return (
     <>

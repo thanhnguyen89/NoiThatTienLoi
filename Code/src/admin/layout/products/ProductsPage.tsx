@@ -39,7 +39,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   const page = parsePageParam(sp.page);
   const statusFilter = sp.status === 'inactive' ? false : sp.status === 'active' ? true : undefined;
 
-  const [result, categories, stats] = await Promise.all([
+  const [resultData, categoriesData, statsData] = await Promise.all([
     dbSafe(() => productService.getProductsAdmin({
       page,
       pageSize: PAGINATION.ADMIN_PAGE_SIZE,
@@ -55,7 +55,10 @@ export default async function ProductsPage({ searchParams }: Props) {
     dbSafe(() => productService.getProductStats(), { total: 0, active: 0, inactive: 0, featured: 0 }),
   ]);
 
-  const dbError = result === emptyResult && categories.length === 0;
+  const result = resultData.data;
+  const categories = categoriesData.data;
+  const stats = statsData.data;
+  const dbError = resultData.hasError || categoriesData.hasError || statsData.hasError;
 
   return (
     <>

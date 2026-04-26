@@ -24,10 +24,9 @@ const emptyResult: PaginatedShippingProviders = {
 export default async function ShippingProvidersPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
-  let dbError = false;
-  let counts: { total: number; active: number; inactive: number; ordersToday: number; avgCost: number } = { total: 0, active: 0, inactive: 0, ordersToday: 0, avgCost: 0 };
+  const defaultCounts = { total: 0, active: 0, inactive: 0, ordersToday: 0, avgCost: 0 };
 
-  const [result, rawCounts] = await Promise.all([
+  const [resultData, countsData] = await Promise.all([
     dbSafe(() =>
       shippingProviderService.getAllProviders({
         search: sp.search,
@@ -38,11 +37,12 @@ export default async function ShippingProvidersPage({ searchParams }: Props) {
       }),
       emptyResult
     ),
-    dbSafe(() => shippingProviderService.getStatusCounts() as Promise<typeof counts>, counts),
+    dbSafe(() => shippingProviderService.getStatusCounts() as Promise<typeof defaultCounts>, defaultCounts),
   ]);
 
-  counts = { ...rawCounts, avgCost: Number(rawCounts.avgCost) };
-  dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultData.data;
+  const counts = { ...countsData.data, avgCost: Number(countsData.data.avgCost) };
+  const dbError = resultData.hasError || countsData.hasError;
 
   return (
     <>

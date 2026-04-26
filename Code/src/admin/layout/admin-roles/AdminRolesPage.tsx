@@ -25,7 +25,7 @@ export default async function AdminRolesPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const result = await dbSafe(() =>
+  const { data: result, hasError: dbError } = await dbSafe(() =>
     adminRoleService.getAllRoles({
       page,
       pageSize: PAGINATION.ADMIN_PAGE_SIZE,
@@ -33,8 +33,6 @@ export default async function AdminRolesPage({ searchParams }: Props) {
     }),
     emptyResult
   );
-
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   return (
     <>

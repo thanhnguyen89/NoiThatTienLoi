@@ -1,0 +1,419 @@
+﻿
+          {/* === SEO FACEBOOK === */}
+          {activeTab === 'seo-fb' && (
+            <div className="card mb-3">
+              <div className="card-header fw-semibold">SEO Facebook</div>
+              <div className="card-body">
+                <span className="badge mb-3" style={{ background: '#eff6ff', color: '#1d4ed8' }}>FACEBOOK</span>
+
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Link bÃ i Ä‘Ã£ Ä‘Äƒng</label>
+                  <input name="linkPosted" value={fbSeo.linkPosted} onChange={handleFbSeo}
+                    placeholder="https://facebook.com/post/123" className="form-control form-control-sm" />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Title</label>
+                  <div className="input-group input-group-sm">
+                    <input name="title" value={fbSeo.title} onChange={handleFbSeo}
+                      placeholder="TiÃªu Ä‘á» bÃ i viáº¿t" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.title);
+                        alert('âœ… ÄÃ£ copy Title!');
+                      }}
+                      title="Copy Title">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Description</label>
+                  <div className="input-group">
+                    <textarea name="description" value={fbSeo.description} onChange={handleFbSeo}
+                      rows={5} placeholder="Ná»™i dung chi tiáº¿t bÃ i viáº¿t..." className="form-control form-control-sm" style={{ resize: 'vertical' }} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.description);
+                        alert('âœ… ÄÃ£ copy Description!');
+                      }}
+                      title="Copy Description"
+                      style={{ alignSelf: 'flex-start' }}>
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
+                  
+                  {/* Emoji Picker - Expanded */}
+                  <div className="mt-2">
+                    <small className="text-muted d-block mb-1">ThÃªm emoji nhanh:</small>
+                    <div className="d-flex gap-2 flex-wrap">
+                      {/* NhÃ  & Ná»™i tháº¥t */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary" 
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ ' }))}>
+                        ðŸ  NhÃ 
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ¡' }))}>
+                        ðŸ¡ NhÃ  Ä‘áº¹p
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ›‹ï¸' }))}>
+                        ðŸ›‹ï¸ Sofa
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸª‘' }))}>
+                        ðŸª‘ Gháº¿
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ›ï¸' }))}>
+                        ðŸ›ï¸ GiÆ°á»ng
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸšª' }))}>
+                        ðŸšª Cá»­a
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸªŸ' }))}>
+                        ðŸªŸ Cá»­a sá»•
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ’¡' }))}>
+                        ðŸ’¡ ÄÃ¨n
+                      </button>
+                      
+                      {/* Cháº¥t lÆ°á»£ng & ÄÃ¡nh giÃ¡ */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' âœ¨' }))}>
+                        âœ¨ Äáº¹p
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸŒŸ' }))}>
+                        ðŸŒŸ Sang
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ï¿½' }))}>
+                        ðŸ’Ž Cao cáº¥p
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' â­' }))}>
+                        â­ ÄÃ¡nh giÃ¡
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ï¿½ðŸ’¯' }))}>
+                        ðŸ’¯ Tá»‘t
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' âœ…' }))}>
+                        âœ… Uy tÃ­n
+                      </button>
+                      
+                      {/* Xu hÆ°á»›ng & Cáº£m xÃºc */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ”¥' }))}>
+                        ðŸ”¥ Hot
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ‘' }))}>
+                        ðŸ‘ Like
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ‘Œ' }))}>
+                        ðŸ‘Œ OK
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' â¤ï¸' }))}>
+                        â¤ï¸ YÃªu
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ˜' }))}>
+                        ðŸ˜ ThÃ­ch
+                      </button>
+                      
+                      {/* GiÃ¡ & Æ¯u Ä‘Ã£i */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ’°' }))}>
+                        ðŸ’° GiÃ¡ tá»‘t
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸŽ' }))}>
+                        ðŸŽ QuÃ 
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' âš¡' }))}>
+                        âš¡ Nhanh
+                      </button>
+                      
+                      {/* Dá»‹ch vá»¥ */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸšš' }))}>
+                        ðŸšš Giao hÃ ng
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ“¦' }))}>
+                        ðŸ“¦ ÄÃ³ng gÃ³i
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ”¨' }))}>
+                        ðŸ”¨ Láº¯p Ä‘áº·t
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ”§' }))}>
+                        ðŸ”§ Báº£o hÃ nh
+                      </button>
+                      
+                      {/* Thiáº¿t káº¿ */}
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸŽ¨' }))}>
+                        ðŸŽ¨ Thiáº¿t káº¿
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary"
+                        onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ðŸ˜ï¸' }))}>
+                        ðŸ˜ï¸ KhÃ´ng gian
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="row g-3 mb-3">
+                  <div className="col-6">
+                    <label className="form-label small fw-semibold">Keywords</label>
+                    <div className="input-group input-group-sm">
+                      <input name="keywords" value={fbSeo.keywords} onChange={handleFbSeo}
+                        placeholder="keyword1, keyword2" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(fbSeo.keywords);
+                          alert('âœ… ÄÃ£ copy Keywords!');
+                        }}
+                        title="Copy Keywords">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Keywords máº«u (click Ä‘á»ƒ thÃªm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t' : 'ná»™i tháº¥t' }))}>ná»™i tháº¥t</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t Ä‘áº¹p' : 'ná»™i tháº¥t Ä‘áº¹p' }))}>ná»™i tháº¥t Ä‘áº¹p</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t giÃ¡ ráº»' : 'ná»™i tháº¥t giÃ¡ ráº»' }))}>ná»™i tháº¥t giÃ¡ ráº»</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t cao cáº¥p' : 'ná»™i tháº¥t cao cáº¥p' }))}>ná»™i tháº¥t cao cáº¥p</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', sofa' : 'sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bÃ n gháº¿' : 'bÃ n gháº¿' }))}>bÃ n gháº¿</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', giÆ°á»ng ngá»§' : 'giÆ°á»ng ngá»§' }))}>giÆ°á»ng ngá»§</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', tá»§ quáº§n Ã¡o' : 'tá»§ quáº§n Ã¡o' }))}>tá»§ quáº§n Ã¡o</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bÃ n lÃ m viá»‡c' : 'bÃ n lÃ m viá»‡c' }))}>bÃ n lÃ m viá»‡c</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ká»‡ tivi' : 'ká»‡ tivi' }))}>ká»‡ tivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thiáº¿t káº¿ ná»™i tháº¥t' : 'thiáº¿t káº¿ ná»™i tháº¥t' }))}>thiáº¿t káº¿ ná»™i tháº¥t</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thi cÃ´ng ná»™i tháº¥t' : 'thi cÃ´ng ná»™i tháº¥t' }))}>thi cÃ´ng ná»™i tháº¥t</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t phÃ²ng khÃ¡ch' : 'ná»™i tháº¥t phÃ²ng khÃ¡ch' }))}>ná»™i tháº¥t phÃ²ng khÃ¡ch</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t phÃ²ng ngá»§' : 'ná»™i tháº¥t phÃ²ng ngá»§' }))}>ná»™i tháº¥t phÃ²ng ngá»§</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t báº¿p' : 'ná»™i tháº¥t báº¿p' }))}>ná»™i tháº¥t báº¿p</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t vÄƒn phÃ²ng' : 'ná»™i tháº¥t vÄƒn phÃ²ng' }))}>ná»™i tháº¥t vÄƒn phÃ²ng</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t gá»—' : 'ná»™i tháº¥t gá»—' }))}>ná»™i tháº¥t gá»—</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t hiá»‡n Ä‘áº¡i' : 'ná»™i tháº¥t hiá»‡n Ä‘áº¡i' }))}>ná»™i tháº¥t hiá»‡n Ä‘áº¡i</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t tá»‘i giáº£n' : 'ná»™i tháº¥t tá»‘i giáº£n' }))}>ná»™i tháº¥t tá»‘i giáº£n</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ná»™i tháº¥t TPHCM' : 'ná»™i tháº¥t TPHCM' }))}>ná»™i tháº¥t TPHCM</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <label className="form-label small fw-semibold">Hashtags</label>
+                    <div className="input-group input-group-sm">
+                      <input name="hashtags" value={fbSeo.hashtags} onChange={handleFbSeo}
+                        placeholder="#noithat #noithatdep #noithatgiare" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(fbSeo.hashtags);
+                          alert('âœ… ÄÃ£ copy Hashtags!');
+                        }}
+                        title="Copy Hashtags">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Hashtags máº«u (click Ä‘á»ƒ thÃªm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithat' : '#noithat' }))}>noithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatdep' : '#noithatdep' }))}>noithatdep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgiare' : '#noithatgiare' }))}>noithatgiare</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatcaocap' : '#noithatcaocap' }))}>noithatcaocap</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #sofa' : '#sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banghe' : '#banghe' }))}>banghe</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #giuongngu' : '#giuongngu' }))}>giuongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #tuquanao' : '#tuquanao' }))}>tuquanao</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banlamviec' : '#banlamviec' }))}>banlamviec</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #ketivi' : '#ketivi' }))}>ketivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thietkenoithat' : '#thietkenoithat' }))}>thietkenoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thicongnoithat' : '#thicongnoithat' }))}>thicongnoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongkhach' : '#noithatphongkhach' }))}>noithatphongkhach</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongngu' : '#noithatphongngu' }))}>noithatphongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatbep' : '#noithatbep' }))}>noithatbep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatvanphong' : '#noithatvanphong' }))}>noithatvanphong</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgo' : '#noithatgo' }))}>noithatgo</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithathiendai' : '#noithathiendai' }))}>noithathiendai</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattoigian' : '#noithattoigian' }))}>noithattoigian</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattphcm' : '#noithattphcm' }))}>noithattphcm</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">
+                    <i className="bi bi-geo-alt me-1"></i>Vá»‹ trÃ­ (Location)
+                  </label>
+                  <div className="input-group input-group-sm mb-2">
+                    <input name="location" value={fbSeo.location} onChange={handleFbSeo}
+                      placeholder="VD: Ná»™i Tháº¥t Minh QuÃ¢n - TPHCM" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.location);
+                        alert('âœ… ÄÃ£ copy Location!');
+                      }}
+                      title="Copy Location">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                    <button type="button" className="btn btn-outline-primary" onClick={() => openMapModal('fb')} title="Chá»n tá»« báº£n Ä‘á»“">
+                      <i className="bi bi-map"></i>
+                    </button>
+                    <button type="button" className="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                      <i className="bi bi-geo-alt"></i>
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-end">
+                      <li><h6 className="dropdown-header">Chá»n vá»‹ trÃ­ nhanh</h6></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Ná»™i Tháº¥t Minh QuÃ¢n - TP. Há»“ ChÃ­ Minh' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>Ná»™i Tháº¥t Minh QuÃ¢n - TP. Há»“ ChÃ­ Minh
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'XÆ°á»Ÿng Ná»™i Tháº¥t Minh QuÃ¢n - Quáº­n 12, TPHCM' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>XÆ°á»Ÿng Ná»™i Tháº¥t Minh QuÃ¢n - Quáº­n 12, TPHCM
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Showroom Ná»™i Tháº¥t Minh QuÃ¢n - Quáº­n 1, TPHCM' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>Showroom Ná»™i Tháº¥t Minh QuÃ¢n - Quáº­n 1, TPHCM
+                      </button></li>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'TP. Há»“ ChÃ­ Minh, Viá»‡t Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>TP. Há»“ ChÃ­ Minh, Viá»‡t Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'HÃ  Ná»™i, Viá»‡t Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>HÃ  Ná»™i, Viá»‡t Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'ÄÃ  Náºµng, Viá»‡t Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>ÄÃ  Náºµng, Viá»‡t Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Cáº§n ThÆ¡, Viá»‡t Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>Cáº§n ThÆ¡, Viá»‡t Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'BiÃªn HÃ²a, Äá»“ng Nai' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>BiÃªn HÃ²a, Äá»“ng Nai
+                      </button></li>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><button type="button" className="dropdown-item text-danger" onClick={() => setFbSeo(p => ({ ...p, location: '' }))}>
+                        <i className="bi bi-x-circle me-2"></i>XÃ³a vá»‹ trÃ­
+                      </button></li>
+                    </ul>
+                  </div>
+                  <small className="text-muted">ThÃªm vá»‹ trÃ­ giÃºp tÄƒng reach vá»›i ngÆ°á»i dÃ¹ng gáº§n Ä‘Ã³</small>
+                </div>
+                <div className="mb-3">
+                  <SingleImageUploader
+                    value={fbSeo.image}
+                    onChange={(url) => setFbSeo((p) => ({ ...p, image: url }))}
+                    label="Image"
+                    defaultSrc="/admin/assets/images/default-image_100.png"
+                  />
+                </div>
+
+                {/* Copy to Clipboard Button */}
+                <div className="mb-3">
+                  <button type="button" className="btn btn-success btn-sm w-100" 
+                    onClick={() => {
+                      const content = `${fbSeo.title ? fbSeo.title + '\n\n' : ''}${fbSeo.description}${fbSeo.hashtags ? '\n\n' + fbSeo.hashtags : ''}`;
+                      navigator.clipboard.writeText(content).then(() => {
+                        alert('âœ… ÄÃ£ copy ná»™i dung! Paste vÃ o Facebook ngay.');
+                      }).catch(() => {
+                        alert('âŒ KhÃ´ng thá»ƒ copy. Vui lÃ²ng copy thá»§ cÃ´ng.');
+                      });
+                    }}>
+                    <i className="bi bi-clipboard-check me-2"></i>
+                    Copy toÃ n bá»™ ná»™i dung Ä‘á»ƒ Ä‘Äƒng Facebook
+                  </button>
+                </div>
+
+                {/* Facebook Post Preview - Compact */}
+                <div className="card mt-3" style={{ background: '#f0f2f5', maxWidth: 500 }}>
+                  <div className="card-header py-2" style={{ background: '#fff', borderBottom: '1px solid #e4e6eb' }}>
+                    <i className="bi bi-facebook text-primary me-1" style={{ fontSize: 14 }}></i>
+                    <span className="fw-semibold" style={{ fontSize: 13 }}>Preview Facebook</span>
+                  </div>
+                  <div className="card-body p-3" style={{ background: '#fff', fontSize: 13 }}>
+                    {/* Header */}
+                    <div className="d-flex align-items-start mb-2">
+                      <div className="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                        style={{ width: 32, height: 32, minWidth: 32 }}>
+                        <i className="bi bi-shop text-white" style={{ fontSize: 14 }}></i>
+                      </div>
+                      <div className="ms-2 flex-grow-1">
+                        <div className="fw-semibold" style={{ fontSize: 13 }}>Ná»™i Tháº¥t Minh QuÃ¢n</div>
+                        <div style={{ fontSize: 11, color: '#65676b' }}>
+                          <i className="bi bi-globe2 me-1"></i>CÃ´ng khai
+                          {fbSeo.location && (
+                            <>
+                              <span className="mx-1">â€¢</span>
+                              <i className="bi bi-geo-alt me-1"></i>{fbSeo.location}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="mb-2" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: 13 }}>
+                      {fbSeo.title && <div className="fw-semibold mb-1">{fbSeo.title}</div>}
+                      <div style={{ maxHeight: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {fbSeo.description || <span className="text-muted fst-italic">Ná»™i dung...</span>}
+                      </div>
+                      {fbSeo.hashtags && <div className="text-primary mt-1" style={{ fontSize: 12 }}>{fbSeo.hashtags}</div>}
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {(fbSeo.image || fbImages.length > 0) && (
+                      <div className="border rounded" style={{ overflow: 'hidden', maxHeight: 200 }}>
+                        {fbImages.length > 0 ? (
+                          <div className="row g-1">
+                            {fbImages.slice(0, 2).map((img, idx) => (
+                              <div key={img.id} className="col-6">
+                                <div style={{ position: 'relative', paddingTop: '100%' }}>
+                                  <img src={img.url} alt={img.alt} 
+                                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                                  {idx === 1 && fbImages.length > 2 && (
+                                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                      <span className="text-white fw-bold" style={{ fontSize: 18 }}>+{fbImages.length - 2}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : fbSeo.image && (
+                          <img src={fbSeo.image} alt="Preview" 
+                            style={{ width: '100%', maxHeight: 200, objectFit: 'cover' }} />
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Actions */}
+                    <div className="d-flex justify-content-around pt-2 mt-2" style={{ borderTop: '1px solid #e4e6eb', fontSize: 12 }}>
+                      <div className="text-muted">
+                        <i className="bi bi-hand-thumbs-up me-1"></i>ThÃ­ch
+                      </div>
+                      <div className="text-muted">
+                        <i className="bi bi-chat me-1"></i>BÃ¬nh luáº­n
+                      </div>
+                      <div className="text-muted">
+                        <i className="bi bi-share me-1"></i>Chia sáº»
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* HÃ¬nh áº£nh Facebook */}
+              <ImageCardGrid
+                images={fbImages}
+                platform="FACEBOOK"

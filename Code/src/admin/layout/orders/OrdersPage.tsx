@@ -36,7 +36,7 @@ export default async function OrdersPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, statusCounts] = await Promise.all([
+  const [resultData, statusCountsData] = await Promise.all([
     dbSafe(() =>
       orderService.getAllOrders({
         page,
@@ -55,7 +55,9 @@ export default async function OrdersPage({ searchParams }: Props) {
     dbSafe(() => orderService.getStatusCounts() as Promise<Record<string, number>>, {}),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultData.data;
+  const statusCounts = statusCountsData.data;
+  const dbError = resultData.hasError || statusCountsData.hasError;
 
   return (
     <>

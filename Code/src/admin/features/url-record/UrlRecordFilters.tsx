@@ -27,7 +27,7 @@ export function UrlRecordFilters({ defaultSearch, defaultStatus }: Props) {
     <>
       <div className="row g-2 align-items-end">
         <div className="col-md-6">
-          <label className="form-label">Tu khoa</label>
+          <label className="form-label">Từ khóa</label>
           <input
             type="text"
             value={search}
@@ -37,15 +37,15 @@ export function UrlRecordFilters({ defaultSearch, defaultStatus }: Props) {
           />
         </div>
         <div className="col-md-3">
-          <label className="form-label">Trang thai</label>
+          <label className="form-label">Trạng thái</label>
           <select
             className="form-select form-select-sm"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
-            <option value="">Tat ca</option>
-            <option value="active">Hoat dong</option>
-            <option value="inactive">Khong hoat dong</option>
+            <option value="">Tất cả</option>
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Không hoạt động</option>
           </select>
         </div>
         <div className="col-md-3 d-flex gap-2 justify-content-end">
@@ -57,7 +57,7 @@ export function UrlRecordFilters({ defaultSearch, defaultStatus }: Props) {
               status: status || undefined,
             })}
           >
-            <i className="bi bi-search me-1"></i>Tim kiem
+            <i className="bi bi-search me-1"></i>Tìm kiếm
           </button>
           <button
             type="button"
@@ -68,7 +68,7 @@ export function UrlRecordFilters({ defaultSearch, defaultStatus }: Props) {
               push({ search: undefined, status: undefined });
             }}
           >
-            <i className="bi bi-arrow-counterclockwise me-1"></i>Lam moi
+            <i className="bi bi-arrow-counterclockwise me-1"></i>Làm mới
           </button>
         </div>
       </div>

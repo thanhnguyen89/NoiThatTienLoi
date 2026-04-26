@@ -20,5 +20,5 @@ export default async function EditNewsPage({ params }: Props) {
     title: c.title,
   }));
 
-  return <DynamicNewsFormClient news={news as Parameters<typeof DynamicNewsFormClient>[0]['news']} categories={categories} />;
+  return <DynamicNewsFormClient news={news as unknown as Parameters<typeof DynamicNewsFormClient>[0]['news']} categories={categories} />;
 }

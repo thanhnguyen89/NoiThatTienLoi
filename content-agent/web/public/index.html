@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Content Agent — Forme</title>
+  <title>Content Agent â€” Forme</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,20 +11,28 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">
-        <span class="logo-icon">🤖</span>
+        <span class="logo-icon">ðŸ¤–</span>
         <h1>Content Agent</h1>
       </div>
       <nav>
         <a href="#" class="nav-item active" data-view="pipeline">
-          <span>⚡</span> Pipeline
+          <span>âš¡</span> Pipeline
         </a>
         <a href="#" class="nav-item" data-view="history">
-          <span>📋</span> Lịch sử
+          <span>ðŸ“‹</span> Lá»‹ch sá»­
         </a>
         <a href="#" class="nav-item" data-view="brand">
-          <span>🎨</span> Brand Data
+          <span>ðŸŽ¨</span> Context & Data
         </a>
       </nav>
+            <div class="user-info">
+        <div class="user-avatar">👤</div>
+        <div class="user-details">
+          <div class="user-name" id="user-name">Loading...</div>
+          <div class="user-role" id="user-role"></div>
+        </div>
+        <button class="btn-logout" id="btn-logout" title="Đăng xuất">🚪</button>
+      </div>
       <div class="sidebar-footer">
         <div class="brand-badge">Forme</div>
         <small>Designed for how you live.</small>
@@ -36,25 +44,25 @@
       <!-- Pipeline View -->
       <div id="view-pipeline" class="view active">
         <header class="view-header">
-          <h2>Tạo Content Mới</h2>
-          <p>Nhập từ khóa → Pipeline 7 bước → Bài viết hoàn chỉnh</p>
+          <h2>Táº¡o Content Má»›i</h2>
+          <p>Nháº­p tá»« khÃ³a â†’ Pipeline 7 bÆ°á»›c â†’ BÃ i viáº¿t hoÃ n chá»‰nh</p>
         </header>
 
         <!-- Input Form -->
         <div class="input-card">
           <div class="form-row">
             <div class="form-group flex-2">
-              <label for="keyword">Từ khóa chính</label>
-              <input type="text" id="keyword" placeholder="VD: sofa cao cấp TPHCM" autofocus>
+              <label for="keyword">Tá»« khÃ³a chÃ­nh</label>
+              <input type="text" id="keyword" placeholder="VD: sofa cao cáº¥p TPHCM" autofocus>
             </div>
             <div class="form-group flex-1">
-              <label for="product">Sản phẩm (tuỳ chọn)</label>
+              <label for="product">Sáº£n pháº©m (tuá»³ chá»n)</label>
               <select id="product">
-                <option value="">— Không chọn —</option>
+                <option value="">â€” KhÃ´ng chá»n â€”</option>
               </select>
             </div>
             <div class="form-group flex-1">
-              <label for="contentType">Loại content</label>
+              <label for="contentType">Loáº¡i content</label>
               <select id="contentType">
                 <option value="blog">Blog / SEO Article</option>
                 <option value="social-fb">Caption Facebook</option>
@@ -63,72 +71,149 @@
             </div>
           </div>
           <button id="btn-run" class="btn-primary" onclick="runPipeline()">
-            🚀 Chạy Pipeline
+            ðŸš€ Cháº¡y Pipeline
           </button>
+        </div>
+
+        <!-- Pipeline Info -->
+        <div class="pipeline-info">
+          <div class="info-toggle" onclick="this.parentElement.classList.toggle('open')">
+            ðŸ“‹ Pipeline 8 bÆ°á»›c â€” xem chi tiáº¿t <span class="arrow">â–¸</span>
+          </div>
+          <div class="info-body">
+            <div class="info-grid">
+              <div class="info-step">
+                <span class="info-num">1</span>
+                <div>
+                  <div class="info-title">ðŸ” Research</div>
+                  <div class="info-text">PhÃ¢n tÃ­ch search intent (Informational / Commercial / Transactional). XÃ¡c Ä‘á»‹nh Ä‘á»‘i tÆ°á»£ng má»¥c tiÃªu, keyword phá»¥, cÃ¢u há»i cáº§n tráº£ lá»i, key points cáº§n cover. Náº¿u RAG báº­t â†’ query Knowledge Base bá»• sung context.</div>
+                </div>
+              </div>
+              <div class="info-step">
+                <span class="info-num">2</span>
+                <div>
+                  <div class="info-title">ðŸ“ Outline</div>
+                  <div class="info-text">Táº¡o dÃ n Ã½ chi tiáº¿t: tiÃªu Ä‘á» Ä‘á» xuáº¥t, meta description SEO, cáº¥u trÃºc H2 â†’ H3 vá»›i key points tá»«ng pháº§n, sá»‘ tá»« Æ°á»›c tÃ­nh má»—i section, danh sÃ¡ch SEO keywords cáº§n tÃ­ch há»£p.</div>
+                </div>
+              </div>
+              <div class="info-step">
+                <span class="info-num">3</span>
+                <div>
+                  <div class="info-title">âœï¸ Content</div>
+                  <div class="info-text">Viáº¿t bÃ i HTML hoÃ n chá»‰nh theo dÃ n Ã½. Viáº¿t tá»«ng section riÃªng biá»‡t, tÃ­ch há»£p keyword tá»± nhiÃªn. Output lÃ  HTML markup (heading, paragraph, list, table). CÃ³ thá»ƒ chá»‰nh sá»­a ná»™i dung trÆ°á»›c khi tiáº¿p tá»¥c.</div>
+                </div>
+              </div>
+              <div class="info-step">
+                <span class="info-num">4</span>
+                <div>
+                  <div class="info-title">ðŸ“Š SEO Optimize</div>
+                  <div class="info-text">Tá»‘i Æ°u ká»¹ thuáº­t SEO: title tag (50-60 kÃ½ tá»±), meta description (150-160 kÃ½ tá»±), keyword density 1.0-1.5%, keyword trong 100 tá»« Ä‘áº§u, alt text áº£nh, schema markup. KHÃ”NG viáº¿t láº¡i ná»™i dung.</div>
+                </div>
+              </div>
+              <div class="info-step">
+                <span class="info-num">5</span>
+                <div>
+                  <div class="info-title">ðŸ§‘â€ðŸ’¼ QC / Humanize</div>
+                  <div class="info-text">XÃ³a dáº¥u váº¿t AI: tÃ¬m vÃ  xÃ³a tá»« cáº¥m, phÃ¡ bullet point thá»«a, Ä‘a dáº¡ng Ä‘á»™ dÃ i cÃ¢u, thÃªm quan Ä‘iá»ƒm riÃªng. Cháº¥m Humanness Score /100. Decision: PUBLISH (â‰¥76) | REVIEW (60-75) | REWRITE (&lt;60).</div>
+                </div>
+              </div>
+              <div class="info-step parallel">
+                <span class="info-num">6+7</span>
+                <div>
+                  <div class="info-title">ðŸ–¼ï¸ Thumbnail + ðŸŽ¨ Section Images <span class="badge-parallel">song song</span></div>
+                  <div class="info-text">Thumbnail: áº£nh Ä‘áº¡i diá»‡n 1200x630 báº±ng AI, há»— trá»£ reference image + style transfer. Section Images: áº£nh minh há»a evocative/cinematic cho tá»«ng section (tá»‘i Ä‘a 3), khÃ´ng pháº£i infographic hay diagram. CÃ³ thá»ƒ regenerate tá»«ng áº£nh.</div>
+                </div>
+              </div>
+              <div class="info-step">
+                <span class="info-num">8</span>
+                <div>
+                  <div class="info-title">ðŸš€ Publish</div>
+                  <div class="info-text">Hiá»ƒn thá»‹ preview + bÃ¡o cÃ¡o (SEO score, humanness score, sá»‘ tá»«, áº£nh). Chá» xÃ¡c nháº­n â†’ Ä‘Äƒng lÃªn WordPress / Shopify / Haravan. KhÃ´ng publish khi humanness &lt; 76.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Pipeline Steps -->
         <div id="pipeline-steps" class="pipeline-steps hidden">
-          <div class="step" data-step="researcher">
+          <div class="step" data-step="research">
             <div class="step-header">
               <span class="step-number">1</span>
-              <span class="step-icon">🔍</span>
-              <span class="step-name">Researcher</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-icon">ðŸ”</span>
+              <span class="step-name">Research</span>
+              <span class="step-desc">PhÃ¢n tÃ­ch keyword, intent, Ä‘á»‘i thá»§</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
-          <div class="step" data-step="architect">
+          <div class="step" data-step="outline">
             <div class="step-header">
               <span class="step-number">2</span>
-              <span class="step-icon">📐</span>
-              <span class="step-name">Architect</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-icon">ðŸ“</span>
+              <span class="step-name">Outline</span>
+              <span class="step-desc">Táº¡o dÃ n Ã½ H2/H3, meta description</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
-          <div class="step" data-step="writer">
+          <div class="step" data-step="content">
             <div class="step-header">
               <span class="step-number">3</span>
-              <span class="step-icon">✍️</span>
-              <span class="step-name">Writer</span>
-              <span class="step-status">Chờ</span>
-            </div>
-            <div class="step-body hidden"></div>
-          </div>
-          <div class="step" data-step="imageGen">
-            <div class="step-header">
-              <span class="step-number">4</span>
-              <span class="step-icon">🖼️</span>
-              <span class="step-name">Image Gen</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-icon">âœï¸</span>
+              <span class="step-name">Content</span>
+              <span class="step-desc">Viáº¿t bÃ i HTML chi tiáº¿t theo dÃ n Ã½</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
           <div class="step" data-step="seo">
             <div class="step-header">
-              <span class="step-number">5</span>
-              <span class="step-icon">📊</span>
-              <span class="step-name">SEO Specialist</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-number">4</span>
+              <span class="step-icon">ðŸ“Š</span>
+              <span class="step-name">SEO Optimize</span>
+              <span class="step-desc">Tá»‘i Æ°u keyword, title, meta, schema</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
-          <div class="step" data-step="editorQc">
+          <div class="step" data-step="qc">
+            <div class="step-header">
+              <span class="step-number">5</span>
+              <span class="step-icon">ðŸ§‘â€ðŸ’¼</span>
+              <span class="step-name">QC / Humanize</span>
+              <span class="step-desc">XÃ³a dáº¥u váº¿t AI, cháº¥m humanness score</span>
+              <span class="step-status">Chá»</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="thumbnail">
             <div class="step-header">
               <span class="step-number">6</span>
-              <span class="step-icon">🧑‍💼</span>
-              <span class="step-name">Editor / QC</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-icon">ðŸ–¼ï¸</span>
+              <span class="step-name">Thumbnail</span>
+              <span class="step-desc">Táº¡o áº£nh Ä‘áº¡i diá»‡n báº±ng AI</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
-          <div class="step" data-step="publisher">
+          <div class="step" data-step="sectionImages">
             <div class="step-header">
               <span class="step-number">7</span>
-              <span class="step-icon">🚀</span>
-              <span class="step-name">Publisher</span>
-              <span class="step-status">Chờ</span>
+              <span class="step-icon">ðŸŽ¨</span>
+              <span class="step-name">Section Images</span>
+              <span class="step-desc">áº¢nh minh há»a evocative/cinematic</span>
+              <span class="step-status">Chá»</span>
+            </div>
+            <div class="step-body hidden"></div>
+          </div>
+          <div class="step" data-step="publish">
+            <div class="step-header">
+              <span class="step-number">8</span>
+              <span class="step-icon">ðŸš€</span>
+              <span class="step-name">Publish</span>
+              <span class="step-desc">ÄÄƒng lÃªn WordPress / Shopify / Haravan</span>
+              <span class="step-status">Chá»</span>
             </div>
             <div class="step-body hidden"></div>
           </div>
@@ -139,7 +224,7 @@
 
         <!-- Article Preview -->
         <div id="article-preview" class="article-preview hidden">
-          <h3>📄 Preview Bài Viết</h3>
+          <h3>ðŸ“„ Preview BÃ i Viáº¿t</h3>
           <div id="article-content" class="article-content"></div>
         </div>
       </div>
@@ -147,22 +232,25 @@
       <!-- History View -->
       <div id="view-history" class="view">
         <header class="view-header">
-          <h2>Lịch sử Pipeline</h2>
-          <p>Chưa có dữ liệu — chạy pipeline đầu tiên để bắt đầu.</p>
+          <h2>Lá»‹ch sá»­ Pipeline</h2>
+          <p>ChÆ°a cÃ³ dá»¯ liá»‡u â€” cháº¡y pipeline Ä‘áº§u tiÃªn Ä‘á»ƒ báº¯t Ä‘áº§u.</p>
         </header>
       </div>
 
       <!-- Brand View -->
       <div id="view-brand" class="view">
         <header class="view-header">
-          <h2>Brand Data</h2>
-          <p>4 file dữ liệu nền tảng của Forme</p>
+          <h2>Context & Data</h2>
+          <p>Brand context, SOP, vÃ  sá»‘ liá»‡u performance</p>
         </header>
         <div id="brand-tabs" class="brand-tabs">
           <button class="tab active" data-tab="brandGuideline">Brand Guideline</button>
           <button class="tab" data-tab="customerPersona">Customer Persona</button>
           <button class="tab" data-tab="marketingChannels">Marketing Channels</button>
           <button class="tab" data-tab="productCatalog">Product Catalog</button>
+          <button class="tab" data-tab="contentSop">Content SOP</button>
+          <button class="tab" data-tab="researchSop">Research SOP</button>
+          <button class="tab" data-tab="performanceData">Performance Data</button>
         </div>
         <div id="brand-content" class="brand-content">
           <pre id="brand-text"></pre>
@@ -174,3 +262,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+

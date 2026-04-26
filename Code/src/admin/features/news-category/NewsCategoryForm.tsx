@@ -29,6 +29,37 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'seo-yt', label: 'YouTube' },
 ];
 
+function getSeoPreviewQuality(title: string, description: string) {
+  const titleLength = title.length;
+  const descLength = description.length;
+  const titleIdeal = titleLength >= 40 && titleLength <= 60;
+  const descIdeal = descLength >= 120 && descLength <= 160;
+  const titleAcceptable = titleLength >= 30 && titleLength <= 65;
+  const descAcceptable = descLength >= 80 && descLength <= 170;
+
+  let label = 'Cần tối ưu';
+  let color = '#b42318';
+
+  if (titleLength === 0 && descLength === 0) {
+    label = 'Chưa có dữ liệu';
+    color = '#6b7280';
+  } else if (titleIdeal && descIdeal) {
+    label = 'Tốt';
+    color = '#166534';
+  } else if ((titleIdeal || descIdeal) || (titleAcceptable && descAcceptable)) {
+    label = 'Khá';
+    color = '#92400e';
+  }
+
+  let tip = 'Độ dài Title/Description đang tối ưu cho SEO.';
+  if (titleLength < 40) tip = 'Title nên từ 40–60 ký tự.';
+  else if (titleLength > 60) tip = 'Title đang dài, nên <= 60 ký tự.';
+  else if (descLength < 120) tip = 'Description nên từ 120–160 ký tự.';
+  else if (descLength > 160) tip = 'Description đang dài, nên <= 160 ký tự.';
+
+  return { label, color, tip };
+}
+
 interface ParentCategory {
   id: string;
   title: string | null;
@@ -427,6 +458,8 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
     location: '',
   });
 
+  const webSeoQuality = getSeoPreviewQuality(webSeo.metaTitle || '', webSeo.metaDescription || '');
+
   function handle(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
     const v = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
@@ -766,6 +799,51 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                     defaultSrc="/admin/assets/images/default-image_100.png"
                   />
                 </div>
+
+                {/* Google Search Result Preview */}
+                <div className="card mt-3" style={{ background: '#fff', border: '1px solid #dfe1e5', maxWidth: 600 }}>
+                  <div className="card-header py-2" style={{ background: '#f8f9fa', borderBottom: '1px solid #dfe1e5' }}>
+                    <i className="bi bi-google text-primary me-1" style={{ fontSize: 14 }}></i>
+                    <span className="fw-semibold" style={{ fontSize: 13 }}>Xem trước kết quả Google</span>
+                  </div>
+                  <div className="card-body p-3">
+                    {/* Breadcrumb */}
+                    <div className="d-flex align-items-center mb-1">
+                      <div className="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" 
+                        style={{ width: 26, height: 26, minWidth: 26 }}>
+                        <i className="bi bi-shop" style={{ fontSize: 12, color: '#5f6368' }}></i>
+                      </div>
+                      <div style={{ fontSize: 12, color: '#5f6368' }}>
+                        noithatminhquan.vn/trang-chu
+                      </div>
+                    </div>
+                    
+                    {/* Title */}
+                    <div className="mb-1">
+                      <a href="#" className="text-decoration-none" style={{ fontSize: 20, color: '#1a0dab', lineHeight: '1.3' }}>
+                        {webSeo.metaTitle || 'Nội Thất Minh Quân – Nội Thất Giá Xưởng | Giường, Tủ, Bàn Gh'}
+                      </a>
+                    </div>
+                    
+                    {/* Description */}
+                    <div style={{ fontSize: 14, color: '#4d5156', lineHeight: '1.58' }}>
+                      {webSeo.metaDescription || 'Mua nội thất giá xưởng tại Nội Thất Minh Quân – sản phẩm bền đẹp, giao nhanh 1–3 ngày, hỗ trợ đặt theo yêu cầu. Xem ngay ưu đãi hôm nay!'}
+                    </div>
+                    
+                    {/* Meta info */}
+                    <div className="mt-2" style={{ fontSize: 12, color: '#70757a' }}>
+                      <span className="me-2">
+                        <strong>Title:</strong> {webSeo.metaTitle?.length || 0}/60 • 
+                        <strong className="ms-1">Desc:</strong> {webSeo.metaDescription?.length || 0}/160 • 
+                        <strong className="ms-1" style={{ color: webSeoQuality.color }}>{webSeoQuality.label}</strong>
+                      </span>
+                    </div>
+
+                    <div className="mt-1" style={{ fontSize: 12, color: '#6b7280' }}>
+                      {webSeoQuality.tip}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Hình ảnh Website */}
@@ -793,13 +871,34 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Title</label>
-                  <input name="title" value={fbSeo.title} onChange={handleFbSeo}
-                    placeholder="Tiêu đề bài viết" className="form-control form-control-sm" />
+                  <div className="input-group input-group-sm">
+                    <input name="title" value={fbSeo.title} onChange={handleFbSeo}
+                      placeholder="Tiêu đề bài viết" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.title);
+                        alert('✅ Đã copy Title!');
+                      }}
+                      title="Copy Title">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Description</label>
-                  <textarea name="description" value={fbSeo.description} onChange={handleFbSeo}
-                    rows={5} placeholder="Nội dung chi tiết bài viết..." className="form-control form-control-sm" />
+                  <div className="input-group">
+                    <textarea name="description" value={fbSeo.description} onChange={handleFbSeo}
+                      rows={5} placeholder="Nội dung chi tiết bài viết..." className="form-control form-control-sm" style={{ resize: 'vertical' }} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.description);
+                        alert('✅ Đã copy Description!');
+                      }}
+                      title="Copy Description"
+                      style={{ alignSelf: 'flex-start' }}>
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   
                   {/* Emoji Picker - Expanded */}
                   <div className="mt-2">
@@ -934,13 +1033,83 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                 <div className="row g-3 mb-3">
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Keywords</label>
-                    <input name="keywords" value={fbSeo.keywords} onChange={handleFbSeo}
-                      placeholder="keyword1, keyword2" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="keywords" value={fbSeo.keywords} onChange={handleFbSeo}
+                        placeholder="keyword1, keyword2" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(fbSeo.keywords);
+                          alert('✅ Đã copy Keywords!');
+                        }}
+                        title="Copy Keywords">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Keywords mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất' : 'nội thất' }))}>nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất đẹp' : 'nội thất đẹp' }))}>nội thất đẹp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất giá rẻ' : 'nội thất giá rẻ' }))}>nội thất giá rẻ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất cao cấp' : 'nội thất cao cấp' }))}>nội thất cao cấp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', sofa' : 'sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bàn ghế' : 'bàn ghế' }))}>bàn ghế</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', giường ngủ' : 'giường ngủ' }))}>giường ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', tủ quần áo' : 'tủ quần áo' }))}>tủ quần áo</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bàn làm việc' : 'bàn làm việc' }))}>bàn làm việc</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', kệ tivi' : 'kệ tivi' }))}>kệ tivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thiết kế nội thất' : 'thiết kế nội thất' }))}>thiết kế nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thi công nội thất' : 'thi công nội thất' }))}>thi công nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất phòng khách' : 'nội thất phòng khách' }))}>nội thất phòng khách</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất phòng ngủ' : 'nội thất phòng ngủ' }))}>nội thất phòng ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất bếp' : 'nội thất bếp' }))}>nội thất bếp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất văn phòng' : 'nội thất văn phòng' }))}>nội thất văn phòng</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất gỗ' : 'nội thất gỗ' }))}>nội thất gỗ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất hiện đại' : 'nội thất hiện đại' }))}>nội thất hiện đại</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất tối giản' : 'nội thất tối giản' }))}>nội thất tối giản</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất TPHCM' : 'nội thất TPHCM' }))}>nội thất TPHCM</button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Hashtags</label>
-                    <input name="hashtags" value={fbSeo.hashtags} onChange={handleFbSeo}
-                      placeholder="#noithat #noithatdep #noithatgiare" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="hashtags" value={fbSeo.hashtags} onChange={handleFbSeo}
+                        placeholder="#noithat #noithatdep #noithatgiare" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(fbSeo.hashtags);
+                          alert('✅ Đã copy Hashtags!');
+                        }}
+                        title="Copy Hashtags">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Hashtags mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithat' : '#noithat' }))}>noithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatdep' : '#noithatdep' }))}>noithatdep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgiare' : '#noithatgiare' }))}>noithatgiare</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatcaocap' : '#noithatcaocap' }))}>noithatcaocap</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #sofa' : '#sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banghe' : '#banghe' }))}>banghe</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #giuongngu' : '#giuongngu' }))}>giuongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #tuquanao' : '#tuquanao' }))}>tuquanao</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banlamviec' : '#banlamviec' }))}>banlamviec</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #ketivi' : '#ketivi' }))}>ketivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thietkenoithat' : '#thietkenoithat' }))}>thietkenoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thicongnoithat' : '#thicongnoithat' }))}>thicongnoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongkhach' : '#noithatphongkhach' }))}>noithatphongkhach</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongngu' : '#noithatphongngu' }))}>noithatphongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatbep' : '#noithatbep' }))}>noithatbep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatvanphong' : '#noithatvanphong' }))}>noithatvanphong</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgo' : '#noithatgo' }))}>noithatgo</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithathiendai' : '#noithathiendai' }))}>noithathiendai</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattoigian' : '#noithattoigian' }))}>noithattoigian</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattphcm' : '#noithattphcm' }))}>noithattphcm</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="mb-3">
@@ -950,6 +1119,14 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                   <div className="input-group input-group-sm mb-2">
                     <input name="location" value={fbSeo.location} onChange={handleFbSeo}
                       placeholder="VD: Nội Thất Minh Quân - TPHCM" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(fbSeo.location);
+                        alert('✅ Đã copy Location!');
+                      }}
+                      title="Copy Location">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
                     <button type="button" className="btn btn-outline-primary" onClick={() => openMapModal('fb')} title="Chọn từ bản đồ">
                       <i className="bi bi-map"></i>
                     </button>
@@ -1119,14 +1296,35 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Title</label>
-                  <input name="title" value={ttSeo.title} onChange={handleTtSeo}
-                    placeholder="Tiêu đề video TikTok" className="form-control form-control-sm" maxLength={150} />
+                  <div className="input-group input-group-sm">
+                    <input name="title" value={ttSeo.title} onChange={handleTtSeo}
+                      placeholder="Tiêu đề video TikTok" className="form-control" maxLength={150} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ttSeo.title);
+                        alert('✅ Đã copy Title!');
+                      }}
+                      title="Copy Title">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <small className="text-muted">{ttSeo.title?.length || 0}/150 ký tự</small>
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Description</label>
-                  <textarea name="description" value={ttSeo.description} onChange={handleTtSeo}
-                    rows={4} placeholder="Mô tả video..." className="form-control form-control-sm" maxLength={2200} />
+                  <div className="input-group">
+                    <textarea name="description" value={ttSeo.description} onChange={handleTtSeo}
+                      rows={4} placeholder="Mô tả video..." className="form-control form-control-sm" maxLength={2200} style={{ resize: 'vertical' }} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ttSeo.description);
+                        alert('✅ Đã copy Description!');
+                      }}
+                      title="Copy Description"
+                      style={{ alignSelf: 'flex-start' }}>
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <small className="text-muted">{ttSeo.description?.length || 0}/2200 ký tự</small>
                   
                   {/* Emoji Picker for TikTok - Expanded */}
@@ -1268,13 +1466,83 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                 <div className="row g-3 mb-3">
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Keywords</label>
-                    <input name="keywords" value={ttSeo.keywords} onChange={handleTtSeo}
-                      placeholder="keyword1, keyword2" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="keywords" value={ttSeo.keywords} onChange={handleTtSeo}
+                        placeholder="keyword1, keyword2" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(ttSeo.keywords);
+                          alert('✅ Đã copy Keywords!');
+                        }}
+                        title="Copy Keywords">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Keywords mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất' : 'nội thất' }))}>nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất đẹp' : 'nội thất đẹp' }))}>nội thất đẹp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất giá rẻ' : 'nội thất giá rẻ' }))}>nội thất giá rẻ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất cao cấp' : 'nội thất cao cấp' }))}>nội thất cao cấp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', sofa' : 'sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bàn ghế' : 'bàn ghế' }))}>bàn ghế</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', giường ngủ' : 'giường ngủ' }))}>giường ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', tủ quần áo' : 'tủ quần áo' }))}>tủ quần áo</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', bàn làm việc' : 'bàn làm việc' }))}>bàn làm việc</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', kệ tivi' : 'kệ tivi' }))}>kệ tivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thiết kế nội thất' : 'thiết kế nội thất' }))}>thiết kế nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', thi công nội thất' : 'thi công nội thất' }))}>thi công nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất phòng khách' : 'nội thất phòng khách' }))}>nội thất phòng khách</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất phòng ngủ' : 'nội thất phòng ngủ' }))}>nội thất phòng ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất bếp' : 'nội thất bếp' }))}>nội thất bếp</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất văn phòng' : 'nội thất văn phòng' }))}>nội thất văn phòng</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất gỗ' : 'nội thất gỗ' }))}>nội thất gỗ</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất hiện đại' : 'nội thất hiện đại' }))}>nội thất hiện đại</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất tối giản' : 'nội thất tối giản' }))}>nội thất tối giản</button>
+                        <button type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', nội thất TPHCM' : 'nội thất TPHCM' }))}>nội thất TPHCM</button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Hashtags</label>
-                    <input name="hashtags" value={ttSeo.hashtags} onChange={handleTtSeo}
-                      placeholder="#noithat #tiktoknoithat #fyp" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="hashtags" value={ttSeo.hashtags} onChange={handleTtSeo}
+                        placeholder="#noithat #tiktoknoithat #fyp" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(ttSeo.hashtags);
+                          alert('✅ Đã copy Hashtags!');
+                        }}
+                        title="Copy Hashtags">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Hashtags mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithat' : '#noithat' }))}>noithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatdep' : '#noithatdep' }))}>noithatdep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #tiktoknoithat' : '#tiktoknoithat' }))}>tiktoknoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #fyp' : '#fyp' }))}>fyp</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #xuhuong' : '#xuhuong' }))}>xuhuong</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #viral' : '#viral' }))}>viral</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #sofa' : '#sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banghe' : '#banghe' }))}>banghe</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #giuongngu' : '#giuongngu' }))}>giuongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #tuquanao' : '#tuquanao' }))}>tuquanao</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thietkenoithat' : '#thietkenoithat' }))}>thietkenoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thicongnoithat' : '#thicongnoithat' }))}>thicongnoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongkhach' : '#noithatphongkhach' }))}>noithatphongkhach</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongngu' : '#noithatphongngu' }))}>noithatphongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatbep' : '#noithatbep' }))}>noithatbep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatvanphong' : '#noithatvanphong' }))}>noithatvanphong</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgo' : '#noithatgo' }))}>noithatgo</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithathiendai' : '#noithathiendai' }))}>noithathiendai</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattoigian' : '#noithattoigian' }))}>noithattoigian</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setTtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattphcm' : '#noithattphcm' }))}>noithattphcm</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
@@ -1286,6 +1554,14 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                   <div className="input-group input-group-sm mb-2">
                     <input name="location" value={ttSeo.location} onChange={handleTtSeo}
                       placeholder="VD: TP. Hồ Chí Minh, Việt Nam" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ttSeo.location);
+                        alert('✅ Đã copy Location!');
+                      }}
+                      title="Copy Location">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
                     <button type="button" className="btn btn-outline-primary" onClick={() => openMapModal('tt')} title="Chọn từ bản đồ">
                       <i className="bi bi-map"></i>
                     </button>
@@ -1436,27 +1712,118 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Title</label>
-                  <input name="title" value={ytSeo.title} onChange={handleYtSeo}
-                    placeholder="Tiêu đề video YouTube" className="form-control form-control-sm" maxLength={100} />
+                  <div className="input-group input-group-sm">
+                    <input name="title" value={ytSeo.title} onChange={handleYtSeo}
+                      placeholder="Tiêu đề video YouTube" className="form-control" maxLength={100} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ytSeo.title);
+                        alert('✅ Đã copy Title!');
+                      }}
+                      title="Copy Title">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <small className="text-muted">{ytSeo.title?.length || 0}/100 ký tự</small>
                 </div>
                 <div className="mb-3">
                   <label className="form-label small fw-semibold">Description</label>
-                  <textarea name="description" value={ytSeo.description} onChange={handleYtSeo}
-                    rows={6} placeholder="Mô tả chi tiết video..." className="form-control form-control-sm" maxLength={5000} />
+                  <div className="input-group">
+                    <textarea name="description" value={ytSeo.description} onChange={handleYtSeo}
+                      rows={6} placeholder="Mô tả chi tiết video..." className="form-control form-control-sm" maxLength={5000} style={{ resize: 'vertical' }} />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ytSeo.description);
+                        alert('✅ Đã copy Description!');
+                      }}
+                      title="Copy Description"
+                      style={{ alignSelf: 'flex-start' }}>
+                      <i className="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <small className="text-muted">{ytSeo.description?.length || 0}/5000 ký tự</small>
                 </div>
                 <div className="row g-3 mb-3">
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Tags</label>
-                    <input name="tags" value={ytSeo.tags} onChange={handleYtSeo}
-                      placeholder="nội thất, giường, tủ" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="tags" value={ytSeo.tags} onChange={handleYtSeo}
+                        placeholder="nội thất, giường, tủ" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(ytSeo.tags);
+                          alert('✅ Đã copy Tags!');
+                        }}
+                        title="Copy Tags">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
                     <small className="text-muted">Phân cách bằng dấu phẩy</small>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Tags mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất' : 'nội thất' }))}>nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất đẹp' : 'nội thất đẹp' }))}>nội thất đẹp</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất giá rẻ' : 'nội thất giá rẻ' }))}>nội thất giá rẻ</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất cao cấp' : 'nội thất cao cấp' }))}>nội thất cao cấp</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', sofa' : 'sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', bàn ghế' : 'bàn ghế' }))}>bàn ghế</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', giường ngủ' : 'giường ngủ' }))}>giường ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', tủ quần áo' : 'tủ quần áo' }))}>tủ quần áo</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', bàn làm việc' : 'bàn làm việc' }))}>bàn làm việc</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', kệ tivi' : 'kệ tivi' }))}>kệ tivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', thiết kế nội thất' : 'thiết kế nội thất' }))}>thiết kế nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', thi công nội thất' : 'thi công nội thất' }))}>thi công nội thất</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất phòng khách' : 'nội thất phòng khách' }))}>nội thất phòng khách</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất phòng ngủ' : 'nội thất phòng ngủ' }))}>nội thất phòng ngủ</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất bếp' : 'nội thất bếp' }))}>nội thất bếp</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất văn phòng' : 'nội thất văn phòng' }))}>nội thất văn phòng</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất gỗ' : 'nội thất gỗ' }))}>nội thất gỗ</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất hiện đại' : 'nội thất hiện đại' }))}>nội thất hiện đại</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất tối giản' : 'nội thất tối giản' }))}>nội thất tối giản</button>
+                        <button type="button" className="btn btn-sm btn-outline-danger" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, tags: p.tags ? p.tags + ', nội thất TPHCM' : 'nội thất TPHCM' }))}>nội thất TPHCM</button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label small fw-semibold">Hashtags</label>
-                    <input name="hashtags" value={ytSeo.hashtags} onChange={handleYtSeo}
-                      placeholder="#noithat #noithatdep" className="form-control form-control-sm" />
+                    <div className="input-group input-group-sm">
+                      <input name="hashtags" value={ytSeo.hashtags} onChange={handleYtSeo}
+                        placeholder="#noithat #noithatdep" className="form-control" />
+                      <button type="button" className="btn btn-outline-secondary" 
+                        onClick={() => {
+                          navigator.clipboard.writeText(ytSeo.hashtags);
+                          alert('✅ Đã copy Hashtags!');
+                        }}
+                        title="Copy Hashtags">
+                        <i className="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Hashtags mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithat' : '#noithat' }))}>noithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatdep' : '#noithatdep' }))}>noithatdep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgiare' : '#noithatgiare' }))}>noithatgiare</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatcaocap' : '#noithatcaocap' }))}>noithatcaocap</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #sofa' : '#sofa' }))}>sofa</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banghe' : '#banghe' }))}>banghe</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #giuongngu' : '#giuongngu' }))}>giuongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #tuquanao' : '#tuquanao' }))}>tuquanao</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #banlamviec' : '#banlamviec' }))}>banlamviec</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #ketivi' : '#ketivi' }))}>ketivi</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thietkenoithat' : '#thietkenoithat' }))}>thietkenoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #thicongnoithat' : '#thicongnoithat' }))}>thicongnoithat</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongkhach' : '#noithatphongkhach' }))}>noithatphongkhach</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatphongngu' : '#noithatphongngu' }))}>noithatphongngu</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatbep' : '#noithatbep' }))}>noithatbep</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatvanphong' : '#noithatvanphong' }))}>noithatvanphong</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithatgo' : '#noithatgo' }))}>noithatgo</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithathiendai' : '#noithathiendai' }))}>noithathiendai</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattoigian' : '#noithattoigian' }))}>noithattoigian</button>
+                        <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }} onClick={() => setYtSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' #noithattphcm' : '#noithattphcm' }))}>noithattphcm</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
@@ -1468,6 +1835,14 @@ export function NewsCategoryForm({ newsCategory, parentCategories = [] }: Props)
                   <div className="input-group input-group-sm mb-2">
                     <input name="location" value={ytSeo.location} onChange={handleYtSeo}
                       placeholder="VD: Xưởng Nội Thất Minh Quân, TPHCM" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(ytSeo.location);
+                        alert('✅ Đã copy Location!');
+                      }}
+                      title="Copy Location">
+                      <i className="bi bi-clipboard"></i>
+                    </button>
                     <button type="button" className="btn btn-outline-primary" onClick={() => openMapModal('yt')} title="Chọn từ bản đồ">
                       <i className="bi bi-map"></i>
                     </button>

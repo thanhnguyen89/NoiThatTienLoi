@@ -35,7 +35,7 @@ export default async function MembersPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, statusCounts] = await Promise.all([
+  const [resultData, statusCountsData] = await Promise.all([
     dbSafe(() =>
       memberService.getAllMembers({
         page,
@@ -54,7 +54,9 @@ export default async function MembersPage({ searchParams }: Props) {
     dbSafe(() => memberService.getStatusCounts() as Promise<Record<string, number>>, {}),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultData.data;
+  const statusCounts = statusCountsData.data;
+  const dbError = resultData.hasError || statusCountsData.hasError;
 
   return (
     <>

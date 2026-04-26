@@ -23,12 +23,10 @@ export default async function InquiriesPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const result = await dbSafe(
+  const { data: result, hasError: dbError } = await dbSafe(
     () => inquiryService.getInquiries({ page, status: sp.status }) as Promise<PaginatedResult<Inquiry>>,
     emptyResult
   );
-
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
 
   const statusBadgeClass: Record<string, string> = {
     NEW: 'admin-badge--info',

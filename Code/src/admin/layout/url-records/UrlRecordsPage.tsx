@@ -25,7 +25,7 @@ export default async function UrlRecordsPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const result = await dbSafe(() =>
+  const { data: result, hasError: dbError } = await dbSafe(() =>
     urlRecordService.getAllUrlRecords({
       page,
       pageSize: PAGINATION.ADMIN_PAGE_SIZE,
@@ -35,13 +35,11 @@ export default async function UrlRecordsPage({ searchParams }: Props) {
     emptyResult
   );
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
-
   return (
     <>
       <div className="card mb-3">
         <div className="card-header-custom">
-          THONG TIN TIM KIEM
+          THÔNG TIN TÌM KIẾM
           <div className="header-icons">
             <i className="bi bi-dash-lg"></i>
             <i className="bi bi-fullscreen"></i>

@@ -1,5 +1,6 @@
 import { AdminTopNav } from '@/admin/components/AdminTopNav';
 import { BootstrapInit } from '@/admin/components/BootstrapInit';
+import { AdminBackdropCleanup } from '@/admin/components/AdminBackdropCleanup';
 import { AuthGuard } from '@/admin/components/AuthGuard';
 import { ToastProvider } from '@/admin/components/Toast';
 import '@/admin/assets/styles/admin.css';
@@ -13,6 +14,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <ToastProvider>
       <BootstrapInit />
+      <AdminBackdropCleanup />
       <AuthGuard>
         <AdminTopNav />
         <div className="container-fluid py-3 px-4">

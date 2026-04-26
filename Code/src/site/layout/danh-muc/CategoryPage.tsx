@@ -24,7 +24,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const category = await dbSafe(() => categoryService.getCategoryBySlug(slug), null);
+  const { data: category } = await dbSafe(() => categoryService.getCategoryBySlug(slug), null);
   if (!category) return {};
 
   const pageTitle = page > 1 ? ` - Trang ${page}` : '';

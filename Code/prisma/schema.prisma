@@ -741,6 +741,74 @@ model NewsContent {
   wordCount                  BigInt?
   errorCode                  String?   @db.VarChar(50)
   authorName                 String?   @db.VarChar(255)
+  
+  // SEO Website (OG Tags)
+  ogTitle                    String?   @db.VarChar(500)
+  ogDescription              String?   @db.VarChar(1000)
+  ogImage                    String?   @db.VarChar(1000)
+  robots                     String?   @default("index,follow") @db.VarChar(100)
+  isMobile                   Boolean?  @default(false)
+  
+  // SEO Facebook
+  fbTitle                    String?   @db.VarChar(500)
+  fbDescription              String?   @db.VarChar(2000)
+  fbKeywords                 String?   @db.VarChar(1000)
+  fbHashtags                 String?   @db.VarChar(1000)
+  fbLocation                 String?   @db.VarChar(255)
+  fbImage                    String?   @db.VarChar(1000)
+  fbLinkPosted               String?   @db.VarChar(1000)
+  
+  // SEO TikTok
+  ttTitle                    String?   @db.VarChar(500)
+  ttDescription              String?   @db.VarChar(2200)
+  ttKeywords                 String?   @db.VarChar(1000)
+  ttHashtags                 String?   @db.VarChar(1000)
+  ttLocation                 String?   @db.VarChar(255)
+  ttImage                    String?   @db.VarChar(1000)
+  ttLinkPosted               String?   @db.VarChar(1000)
+  
+  // SEO YouTube
+  ytTitle                    String?   @db.VarChar(500)
+  ytDescription              String?   @db.VarChar(5000)
+  ytTags                     String?   @db.VarChar(2000)
+  ytHashtags                 String?   @db.VarChar(1000)
+  ytLocation                 String?   @db.VarChar(255)
+  ytImage                    String?   @db.VarChar(1000)
+  ytLinkPosted               String?   @db.VarChar(1000)
+  
+  // 28 fields mới - Phase 2
+  authorId                   String?   @db.VarChar(255)
+  authorEmail                String?   @db.VarChar(255)
+  authorAvatar               String?   @db.VarChar(1000)
+  tags                       String?   // JSON array
+  categoryName               String?   @db.VarChar(255)
+  categorySlug               String?   @db.VarChar(255)
+  readingTime                BigInt?
+  featuredImage              String?   @db.VarChar(1000)
+  featuredImageAlt           String?   @db.VarChar(255)
+  featuredImageCaption       String?
+  galleryImages              String?   // JSON array
+  videoUrl                   String?   @db.VarChar(1000)
+  videoThumbnail             String?   @db.VarChar(1000)
+  audioUrl                   String?   @db.VarChar(1000)
+  relatedNewsIds             String?   // JSON array
+  externalUrl                String?   @db.VarChar(1000)
+  isExternalLink             Boolean?  @default(false)
+  openInNewTab               Boolean?  @default(false)
+  isFeatured                 Boolean?  @default(false)
+  isBreakingNews             Boolean?  @default(false)
+  isPinned                   Boolean?  @default(false)
+  expiryDate                 DateTime? @db.Timestamp(6)
+  scheduledPublishDate       DateTime? @db.Timestamp(6)
+  lastModifiedBy             String?   @db.VarChar(255)
+  revisionNumber             BigInt?   @default(0)
+  contentFormat              String?   @db.VarChar(50)
+  customCss                  String?
+  customJs                   String?
+  jsonData                   String?   // JSON object
+  
+  // Relations
+  platformImages             NewsPlatformImage[]
 
   @@index([newsTypeId])
   @@index([categoryTypeId])
@@ -758,6 +826,39 @@ model NewsRelated {
 
   @@id([newsId, relatedNewsId])
   @@map("news_related")
+}
+
+// ============================================================
+// HÌNH ẢNH ĐA NỀN TẢNG TIN TỨC
+// ============================================================
+model NewsPlatformImage {
+  id        String       @id @default(cuid())
+  newsId    String
+  news      NewsContent  @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  
+  platform  PlatformType
+  
+  imageUrl  String       @db.VarChar(1000)
+  alt       String?      @db.VarChar(500)
+  title     String?      @db.VarChar(500)
+  caption   String?      @db.VarChar(1000)
+  
+  sortOrder Int          @default(0)
+  isPrimary Boolean      @default(false)
+  isActive  Boolean      @default(true)
+  
+  createdAt DateTime     @default(now())
+  updatedAt DateTime?
+  createdBy String?      @db.VarChar(100)
+  updatedBy String?      @db.VarChar(100)
+  isDeleted Boolean?     @default(false)
+  deletedBy String?      @db.VarChar(100)
+  deletedAt DateTime?    @db.Timestamp(6)
+  
+  @@index([newsId])
+  @@index([platform])
+  @@index([sortOrder])
+  @@map("news_platform_images")
 }
 
 // ============================================================

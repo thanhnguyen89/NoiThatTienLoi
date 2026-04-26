@@ -3,7 +3,7 @@ import { categoryService } from '@/server/services/category.service';
 import { dbSafe } from '@/lib/db-safe';
 
 export async function Header() {
-  const categories = await dbSafe(() => categoryService.getCategoryTree(), []);
+  const { data: categories } = await dbSafe(() => categoryService.getCategoryTree(), []);
 
   return (
     <header className="header v2026">

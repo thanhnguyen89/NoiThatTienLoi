@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { warehouseService } from '@/server/services/warehouse.service';
 import { WarehouseTable } from '@/admin/features/warehouses/WarehouseTable';
 import { WarehouseFilters } from '@/admin/features/warehouses/WarehouseFilters';
+import { dbSafe } from '@/lib/db-safe';
 
 interface Props {
   searchParams: Promise<{ search?: string; status?: string; region?: string; province?: string; page?: string }>;
@@ -14,16 +15,15 @@ export const metadata = { title: 'Quản lý kho hàng' };
 export default async function WarehousesPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = sp.page ? Math.max(1, parseInt(sp.page, 10)) : 1;
-  let dbError = false;
-  let counts = { total: 0, active: 0, inactive: 0, north: 0, central: 0, south: 0 };
-
-  let result = {
+  
+  const emptyResult = {
     data: [] as Awaited<ReturnType<typeof warehouseService.getAllWarehouses>>['data'],
     pagination: { page: 1, pageSize: 20, total: 0, totalPages: 1 }
   };
+  const defaultCounts = { total: 0, active: 0, inactive: 0, north: 0, central: 0, south: 0 };
 
-  try {
-    [result, counts] = await Promise.all([
+  const [resultData, countsData] = await Promise.all([
+    dbSafe(() =>
       warehouseService.getAllWarehouses({
         search: sp.search,
         isActive: sp.status,
@@ -31,12 +31,14 @@ export default async function WarehousesPage({ searchParams }: Props) {
         page,
         pageSize: 20,
       }),
-      warehouseService.getStatusCounts(),
-    ]);
-  } catch (error) {
-    console.error('Error loading warehouses:', error);
-    dbError = true;
-  }
+      emptyResult
+    ),
+    dbSafe(() => warehouseService.getStatusCounts(), defaultCounts),
+  ]);
+
+  const result = resultData.data;
+  const counts = countsData.data;
+  const dbError = resultData.hasError || countsData.hasError;
 
   return (
     <>

@@ -117,7 +117,7 @@ export function UrlRecordForm({ record }: Props) {
         <div className="d-flex gap-2">
           <button type="button" className="btn btn-danger btn-sm" onClick={() => router.push('/admin/url-records')} disabled={loading}>Huy</button>
           <button type="submit" className="btn btn-success btn-sm" disabled={loading}>
-            {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Dang luu...</> : isEdit ? 'Cap nhat' : 'Tao moi'}
+            {loading ? <><span className="spinner-border spinner-border-sm me-1"></span>Đang lưu...</> : isEdit ? 'Cap nhat' : 'Tao moi'}
           </button>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function UrlRecordForm({ record }: Props) {
       <div className="row g-3">
         <div className="col-12 col-lg-9">
           <div className="card mb-3">
-            <div className="card-header fw-semibold">Thong tin</div>
+            <div className="card-header fw-semibold">Thông tin</div>
             <div className="card-body">
               <div className="row g-3">
                 <div className="col-6">
@@ -206,7 +206,7 @@ export function UrlRecordForm({ record }: Props) {
 
         <div className="col-12 col-lg-3">
           <div className="card">
-            <div className="card-header fw-semibold">Trang thai</div>
+            <div className="card-header fw-semibold">Trạng thái</div>
             <div className="card-body">
               <div className="form-check form-switch mb-2">
                 <input
@@ -217,7 +217,7 @@ export function UrlRecordForm({ record }: Props) {
                   checked={form.isActive}
                   onChange={handle}
                 />
-                <label className="form-check-label" htmlFor="isActive">Hoat dong</label>
+                <label className="form-check-label" htmlFor="isActive">Hoạt động</label>
               </div>
               <div className="form-check form-switch mb-2">
                 <input
@@ -239,7 +239,7 @@ export function UrlRecordForm({ record }: Props) {
                   checked={form.isDeleted}
                   onChange={handle}
                 />
-                <label className="form-check-label" htmlFor="isDeleted">Da xoa</label>
+                <label className="form-check-label" htmlFor="isDeleted">Đã xóa</label>
               </div>
               <span className={`badge ${form.isActive ? 'bg-success' : 'bg-secondary'}`}>
                 {form.isActive ? '● Active' : '● Hidden'}

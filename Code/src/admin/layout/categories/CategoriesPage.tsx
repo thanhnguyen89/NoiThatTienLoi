@@ -32,7 +32,7 @@ export default async function CategoriesPage({ searchParams }: Props) {
   const sp = await searchParams;
   const page = parsePageParam(sp.page);
 
-  const [result, allCategories] = await Promise.all([
+  const [resultWrapper, allCategoriesWrapper] = await Promise.all([
     dbSafe(() =>
       categoryService.getAdminCategories({
         page,
@@ -46,7 +46,9 @@ export default async function CategoriesPage({ searchParams }: Props) {
     dbSafe(() => categoryService.getAdminCategories({ pageSize: 9999 }) as Promise<PaginatedCategories>, emptyResult),
   ]);
 
-  const dbError = result.data.length === 0 && result.pagination.total === 0;
+  const result = resultWrapper.data;
+  const allCategories = allCategoriesWrapper.data;
+  const dbError = resultWrapper.hasError;
 
   return (
     <>

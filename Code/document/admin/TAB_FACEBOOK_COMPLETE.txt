@@ -1,0 +1,160 @@
+          {/* === TAB 3: SEO FACEBOOK === */}
+          {activeTab === 'seo-fb' && (
+            <div className="card mb-3">
+              <div className="card-header fw-semibold">SEO Facebook</div>
+              <div className="card-body">
+                <span className="badge mb-3" style={{ background: '#eff6ff', color: '#1d4ed8' }}>FACEBOOK</span>
+
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Link bài đã đăng</label>
+                  <input value={fbSeo.linkPosted} onChange={(e) => setFbSeo(p => ({ ...p, linkPosted: e.target.value }))}
+                    placeholder="https://facebook.com/post/123" className="form-control form-control-sm" />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Title</label>
+                  <input value={fbSeo.title} onChange={(e) => setFbSeo(p => ({ ...p, title: e.target.value }))}
+                    placeholder="Tiêu đề bài viết" className="form-control form-control-sm" />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Description</label>
+                  <textarea value={fbSeo.description} onChange={(e) => setFbSeo(p => ({ ...p, description: e.target.value }))}
+                    rows={5} placeholder="Nội dung chi tiết bài viết..." className="form-control form-control-sm" />
+                  
+                  {/* Emoji Picker */}
+                  <div className="mt-2">
+                    <small className="text-muted d-block mb-1">Thêm emoji nhanh:</small>
+                    <div className="d-flex gap-2 flex-wrap">
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🏠' }))}>🏠 Nhà</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🏡' }))}>🏡 Nhà đẹp</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🛋️' }))}>🛋️ Sofa</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🪑' }))}>🪑 Ghế</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🛏️' }))}>🛏️ Giường</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🚪' }))}>🚪 Cửa</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🪟' }))}>🪟 Cửa sổ</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 💡' }))}>💡 Đèn</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ✨' }))}>✨ Đẹp</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🌟' }))}>🌟 Sang</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 💎' }))}>💎 Cao cấp</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ⭐' }))}>⭐ Đánh giá</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 💯' }))}>💯 Tốt</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ✅' }))}>✅ Uy tín</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🔥' }))}>🔥 Hot</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 👍' }))}>👍 Like</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 👌' }))}>👌 OK</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ❤️' }))}>❤️ Yêu</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 😍' }))}>😍 Thích</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 💰' }))}>💰 Giá tốt</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🎁' }))}>🎁 Quà</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' ⚡' }))}>⚡ Nhanh</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🚚' }))}>🚚 Giao hàng</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 📦' }))}>📦 Đóng gói</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🔨' }))}>🔨 Lắp đặt</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🔧' }))}>🔧 Bảo hành</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🎨' }))}>🎨 Thiết kế</button>
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setFbSeo(p => ({ ...p, description: p.description + ' 🏘️' }))}>🏘️ Không gian</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row g-3 mb-3">
+                  <div className="col-6">
+                    <label className="form-label small fw-semibold">Keywords</label>
+                    <input value={fbSeo.keywords} onChange={(e) => setFbSeo(p => ({ ...p, keywords: e.target.value }))}
+                      placeholder="keyword1, keyword2" className="form-control form-control-sm" />
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Keywords mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        {['nội thất', 'nội thất đẹp', 'nội thất giá rẻ', 'nội thất cao cấp', 'sofa', 'bàn ghế', 'giường ngủ', 'tủ quần áo', 'bàn làm việc', 'kệ tivi', 'thiết kế nội thất', 'thi công nội thất', 'nội thất phòng khách', 'nội thất phòng ngủ', 'nội thất bếp', 'nội thất văn phòng', 'nội thất gỗ', 'nội thất hiện đại', 'nội thất tối giản', 'nội thất TPHCM'].map(tag => (
+                          <button key={tag} type="button" className="btn btn-sm btn-outline-info" style={{ fontSize: '10px', padding: '2px 6px' }}
+                            onClick={() => setFbSeo(p => ({ ...p, keywords: p.keywords ? p.keywords + ', ' + tag : tag }))}>
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <label className="form-label small fw-semibold">Hashtags</label>
+                    <input value={fbSeo.hashtags} onChange={(e) => setFbSeo(p => ({ ...p, hashtags: e.target.value }))}
+                      placeholder="#noithat #noithatdep" className="form-control form-control-sm" />
+                    <div className="mt-2">
+                      <small className="text-muted d-block mb-1">Hashtags mẫu (click để thêm):</small>
+                      <div className="d-flex gap-1 flex-wrap" style={{ maxHeight: '120px', overflowY: 'auto', padding: '6px', border: '1px solid #dee2e6', borderRadius: '4px', fontSize: '11px' }}>
+                        {['#noithat', '#noithatdep', '#noithatgiare', '#noithatcaocap', '#sofa', '#banghe', '#giuongngu', '#tuquanao', '#banlamviec', '#ketivi', '#thietkenoithat', '#thicongnoithat', '#noithatphongkhach', '#noithatphongngu', '#noithatbep', '#noithatvanphong', '#noithatgo', '#noithathiendai', '#noithattoigian', '#noithattphcm'].map(tag => (
+                          <button key={tag} type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px', padding: '2px 6px' }}
+                            onClick={() => setFbSeo(p => ({ ...p, hashtags: p.hashtags ? p.hashtags + ' ' + tag : tag }))}>
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">
+                    <i className="bi bi-geo-alt me-1"></i>Vị trí (Location)
+                  </label>
+                  <div className="input-group input-group-sm mb-2">
+                    <input value={fbSeo.location} onChange={(e) => setFbSeo(p => ({ ...p, location: e.target.value }))}
+                      placeholder="VD: Nội Thất Minh Quân - TPHCM" className="form-control" />
+                    <button type="button" className="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                      <i className="bi bi-geo-alt"></i>
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-end">
+                      <li><h6 className="dropdown-header">Chọn vị trí nhanh</h6></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Nội Thất Minh Quân - TP. Hồ Chí Minh' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>Nội Thất Minh Quân - TP. Hồ Chí Minh
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Xưởng Nội Thất Minh Quân - Quận 12, TPHCM' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>Xưởng Nội Thất Minh Quân - Quận 12, TPHCM
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Showroom Nội Thất Minh Quân - Quận 1, TPHCM' }))}>
+                        <i className="bi bi-geo-alt-fill me-2 text-primary"></i>Showroom Nội Thất Minh Quân - Quận 1, TPHCM
+                      </button></li>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'TP. Hồ Chí Minh, Việt Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>TP. Hồ Chí Minh, Việt Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Hà Nội, Việt Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>Hà Nội, Việt Nam
+                      </button></li>
+                      <li><button type="button" className="dropdown-item" onClick={() => setFbSeo(p => ({ ...p, location: 'Đà Nẵng, Việt Nam' }))}>
+                        <i className="bi bi-geo-alt me-2"></i>Đà Nẵng, Việt Nam
+                      </button></li>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><button type="button" className="dropdown-item text-danger" onClick={() => setFbSeo(p => ({ ...p, location: '' }))}>
+                        <i className="bi bi-x-circle me-2"></i>Xóa vị trí
+                      </button></li>
+                    </ul>
+                  </div>
+                  <small className="text-muted">Thêm vị trí giúp tăng reach với người dùng gần đó</small>
+                </div>
+
+                <div className="mb-3">
+                  <SingleImageUploader
+                    value={fbSeo.image}
+                    onChange={(url) => setFbSeo((p) => ({ ...p, image: url }))}
+                    label="Image"
+                    defaultSrc="/admin/assets/images/default-image_100.png"
+                  />
+                </div>
+
+                {/* Copy to Clipboard Button */}
+                <div className="mb-3">
+                  <button type="button" className="btn btn-success btn-sm w-100" 
+                    onClick={() => {
+                      const content = `${fbSeo.title ? fbSeo.title + '\n\n' : ''}${fbSeo.description}${fbSeo.hashtags ? '\n\n' + fbSeo.hashtags : ''}${fbSeo.location ? '\n📍 ' + fbSeo.location : ''}`;
+                      navigator.clipboard.writeText(content).then(() => {
+                        alert('✅ Đã copy nội dung! Paste vào Facebook ngay.');
+                      });
+                    }}>
+                    <i className="bi bi-clipboard-check me-1"></i>
+                    Copy nội dung để đăng Facebook
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}

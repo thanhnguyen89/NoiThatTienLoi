@@ -96,7 +96,7 @@ export const adminUserRepository = {
   },
 
   async findByUsername(username: string) {
-    return prisma.adminUser.findUnique({
+    return prisma.adminUser.findFirst({
       where: { username, isDeleted: false },
       select: {
         id: true,
@@ -130,14 +130,14 @@ export const adminUserRepository = {
   },
 
   async findByEmail(email: string) {
-    return prisma.adminUser.findUnique({
+    return prisma.adminUser.findFirst({
       where: { email, isDeleted: false },
       select: { id: true, email: true },
     });
   },
 
   async findById(id: string) {
-    return prisma.adminUser.findUnique({
+    return prisma.adminUser.findFirst({
       where: { id, isDeleted: false },
       select: adminUserDetailSelect,
     });

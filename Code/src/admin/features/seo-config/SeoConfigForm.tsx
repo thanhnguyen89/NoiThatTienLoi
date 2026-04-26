@@ -36,11 +36,43 @@ interface Props {
   config?: SeoConfigDetail;
 }
 
+function getSeoPreviewQuality(title: string, description: string) {
+  const titleLength = title.length;
+  const descLength = description.length;
+  const titleIdeal = titleLength >= 40 && titleLength <= 60;
+  const descIdeal = descLength >= 120 && descLength <= 160;
+  const titleAcceptable = titleLength >= 30 && titleLength <= 65;
+  const descAcceptable = descLength >= 80 && descLength <= 170;
+
+  let label = 'Cần tối ưu';
+  let color = '#b42318';
+
+  if (titleLength === 0 && descLength === 0) {
+    label = 'Chưa có dữ liệu';
+    color = '#6b7280';
+  } else if (titleIdeal && descIdeal) {
+    label = 'Tốt';
+    color = '#166534';
+  } else if ((titleIdeal || descIdeal) || (titleAcceptable && descAcceptable)) {
+    label = 'Khá';
+    color = '#92400e';
+  }
+
+  let tip = 'Độ dài Title/Description đang tối ưu cho SEO.';
+  if (titleLength < 40) tip = 'Title nên từ 40–60 ký tự.';
+  else if (titleLength > 60) tip = 'Title đang dài, nên <= 60 ký tự.';
+  else if (descLength < 120) tip = 'Description nên từ 120–160 ký tự.';
+  else if (descLength > 160) tip = 'Description đang dài, nên <= 160 ký tự.';
+
+  return { label, color, tip };
+}
+
 // ─── SEO Preview ─────────────────────────────────────────────────────────────
 function SeoPreview({ title, description, url }: { title: string; description: string; url: string }) {
   const displayTitle = title || 'Tiêu đề trang';
   const displayDesc  = description || 'Mô tả trang sẽ hiển thị ở đây...';
   const displayUrl   = url ? `noithatminhquan.vn/${url.replace(/^\//, '')}` : 'noithatminhquan.vn/';
+  const seoQuality = getSeoPreviewQuality(title, description);
   const titleColor   = title.length > 60 ? '#d93025' : '#1a0dab';
   const descColor    = description.length > 160 ? '#d93025' : '#4d5156';
   return (
@@ -52,13 +84,14 @@ function SeoPreview({ title, description, url }: { title: string; description: s
       <div style={{ fontSize: 14, color: descColor, lineHeight: 1.5 }}>
         {displayDesc.length > 160 ? displayDesc.slice(0, 160) + '...' : displayDesc}
       </div>
-      <div style={{ marginTop: 8, display: 'flex', gap: 12, fontSize: 11, flexWrap: 'wrap' }}>
-        <span style={{ color: title.length > 60 ? '#d93025' : title.length >= 30 ? '#137333' : '#f29900' }}>
-          Title: {title.length}/60 {title.length > 60 ? '⚠ Quá dài' : title.length < 30 ? '⚠ Quá ngắn' : '✓ Tốt'}
-        </span>
-        <span style={{ color: description.length > 160 ? '#d93025' : description.length >= 120 ? '#137333' : description.length > 0 ? '#f29900' : '#6c757d' }}>
-          Desc: {description.length}/160 {description.length > 160 ? '⚠ Quá dài' : description.length < 120 && description.length > 0 ? '⚠ Quá ngắn' : description.length >= 120 ? '✓ Tốt' : ''}
-        </span>
+      <div style={{ marginTop: 8, fontSize: 11, color: '#70757a' }}>
+        <span>
+          Title: {title.length}/60 • Desc: {description.length}/160 •
+        </span>{' '}
+        <strong style={{ color: seoQuality.color }}>{seoQuality.label}</strong>
+      </div>
+      <div style={{ marginTop: 4, fontSize: 11, color: '#6b7280' }}>
+        {seoQuality.tip}
       </div>
     </div>
   );

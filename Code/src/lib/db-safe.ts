@@ -2,9 +2,13 @@
  * Wrap một async function, nếu DB không kết nối được thì trả về fallback.
  * Bắt PrismaClientInitializationError và PrismaClientKnownRequestError liên quan DB.
  */
-export async function dbSafe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+export async function dbSafe<T>(
+  fn: () => Promise<T>,
+  fallback: T
+): Promise<{ data: T; hasError: boolean }> {
   try {
-    return await fn();
+    const result = await fn();
+    return { data: result, hasError: false };
   } catch (err: unknown) {
     // Prisma error có field errorCode hoặc code
     const code = (err as Record<string, unknown>)?.errorCode as string | undefined;
@@ -24,7 +28,7 @@ export async function dbSafe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
 
     if (isDbError) {
       console.warn('[DB]', name || 'Error', code || '', '-', msg.slice(0, 80));
-      return fallback;
+      return { data: fallback, hasError: true };
     }
 
     throw err;
