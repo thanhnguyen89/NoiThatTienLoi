@@ -1,106 +1,284 @@
-# Marketing Channels — Forme
+# Marketing Channels — Nội Thất Minh Quân
 
-## Tổng quan chiến lược
-Forme không chạy theo volume — tập trung vào **chất lượng tiếp xúc**. Mỗi touchpoint phải phản ánh đúng định vị premium: từ ảnh Instagram đến trải nghiệm tại showroom. Khách hàng 40+ không bị thuyết phục bởi quảng cáo ồn ào — họ tự tìm đến khi đã sẵn sàng.
+## 🎯 TỔNG QUAN CHIẾN LƯỢC
 
-**Funnel chính của Forme:**
+Minh Quân không xây brand kiểu cao cấp.
+
+Mục tiêu:
+
+- Bán được hàng
+- Có khách mỗi ngày
+- Quay vòng nhanh
+
+---
+
+## 🔥 FUNNEL CHÍNH
+
 ```
-Instagram (Awareness + Inspiration)
-        ↓
-Website (Consideration + Research)
-        ↓
-Showroom (Decision + Close)
+KÊNH CHÍNH (đăng content)
+  Google · Facebook · TikTok
+              ↓
+KÊNH HỖ TRỢ (chuyển đổi)
+  Website · Shopee · Zalo
+              ↓
+       Chốt đơn (chat / điện thoại)
 ```
 
----
-
-## Kênh 1: Instagram (@forme.vn)
-
-### Vai trò
-Kênh awareness và inspiration chính — nơi khách hàng lần đầu tiếp xúc với Forme và bắt đầu "follow để theo dõi".
-
-### Số liệu hiện tại
-| Chỉ số | Số liệu | Benchmark ngành |
-|---|---|---|
-| Followers | 18.400 | — |
-| Engagement rate | 3.2% | 1.5-2% (furniture) |
-| Reach TB/post | 5.800 | — |
-| Profile visits/tháng | 4.200 | — |
-| Link in bio clicks/tháng | 390 | — |
-| Story view rate | 18% | 15% |
-
-### Content mix
-- **40%** Ảnh sản phẩm editorial — nền sáng, ánh sáng tự nhiên, nhiều khoảng trắng
-- **30%** Không gian thực tế của khách hàng — collab với interior designer
-- **20%** Chi tiết vật liệu — texture vải, vân đá, gỗ nguyên khối
-- **10%** Behind-the-scenes — xưởng sản xuất, quá trình chọn chất liệu
-
-### Tần suất & định dạng
-- Feed post: 4 lần/tuần (Thứ 2, 3, 5, 7)
-- Stories: hàng ngày
-- Reels: 1 lần/tuần (đang thử nghiệm — chưa tối ưu)
-
-### Điểm mạnh
-- Engagement rate cao hơn 2x benchmark ngành
-- Visual identity nhất quán, dễ nhận diện
-
-### Điểm cần cải thiện
-- Reels chưa đầu tư — đây là cơ hội tăng reach organic lớn nhất hiện tại
-- Chưa có collab với KOL / interior designer có tiếng
+> Không có showroom. Không có bước "trải nghiệm".
 
 ---
 
-## Kênh 2: Website (forme.vn)
+## 🟢 3 KÊNH CHÍNH (CONTENT OUTPUT)
 
-### Vai trò
-Kênh consideration — nơi khách hàng nghiên cứu kỹ trước khi quyết định đến showroom.
+Đây là 3 kênh **đăng content** chính. Mọi bài viết, ảnh, video sản xuất
+ra phải nhắm cho ít nhất 1 trong 3 kênh này.
 
-### Số liệu hiện tại
-| Chỉ số | Số liệu |
+---
+
+### 🟢 KÊNH CHÍNH 1: GOOGLE (SEARCH)
+
+#### 🎯 Vai trò
+
+- Khách chủ động tìm
+- Kéo traffic dài hạn (organic)
+
+#### Từ khóa chính
+
+- Giường sắt giá rẻ
+- Giường tầng
+- Kệ inox
+- (Xem thêm trong CLAUDE.md → "Về dự án này" → Keywords)
+
+#### Yêu cầu
+
+- Trang sản phẩm rõ
+- Có giá (hoặc khoảng giá)
+- Có hình
+- Title + meta description chuẩn SEO
+
+#### KPI
+
+- Impression / click trên Google Search Console
+- Position keyword chính
+- Traffic organic vào website
+
+---
+
+### 🟢 KÊNH CHÍNH 2: FACEBOOK
+
+#### 🎯 Vai trò
+
+- Kênh chốt đơn nhanh
+- Đăng content sản phẩm thường xuyên
+
+#### Content nên đăng
+
+- Ảnh sản phẩm thật
+- Video quay thực tế
+- Báo giá nhanh (post ngắn 200–350 từ theo `sop/social-post-template.md`)
+
+Ví dụ post:
+
+> Giường sắt 1m2 – 990k
+> Có sẵn – giao nhanh
+
+#### KPI
+
+- Inbox
+- Comment
+- Chốt đơn
+
+---
+
+### 🟢 KÊNH CHÍNH 3: TIKTOK
+
+#### 🎯 Vai trò
+
+- Kéo khách trẻ (sinh viên, công nhân, gia đình trẻ)
+- Demo sản phẩm thực tế qua video ngắn
+
+#### Content nên đăng
+
+- Video quay sản phẩm thật (lắp đặt, thử tải, demo size)
+- Review giá / so sánh trên thị trường
+- Caption ngắn 100–200 từ (theo `sop/social-post-template.md`)
+
+#### Hành vi khách
+
+- Lướt feed / search hashtag
+- Xem video trước → đọc caption sau
+- Tap để xem TikTok Shop hoặc inbox
+
+#### KPI
+
+- View
+- Save / Share
+- Inbox / chuyển hướng Shopee
+
+#### ⚠️ Lưu ý
+
+> Không làm TikTok kiểu branding cao cấp. Tập trung video thực tế, ngắn,
+> có giá, có "có sẵn".
+
+---
+
+## 🔵 3 KÊNH HỖ TRỢ (SALES / CONVERSION)
+
+3 kênh này nhận traffic từ KÊNH CHÍNH và đẩy về chốt đơn. Không phải nơi
+chính để đăng content sáng tạo, mà là nơi hiển thị sản phẩm + chốt sale.
+
+---
+
+### 🔵 KÊNH HỖ TRỢ 1: WEBSITE
+
+#### 🎯 Vai trò
+
+- Hiển thị sản phẩm + giá đầy đủ
+- Landing page khi traffic từ Google / Facebook / TikTok đổ về
+
+#### Nội dung bắt buộc
+
+- Danh mục rõ
+- Có giá
+- Có hình thật
+- Có CTA (số hotline, Zalo, inbox)
+
+#### KPI
+
+- Khách vào → xem sản phẩm
+- Nhắn tin / gọi điện / click Zalo
+
+#### ⚠️ Lưu ý
+
+> Không cần viết blog dài. Không cần SEO phức tạp.
+
+---
+
+### 🔵 KÊNH HỖ TRỢ 2: SHOPEE
+
+#### 🎯 Vai trò
+
+- Kênh kéo khách lớn (khách có sẵn nhu cầu mua)
+- Bổ trợ traffic từ TikTok Shop
+
+#### Hành vi khách
+
+- So giá
+- Xem đánh giá
+- Xem ảnh thật
+
+#### Nội dung cần
+
+- Tên sản phẩm có keyword
+- Giá rõ
+- Ảnh rõ
+
+#### KPI
+
+- Click
+- Chat
+- Đơn hàng
+
+---
+
+### 🔵 KÊNH HỖ TRỢ 3: ZALO / CHAT
+
+#### 🎯 Vai trò
+
+- Chốt đơn 1-1
+- Tư vấn cho khách B2B (chủ kinh doanh nhỏ)
+
+#### Kịch bản
+
+Khách hỏi:
+
+- Giá
+- Kích thước
+- Giao hàng
+
+Trả lời phải:
+
+- Nhanh
+- Rõ
+- Có giá
+
+---
+
+## ❌ KÊNH KHÔNG PHÙ HỢP
+
+| Kênh | Lý do |
 |---|---|
-| Sessions/tháng | 11.500 |
-| Bounce rate | 38% |
-| Thời gian xem TB | 3.1 phút |
-| Trang xem nhiều nhất | Arc Sofa product page |
-| Micro-conversion (đặt lịch showroom) | 1.2% |
-| Nguồn traffic chính | 44% Instagram, 28% Organic Search, 19% Direct |
+| Instagram | Không ra đơn |
+| TikTok branding (luxury aesthetic) | Khó chuyển đổi |
+| KOL review | Không cần |
+| Content dài | Không ai đọc |
 
-### SEO đang rank
-- "sofa cao cấp TPHCM" — top 4
-- "bàn marble nhập khẩu" — top 6
-- "nội thất tối giản cao cấp" — top 8
+> Lưu ý: TikTok thực tế là KÊNH CHÍNH (xem trên) — chỉ TikTok branding
+> kiểu luxury aesthetic mới không phù hợp.
 
 ---
 
-## Kênh 3: Showroom (TP.HCM — Quận 2)
+## 💥 CHIẾN LƯỢC CORE
 
-### Vai trò
-Điểm chốt sale quan trọng nhất — 100% doanh thu đi qua showroom. Khách đến showroom đã có ý định mua cao, chỉ cần trải nghiệm thực tế để quyết định.
+4 thứ phải có trong content (mọi kênh):
 
-### Số liệu hiện tại
-| Chỉ số | Số liệu | Ghi chú |
+- Có sản phẩm
+- Có giá
+- Có sẵn
+- Giao nhanh
+
+---
+
+## 🚀 KẾT LUẬN
+
+Marketing của Minh Quân không cần:
+
+- Đẹp
+- Hay
+- Sáng tạo
+
+Chỉ cần: **ra đơn**.
+
+### 💡 Tóm gọn 1 câu
+
+**Không làm marketing để "nổi" — mà làm để bán được hàng mỗi ngày.**
+
+---
+
+## 🗺️ Mapping kênh ↔ persona
+
+| Kênh | Loại | Persona chính |
 |---|---|---|
-| Lượt khách/tháng | 74 | Chủ yếu cuối tuần |
-| Tỷ lệ đặt lịch trước | 68% | Qua website hoặc DM Instagram |
-| Tỷ lệ chốt | 28% | Tính trên tổng lượt ghé thăm |
-| Tỷ lệ chốt (khách đặt lịch) | 41% | Cao hơn vì đã có intent rõ |
-| Giá trị đơn TB | 88.000.000 VNĐ | |
-| Thời gian từ lần đầu tiếp xúc đến chốt | 22 ngày TB | |
-| Tỷ lệ mua thêm sản phẩm (upsell) | 34% | Thường mua thêm bàn khi mua sofa |
-
-### Hành trình khách hàng điển hình
-1. Follow Instagram → xem ảnh 2-3 tuần
-2. Vào website xem chi tiết sản phẩm
-3. DM Instagram hoặc đặt lịch qua website
-4. Đến showroom trải nghiệm thực tế
-5. Chốt trong lần ghé thứ 1 hoặc 2
+| Google Search | 🟢 Chính | Cả 2 (khách chủ động tìm) |
+| Facebook | 🟢 Chính | Cả 2 |
+| TikTok | 🟢 Chính | Người mua thực dụng (đặc biệt nhóm trẻ) |
+| Website | 🔵 Hỗ trợ | Cả 2 (sau khi đã thấy sản phẩm từ kênh chính) |
+| Shopee | 🔵 Hỗ trợ | Người mua thực dụng |
+| Zalo / Chat | 🔵 Hỗ trợ | Chủ kinh doanh nhỏ (cần tư vấn 1-1) |
 
 ---
 
-## Kênh KHÔNG phù hợp với Forme (và lý do)
-| Kênh | Lý do không phù hợp |
-|---|---|
-| TikTok | Audience chủ yếu dưới 30 tuổi, không match khách hàng 40+ |
-| Shopee / Lazada | Định vị mass market, phá vỡ brand premium |
-| Facebook Ads broad | Cost per quality lead quá cao, traffic kém chất lượng |
-| KOL review dạng "unboxing" | Không phù hợp với tone tinh tế của Forme |
+## 🧭 Mapping kênh ↔ template content
+
+| Kênh | Template chính | Note |
+|---|---|---|
+| 🟢 Google (blog SEO + landing) | `sop/product-description-template.md` | Long-form, chuẩn SEO |
+| 🟢 Facebook | `sop/social-post-template.md` | 200–350 từ, không hashtag |
+| 🟢 TikTok caption | `sop/social-post-template.md` | 100–200 từ, đi kèm video |
+| 🔵 Website (mô tả sản phẩm) | `sop/product-description-template.md` | 7 phần đầy đủ |
+| 🔵 Shopee | `sop/product-description-template.md` (rút gọn) + Phiên bản ngắn | Tên SP + giá rõ |
+| 🔵 Zalo / Chat | Không có template — phản xạ nhanh, ngắn | Theo brand-guideline xưng hô |
+
+---
+
+## 🔗 Liên kết file liên quan
+
+- `CLAUDE.md` — luật bất biến
+- `context/content-guideline.md` — master strategy
+- `context/brand-guideline.md` — xưng hô theo kênh (bảng)
+- `context/customer-persona.md` — persona Minh Quân
+- `context/product-catalog.md` — sản phẩm + giá
+- `sop/research-sop.md` — research trước khi viết content cho từng kênh
+- `sop/content-sop.md` — quy trình viết content nhanh
+- `sop/product-description-template.md` — template website + Shopee + blog SEO
+- `sop/social-post-template.md` — template Facebook + TikTok

@@ -177,20 +177,40 @@ BẮT BUỘC đọc `sop/social-post-template.md` — chứa rule mở-thân-k�
 
 # 🚫 TỪ CẤM
 
-KHÔNG dùng các từ sau trong bất kỳ output content nào.
+KHÔNG dùng các từ/cụm sau trong bất kỳ output content nào.
 
-## Nhóm 1 — AI-style words (giọng máy/giọng giáo trình)
+## Nhóm 1 — AI-style words & transitions (giọng máy, chuyển ý mượt)
 
 "quan trọng", "hiệu quả", "tuy nhiên", "bên cạnh đó", "đáng kể",
-"trong thế giới hiện đại", "không thể phủ nhận", "toàn diện",
+"không thể phủ nhận", "toàn diện", "tối ưu hóa", "đặc biệt quan trọng",
+"nhìn chung", "thực tế cho thấy", "đặc biệt là", "chính vì vậy",
+"Như vậy", "Tóm lại", "Nói tóm lại", "Như đã đề cập"
+
+## Nhóm 2 — Mở/đóng bài cliché
+
+"Trong cuộc sống hiện đại", "Ngày nay", "Hiện nay", "Bạn có biết rằng",
+"Trong xã hội ngày nay", "Trong bài viết này", "Trên đây là",
 "hy vọng bài viết", "thông tin hữu ích"
 
-## Nhóm 2 — Marketing-fluff (tính từ rỗng nghĩa)
+## Nhóm 3 — AI-fluff adjectives (tính từ rỗng nghĩa, không số liệu)
+
+"đa dạng", "phong phú", "đa dạng và phong phú", "vô cùng", "cực kỳ",
+"tuyệt vời", "đáng chú ý"
+
+## Nhóm 4 — Pattern AI signature (cấu trúc câu lộ AI nhất)
+
+"không chỉ ... mà còn"
+
+## Nhóm 5 — Marketing-fluff (tính từ quảng cáo rỗng)
 
 "siêu phẩm", "số 1", "đẳng cấp", "hoàn hảo"
 
-> Nhóm 1 chặn dấu vết AI khi humanize. Nhóm 2 chặn giọng quảng cáo rỗng
-> kiểu Dakita / Siêu Thị Giường Sắt.
+> Nhóm 1–4 chặn dấu vết AI khi humanize.
+> Nhóm 5 chặn giọng quảng cáo rỗng kiểu Dakita / Siêu Thị Giường Sắt.
+>
+> **Trường hợp ngoại lệ duy nhất:** từ "cao cấp" được phép dùng KHI mention
+> tên category "Giường Sắt Cao Cấp" hoặc "Giường Tầng Cao Cấp" trong
+> product-catalog.md. Mọi context khác → tránh.
 
 ---
 

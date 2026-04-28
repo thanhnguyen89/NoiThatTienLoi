@@ -122,9 +122,19 @@ Khách quan tâm:
 
 ## 🚫 TỪ CẤM
 
-Xem danh sách đầy đủ trong `CLAUDE.md` → section TỪ CẤM. Bao gồm:
-- AI-style words (quan trọng, hiệu quả, tuy nhiên, bên cạnh đó…)
-- Marketing-fluff (siêu phẩm, số 1, đẳng cấp, hoàn hảo)
+Xem danh sách đầy đủ trong `CLAUDE.md` → section TỪ CẤM (~37 từ/cụm,
+chia 5 nhóm):
+
+1. **AI-style words & transitions** — quan trọng, hiệu quả, tuy nhiên,
+   bên cạnh đó, đặc biệt là, Như vậy, Tóm lại…
+2. **Mở/đóng bài cliché** — Trong cuộc sống hiện đại, Ngày nay, Hiện nay,
+   Trong bài viết này…
+3. **AI-fluff adjectives** — đa dạng, phong phú, vô cùng, cực kỳ, tuyệt vời…
+4. **Pattern AI signature** — "không chỉ … mà còn"
+5. **Marketing-fluff** — siêu phẩm, số 1, đẳng cấp, hoàn hảo
+
+**Ngoại lệ:** từ "cao cấp" được phép dùng khi mention tên category
+("Giường Sắt Cao Cấp", "Giường Tầng Cao Cấp") trong product-catalog.
 
 ---
 
