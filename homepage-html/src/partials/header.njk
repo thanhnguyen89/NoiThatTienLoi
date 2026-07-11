@@ -1,83 +1,70 @@
 <header class="header v2026">
+  <!-- Top info bar -->
+  <div class="header__infobar">
+    <div class="container">
+      <div class="header__infobar-inner">
+        <span class="header__infobar-slogan">Nội Thất Minh Quân – Đồng hành cùng mọi gia đình Việt với sản phẩm bền đẹp, tiện nghi và giá tốt.</span>
+        <nav class="header__infobar-links">
+          <a href="/chinh-sach"><i class="fa fa-file-text-o"></i> Chính sách</a>
+          <a href="/phuong-thuc-giao-hang"><i class="fa fa-truck"></i> Phương thức giao hàng và vận chuyển</a>
+          <a href="/blog"><i class="fa fa-rss"></i> Blog</a>
+          <a href="/lien-he"><i class="fa fa-pencil"></i> Liên hệ</a>
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+          <a href="tel:0865993334" aria-label="Phone"><i class="fa fa-phone"></i></a>
+          <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa fa-youtube-play"></i></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main header: logo + search + contacts -->
   <div class="container">
     <div class="header__top">
       <div>
         <a href="/" class="header__logo" aria-label="logo">
-          <img src="../../assets/images/logo_white.png" alt="" class="logo_site" data-was-processed="true">
+          <img src="../../assets/images/hinhweb/logo/logo.png" alt="Nội Thất Đại Thành" class="logo_site">
         </a>
-        <form action="/tim-kiem" onsubmit="return suggestSearch(event);" class="header__search ">
-          <input id="skw" type="text" class="input-search is-promote" onkeyup="suggestSearch(event);"
-              placeholder="iPhone 17 và iPhone Air" name="key" autocomplete="off" maxlength="100" 
-              style="animation: 0.4s ease 0s 1 normal none running slideUpFade;">
-          <button type="submit" aria-label="button suggest search">
-              <i class="icon-search"></i>
+
+        <form action="/tim-kiem" onsubmit="return suggestSearch(event);" class="header__search">
+          <select class="search-category" aria-label="Danh mục">
+            <option value="">All</option>
+            <option value="giuong">Giường</option>
+            <option value="tu">Tủ</option>
+            <option value="ban-ghe">Bàn ghế</option>
+          </select>
+          <input id="skw" type="text" class="input-search" onkeyup="suggestSearch(event);"
+              placeholder="Tìm kiếm sản phẩm..." name="key" autocomplete="off" maxlength="100">
+          <button type="submit" aria-label="Tìm kiếm">
+              <i class="fa fa-search"></i>
           </button>
           <div id="search-result" style="display: none;">
-            <ul class="suggest_search">
-              <li class="ttitle spc-promote"><div class="viewed">Ưu đãi đặc biệt</div></li>
-              <div class="banner-suggest-search">
-                  <a data-cate="0" data-place="8105" href="https://www.thegioididong.com/flashsale" onclick="jQuery.ajax({ url: '/bannertracking?bid=106473&amp;r='+ (new Date).getTime(), async: true, cache: false });"><img style="cursor:pointer" src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/4d/9b/4d9b35b981a92c7efd650b12d3a2f090.png" alt="Banner Promotion search"></a>
-              </div>
-              <a href="/flashsale?itm_source=thegioididong&amp;itm_medium=box_search&amp;itm_campaign=campaign_noi_bat" class="spc-item" data-gtm-vis-first-on-screen1070012_480="2037017" data-gtm-vis-total-visible-time1070012_480="100" data-gtm-vis-has-fired1070012_480="1">
-                  <h3>Nhận ngay mã giảm 1 triệu</h3>
-                  <span>Ngày hội voucher</span>
-              </a>
-              <a href="/dtdd-apple-iphone-air#c=42&amp;m=80&amp;p=313993,313941&amp;o=13&amp;pi=0?itm_source=thegioididong&amp;itm_medium=box_search&amp;itm_campaign=campaign_noi_bat" class="spc-item" data-gtm-vis-first-on-screen1070012_480="2037032" data-gtm-vis-total-visible-time1070012_480="100" data-gtm-vis-has-fired1070012_480="1">
-                  <h3>iPhone 17 và iPhone Air</h3>
-                  <span>Mua ngay</span>
-              </a>
-              <a href="/dtdd/vivo-y31d-6gb-128gb?itm_source=thegioididong&amp;itm_medium=box_search&amp;itm_campaign=campaign_noi_bat" class="spc-item" data-gtm-vis-first-on-screen1070012_480="2037040" data-gtm-vis-total-visible-time1070012_480="100" data-gtm-vis-has-fired1070012_480="1">
-                  <h3>Mở Bán vivo Y31d</h3>
-                  <span>Ưu Đãi Cực Hot</span>
-              </a>
-              <a href="/dtdd/realme-16-5g-12gb-256gb?rg=1?itm_source=thegioididong&amp;itm_medium=box_search&amp;itm_campaign=campaign_noi_bat" class="spc-item" data-gtm-vis-first-on-screen1070012_480="2037046" data-gtm-vis-total-visible-time1070012_480="100" data-gtm-vis-has-fired1070012_480="1">
-                  <h3>realme 16 Pro - 16 5G</h3>
-                  <span>Quà đến 4 triệu</span>
-              </a>
-            </ul>
+            <ul class="suggest_search"></ul>
           </div>
         </form>
-        <div class="profile">
-            <a href="/lich-su-mua-hang" class="name-order active">
-                <i></i> Đăng nhập
-            </a>
-        </div>
-        <a href="/cart" class="header__cart menu-info" id="cart-box">
-            <div class="box-cart">
-                <i class="iconnewglobal-whitecart"></i>
-                <span class="cart-number" style="display:none"></span>
+
+        <div class="header__contacts">
+          <div class="header__contact-item">
+            <span class="header__contact-icon"><i class="fa fa-phone"></i></span>
+            <div class="header__contact-info">
+              <span class="header__contact-label">Miền Nam</span>
+              <a href="tel:0969236383" class="header__contact-phone">0865.99.33.34</a>
             </div>
-            <span>Giỏ hàng</span>
-            <div class="view-cart">
-                <span>Đã thêm vào giỏ hàng</span>
-                <b onclick="window.location.href=/cart">Xem giỏ hàng</b>
+          </div>
+          <div class="header__contact-item">
+            <span class="header__contact-icon"><i class="fa fa-phone"></i></span>
+            <div class="header__contact-info">
+              <span class="header__contact-label">Miền Bắc</span>
+              <a href="tel:0971456238" class="header__contact-phone">0988.31.88.34</a>
             </div>
-        </a>
-        <!-- Mobile Additional Icons -->
-        <a href="/scan" class="header__mobile-icon" style="display: none;">
-            <i class="fas fa-qrcode" style="color: #fff; font-size: 20px;"></i>
-        </a>
-        <a href="/location" class="header__mobile-icon" style="display: none;">
-            <i class="fas fa-map-marker-alt" style="color: #fff; font-size: 20px;"></i>
-        </a>
-        <a href="/gift" class="header__mobile-icon" style="display: none;">
-            <i class="fas fa-gift" style="color: #fff; font-size: 20px;"></i>
-        </a>
-         <div class="header_guarantee">
-            <a href="/lich-su-mua-hang" class="name-guarantee active">
-                <i></i> Bảo hành
-            </a>
+          </div>
+          <div class="header__contact-item">
+            <span class="header__contact-icon"><i class="fa fa-headphones"></i></span>
+            <div class="header__contact-info">
+              <span class="header__contact-label">Tư vấn bán hàng</span>
+              <a href="tel:0987315988" class="header__contact-phone">0865.99.33.34</a>
+            </div>
+          </div>
         </div>
-        <div class="header_support">
-            <a href="/lich-su-mua-hang" class="name-support active">
-                <i></i> Hỗ trợ khách hàng
-            </a>
-        </div>
-         {# <div class="header_customer">
-            <a href="/lich-su-mua-hang" class="name-customer active">
-                <i></i> Phương thức vận chuyển
-            </a>
-        </div> #}
       </div>
     </div>
   </div>
@@ -88,129 +75,106 @@
           <a class="txt_color_1 menu_hamber" href="#">
               DANH MỤC
           </a>
-           <div id="sub_menu_web">
+          <div id="sub_menu_web">
             <div class="col_menu_cap1">
               <div class="sub_item_menu">
-                <a class="parent_menu" href="/category/index.html">
-                    Giường sắt, inox, y tế
-                    <em class="fa fa-angle-right"> </em>
-                </a>
-                <div class="conten_hover_submenu" style="display: none;">
-                  <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Giường sắt</a>
-                    <a href="/giuong-inox/">Giường inox</a>
-                    <a href="/giuong-y-te-inox/">Giường y tế</a>
-                  </div>
-                </div>
-              </div>
-              <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Tủ sắt quần áo, văn phòng
+                <a class="parent_menu" href="/ban-ghe-cafe">
+                  Bàn Ghế Cafe
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Tủ sắt quần áo</a>
-                    <a href="/giuong-inox/">Tủ hồ sơ văn phòng</a>
+                    <a href="/ban-cafe">Bàn Cafe</a>
+                    <a href="/ghe-cafe">Ghế Cafe</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Tủ sắt quần áo, văn phòng
+                <a class="parent_menu" href="/ban-ghe-inox">
+                  Bàn Ghế Inox, Ghế Nhựa
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Tủ sắt quần áo</a>
-                    <a href="/giuong-inox/">Tủ hồ sơ văn phòng</a>
+                    <a href="/ban-tron-inox">Bàn Tròn Inox</a>
+                    <a href="/ban-vuong-inox">Bàn Vuông Inox</a>
+                    <a href="/ghe-inox">Ghế Inox</a>
+                    <a href="/ghe-nhua">Ghế Nhựa</a>
+                    <a href="/ghe-dot-nhang">Ghế Đốt Nhang</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Giường, ghế, võng xếp
+                <a class="parent_menu" href="/ban-ghe-sinh-vien">
+                  Bàn Sinh Viên, Giường Mầm Non
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Giường xếp</a>
-                    <a href="/giuong-inox/">Ghế xếp</a>
-                    <a href="/giuong-inox/">Võng xếp</a>
+                    <a href="/ban-sinh-vien">Bàn Sinh Viên</a>
+                    <a href="/giuong-mam-non">Giường Mầm Non</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Bàn ghế inox, xích đu
+                <a class="parent_menu" href="/giuong-sat">
+                  Giường Sắt
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Bàn inox</a>
-                    <a href="/giuong-inox/">Ghế inox</a>
-                    <a href="/giuong-inox/">Xích đu</a>
-                    <a href="/giuong-inox/">Bộ bàn ghế inox</a>
+                    <a href="/giuong-cao-cap">Giường Cao Cấp</a>
+                    <a href="/giuong-gia-re">Giường Giá Rẻ</a>
+                    <a href="/giuong-gap-gon">Giường Gấp</a>
+                    <a href="/giuong-tang">Giường Tầng</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Sào phơi đồ, kệ, thang inox
+                <a class="parent_menu" href="/ke-inox">
+                  Kệ Inox Nhà Bếp, Nhà Tắm
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Sào phơi đồ inox</a>
-                    <a href="/giuong-inox/">Kệ inox</a>
-                    <a href="/giuong-inox/">Thang inox</a>
+                    <a href="/chan-binh-nuoc">Chân Bình Nước</a>
+                    <a href="/ke-chen">Kệ Chén</a>
+                    <a href="/ke-dep">Kệ Dép</a>
+                    <a href="/ke-gia-vi">Kệ Gia Vị</a>
+                    <a href="/ke-goc">Kệ Góc</a>
+                    <a href="/ke-inox">Kệ Inox</a>
+                    <a href="/ke-ui-do">Kệ Ủi Đồ</a>
+                    <a href="/mang-nap-vung">Máng Nắp Vung</a>
+                    <a href="/tam-binh-phong">Tấm Bình Phong</a>
+                    <a href="/ong-dua">Ống Đũa</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Bàn ghế HSSV, văn phòng
+                <a class="parent_menu" href="/thang-inox">
+                  Thang
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Bàn ghế văn phòng</a>
-                    <a href="/giuong-inox/">Bàn ghế học sinh</a>
-                    <a href="/giuong-inox/">Bàn ghế sinh viên</a>
+                    <a href="/thang-inox">Thang Inox</a>
+                    <a href="/thang-nhom">Thang Nhôm</a>
                   </div>
                 </div>
               </div>
               <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Giường, ghế, võng xếp
+                <a class="parent_menu" href="/vong-xep">
+                  Võng, Giường Xếp, Ghế Xếp
                   <em class="fa fa-angle-right"> </em>
                 </a>
                 <div class="conten_hover_submenu" style="display: none;">
                   <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Giường xếp</a>
-                    <a href="/giuong-inox/">Ghế xếp</a>
-                    <a href="/giuong-inox/">Võng xếp</a>
+                    <a href="/ghe-xep">Ghế Xếp</a>
+                    <a href="/giuong-xep">Giường Xếp</a>
+                    <a href="/khung-vong">Khung Võng</a>
+                    <a href="/luoi-vong">Lưới Võng</a>
                   </div>
                 </div>
-              </div>
-              <div class="sub_item_menu">
-                <a class="parent_menu" href="">
-                  Bàn, ghế, tủ nhựa
-                  <em class="fa fa-angle-right"> </em>
-                </a>
-                <div class="conten_hover_submenu" style="display: none;">
-                  <div class="col_hover_submenu">
-                    <a href="/giuong-sat">Bàn nhựa</a>
-                    <a href="/giuong-inox/">Ghế nhựa</a>
-                    <a href="/giuong-inox/">Tủ nhựa</a>
-                  </div>
-                </div>
-              </div>
-              <div class="sub_item_menu">
-                <a class="parent_menu" href="">Võng Xếp</a>
-              </div>
-              <div class="sub_item_menu">
-                <a class="parent_menu" href="">Giường Sắt</a>
               </div>
             </div>
           </div>
@@ -239,6 +203,17 @@
               <a href="/lien-he">LIÊN HỆ</a>
             </li>
           </ul>
+        </div>
+        <div class="header__menu-actions">
+          <a href="/lich-su-mua-hang" class="header__menu-action header__menu-action--login name-order" aria-label="Đăng nhập">
+            <span class="header__menu-icon header__menu-icon--login" aria-hidden="true"></span>
+          </a>
+          <a href="/cart" class="header__menu-action header__menu-action--cart" aria-label="Giỏ hàng">
+            <span class="header__menu-cart-icon">
+              <span class="header__menu-icon header__menu-icon--cart" aria-hidden="true"></span>
+              <span class="header__menu-cart-badge" id="headerCartCount">0</span>
+            </span>
+          </a>
         </div>
       </div>
     </div>

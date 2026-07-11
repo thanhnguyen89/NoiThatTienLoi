@@ -1,0 +1,4 @@
+app/profile/page.tsx(95,26): error TS2339: Property 'isSuperAdmin' does not exist on type 'AdminUser'.
+app/viet-bai-facebook/page.tsx(751,11): error TS2739: Type '{ shopName: string; industry: string; brandPronouns: string; brandAudience: string; brandToneNotes: string; phone: string; address: string; brandDesc: string; brandForbidden: string; }' is missing the following properties from type 'Omit<BrandProfile, "id" | "name" | "isDefault">': ctaStandard, mainProducts
+app/viet-bai-thong-minh/step2/page.tsx(506,34): error TS2339: Property 'estimated_words' does not exist on type '{ subordinate_text_type?: string | undefined; subordinate_text_draft?: string | undefined; content_flow?: string[] | undefined; information_gain_note?: string | undefined; }'.
+app/viet-tu-facebook/generate/page.tsx(212,11): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.about.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.about.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/about.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.about.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body about-page">
+  {% include "partials/header.njk" %}
+
+  <main class="about-main">
+    <section class="about-hero">
+      <div class="cm-shell about-container">
+        <p class="about-eyebrow">COOLMATE 101</p>
+        <h1>Mac dep hon moi ngay, don gian hon moi lan mua sam.</h1>
+        <p>Coolmate xay dung trai nghiem mua sam thoi trang nam va nu theo huong nhanh, minh bach, de doi tra va luon tap trung vao cam giac mac that su.</p>
+        <div class="about-hero__actions">
+          <a href="/collection/ao-nam">Kham pha san pham</a>
+          <a href="/contact" class="about-hero__ghost">Lien he Coolmate</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-stats">
+      <div class="cm-shell about-container about-stats__grid">
+        <article><strong>60 ngay</strong><span>Doi tra mien phi</span></article>
+        <article><strong>500K+</strong><span>Thanh vien CoolClub</span></article>
+        <article><strong>100%</strong><span>Trai nghiem hai long</span></article>
+        <article><strong>2030</strong><span>Tam nhin ben vung</span></article>
+      </div>
+    </section>
+
+    <section class="about-story">
+      <div class="cm-shell about-container about-story__grid">
+        <div>
+          <p class="about-eyebrow">CAU CHUYEN</p>
+          <h2>Tu nhung mon do co ban den he sinh thai mac hang ngay.</h2>
+        </div>
+        <div class="about-story__copy">
+          <p>Coolmate tap trung vao cac san pham thiet yeu: ao thun, polo, quan short, do the thao, phu kien va nhung bo suu tap dac biet. Moi trang san pham duoc thiet ke de nguoi dung xem nhanh, chon size ro rang va thanh toan de dang.</p>
+          <p>Trong clone nay, cac page chinh nhu home, danh muc, chi tiet san pham, gio hang, thanh toan, lien he va blog duoc dong bo theo cung mot ngon ngu giao dien Coolmate.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-pillars">
+      <div class="cm-shell about-container">
+        <div class="about-section-head">
+          <p class="about-eyebrow">GIA TRI COT LOI</p>
+          <h2>Nhung dieu lam nen trai nghiem Coolmate</h2>
+        </div>
+        <div class="about-pillars__grid">
+          <article>
+            <i class="fas fa-shirt" aria-hidden="true"></i>
+            <h3>San pham thuc dung</h3>
+            <p>Form gon, chat lieu de mac, mau sac de phoi va nhom san pham phu hop nhieu nhu cau hang ngay.</p>
+          </article>
+          <article>
+            <i class="fas fa-rotate-left" aria-hidden="true"></i>
+            <h3>Doi tra 60 ngay</h3>
+            <p>Chinh sach linh hoat giup khach hang yen tam hon khi chon size, mau sac va chat lieu online.</p>
+          </article>
+          <article>
+            <i class="fas fa-headset" aria-hidden="true"></i>
+            <h3>CSKH nhanh</h3>
+            <p>Hotline, email, cua hang va trung tam van hanh duoc dat ro trong footer va trang lien he.</p>
+          </article>
+          <article>
+            <i class="fas fa-leaf" aria-hidden="true"></i>
+            <h3>Ben vung hon</h3>
+            <p>Care &amp; Share, nha may, cam ket ben vung va tam nhin 2030 la cac diem noi bat cua thuong hieu.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

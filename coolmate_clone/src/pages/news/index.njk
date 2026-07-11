@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.news.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.news.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/news.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.news.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body news-page">
+  {% include "partials/header.njk" %}
+
+  <main class="news-main">
+    <section class="news-hero">
+      <div class="cm-shell news-container">
+        <p class="news-eyebrow">COOLBLOG</p>
+        <h1>Cam nang mac dep va song nang dong.</h1>
+      </div>
+    </section>
+
+    <section class="news-content">
+      <div class="cm-shell news-container">
+        <nav class="news-tabs" aria-label="Danh muc bai viet">
+          <a href="#" class="is-active">Tat ca</a>
+          <a href="#">Phong cach</a>
+          <a href="#">Chat lieu</a>
+          <a href="#">The thao</a>
+          <a href="#">Care &amp; Share</a>
+        </nav>
+
+        <div class="news-layout">
+          <section class="news-main-column">
+            <article class="news-featured">
+              <a class="news-featured-thumb" href="#">
+                <img src="../../assets/images/coolmate-live/hero-3.jpg" alt="Xu huong do the thao">
+              </a>
+              <div class="news-featured-info">
+                <span class="news-badge">Noi bat</span>
+                <h2><a href="#">Cach chon do the thao thoang mat cho lich tap mua he</a></h2>
+                <p>Nhung chat lieu nhanh kho, co gian tot va form gon giup ban thoai mai hon khi chay bo, gym, pickleball hoac mac hang ngay.</p>
+                <div class="news-meta"><time datetime="2026-05-28">28/05/2026</time><span>5 phut doc</span></div>
+              </div>
+            </article>
+
+            <div class="news-grid">
+              <article class="news-card">
+                <a class="news-card__media" href="#"><img src="../../assets/images/gateway_banner_men.webp" alt="Phu kien nam"></a>
+                <div class="news-card__body">
+                  <span>Phong cach</span>
+                  <h2><a href="#">5 mon phu kien nen co trong tu do hang ngay</a></h2>
+                  <p>Tu tat, mu den tui deo cheo, phu kien nho co the lam set do gon gang va thuc dung hon.</p>
+                </div>
+              </article>
+              <article class="news-card">
+                <a class="news-card__media" href="#"><img src="../../assets/images/Cool_MAT_quan-short.webp" alt="Quan short"></a>
+                <div class="news-card__body">
+                  <span>Huong dan</span>
+                  <h2><a href="#">Quan short nao hop di lam, di choi va di tap?</a></h2>
+                  <p>Mot chiec quan short tot nen co form vua van, tui tien dung va chat lieu giu dang sau nhieu lan giat.</p>
+                </div>
+              </article>
+              <article class="news-card">
+                <a class="news-card__media" href="#"><img src="../../assets/images/coolmate-live/gateway-banner-women.jpg" alt="Do nu"></a>
+                <div class="news-card__body">
+                  <span>Do nu</span>
+                  <h2><a href="#">Goi y outfit the thao nu nhe, nhanh kho va de phoi</a></h2>
+                  <p>Cac item co ban giup ban tap luyen thoai mai nhung van gon gang khi di chuyen trong ngay.</p>
+                </div>
+              </article>
+              <article class="news-card">
+                <a class="news-card__media" href="#"><img src="../../assets/images/coolmate-live/story-3.jpg" alt="Care Share"></a>
+                <div class="news-card__body">
+                  <span>Care &amp; Share</span>
+                  <h2><a href="#">Khi mua sam co the tao them tac dong tich cuc</a></h2>
+                  <p>Nhung hanh dong nho trong san xuat, dong goi va tieu dung co the lam trai nghiem ben vung hon.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <aside class="sidebar-contact-info">
+            <h3>Ho tro nhanh</h3>
+            <div class="contact-info-item">
+              <span class="contact-icon"><i class="fas fa-phone"></i></span>
+              <div class="contact-text"><p>Hotline</p><a class="contact-phone" href="tel:1900272737">1900.272737</a></div>
+            </div>
+            <div class="contact-info-item">
+              <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+              <div class="contact-text"><p>Email</p><a class="contact-email" href="mailto:Cool@coolmate.me">Cool@coolmate.me</a></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

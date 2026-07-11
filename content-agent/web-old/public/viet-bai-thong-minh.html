@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viết thông minh - AI WRITER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: #2980b9;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #3498db;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .intro {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .step {
+            background-color: #fff;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .step h2::before {
+            content: "Bước ";
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .model-list {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .model-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .model-name {
+            font-weight: bold;
+            color: #2980b9;
+        }
+        
+        .faq {
+            background-color: #e8f4f8;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .faq h2 {
+            color: #2c3e50;
+            border-left: none;
+            padding-left: 0;
+        }
+        
+        .faq-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .question {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .answer {
+            color: #555;
+        }
+        
+        .note {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Viết thông minh</h1>
+        
+        <div class="intro">
+            <p>Viết thông minh là tính năng viết bài đầy đủ và hoàn chỉnh nhất, tích hợp cả đề xuất từ khóa (chính và phụ), dàn ý bài viết, tiêu đề SEO, semantic keywords, bổ xung thêm dữ liệu cho AI. Giúp bài viết vừa có chất lượng, đạt chuẩn helpful của Google, vừa đảm bảo điểm SEO.</p>
+        </div>
+        
+        <h2 style="border-left: none; padding-left: 0; margin-top: 20px;">Cách sử dụng Viết thông minh - AI WRITER</h2>
+        <p>Tại mỗi bước thực hiện Viết thông minh bạn đều nhận được sự trợ giúp của AI.</p>
+        
+        <div class="step">
+            <h2>1. Nhập từ khóa chính</h2>
+            <p>Để bắt đầu bài viết bạn cần cung cấp từ khóa chính. Từ khóa chính có thể là một ý tưởng mà bạn nhận được trong bài viết này, hoặc nó là một từ khóa mà mục tiêu SEO của bạn hướng tới</p>
+            <p>Từ khóa chính có thể là tiêu đề của bài viết, hoặc cũng có thể chỉ là một chủ đề (trọng tâm) mà bài viết bạn muốn hướng tới.</p>
+            <div class="note">
+                <p>Ngoài từ khóa, bạn cũng cần chỉ định Ngôn ngữ của bài viết. AI WRITER hỗ trợ hơn 40 ngôn ngữ, hầu hết các ngôn ngữ AI đều viết tốt, kể cả ngôn ngữ tiếng Anh, tiếng Việt, tiếng Hàn và nhiều ngôn ngữ khác</p>
+            </div>
+            <p>Đặc biệt AI WRITER tích hợp trí tuệ nhân tạo, cho phép bạn nhập từ khóa ở ngôn ngữ mẹ đẻ, và tùy chọn bài viết ở ngôn ngữ khác. Ví dụ bạn có thể nhập từ khóa ở ngôn ngữ 'Tiếng Việt' và yêu cầu AI viết bài ở ngôn ngữ 'Tiếng Anh'</p>
+        </div>
+        
+        <div class="step">
+            <h2>2. Từ khóa phụ</h2>
+            <p>Trong trường hợp bài viết của bạn ngoài từ khóa chính còn có mục tiêu vào các từ khóa phụ. Bạn có thể nhập từ khóa phụ ở bước này</p>
+            <p>Từ khóa phụ giúp định hướng AI viết bài xoay quanh các chủ đề chỉ định, tránh lan man, cải thiện điểm SEO SCORE và tăng tỉ lệ hữu ích của bài viết</p>
+            <p>Trong trường hợp bạn không quan tâm từ khóa phụ bạn có thể bỏ qua bước này</p>
+            <div class="highlight">
+                <p>Đặc biệt AI WRITER cung cấp tính năng gợi ý từ khóa phụ bằng AI, bạn có thể sử dụng tính năng này để không bỏ sót bất cứ từ khóa nào liên quan đến từ khóa chính.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>3. Dàn ý</h2>
+            <p>Dựa vào từ khóa chính, từ khóa phụ mà bạn đã cung cấp, AI sẽ giúp bạn tạo ra dàn ý cho bài viết của mình. Dựa vào dàn ý (outline) này bạn sẽ dễ dàng đảm bảo AI viết đúng và đủ mục tiêu của bài viết</p>
+            <p>Đặc biệt AI WRITER cung cấp tính năng tạo dàn ý thông minh bằng cách sử dụng AI. Bạn có thể sử dụng 2 model AI khác nhau để tạo dàn ý cho mình:</p>
+            <ul>
+                <li><strong>Sử dụng AI (chatGPT):</strong> Công nghệ của (Open AI) tạo dàn ý văn phong mượt mà & cập nhập 2022</li>
+                <li><strong>Sử dụng AI (Bard):</strong> Công nghệ của (Google AI) tạo dàn ý hợp với các nội dung mới & cập nhập 2023</li>
+            </ul>
+            <p>Trong trường hợp sử dụng AI, nếu bạn cảm thấy ý nào trong dàn ý không phù hợp, bạn có thể hiệu chỉnh lại. Trong trường hợp bạn không thích sử dụng AI, bạn có thể nhập dàn ý của bạn vào. Việc này càng giúp bài viết đúng mục tiêu của bạn hơn</p>
+            <p>Ngoài ra, nếu bạn không thích sử dụng dàn ý, bạn có thể bỏ qua tính năng dàn ý. Bài viết lúc này chỉ tập trung vào từ khóa chính và phụ của bạn</p>
+        </div>
+        
+        <div class="step">
+            <h2>5. Tiêu đề bài viết</h2>
+            <p>Ở bước tạo tiêu đề bài viết, AI WRITER dựa vào từ khóa chính, từ khóa phụ và dàn ý để viết tiêu đề cho bạn. Bạn có thể chọn AI chatGPT hoặc Bard để viết tiêu đề</p>
+            <p>Mỗi lần yêu cầu, AI sẽ viết 4 - 6 tiêu đề và đoạn giới thiệu cho bạn. Nếu bạn ưng ý với nội dung của AI, bạn chỉ cần chọn cái bạn muốn. Trong trường hợp bạn không ưng ý và muốn chỉnh sửa, hãy gõ nội dung chỉnh sửa của bạn</p>
+            <div class="highlight">
+                <p>Bài viết của bạn nhờ sự trợ giúp của AI đã có những định hướng rõ bao gồm: tiêu đề, dàn ý và từ khóa.</p>
+                <p>Việc này đảm bảo AI sẽ viết bài tuân thủ theo đúng mục tiêu của bạn đề ra, nhưng AI vẫn đảm bảo bài viết đạt chuẩn SEO của Google</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>6. Nguồn dữ liệu</h2>
+            <p>Với các chủ đề thông thường, phổ thông AI thường có dữ liệu phong phú nên rất dễ để hoàn thành bài viết. Tuy nhiên nếu bạn định viết bài về 'địa danh địa phương', 'phong tục địa phương' hoặc các 'dự án bất động sản' ... những bài viết có ít hoặc không có thông tin trên Internet thì tính năng này rất hữu ích</p>
+            <p>Công cụ AI WRITER là khả năng cho phép bạn chỉ định thêm nguồn dữ liệu cho bài. Việc thêm dữ liệu, giúp AI hiểu hơn về yêu cầu của bạn và viết đúng sự thật hơn.</p>
+            <p>Công cụ AI WRITER của AIKTP cung cấp 4 phương án cung cấp thêm dữ liệu cho AI viết bài như sau:</p>
+            <ul>
+                <li><strong>Của riêng AI:</strong> Sử dụng dữ liệu của bản thân AI</li>
+                <li><strong>Từ Google & AI:</strong> Trước khi viết bài tiến hành tổng hợp dữ liệu từ Google Search</li>
+                <li><strong>Từ URL & AI:</strong> Bạn cung cấp 1 link AI sẽ tham khảo dữ liệu từ link này để viết bài</li>
+                <li><strong>Nhập liệu & AI:</strong> Bạn sẽ nhập dữ liệu dưới dạng text cho AI</li>
+            </ul>
+            <p>Việc thêm các nguồn dữ liệu giúp AI hiểu đúng về yêu cầu hơn, cũng như giúp AI lấy được các thông tin chính xác, cập nhập hơn. Vì thế hãy nhớ chọn nguồn dữ liệu mà bạn cảm thấy phù hợp nhất với mục tiêu của mình</p>
+        </div>
+        
+        <div class="step">
+            <h2>7. Semantic Keywords</h2>
+            <p>Để cải thiện chỉ số EEAT, giúp bài viết tăng tính thuyết phục, hữu ích hơn, bạn có thể cần thêm vào một ít Semantic Keywords</p>
+            <p>Bạn có thể tìm Semantic Keywords bằng công cụ miễn phí Tìm Semantic Keywords của AIKTP. Chỉ cần cung cấp chủ thể bạn sẽ nhận ngay 1 danh sách Semantic Keywords</p>
+            <div class="note">
+                <p>Tính năng Semantic keywords không phải là bắt buộc cho tất cả bài viết. Thông thường những bài viết có những 'cụm từ' chuyên biệt của ngành nghề bạn mới cần đưa vào. Nó sẽ giúp AI định hướng rõ hơn và chọn từ phù hợp với ngành nghề của bạn.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>8. Chọn model AI và viết bài</h2>
+            <p>AIKTP là công cụ cung cấp nhiều Model AI viết bài nhất trên thị trường. Mỗi model AI viết bài có những ưu điểm và nhược điểm riêng. Vì thế gợi ý bạn nên chọn model phù hợp với ngành nghề của bạn</p>
+            
+            <div class="model-list">
+                <div class="model-item">
+                    <span class="model-name">CHATGPT 3.5 Tubo Mới:</span> Mô hình AI của Open AI. Tốc độ viết bài nhanh, câu chữ rất mượt mà
+                </div>
+                <div class="model-item">
+                    <span class="model-name">CHATGPT 3.5 Tubo:</span> Mô hình cũ hơn của chatGPT. Tốc độ chậm hơn phiên bản chatGPT 3.5 Tubo mới
+                </div>
+                <div class="model-item">
+                    <span class="model-name">Gemini Pro:</span> Mô hình AI của Google cung cấp. Tốc độ suy luận hơi lâu, nhưng viết bài nhanh. Dữ liệu từ Google cập nhập liên tục
+                </div>
+                <div class="model-item">
+                    <span class="model-name">CHATGPT 4.0:</span> Mô hình AI của Open AI phiên bản 4.0. Tốc độ viết bài chậm, nhưng câu cú văn phong tốt hơn
+                </div>
+                <div class="model-item">
+                    <span class="model-name">CLAUDE 2.1:</span> Mô hình AI của Anthropic. Dữ liệu cập nhập, văn phong mang tính logic cao.
+                </div>
+            </div>
+            
+            <p>Trong các mô hình thì mô hình của Open AI có khả năng sinh nội dung mượt mà. Cảm giác như 1 nhà văn đang viết bài. Câu chữ rất thu hút và mượt mắt</p>
+            <p>Mô hình CLAUDE sẽ mang đến cảm giác như một học sinh chuyên toán viết văn. Câu từ ngắn gọn, logic. Nếu bạn là một người học khối tự nhiên bạn sẽ thích mô hình này</p>
+            <p>Mô hình Gemini là mô hình mới ra mắt cuối năm 2023 của Google, tận dụng ưu thế tìm kiếm nên có dữ liệu tốt hơn các mô hình khác</p>
+            <p>Sau khi chọn mô hình hoàn tất, AI sẽ tiến hành viết bài cho bạn. Thông thường mỗi bài viết sẽ khoảng 30 giây</p>
+        </div>
+        
+        <div class="step">
+            <h2>9. Chọn hình ảnh và video</h2>
+            <p>Sau khi AI viết bài hoàn tất, nó sẽ tiếp tục tìm kiếm hình ảnh và video (Youtube) liên quan đến bài viết để bạn có thể thêm vào bài, làm cho bài viết sinh động hơn</p>
+            <p>Bạn có thể chọn 1,2 hình ảnh hoặc video để thêm vào bài. AI sẽ tự sắp xếp vị trí của hình ảnh và video hợp lý, giúp bạn có bài viết hoàn chỉnh</p>
+        </div>
+        
+        <div class="step">
+            <h2>10. Hiệu chỉnh và đăng bài</h2>
+            <p>Cuối cùng bạn vẫn cần xem lại bài viết và hiệu chỉnh lại bài nếu cần thiết. AI WRITER của AIKTP cung cấp sẵn công cụ SEO SCORE giúp bạn theo dõi điểm số SEO của bài viết rất nhanh chóng</p>
+            <p>Tại bước hiệu chỉnh bạn có thể dễ dàng thực hiện các tác vụ:</p>
+            <ul>
+                <li><strong>SEO SCORE:</strong> xem điểm SEO SCORE và cải thiện điểm SEO SCORE</li>
+                <li><strong>AI EDITOR:</strong> Sử dụng AI để viết thêm nội dung, thay thế nội dung (rewrite)</li>
+                <li><strong>INTERNAL LINK:</strong> Sử dụng AI tìm kiếm các bài viết cũ của bạn, gắn link nội bộ vào bài viết cũ</li>
+                <li><strong>PUBLISH:</strong> Đăng bài ngay lập tức hoặc đăng hẹn giờ</li>
+            </ul>
+            <div class="highlight">
+                <p>Đặc biệt AIKTP tích hợp 6 nền tảng website lớn, giúp bạn đăng bài ngay lập tức lên các nền tảng này mà không phải thực hiện tác vụ copy, dán thủ công</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <h2>11. Yêu cầu Google Index</h2>
+            <p>Sau khi đăng bài hoàn tất, AI WRITER sẽ giúp bạn yêu cầu Google, Bing lập chỉ mục bài viết vừa đăng ngay lập tức. Tác vụ này giúp bài viết của bạn nhanh chóng xuất hiện trên search.</p>
+            <p>AIKTP cho phép bạn gửi yêu cầu Index lên 2 bộ máy tìm kiếm lớn nhất hiện nay là Google, BIng. Chỉ 1 thao tác, bài viết của bạn sẽ được ưu tiên lập chỉ mục trong nháy mắt</p>
+        </div>
+        
+        <div class="faq">
+            <h2>Câu hỏi và câu trả lời</h2>
+            
+            <div class="faq-item">
+                <div class="question">Công cụ AI WRITER bao gồm những tính năng nào ?</div>
+                <div class="answer">Công cụ AI WRITER bao gồm nhiều tính năng viết bài khác nhau: viết thông minh, viết theo từ khóa, viết theo dàn ý .... Trong đó 'Viết thông minh' là tính năng được AIKTP khuyên dùng</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Chi phí sử dụng AI WRITER ?</div>
+                <div class="answer">Tùy theo gói VIP của bạn mà chi phí sử dụng AI WRITER khác nhau. Tuy nhiên tính trung bình mỗi bài viết do AI WRITER có chi phí thực hiện khoảng 2.000 vnd</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Công cụ viết được những ngôn ngữ nào ?</div>
+                <div class="answer">AI WRITER có thể viết được hơn 40 ngôn ngữ: tiếng Anh, tiếng Pháp, tiếng Đức, tiếng Hàn, tiếng Trung, tiếng Việt ... Bạn có thể dễ dàng chọn ngôn ngữ tại bước viết bài đầu tiên</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Bài viết do AI WRITER viết có Unique không ?</div>
+                <div class="answer">Các bài viết do AI WRITER có độ Unique cao. Bạn có thể kiểm tra bằng cách viết nhiều bài với cùng 1 từ khóa, bạn sẽ thấy kết quả viết khác nhau</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Các bài viết dài bao nhiêu ?</div>
+                <div class="answer">Các bài viết thường có độ dài từ 1.500 - 2.000 từ tùy theo dàn ý của bạn. Thông thường với dàn ý có 10 mục heading, bài viết sẽ khoảng 2.000 từ</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Có thể tùy chỉnh độ dài của bài viết không ?</div>
+                <div class="answer">Hệ thống không cung cấp tham số để bạn tùy chỉnh độ dài của bài viết. Tuy nhiên bạn có thể thay đổi nó bằng cách thay đổi (tăng hoặc giảm) số lượng ý trong Outline (ở bước 3)</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="question">Sau khi viết xong bài viết có thể đăng lên web của tôi không ?</div>
+                <div class="answer">Sau khi viết xong, bạn có thể đăng bài lên website ngay lập tức. AIKTP tích hợp hơn 6 platform đăng bài gồm: Wordpress, Shopify, Haranvan, Sapo, Blogger ... Trong trường hợp website của bạn không thuộc những platform có sẵn, bạn cũng có thể sử dụng API để đăng bài</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

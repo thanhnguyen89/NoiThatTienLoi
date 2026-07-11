@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO['new-products'].description }}">
+  <meta name="keywords" content="{{ PAGE_SEO['new-products'].keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/new-products.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO['new-products'].title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body new-products-page">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <section class="collection-hero collection-hero--blue">
+      <div class="cm-shell collection-hero__grid">
+        <div class="collection-hero__copy">
+          <p class="collection-eyebrow">NEW ARRIVALS</p>
+          <h1>San pham moi</h1>
+          <p>Cap nhat cac mau ao thun, polo, do the thao, phu kien va bo suu tap dac biet dang co tren Coolmate.</p>
+          <a href="#newProducts" class="collection-btn">Mua ngay</a>
+        </div>
+        <div class="collection-hero__media">
+          <img src="../../assets/images/coolmate-live/hero-4.jpg" alt="San pham moi Coolmate">
+        </div>
+      </div>
+    </section>
+
+    <section id="newProducts" class="products-section">
+      <div class="cm-shell">
+        <div class="products-layout">
+          <aside class="sidebar-filters">
+            <div class="filter-header">
+              <h3>Bo loc</h3>
+              <span class="filter-count">12 ket qua</span>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Danh muc</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox" name="category" value="ao-nam"> <span>Ao Nam</span></label>
+                <label class="filter-option"><input type="checkbox" name="category" value="quan-nam"> <span>Quan Nam</span></label>
+                <label class="filter-option"><input type="checkbox" name="category" value="do-the-thao"> <span>Do The Thao</span></label>
+                <label class="filter-option"><input type="checkbox" name="category" value="phu-kien"> <span>Phu Kien</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Kich thuoc</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox" name="size" value="s"> <span>S</span></label>
+                <label class="filter-option"><input type="checkbox" name="size" value="m"> <span>M</span></label>
+                <label class="filter-option"><input type="checkbox" name="size" value="l"> <span>L</span></label>
+                <label class="filter-option"><input type="checkbox" name="size" value="xl"> <span>XL</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Mau sac</h4>
+              <div class="color-options">
+                <label class="color-option"><input type="checkbox" name="color" value="white"><span class="color-swatch" style="background: #fff; border: 1px solid #ddd;"></span></label>
+                <label class="color-option"><input type="checkbox" name="color" value="black"><span class="color-swatch" style="background: #000;"></span></label>
+                <label class="color-option"><input type="checkbox" name="color" value="blue"><span class="color-swatch" style="background: #274878;"></span></label>
+                <label class="color-option"><input type="checkbox" name="color" value="gray"><span class="color-swatch" style="background: #95a5a6;"></span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Gia</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox" name="price" value="0-200"> <span>Duoi 200.000d</span></label>
+                <label class="filter-option"><input type="checkbox" name="price" value="200-300"> <span>200.000d - 300.000d</span></label>
+                <label class="filter-option"><input type="checkbox" name="price" value="300-500"> <span>300.000d - 500.000d</span></label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="products-main">
+            <div class="products-header">
+              <div>
+                <p class="collection-eyebrow">COOLNEW</p>
+                <h2 class="section-title">Hang moi ve</h2>
+              </div>
+              <div class="products-sort">
+                <select class="sort-select">
+                  <option value="newest">Moi nhat</option>
+                  <option value="price-asc">Gia: Thap den cao</option>
+                  <option value="price-desc">Gia: Cao den thap</option>
+                  <option value="popular">Pho bien nhat</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-grid">
+              <article class="product-card">
+                <a href="/product/ao-thun-doraemon-cotton-compact-phoi-bo/" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/2026/05/19/ao-thun-doraemon-su-gia-tuoi-tho-cotton-compact-phoi-bo_4.jpg?aio=w-700" alt="Ao thun Doraemon Cotton Compact"><div class="product-promo"><span class="promo-badge">COOLNEW50K</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun Doraemon Cotton Compact phoi bo</h3><div class="product-price"><span class="price-sale">219.000d</span><span class="price-discount">NEW</span></div><div class="product-colors"><span class="color-dot" style="background:#27345f"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/2026/05/17/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm_10.jpg?aio=w-700" alt="Ao thun Doraemon su gia"><div class="product-promo"><span class="promo-badge">GIAM 50K CHO DON 199K</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun Doraemon Su Gia Vuong Quoc Mu Cotton 180gsm</h3><div class="product-price"><span class="price-sale">209.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#f7f7f4; border:1px solid #ddd"></span><span class="color-dot" style="background:#2f3c68"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/2026/05/29/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50-xam-nhat_1.jpg?aio=w-700" alt="Ao Hoodie chong nang"><div class="product-promo"><span class="promo-badge">UPF50+</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao Hoodie chong nang nam Quick Dry Sun Protection UPF50</h3><div class="product-price"><span class="price-sale">399.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#d7d7d7"></span><span class="color-dot" style="background:#8a9490"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-tank-regular-fit-cotton-poly-180gsm" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/2026/05/16/Artboard_3_copy_4.jpg?aio=w-700" alt="Ao Tanktop"><div class="product-promo"><span class="promo-badge">COTTON POLY</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao Tanktop regular Fit cotton poly 180gsm</h3><div class="product-price"><span class="price-sale">179.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#151515"></span><span class="color-dot" style="background:#f3f3f1; border:1px solid #ddd"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-polo-world-cup-doi-tuyen-anh?color=trang" class="product-link">
+                  <div class="product-image"><span class="product-badge hot">FIFA</span><img src="https://n7media.coolmate.me/uploads/2026/03/31/ao-polo-wc-anh-1-trang_74.jpg?aio=w-700" alt="Ao polo World Cup"><div class="product-promo"><span class="promo-badge">WORLD CUP 2026</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao polo World Cup doi tuyen Anh</h3><div class="product-price"><span class="price-sale">399.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#fff; border:1px solid #ddd"></span><span class="color-dot" style="background:#111"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-thun-the-thao-thoang-khi-essentials" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/2026/04/25/tsb002-ao-thun-tt-tk-ess-Artboard_21-1-xanh-lam.jpg?aio=w-700" alt="Ao thun the thao"><div class="product-promo"><span class="promo-badge">EXDRY</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun the thao thoang khi Essentials</h3><div class="product-price"><span class="price-sale">249.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#5d90c8"></span><span class="color-dot" style="background:#141414"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-thun-nam-cotton-compact-chong-nhan" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="https://n7media.coolmate.me/uploads/September2025/ao-thun-nam-cotton-compact-chong-nhan-den-1.jpg?aio=w-700" alt="Ao thun cotton compact"><div class="product-promo"><span class="promo-badge">CHONG NHAN</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun nam Cotton Compact chong nhan</h3><div class="product-price"><span class="price-sale">249.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#101215"></span><span class="color-dot" style="background:#f6f6f2; border:1px solid #ddd"></span></div></div>
+                </a>
+              </article>
+              <article class="product-card">
+                <a href="/product/ao-polo-the-thao-nam-promax-s1-logo-1" class="product-link">
+                  <div class="product-image"><img src="https://n7media.coolmate.me/uploads/April2025/ao-polo-nam-the-thao-promax-s1-Be_Xam_1.jpg?aio=w-700" alt="Ao polo Promax"><div class="product-promo"><span class="promo-badge">MUA 2 GIAM 10%</span></div></div>
+                  <div class="product-info"><h3 class="product-name">Ao Polo Nam The Thao Promax-S1</h3><div class="product-price"><span class="price-sale">299.000d</span></div><div class="product-colors"><span class="color-dot" style="background:#d2c4ab"></span><span class="color-dot" style="background:#c0c0c0"></span><span class="color-dot" style="background:#273d66"></span></div></div>
+                </a>
+              </article>
+            </div>
+
+            <div class="pagination">
+              <button class="pagination-btn prev" disabled><i class="fas fa-chevron-left"></i></button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-section">
+      <div class="cm-shell">
+        <div class="promo-banner-bottom">
+          <h2>San pham danh gia 5 sao</h2>
+          <p>Kham pha nhung item duoc khach hang Coolmate yeu thich nhat.</p>
+          <a href="/collection/ao-nam" class="promo-btn">Xem ngay</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

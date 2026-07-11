@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO['product-detail'].description }}">
+  <meta name="keywords" content="{{ PAGE_SEO['product-detail'].keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/product-detail.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO['product-detail'].title }} | {{ siteName }}</title>
+</head>
+<body class="product-detail-page">
+  {% include "partials/header.njk" %}
+
+  <main class="cm-shell product-main">
+    <section class="product-left-column">
+      <div class="product-images">
+        <div class="main-image-wrapper">
+          <div class="main-image">
+            <img data-main-image src="../../assets/images/ao-thun-nam-pickleball-dinkshot-4-xam_49.webp" alt="Ao thun Pickleball Dinkshot">
+          </div>
+          <div class="gallery-count">1/4</div>
+        </div>
+
+        <div class="thumbnail-slide">
+          <button class="thumb-nav" type="button" aria-label="Anh truoc">&lt;</button>
+          <div class="thumbnail-container">
+            <button class="thumbnail active" type="button" data-thumb="../../assets/images/ao-thun-nam-pickleball-dinkshot-4-xam_49.webp"><img src="../../assets/images/ao-thun-nam-pickleball-dinkshot-4-xam_49.webp" alt="Anh 1"></button>
+            <button class="thumbnail" type="button" data-thumb="../../assets/images/short-nam-6inch-pickleball-smash-shot-cut-_8.webp"><img src="../../assets/images/short-nam-6inch-pickleball-smash-shot-cut-_8.webp" alt="Anh 2"></button>
+            <button class="thumbnail" type="button" data-thumb="../../assets/images/ao-polo-nu-pkb-exdry-essentials-17-trang_61.webp"><img src="../../assets/images/ao-polo-nu-pkb-exdry-essentials-17-trang_61.webp" alt="Anh 3"></button>
+            <button class="thumbnail" type="button" data-thumb="../../assets/images/vay-thun-knit-aline-pkb-driveshot-ess-2-trang_88.webp"><img src="../../assets/images/vay-thun-knit-aline-pkb-driveshot-ess-2-trang_88.webp" alt="Anh 4"></button>
+          </div>
+          <button class="thumb-nav" type="button" aria-label="Anh tiep">&gt;</button>
+        </div>
+      </div>
+
+      <div class="product-info">
+        <div class="product-brand"><span class="brand-name">COOLMATE</span></div>
+        <h1 class="product-name" data-product-name>Ao thun Pickleball Dinkshot</h1>
+        <p class="product-subtitle">Chat lieu co gian, nhanh kho, phu hop tap luyen va mac hang ngay.</p>
+        <div class="product-meta">
+          <span class="rating-badge">4.9</span>
+          <span class="rating-text">128 danh gia</span>
+          <span class="divider">|</span>
+          <span class="sold-count">Da ban 1.2k</span>
+          <span class="sku">SKU: CM-PKB-001</span>
+        </div>
+
+        <div class="flash-deal-banner">
+          <span class="flash-icon">FLASH SALE</span>
+          <span class="flash-text">Giam them khi mua tu 2 san pham</span>
+          <div class="countdown"><span class="time-box">08</span><span class="time-box">24</span><span class="time-box">12</span></div>
+        </div>
+
+        <div class="product-price-section">
+          <div class="price-main">
+            <span class="price-current" data-product-price="329000">329.000d</span>
+            <span class="price-note">Da bao gom VAT</span>
+          </div>
+          <div class="price-compare">
+            <span class="price-label">Gia niem yet</span>
+            <span class="price-original">399.000d</span>
+            <span class="price-save">Tiet kiem 70.000d</span>
+          </div>
+        </div>
+
+        <div class="product-variants">
+          <label>Kich thuoc</label>
+          <div class="variant-options">
+            <button class="variant-btn" type="button">S</button>
+            <button class="variant-btn active" type="button">M</button>
+            <button class="variant-btn" type="button">L</button>
+            <button class="variant-btn" type="button">XL</button>
+          </div>
+        </div>
+
+        <div class="product-colors">
+          <label>Mau sac</label>
+          <div class="color-options">
+            <button class="color-btn active" type="button" aria-label="Xam"><span class="color-circle" style="background: #9ca3af;"></span></button>
+            <button class="color-btn" type="button" aria-label="Xanh"><span class="color-circle" style="background: #1d4ed8;"></span></button>
+            <button class="color-btn" type="button" aria-label="Den"><span class="color-circle" style="background: #111827;"></span></button>
+          </div>
+        </div>
+
+        <div class="product-quantity-row">
+          <label for="productQty">So luong</label>
+          <div class="quantity-selector">
+            <button class="qty-btn" type="button" data-qty-minus>-</button>
+            <input id="productQty" class="qty-input" type="number" min="1" value="1" data-product-qty>
+            <button class="qty-btn" type="button" data-qty-plus>+</button>
+          </div>
+        </div>
+
+        <div class="delivery-info">
+          <div class="delivery-badge"><span>Mien phi van chuyen</span></div>
+          <p class="delivery-text">Ap dung cho don hang tu <strong>399.000d</strong>. Doi tra mien phi trong 60 ngay.</p>
+        </div>
+
+        <div class="product-actions">
+          <button class="btn-add-cart" type="button" data-add-cart><span class="icon"><i class="fas fa-shopping-bag"></i></span> Them vao gio</button>
+          <button class="btn-buy-now" type="button" data-buy-now>Mua ngay</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

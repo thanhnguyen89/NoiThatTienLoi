@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.pages.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.pages.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/page-directory.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.pages.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body page-directory-page">
+  {% include "partials/header.njk" %}
+
+  <main class="page-directory-main">
+    <section class="page-directory-hero">
+      <div class="cm-shell">
+        <p class="page-directory-eyebrow">ROUTE DIRECTORY</p>
+        <h1>Tat ca page da lam</h1>
+        <p>{{ pageDirectoryTotal }} route dang duoc build that tu source. Day la danh sach de ban mo va review tung page ma khong can doan route.</p>
+      </div>
+    </section>
+
+    <section class="page-directory-content">
+      <div class="cm-shell">
+        <div class="page-directory-groups">
+          {% for group in pageDirectory %}
+            <article class="page-directory-group">
+              <div class="page-directory-group__head">
+                <h2>{{ group.title }}</h2>
+                <span>{{ group.items.length }} page</span>
+              </div>
+              <div class="page-directory-group__list">
+                {% for item in group.items %}
+                  <a class="page-directory-link" href="{{ item.href }}">
+                    <strong>{{ item.title }}</strong>
+                    <span>{{ item.href }}</span>
+                  </a>
+                {% endfor %}
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

@@ -1,3 +1,106 @@
+{% set categories = [
+  {
+    href: "/giuong-xep",
+    label: "Giường Xếp",
+    icon: "icon-giuong-xep.png"
+  },
+  {
+    href: "/ghe-xep",
+    label: "Ghế Xếp",
+    icon: "icon-ghe-xep.png"
+  },
+  {
+    href: "/vong-xep",
+    label: "Võng Xếp",
+    icon: "icon-vong-xep.png"
+  },
+  {
+    href: "/gia-vong",
+    label: "Giá Võng",
+    icon: "icon-gia-vong.png"
+  },
+  {
+    href: "/giuong-tang",
+    label: "Giường Tầng",
+    icon: "icon_giuong_tang.png"
+  },
+  {
+    href: "/giuong-inox",
+    label: "Giường Inox",
+    icon: "icon-giuong-inox.png"
+  },
+  {
+    href: "/giuong-y-te",
+    label: "Giường Y Tế",
+    icon: "icon-giuong-y-te.png"
+  },
+  {
+    href: "/giuong-mam-non",
+    label: "Giường Mầm Non",
+    icon: "icon-giuong-mam-non.png"
+  },
+  {
+    href: "/giuong-gap-gon",
+    label: "Giường Gấp Gọn",
+    icon: "icon-giuong-gap-gon.png"
+  },
+  {
+    href: "/ban-inox",
+    label: "Bàn Inox",
+    icon: "icon-ban-inox.png"
+  },
+  {
+    href: "/ghe-inox",
+    label: "Ghế Inox",
+    icon: "icon-ghe-inox.png"
+  },
+  {
+    href: "/bo-ban-ghe-inox",
+    label: "Bộ Bàn Ghế Inox",
+    icon: "icon-bo-ban-ghe-inox.png"
+  },
+  {
+    href: "/ban-ghe-sinh-vien",
+    label: "Bàn Ghế Sinh Viên",
+    icon: "icon-ban-ghe-sinh-vien.png"
+  },
+  {
+    href: "/ban-ghe-van-phong",
+    label: "Bàn Ghế Văn Phòng",
+    icon: "icon-ban-ghe-van-phong.png"
+  },
+  {
+    href: "/ghe-cau-ca",
+    label: "Ghế Câu Cá",
+    icon: "icon-ghe-cau-ca.png"
+  },
+  {
+    href: "/ghe-dot-nhang",
+    label: "Ghế Đốt Nhang",
+    icon: "icon-ghe-dot-nhang.png"
+  },
+  {
+    href: "/ke-inox",
+    label: "Kệ Inox",
+    icon: "icon-ke-inox.png"
+  },
+  {
+    href: "/phu-kien-inox",
+    label: "Phụ Kiện Inox",
+    icon: "icon-phu-kien-inox.png"
+  },
+  {
+    href: "/thang-inox",
+    label: "Thang Inox",
+    icon: "icon-thang-inox.png"
+  },
+  {
+    href: "/thang-nhom",
+    label: "Thang Nhôm",
+    icon: "icon-thang-nhom.png"
+  }
+] %}
+
 <section class="category-slider-section">
   <div class="category-header">
     <h2 class="category-title">Danh mục</h2>
@@ -8,102 +111,14 @@
   </div>
   <div class="category-slider">
     <div class="category-track">
-      <a href="/giuong-xep" class="category-item">
+      {% for category in categories %}
+      <a href="{{ category.href }}" class="category-item">
         <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-xep.png" alt="Giường Xếp">
+          <img src="../../assets/images/danhmuc/{{ category.icon }}" alt="{{ category.label }}">
         </div>
-        <span class="category-name">Giường Xếp</span>
+        <span class="category-name">{{ category.label }}</span>
       </a>
-      <a href="/giuong-ngu-boc-nem" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-ngu-boc-nem.png" alt="Giường Ngủ Bọc Nệm">
-        </div>
-        <span class="category-name">Giường Ngủ Bọc Nệm</span>
-      </a>
-      <a href="/giuong-sat" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-sat.png" alt="Giường Sắt">
-        </div>
-        <span class="category-name">Giường Sắt</span>
-      </a>
-      <a href="/may-dua-vong" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/may-dua-vong-noi-dien.png" alt="Máy Đưa Võng - Nôi Điện">
-        </div>
-        <span class="category-name">Máy Đưa Võng - Nôi Điện</span>
-      </a>
-      <a href="/thang-nhom-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/thang-nhom-xep.png" alt="Thang Nhôm Xếp">
-        </div>
-        <span class="category-name">Thang Nhôm Xếp</span>
-      </a>
-      <a href="/vong-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/vong-xep.png" alt="Võng Xếp">
-        </div>
-        <span class="category-name">Võng Xếp</span>
-      </a>
-      <a href="/giuong-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-xep.png" alt="Giường Xếp">
-        </div>
-        <span class="category-name">Giường Xếp</span>
-      </a>
-      <a href="/giuong-sat" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-sat.png" alt="Giường Sắt">
-        </div>
-        <span class="category-name">Giường Sắt</span>
-      </a>
-      <a href="/giuong-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-xep.png" alt="Giường Xếp">
-        </div>
-        <span class="category-name">Giường Xếp</span>
-      </a>
-      <a href="/giuong-ngu-boc-nem" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-ngu-boc-nem.png" alt="Giường Ngủ Bọc Nệm">
-        </div>
-        <span class="category-name">Giường Ngủ Bọc Nệm</span>
-      </a>
-      <a href="/giuong-sat" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-sat.png" alt="Giường Sắt">
-        </div>
-        <span class="category-name">Giường Sắt</span>
-      </a>
-      <a href="/may-dua-vong" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/may-dua-vong-noi-dien.png" alt="Máy Đưa Võng - Nôi Điện">
-        </div>
-        <span class="category-name">Máy Đưa Võng - Nôi Điện</span>
-      </a>
-      <a href="/thang-nhom-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/thang-nhom-xep.png" alt="Thang Nhôm Xếp">
-        </div>
-        <span class="category-name">Thang Nhôm Xếp</span>
-      </a>
-      <a href="/vong-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/vong-xep.png" alt="Võng Xếp">
-        </div>
-        <span class="category-name">Võng Xếp</span>
-      </a>
-      <a href="/giuong-xep" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-xep.png" alt="Giường Xếp">
-        </div>
-        <span class="category-name">Giường Xếp</span>
-      </a>
-      <a href="/giuong-sat" class="category-item">
-        <div class="category-icon-wrap">
-          <img src="../../assets/images/danhmuc/giuong-sat.png" alt="Giường Sắt">
-        </div>
-        <span class="category-name">Giường Sắt</span>
-      </a>
+      {% endfor %}
     </div>
   </div>
 </section>

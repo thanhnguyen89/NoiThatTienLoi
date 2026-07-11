@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.checkout.description }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/checkout.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.checkout.title }} | {{ siteName }}</title>
+</head>
+<body class="checkout-body">
+  {% include "partials/header.njk" %}
+
+  <main class="cm-shell checkout-page">
+    <section class="checkout-left">
+      <div class="co-card">
+        <div class="co-card__head">
+          <h1 class="co-card__title">Thong tin nhan hang</h1>
+          <a class="co-card__action" href="/cart/">Sua gio hang</a>
+        </div>
+        <div class="form-group">
+          <label for="coName">Ho ten</label>
+          <input id="coName" class="co-input" type="text" placeholder="Nguyen Van A">
+        </div>
+        <div class="form-group">
+          <label for="coPhone">So dien thoai</label>
+          <input id="coPhone" class="co-input" type="tel" placeholder="0900 000 000">
+        </div>
+        <div class="form-group">
+          <label for="coAddress">Dia chi</label>
+          <input id="coAddress" class="co-input" type="text" placeholder="So nha, phuong/xa, quan/huyen">
+        </div>
+      </div>
+
+      <div class="co-card">
+        <div class="co-card__head">
+          <h2 class="co-card__title">Van chuyen</h2>
+        </div>
+        <div class="co-delivery-options">
+          <label class="co-delivery-opt co-delivery-opt--active">
+            <input type="radio" name="delivery" checked>
+            <span class="co-delivery-opt__body">
+              <span class="co-delivery-opt__name">Giao hang tieu chuan</span>
+              <span class="co-delivery-opt__sub">Nhan hang trong 2-4 ngay</span>
+            </span>
+            <span class="co-delivery-opt__price">Mien phi</span>
+          </label>
+          <label class="co-delivery-opt">
+            <input type="radio" name="delivery">
+            <span class="co-delivery-opt__body">
+              <span class="co-delivery-opt__name">Giao nhanh</span>
+              <span class="co-delivery-opt__sub">Nhan hang trong 24h</span>
+            </span>
+            <span class="co-delivery-opt__price">25.000d</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="co-card">
+        <div class="co-card__head">
+          <h2 class="co-card__title">San pham trong don</h2>
+        </div>
+        <div class="co-items" data-checkout-items></div>
+        <div class="co-footer--desktop">
+          <textarea class="co-note" placeholder="Ghi chu cho don hang"></textarea>
+          <div class="co-footer__right">
+            <div class="co-footer__total">Tong thanh toan <span data-checkout-total>0d</span></div>
+            <button class="btn-place-order" type="button" data-place-order>Dat hang</button>
+            <p class="co-footer__terms">Bang viec dat hang, ban dong y voi chinh sach mua hang cua Coolmate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="checkout-right">
+      <div class="co-summary">
+        <div class="co-summary__head"><span>Tong ket don hang</span><span data-checkout-count>0</span></div>
+        <div class="co-summary__row"><span>Tam tinh</span><span data-checkout-subtotal>0d</span></div>
+        <div class="co-summary__row"><span>Van chuyen</span><span>Mien phi</span></div>
+        <div class="co-summary__row co-summary__row--total"><span>Tong cong</span><span data-checkout-total>0d</span></div>
+        <p class="co-summary__note">Thong tin chi tiet se duoc xac nhan qua dien thoai.</p>
+      </div>
+    </aside>
+  </main>
+
+  <div class="co-mobile-order-bar">
+    <div class="co-mobile-order-bar__left">
+      <span class="co-mobile-order-bar__label">Tong thanh toan</span>
+      <span class="co-mobile-order-bar__price" data-checkout-total>0d</span>
+    </div>
+    <button class="co-mobile-order-bar__btn" type="button" data-place-order>Dat hang</button>
+  </div>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.category.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.category.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/new-products.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.category.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body new-products-page category-page">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <section class="collection-hero collection-hero--light">
+      <div class="cm-shell collection-hero__grid">
+        <div class="collection-hero__copy">
+          <p class="collection-eyebrow">COOLMATE COLLECTIONS</p>
+          <h1>Danh muc san pham</h1>
+          <p>Tim nhanh do nam, do nu, do the thao, phu kien va cac bo suu tap noi bat theo dung tinh than Coolmate.</p>
+          <a href="#categoryProducts" class="collection-btn">Xem san pham</a>
+        </div>
+        <div class="collection-hero__media">
+          <img src="../../assets/images/coolmate-live/gateway-banner-men.jpg" alt="Danh muc san pham Coolmate">
+        </div>
+      </div>
+    </section>
+
+    <section class="category-showcase">
+      <div class="cm-shell">
+        <div class="category-showcase__grid">
+          <a href="/collection/ao-nam" class="category-tile">
+            <img src="../../assets/images/Cool_MAT_ao-thun.webp" alt="Ao nam">
+            <strong>Ao nam</strong>
+          </a>
+          <a href="/collection/quan-nam" class="category-tile">
+            <img src="../../assets/images/Cool_MAT_quan-short.webp" alt="Quan nam">
+            <strong>Quan nam</strong>
+          </a>
+          <a href="/collection/do-the-thao" class="category-tile">
+            <img src="../../assets/images/ao_the_thao.webp" alt="Do the thao">
+            <strong>Do the thao</strong>
+          </a>
+          <a href="/collection/phu-kien-nam" class="category-tile">
+            <img src="../../assets/images/Cool_MAT_phu-kien.webp" alt="Phu kien">
+            <strong>Phu kien</strong>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="categoryProducts" class="products-section">
+      <div class="cm-shell">
+        <div class="products-layout">
+          <aside class="sidebar-filters">
+            <div class="filter-header">
+              <h3>Bo loc</h3>
+              <span class="filter-count" data-result-count>8 ket qua</span>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Danh muc</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="radio" name="category" value="all" checked> <span>Tat ca</span></label>
+                <label class="filter-option"><input type="radio" name="category" value="ao"> <span>Ao</span></label>
+                <label class="filter-option"><input type="radio" name="category" value="quan"> <span>Quan</span></label>
+                <label class="filter-option"><input type="radio" name="category" value="the-thao"> <span>The thao</span></label>
+                <label class="filter-option"><input type="radio" name="category" value="phu-kien"> <span>Phu kien</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Nhu cau</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox" name="need" value="hang-ngay"> <span>Mac hang ngay</span></label>
+                <label class="filter-option"><input type="checkbox" name="need" value="running"> <span>Running</span></label>
+                <label class="filter-option"><input type="checkbox" name="need" value="pickleball"> <span>Pickleball</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Mau sac</h4>
+              <div class="color-options">
+                <label class="color-option"><input type="checkbox" name="color" value="black"><span class="color-swatch" style="background: #111;"></span></label>
+                <label class="color-option"><input type="checkbox" name="color" value="blue"><span class="color-swatch" style="background: #2b6cb0;"></span></label>
+                <label class="color-option"><input type="checkbox" name="color" value="white"><span class="color-swatch" style="background: #fff; border: 1px solid #ddd;"></span></label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="products-main">
+            <div class="products-header">
+              <div>
+                <p class="collection-eyebrow">TAT CA SAN PHAM</p>
+                <h2 class="section-title">Danh sach noi bat</h2>
+              </div>
+              <div class="products-sort">
+                <select class="sort-select" aria-label="Sap xep">
+                  <option value="popular">Pho bien</option>
+                  <option value="newest">Moi nhat</option>
+                  <option value="price-asc">Gia tang dan</option>
+                  <option value="price-desc">Gia giam dan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-grid" data-product-grid>
+              <article class="product-card" data-category="ao" data-price="329000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="../../assets/images/ao-thun-nam-pickleball-dinkshot-4-xam_49.webp" alt="Ao thun Pickleball"></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun Pickleball Dinkshot</h3><div class="product-price"><span class="price-sale">329.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="quan" data-price="259000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><span class="product-badge hot">HOT</span><img src="../../assets/images/short-nam-6inch-pickleball-smash-shot-cut-_8.webp" alt="Quan short Pickleball"></div>
+                  <div class="product-info"><h3 class="product-name">Quan short Pickleball 6 inch</h3><div class="product-price"><span class="price-sale">259.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="the-thao" data-price="229000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><img src="../../assets/images/t-shirt-chay-bo-nu-exdry-aerodot-gradient-2-hong.webp" alt="Ao chay bo"></div>
+                  <div class="product-info"><h3 class="product-name">Ao chay bo ExDry Aerodot</h3><div class="product-price"><span class="price-sale">229.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="phu-kien" data-price="99000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><img src="../../assets/images/Cool_MAT_phu-kien.webp" alt="Phu kien Coolmate"></div>
+                  <div class="product-info"><h3 class="product-name">Phu kien the thao Coolmate</h3><div class="product-price"><span class="price-sale">99.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="ao" data-price="399000">
+                <a href="/collection/ao-nam" class="product-link">
+                  <div class="product-image"><img src="../../assets/images/Cool_MAT_polo.webp" alt="Ao polo"></div>
+                  <div class="product-info"><h3 class="product-name">Ao polo nam hang ngay</h3><div class="product-price"><span class="price-sale">399.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="quan" data-price="379000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><img src="../../assets/images/Cool_MAT_quan-dai.webp" alt="Quan dai"></div>
+                  <div class="product-info"><h3 class="product-name">Quan dai daily wear</h3><div class="product-price"><span class="price-sale">379.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="the-thao" data-price="449000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><span class="product-badge new">NEW</span><img src="../../assets/images/vay-thun-knit-aline-pkb-driveshot-ess-2-trang_88.webp" alt="Vay pickleball"></div>
+                  <div class="product-info"><h3 class="product-name">Vay Pickleball Driveshot</h3><div class="product-price"><span class="price-sale">449.000d</span></div></div>
+                </a>
+              </article>
+              <article class="product-card" data-category="ao" data-price="299000">
+                <a href="/product-detail/" class="product-link">
+                  <div class="product-image"><img src="../../assets/images/Cool_MAT_ao-thun.webp" alt="Ao thun cotton"></div>
+                  <div class="product-info"><h3 class="product-name">Ao thun cotton compact</h3><div class="product-price"><span class="price-sale">299.000d</span></div></div>
+                </a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

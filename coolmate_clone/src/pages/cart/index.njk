@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.cart.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.cart.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/cart.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.cart.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body coolmate-cart-page">
+  {% include "partials/header.njk" %}
+
+  <main class="cart-page">
+    <div class="cm-shell cart-shell">
+      <section class="cart-left">
+        <div class="cart-coolclub">
+          <button type="button" class="cart-coolclub__join">{{ pageData.promo.title }}</button>
+          <div class="cart-coolclub__copy">
+            <p>{{ pageData.promo.body }}</p>
+            <a href="/coolclub">{{ pageData.promo.cta }}</a>
+          </div>
+        </div>
+
+        <form class="cart-form" data-cart-form>
+          <section class="cart-section">
+            <div class="cart-section__head">
+              <h2>Thông tin vận chuyển</h2>
+            </div>
+
+            <label class="cart-consent">
+              <input type="checkbox" checked>
+              <span>Bằng việc ấn nút đặt hàng, bạn xác nhận là đã đọc và hiểu về chính sách bảo mật dữ liệu cá nhân của Coolmate. <a href="/page/chinh-sach-bao-mat-thong-tin-ca-nhan">Tại đây</a></span>
+            </label>
+
+            <div class="cart-grid-2">
+              <div class="cart-field cart-field--inline">
+                <label>Họ tên</label>
+                <div class="cart-inline-wrap">
+                  <select>
+                    <option>Anh/Chị</option>
+                    <option>Anh</option>
+                    <option>Chị</option>
+                  </select>
+                  <input type="text" placeholder="Nhập họ tên của bạn">
+                </div>
+              </div>
+              <div class="cart-field">
+                <label>Số điện thoại</label>
+                <input type="tel" placeholder="Nhập số điện thoại">
+              </div>
+            </div>
+
+            <div class="cart-field">
+              <label>Email</label>
+              <input type="email" placeholder="Nhập email của bạn">
+            </div>
+
+            <div class="cart-field">
+              <label>Địa chỉ (trước số nhà)</label>
+              <input type="text" placeholder="Nhập địa chỉ">
+            </div>
+
+            <div class="cart-field">
+              <label>Tỉnh / thành phố</label>
+              <input type="text" placeholder="Chọn tỉnh/thành phố">
+            </div>
+
+            <div class="cart-field">
+              <label>Ghi chú</label>
+              <input type="text" placeholder="Nhập ghi chú">
+            </div>
+
+            <label class="cart-toggle">
+              <input type="checkbox">
+              <span>Gọi người khác nhận hàng (nếu có)</span>
+            </label>
+
+            <label class="cart-toggle">
+              <input type="checkbox">
+              <span>Xuất hóa đơn VAT <i class="fas fa-info-circle"></i></span>
+            </label>
+          </section>
+
+          <section class="cart-section cart-section--payment">
+            <h2>Hình thức thanh toán</h2>
+            <div class="cart-payments" role="radiogroup" aria-label="Phương thức thanh toán">
+              {% for method in pageData.paymentMethods %}
+                <label class="cart-payment{% if loop.first %} is-active{% endif %}" data-payment-option>
+                  <input type="radio" name="payment_method" value="{{ method.id }}" {% if loop.first %}checked{% endif %}>
+                  <span class="cart-payment__radio"></span>
+                  <span class="cart-payment__icon">
+                    {% if method.iconType == 'truck' %}
+                      <i class="fas fa-truck"></i>
+                    {% elif method.iconType == 'image' %}
+                      <img src="{{ method.icon }}" alt="{{ method.title }}">
+                    {% else %}
+                      <strong>{{ method.iconText }}</strong>
+                    {% endif %}
+                  </span>
+                  <span class="cart-payment__copy">
+                    <strong>{{ method.title }}</strong>
+                    {% if method.subtitle %}<small>{{ method.subtitle }}</small>{% endif %}
+                  </span>
+                </label>
+              {% endfor %}
+            </div>
+            <p class="cart-payment__notice">Nếu bạn không hài lòng với sản phẩm của chúng tôi? Bạn hoàn toàn có thể trả lại sản phẩm. Tìm hiểu thêm <a href="/page/dich-vu-60-ngay-doi-tra">Tại đây</a></p>
+          </section>
+        </form>
+      </section>
+
+      <aside class="cart-right">
+        <section class="cart-order">
+          <h1>Giỏ hàng</h1>
+          <div class="cart-order__progress"></div>
+
+          <div class="cart-order__actions">
+            <label class="cart-check-all">
+              <input type="checkbox" data-check-all checked>
+              <span>Tất cả sản phẩm</span>
+            </label>
+            <button type="button" class="cart-clear-all" data-clear-all>Xóa tất cả</button>
+          </div>
+
+          <div class="cart-order__list" data-cart-list></div>
+          <div class="cart-order__empty" data-cart-empty hidden>
+            <p>Giỏ hàng hiện chưa có sản phẩm. Hãy tiếp tục mua sắm để thêm sản phẩm yêu thích.</p>
+            <a href="/collection/ao-nam">Tiếp tục mua sắm</a>
+          </div>
+        </section>
+
+        <section class="cart-highlight">
+          <p>Có 0 người đang thêm cùng sản phẩm giống bạn vào giỏ hàng.</p>
+          <div class="cart-highlight__box">
+            <span class="cart-highlight__label">Ưu đãi dành riêng cho bạn</span>
+            <button type="button" class="cart-highlight__nav"><i class="fas fa-chevron-left"></i></button>
+            <button type="button" class="cart-highlight__nav"><i class="fas fa-chevron-right"></i></button>
+            <div class="cart-highlight__items">
+              {% for item in pageData.suggestions %}
+                <a class="cart-highlight__item" href="{{ item.href }}">
+                  <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+                  <div>
+                    <strong>{{ item.title }}</strong>
+                    <span>{{ item.price }}</span>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="cart-referral">
+          <div class="cart-referral__head">
+            <h2>Mã giới thiệu bạn bè</h2>
+            <button type="button">Nhập mã</button>
+          </div>
+        </section>
+
+        <section class="cart-summary">
+          <h2>Chi tiết thanh toán</h2>
+          <div class="cart-summary__row"><span>Tạm tính</span><span data-cart-subtotal>0đ</span></div>
+          <div class="cart-summary__row"><span>Voucher giảm giá</span><span>- 0đ</span></div>
+          <div class="cart-summary__divider"></div>
+          <div class="cart-summary__total"><span>Thành tiền</span><strong data-cart-total>0đ</strong></div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="cart-footer-bar">
+      <div class="cart-footer-bar__method">
+        <span class="cart-footer-bar__icon"><i class="fas fa-truck"></i></span>
+        <strong data-selected-payment>Thanh toán khi nhận hàng</strong>
+      </div>
+      <div class="cart-footer-bar__voucher">
+        <i class="fas fa-ticket-alt"></i>
+        <span>Voucher</span>
+      </div>
+      <div class="cart-footer-bar__coolcash">
+        <span>Đăng nhập để hoàn <strong>CoolCash</strong></span>
+      </div>
+      <button type="button" class="cart-footer-bar__submit" data-place-order>Đặt hàng</button>
+    </div>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

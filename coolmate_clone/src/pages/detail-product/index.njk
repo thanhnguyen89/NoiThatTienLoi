@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.home.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.home.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <meta property="og:title" content="{{ PAGE_SEO.home.title }} | {{ siteName }}">
+  <meta property="og:description" content="{{ PAGE_SEO.home.description }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="../../assets/css/common.scss">
+  <link rel="stylesheet" href="../../assets/css/pages/home.css">
+  <link rel="stylesheet" href="../../assets/css/pages/header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/slider.css">
+  <link rel="stylesheet" href="../../assets/css/pages/flash-sales.css">
+  <link rel="stylesheet" href="../../assets/css/pages/category.css">
+  <link rel="stylesheet" href="../../assets/css/pages/best-sellers.css">
+  <link rel="stylesheet" href="../../assets/css/pages/today-suggestion.css">
+  <link rel="stylesheet" href="../../assets/css/pages/home-news.css">
+  <link rel="stylesheet" href="../../assets/css/pages/search-keywords.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer.css">
+  <link rel="stylesheet" href="../../assets/css/pages/footer-content.css">
+  <script src="./index.js" defer></script>
+  <script src="../../assets/js/common.js" defer></script>
+  <title>{{ PAGE_SEO.home.title }} | {{ siteName }}</title>
+</head>
+<body class="bg_site_1">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <div class="container">
+      <div class="container-slider">
+        <div class="slider_top">
+           {% include "partials/slider.njk" %}
+          <div class="group_banner_right">
+            <div class="item_banner_right">
+              <a title="" target="_parent" href="#">
+                  <img class="lazy loaded" alt="" src="../../assets/images/ship.jpg">
+              </a>
+            </div>
+            <div class="item_banner_right">
+              <a title="" target="_parent" href="#">
+                  <img class="lazy loaded" alt="" src="../../assets/images/app.jpg">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Flash sale -->
+      {% include "partials/flash-sales.njk" %}
+       <!--Danh muc -->
+      {% include "partials/category.njk" %}
+      <!--Ban chay -->
+      {% include "partials/best-sellers.njk" %}
+      <div class="banner-home-qc">
+        <img src="../../assets/images/ghe-nhua.jpg"/>
+      </div>
+      <!-- san phan goi y hôm nay -->
+      {% include "partials/today-suggestion.njk" %}
+      <!-- tin tuc -->
+      {% include "partials/home-new.njk" %}
+      <!-- tu khoa tim kiem -->
+      {% include "partials/search-keywords.njk" %}
+    </div>
+  </main>
+
+  {% include "partials/footer.njk" %}
+  <div class="container">
+    {% include "partials/footer-content.njk" %}
+  </div>
+  {# {% include "partials/ai-chat.njk" %} #}
+</body>
+</html>

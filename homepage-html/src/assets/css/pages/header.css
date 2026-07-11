@@ -23,29 +23,24 @@
     padding-bottom: 10px;
 }
 
-.header__top>div{
-    width: 100%;
-    max-width: 1220px;
-    margin: auto;
-    padding: 0 10px;
-}
 .header__top>div {
     align-items: center;
     display: flex;
     justify-content: space-between;
 }
 .header.v2026 .header__top>div {
-    display: inline-flex;
+    display: flex;
     width: auto;
     max-width: none;
     padding-left: 0;
+    justify-content: space-between;
 }
 .header__logo{
     padding-right: 0;
 }
 .header__logo .logo_site {
-    width: 160px;
-    height: 70px;
+    width: 300px;
+    height: 80px;
 }
 .header__search {
     position: relative;
@@ -417,18 +412,21 @@
     background: url(../../images/icon_header__customer.png) no-repeat left top;
 }
 .header__main{
-    background: #e5fbf1;
+    background: #1F7A5C;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
     z-index: 9;
 }
 .header__main #hamber_menu {
     position: relative;
 }
 a.txt_color_1, .txt_color_1 {
-    color: #326e51;
+    color: #ffffff;
 }
 .header__main #hamber_menu a.txt_color_1 {
-    padding: 0px 0px 3px 30px;
+    padding: 0 0 0 30px;
     font-size: 13px;
     line-height: 32px;
     position: relative;
@@ -439,6 +437,8 @@ a.txt_color_1, .txt_color_1 {
 .header__main #hamber_menu .menu_hamber {
     background-image: url(../../images/icon_hamber_22x17.png);
     background-repeat: no-repeat;
+    background-position: left center;
+    filter: brightness(0) invert(1);
 }
 .header__main #hamber_menu:before {
     content: "";
@@ -447,15 +447,75 @@ a.txt_color_1, .txt_color_1 {
     top: 7px;
     width: 1px;
     height: 18px;
-    background: #306E51;
+    background: #ffffff;
 }
 .header__main .item_sub_menu_bar {
     color: #326e51;
     display: flex;
+    flex: 1;
+}
+.header__menu-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+    padding-left: 12px;
+}
+.header__menu-action {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.header__menu-action:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+.header__menu-icon {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    filter: brightness(0) invert(1);
+}
+.header__menu-icon--login {
+    background-image: url(../../images/icon_header__login.png);
+}
+.header__menu-icon--cart {
+    background-image: url(../../images/icon_header__cart.png);
+}
+.header__menu-cart-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.header__menu-cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -11px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #ff6600;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    padding: 0 4px;
 }
 .top_bar_noithattienloi{
-    background: #e5fbf1;
-    padding: 5px 0;
+    background: #1F7A5C;
+    padding: 0;
 }
 .main-menu {
     display: flex;
@@ -466,11 +526,11 @@ a.txt_color_1, .txt_color_1 {
 }
 .main-menu li {
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 7px 10px;
     position: relative;
 }
 .main-menu a {
-    color: #326e51;
+    color: #ffffff;
     line-height: 18px;
     display: inline-block;
     vertical-align: middle;
@@ -586,6 +646,179 @@ a.txt_color_1, .txt_color_1 {
     top: 10px;
 }
 
+/* ===== Info Bar (top strip) ===== */
+.header__infobar {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 12px;
+}
+.header__infobar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+.header__infobar-slogan {
+    color: #333;
+    font-size: 12px;
+}
+.header__infobar-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.header__infobar-links a {
+    color: #444;
+    text-decoration: none;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+.header__infobar-links a:hover {
+    color: #1F7A5C;
+}
+
+/* ===== Main header: white background ===== */
+.header.v2026 .header__top {
+    background-color: #fff;
+    padding: 5px 0;
+}
+.header.v2026 {
+    background-color: #fff;
+}
+
+/* ===== Search bar with category dropdown ===== */
+.header.v2026 .header__top>div>.header__search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 20px;
+    background: #fff;
+}
+.search-category {
+    border: none;
+    border-right: 1px solid #ccc;
+    background: #f5f5f5;
+    padding: 0 8px;
+    font-size: 13px;
+    height: 40px;
+    cursor: pointer;
+    color: #333;
+    min-width: 60px;
+    outline: none;
+}
+.header.v2026 .header__top>div>.header__search>input {
+    border: none;
+    border-radius: 0;
+    flex: 1;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 13px;
+    margin-left: 0;
+    outline: none;
+}
+.header.v2026 .header__top>div>.header__search>button {
+    position: static;
+    background-color: #1F7A5C;
+    border: none;
+    width: 44px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.header.v2026 .header__top>div>.header__search>button .fa-search {
+    color: #fff;
+    font-size: 16px;
+}
+.header.v2026 .header__top>div>.header__search>button .icon-search {
+    background-image: none;
+    width: auto;
+    height: auto;
+    margin: 0;
+}
+
+/* ===== Phone contacts ===== */
+.header__contacts {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.header.v2026 .header__top div.profile {
+    display: flex;
+    align-items: center;
+    width: auto;
+}
+.header.v2026 .header__top div.profile > a.name-order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 118px;
+    color: #333;
+}
+.header.v2026 .header__top > div > a.header__cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 112px;
+    color: #333;
+}
+.header.v2026 .header__top div.profile > a.name-order > span,
+.header.v2026 .header__top > div > a.header__cart > span {
+    color: #333;
+    line-height: 1.2;
+}
+.header.v2026 .header__top div.profile > a.name-order:hover > span,
+.header.v2026 .header__top > div > a.header__cart:hover > span {
+    color: #1F7A5C;
+}
+.header__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.header__contact-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1F7A5C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.header__contact-icon .fa {
+    color: #fff;
+    font-size: 18px;
+}
+.header__contact-info {
+    display: flex;
+    flex-direction: column;
+}
+.header__contact-label {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.3;
+}
+.header__contact-phone {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e53935;
+    text-decoration: none;
+    line-height: 1.3;
+}
+.header__contact-phone:hover {
+    color: #1F7A5C;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .header.v2026 {
@@ -663,6 +896,7 @@ a.txt_color_1, .txt_color_1 {
         padding: 0;
         background: transparent;
         position: relative;
+        min-width: 24px;
     }
     
     .header.v2026 .header__top>div>a.header__cart span {
@@ -690,8 +924,22 @@ a.txt_color_1, .txt_color_1 {
     .top_bar_noithattienloi {
         display: none;
     }
-    
+
     .header__main {
+        display: none;
+    }
+
+    .header__menu-actions {
+        display: none;
+    }
+
+    .header__infobar {
+        display: none;
+    }
+    .header__contacts {
+        display: none;
+    }
+    .search-category {
         display: none;
     }
 }

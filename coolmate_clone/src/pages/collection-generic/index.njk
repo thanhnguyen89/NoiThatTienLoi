@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ pageData.description }}">
+  <meta name="keywords" content="coolmate, {{ pageData.title | lower }}, thoi trang">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/new-products.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ pageData.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body new-products-page collection-page">
+  {% include "partials/header.njk" %}
+
+  <main class="main-content">
+    <section class="collection-hero collection-hero--{{ pageData.tone }}">
+      <div class="cm-shell collection-hero__grid">
+        <div class="collection-hero__copy">
+          <p class="collection-eyebrow">{{ pageData.eyebrow }}</p>
+          <h1>{{ pageData.title }}</h1>
+          <p>{{ pageData.description }}</p>
+          <a href="#collectionProducts" class="collection-btn">Xem san pham</a>
+        </div>
+        <div class="collection-hero__media">
+          <img src="{{ pageData.heroImage }}" alt="{{ pageData.title }}">
+        </div>
+      </div>
+    </section>
+
+    <section id="collectionProducts" class="products-section">
+      <div class="cm-shell">
+        <div class="products-layout">
+          <aside class="sidebar-filters">
+            <div class="filter-header">
+              <h3>Bo loc</h3>
+              <span class="filter-count">{{ products.length }} ket qua</span>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Danh muc</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox" checked> <span>{{ pageData.title }}</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Hang moi</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>Ban chay</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Kich thuoc</h4>
+              <div class="filter-options">
+                <label class="filter-option"><input type="checkbox"> <span>S</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>M</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>L</span></label>
+                <label class="filter-option"><input type="checkbox"> <span>XL</span></label>
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <h4 class="filter-title">Mau sac</h4>
+              <div class="color-options">
+                <label class="color-option"><input type="checkbox"><span class="color-swatch" style="background: #111;"></span></label>
+                <label class="color-option"><input type="checkbox"><span class="color-swatch" style="background: #274878;"></span></label>
+                <label class="color-option"><input type="checkbox"><span class="color-swatch" style="background: #fff; border: 1px solid #ddd;"></span></label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="products-main">
+            <div class="products-header">
+              <div>
+                <p class="collection-eyebrow">{{ pageData.eyebrow }}</p>
+                <h2 class="section-title">{{ pageData.title }}</h2>
+              </div>
+              <div class="products-sort">
+                <select class="sort-select" aria-label="Sap xep">
+                  <option>Moi nhat</option>
+                  <option>Ban chay</option>
+                  <option>Gia tang dan</option>
+                  <option>Gia giam dan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-grid">
+              {% for product in products %}
+                {% if pageData.filter == 'all' or pageData.filter == product.category %}
+                  <article class="product-card">
+                    <a href="{{ product.href }}" class="product-link">
+                      <div class="product-image">
+                        {% if product.badge %}<span class="product-badge{% if product.badge == 'HOT' %} hot{% else %} new{% endif %}">{{ product.badge }}</span>{% endif %}
+                        <img src="{{ product.image }}" alt="{{ product.name }}">
+                        <div class="product-promo"><span class="promo-badge">COOLMATE</span></div>
+                      </div>
+                      <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="product-price"><span class="price-sale">{{ product.price }}</span></div>
+                      </div>
+                    </a>
+                  </article>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

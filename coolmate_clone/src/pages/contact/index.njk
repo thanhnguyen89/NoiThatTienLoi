@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO.contact.description }}">
+  <meta name="keywords" content="{{ PAGE_SEO.contact.keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/contact.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO.contact.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body contact-page">
+  {% include "partials/header.njk" %}
+
+  <main class="contact-main">
+    <section class="contact-hero">
+      <div class="cm-shell contact-container">
+        <p class="contact-eyebrow">COOLMATE CARE</p>
+        <h1>Chung toi luon san sang lang nghe ban.</h1>
+        <p>Can ho tro don hang, doi tra 60 ngay, tu van size hoac tim cua hang? De lai thong tin, doi CSKH Coolmate se phan hoi som.</p>
+      </div>
+    </section>
+
+    <section class="contact-content">
+      <div class="cm-shell contact-container contact-grid">
+        <aside class="contact-info">
+          <div class="contact-info__card contact-info__card--dark">
+            <h2>Ho tro nhanh</h2>
+            <a href="tel:1900272737"><i class="fas fa-phone" aria-hidden="true"></i><span>1900.272737 - 028.7777.2737</span></a>
+            <a href="mailto:Cool@coolmate.me"><i class="fas fa-envelope" aria-hidden="true"></i><span>Cool@coolmate.me</span></a>
+            <p><i class="fas fa-clock" aria-hidden="true"></i><span>8:00 - 21:00, tat ca cac ngay trong tuan</span></p>
+          </div>
+
+          <div class="contact-info__card">
+            <h2>Dia chi lien he</h2>
+            <p><strong>Cua hang:</strong> B2-34, Tang B2, Hanoi Centre, 175 Nguyen Thai Hoc, Dong Da, Ha Noi</p>
+            <p><strong>Van phong Ha Noi:</strong> Tang 3-4, Toa nha BMM, Km2, Duong Phung Hung, Ha Dong, Ha Noi</p>
+            <p><strong>Van phong TP.HCM:</strong> Lo C3, duong D2, KCN Cat Lai, TP. Thu Duc</p>
+          </div>
+        </aside>
+
+        <form class="contact-form" data-contact-form>
+          <div class="contact-form__head">
+            <p class="contact-eyebrow">GUI YEU CAU</p>
+            <h2>Thong tin cua ban</h2>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="contactName">Ho ten</label>
+              <input id="contactName" name="name" type="text" placeholder="Nguyen Van A" required>
+            </div>
+            <div class="form-group">
+              <label for="contactPhone">So dien thoai</label>
+              <input id="contactPhone" name="phone" type="tel" placeholder="0900 000 000" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email</label>
+            <input id="contactEmail" name="email" type="email" placeholder="ban@email.com">
+          </div>
+          <div class="form-group">
+            <label for="contactTopic">Chu de</label>
+            <select id="contactTopic" name="topic">
+              <option>Ho tro don hang</option>
+              <option>Doi tra 60 ngay</option>
+              <option>Tu van size</option>
+              <option>Hop tac va gop y</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Noi dung</label>
+            <textarea id="contactMessage" name="message" placeholder="Nhap noi dung can ho tro..." required></textarea>
+          </div>
+          <button class="contact-btn" type="submit">Gui lien he</button>
+          <p class="contact-status" data-contact-status aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

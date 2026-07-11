@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ pageData.description }}">
+  <meta name="keywords" content="coolmate, {{ pageData.title | lower }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/info.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ pageData.title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body info-page">
+  {% include "partials/header.njk" %}
+
+  <main class="info-main">
+    <section class="info-hero">
+      <div class="cm-shell info-container">
+        <p class="info-eyebrow">{{ pageData.eyebrow }}</p>
+        <h1>{{ pageData.title }}</h1>
+        <p>{{ pageData.description }}</p>
+        <a href="/contact" class="info-btn">{{ pageData.cta }}</a>
+      </div>
+    </section>
+
+    <section class="info-content">
+      <div class="cm-shell info-container info-grid">
+        {% for card in pageData.cards %}
+          <article class="info-card">
+            <h2>{{ card[0] }}</h2>
+            <p>{{ card[1] }}</p>
+          </article>
+        {% endfor %}
+      </div>
+
+      {% if pageData.form == 'login' %}
+        <div class="cm-shell info-container">
+          <form class="info-login-form">
+            <label>Email hoac so dien thoai</label>
+            <input type="text" placeholder="ban@email.com">
+            <label>Mat khau</label>
+            <input type="password" placeholder="Nhap mat khau">
+            <button type="button">Dang nhap</button>
+          </form>
+        </div>
+      {% endif %}
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

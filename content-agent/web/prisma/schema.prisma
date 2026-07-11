@@ -1,0 +1,406 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminRole {
+  id          String      @id @default(uuid())
+  name        String      @db.VarChar(100)
+  code        String      @unique @db.VarChar(50)
+  description String?
+  permissions Json?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  users       AdminUser[]
+
+  @@map("admin_roles")
+}
+
+model AdminUser {
+  id              String           @id @default(uuid())
+  username        String           @unique @db.VarChar(50)
+  email           String           @unique @db.VarChar(255)
+  passwordHash    String           @db.VarChar(255)
+  fullName        String?          @db.VarChar(255)
+  avatar          String?          @db.VarChar(500)
+  roleId          String
+  isActive        Boolean          @default(true)
+  isSuperAdmin    Boolean          @default(false)
+  lastLoginAt     DateTime?
+  lastLoginIp     String?          @db.VarChar(45)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  role            AdminRole        @relation(fields: [roleId], references: [id])
+  articleVersions ArticleVersion[]
+  articles        Article[]
+  bulkJobs        BulkJob[]
+
+  @@index([roleId])
+  @@map("admin_users")
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String?
+  username    String?  @db.VarChar(50)
+  action      String   @db.VarChar(50)
+  resource    String?  @db.VarChar(100)
+  resourceId  String?
+  description String?
+  ipAddress   String?  @db.VarChar(45)
+  userAgent   String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model Article {
+  id                 String           @id @default(uuid())
+  userId             String
+  runId              String           @unique
+  status             ArticleStatus    @default(DRAFT)
+  keyword            String           @db.VarChar(500)
+  language           String           @db.VarChar(20)
+  contentType        String           @db.VarChar(50)
+  sourceType         String?          @db.VarChar(50)
+  targetLength       Int
+  aiProvider         String           @db.VarChar(50)
+  brandConfig        Json?
+  meta               Json?
+  competitorUrls     String[]
+  competitorAnalysis String?
+  outline            Json
+  selectedTitle      String           @db.VarChar(500)
+  userNotes          String?
+  secondaryKeywords  String[]
+  htmlContent        String
+  plainText          String?
+  wordCount          Int              @default(0)
+  metaDescription    String?          @db.VarChar(500)
+  slug               String?          @db.VarChar(200)
+  seoScore           Int?
+  seoChecks          Json?
+  humannessScore     Int?
+  scoreBreakdown     Json?
+  aiDecision         String?          @db.VarChar(20)
+  featuredImage      String?          @db.VarChar(1000)
+  wordpressPostId    Int?
+  wordpressUrl       String?          @db.VarChar(1000)
+  wordpressStatus    String?          @db.VarChar(20)
+  publishedAt        DateTime?
+  isBoosted          Boolean          @default(false)
+  boostedAt          DateTime?
+  deletedAt          DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  versions           ArticleVersion[]
+  bulkJob            BulkJob?         @relation("BulkJobArticles", fields: [bulkJobId], references: [id], onDelete: SetNull)
+  bulkJobId          String?
+  bulkIndex          Int?
+  user               AdminUser        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([keyword])
+  @@index([sourceType])
+  @@index([createdAt])
+  @@index([runId])
+  @@index([isBoosted])
+  @@index([deletedAt])
+  @@index([bulkJobId])
+  @@index([bulkIndex])
+  @@map("articles")
+}
+
+model ArticleVersion {
+  id              String    @id @default(uuid())
+  articleId       String
+  versionNumber   Int
+  title           String    @db.VarChar(500)
+  htmlContent     String
+  metaDescription String?   @db.VarChar(500)
+  slug            String?   @db.VarChar(200)
+  wordCount       Int
+  seoScore        Int?
+  humannessScore  Int?
+  savedBy         String
+  createdAt       DateTime  @default(now())
+  article         Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  savedByUser     AdminUser @relation(fields: [savedBy], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@index([createdAt])
+  @@map("article_versions")
+}
+
+model BulkJob {
+  id             String        @id @default(uuid())
+  userId         String
+  jobType        String        @db.VarChar(50)
+  config         Json
+  brandConfig    Json?
+  keywords       String[]
+  totalCount     Int
+  processedCount Int           @default(0)
+  successCount   Int           @default(0)
+  errorCount     Int           @default(0)
+  status         BulkJobStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  startedAt      DateTime?
+  completedAt    DateTime?
+  user           AdminUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articles       Article[]     @relation("BulkJobArticles")
+
+  @@index([userId])
+  @@index([status])
+  @@index([jobType])
+  @@index([createdAt])
+  @@map("bulk_jobs")
+}
+
+model AIConfig {
+  id          String       @id @default(uuid())
+  type        AIConfigType
+  items       String[]
+  isActive    Boolean      @default(true)
+  description String?
+  createdBy   String?
+  updatedBy   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@map("ai_configs")
+}
+
+model AIModel {
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(100)
+  provider    String   @db.VarChar(50)
+  modelId     String   @db.VarChar(100)
+  apiKey      String?  @db.VarChar(500)
+  baseUrl     String?  @db.VarChar(500)
+  icon        String?  @db.VarChar(100)
+  description String?
+  isActive    Boolean  @default(true)
+  isDefault   Boolean  @default(false)
+  createdBy   String?
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([provider])
+  @@index([isActive])
+  @@index([isDefault])
+  @@map("ai_models")
+}
+
+model WebsiteConfig {
+  id               String   @id @default(uuid())
+  name             String   @db.VarChar(200)
+  url              String   @db.VarChar(500)
+  platform         String   @db.VarChar(50)
+  companyName      String?  @db.VarChar(300)
+  hotline          String?  @db.VarChar(100)
+  hotlineComplaint String?  @db.VarChar(100)
+  branchCount      Int?
+  branchListUrl    String?  @db.VarChar(500)
+  supportInfo      String?
+  apiUrl           String   @db.VarChar(500)
+  apiKey           String?  @db.VarChar(500)
+  apiSecret        String?  @db.VarChar(500)
+  username         String?  @db.VarChar(200)
+  appPassword      String?  @db.VarChar(500)
+  defaultCategory  Int?
+  defaultAuthorId  Int?
+  defaultStatus    String   @default("draft") @db.VarChar(20)
+  isActive         Boolean  @default(true)
+  isDefault        Boolean  @default(false)
+  createdBy        String?
+  updatedBy        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([isDefault])
+  @@map("website_configs")
+}
+
+model SocialPlatform {
+  id                String             @id @default(uuid())
+  type              SocialPlatformType
+  name              String             @db.VarChar(200)
+  pageId            String?            @db.VarChar(200)
+  pageUrl           String?            @db.VarChar(500)
+  accessToken       String?
+  accessTokenExpiry DateTime?
+  config            Json?
+  isActive          Boolean            @default(true)
+  isDefault         Boolean            @default(false)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@map("social_platforms")
+}
+
+model BrandProfile {
+  id              String   @id @default(uuid())
+  name            String   @db.VarChar(200)
+  shopName        String   @db.VarChar(200)
+  industry        String?  @db.VarChar(100)
+  brandPronouns   String?  @db.VarChar(100)
+  brandAudience   String?  @db.VarChar(300)
+  brandToneNotes  String?  @db.Text
+  phone           String?  @db.VarChar(50)
+  address         String?  @db.VarChar(300)
+  brandDesc       String?  @db.Text
+  brandForbidden  String?  @db.Text
+  ctaStandard     String?  @db.VarChar(500)
+  mainProducts    String?  @db.Text
+  latitude        Float?
+  longitude       Float?
+  openingHours    String?  @db.VarChar(200)
+  priceRange      String?  @db.VarChar(20)
+  isDefault       Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  tiktokPosts     TiktokPost[]
+
+  @@index([isDefault])
+  @@index([isActive])
+  @@map("brand_profiles")
+}
+
+model FacebookPost {
+  id            String                 @id @default(uuid())
+  keyword       String                 @db.VarChar(500)
+  content       String                 @db.Text
+  shopName      String?                @db.VarChar(200)
+  industry      String?                @db.VarChar(100)
+  tone          String                 @db.VarChar(50)
+  template      String?                @db.VarChar(100)
+  wordCount     Int                    @default(0)
+  emojiCount    Int                    @default(0)
+  status        FBPostStatus           @default(DRAFT)
+  note          String?                @db.Text
+  publishedAt   DateTime?
+  createdBy     String?
+  updatedBy     String?
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  commentBrands FacebookCommentBrand[]
+
+  @@index([status])
+  @@index([tone])
+  @@index([createdAt])
+  @@map("facebook_posts")
+}
+
+model FacebookCommentBrand {
+  id             String        @id @default(uuid())
+  postContent    String        @db.Text
+  facebookPostId String?
+  style          String        @default("friendly") @db.VarChar(50)
+  language       String        @default("Vietnamese") @db.VarChar(50)
+  count          Int           @default(5)
+  modelId        String        @default("gemini-flash") @db.VarChar(100)
+  comments       String[]
+  brandSnapshot  Json?
+  userId         String?
+  notes          String?       @db.Text
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  facebookPost   FacebookPost? @relation(fields: [facebookPostId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([facebookPostId])
+  @@index([userId])
+  @@index([style])
+  @@map("facebook_comment_brands")
+}
+
+model TiktokPost {
+  id             String        @id @default(cuid())
+  topic          String        @db.Text
+  videoType      String        @default("product_demo") @db.VarChar(50)
+  hookStyle      String        @default("number") @db.VarChar(50)
+  ctaStyle       String        @default("inbox") @db.VarChar(50)
+  title          String?       @db.VarChar(80)
+  content        String        @db.Text
+  hashtags       String?       @db.Text
+  language       String        @default("Vietnamese") @db.VarChar(50)
+  useEmoji       Boolean       @default(true)
+  emojiLevel     String        @default("medium") @db.VarChar(20)
+  wordCount      Int?
+  charCount      Int?
+  brandProfileId String?
+  brandProfile   BrandProfile? @relation(fields: [brandProfileId], references: [id], onDelete: SetNull)
+  brandName      String?       @db.VarChar(200)
+  modelId        String?       @db.VarChar(100)
+  userId         String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([createdAt])
+  @@index([videoType])
+  @@index([hookStyle])
+  @@index([brandProfileId])
+  @@index([userId])
+  @@map("tiktok_posts")
+}
+
+enum FBPostStatus {
+  DRAFT
+  READY
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ArticleStatus {
+  DRAFT
+  WRITING
+  WRITTEN
+  PUBLISHED
+  ARCHIVED
+}
+
+enum BulkJobStatus {
+  PENDING
+  RUNNING
+  PAUSED
+  COMPLETED
+  FAILED
+}
+
+enum AIConfigType {
+  FORBIDDEN_WORDS
+  CLICHE_OPENINGS
+}
+
+enum SocialPlatformType {
+  FACEBOOK_PAGE
+  TIKTOK
+  ZALO_OA
+  INSTAGRAM
+  YOUTUBE
+  THREADS
+}

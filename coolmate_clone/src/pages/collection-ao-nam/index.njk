@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO['ao-nam'].description }}">
+  <meta name="keywords" content="{{ PAGE_SEO['ao-nam'].keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/ao-nam.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO['ao-nam'].title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body ao-nam-page">
+  {% include "partials/header.njk" %}
+
+  <main class="ao-nam-main">
+    <section class="ao-nam-hero">
+      <div class="cm-shell ao-page-container">
+        <nav class="ao-breadcrumb" aria-label="Breadcrumb">
+          <a href="/" class="ao-breadcrumb__home" aria-label="Trang chủ"><i class="fas fa-home"></i></a>
+          <span>/</span>
+          <a href="/collection/do-nam">Đồ Nam</a>
+          <span>/</span>
+          <strong>Áo Nam</strong>
+        </nav>
+
+        <h1 class="ao-page-title">{{ pageData.title }}</h1>
+
+        <div class="ao-category-strip" aria-label="Danh mục áo nam nổi bật">
+          {% for item in pageData.categories %}
+            <a class="ao-category-card" href="{{ item.href }}">
+              <span class="ao-category-card__media">
+                <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+              </span>
+              <strong class="ao-category-card__title">{{ item.title }}</strong>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="ao-nam-listing">
+      <div class="cm-shell ao-page-container">
+        <div class="ao-toolbar">
+          <div class="ao-toolbar__left">
+            <h2>Bộ lọc</h2>
+            <span>163 kết quả</span>
+          </div>
+          <div class="ao-toolbar__right">
+            <span>PHÂN LOẠI</span>
+            <button class="ao-sort-pill" type="button" aria-label="Sắp xếp">
+              <strong>Mặc định</strong>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="ao-layout">
+          <aside class="ao-sidebar" aria-label="Bộ lọc sản phẩm">
+            {% for group in pageData.filters %}
+              <details class="ao-filter-group">
+                <summary>
+                  <span>{{ group.title }}</span>
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </summary>
+                <div class="ao-filter-group__body">
+                  {% for option in group.options %}
+                    <label class="ao-filter-option">
+                      <input type="checkbox">
+                      <span>{{ option }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </details>
+            {% endfor %}
+          </aside>
+
+          <div class="ao-content">
+            <div class="ao-grid">
+              {% for product in pageData.products %}
+                <article class="ao-card{% if product.fifaLogo %} ao-card--fifa{% endif %}">
+                  <a class="ao-card__link" href="{{ product.href }}" aria-label="Xem chi tiết sản phẩm {{ product.title }}">
+                    <div class="ao-card__media">
+                      {% if product.badge %}
+                        <span class="ao-card__badge{% if product.badgeClass %} ao-card__badge--{{ product.badgeClass }}{% endif %}">{{ product.badge }}</span>
+                      {% endif %}
+
+                      {% if product.fifaLogo %}
+                        <img class="ao-card__fifa" src="https://n7media.coolmate.me/uploads/2026/03/19/logo_fifa_official_1.png" alt="FIFA" loading="lazy">
+                      {% endif %}
+
+                      <img class="ao-card__image" src="{{ product.image }}" alt="{{ product.title }}" loading="lazy">
+
+                      <div class="ao-card__promo">
+                        <span class="ao-card__promo-left">{{ product.promoLeft }}</span>
+                        <span class="ao-card__promo-right">{{ product.promoRight }}</span>
+                      </div>
+
+                      {% if product.fifaLogo %}
+                        <img class="ao-card__footer-image" src="https://n7media.coolmate.me/uploads/2026/04/01/footer_fifa_12.jpg?aio=w-585" alt="" aria-hidden="true">
+                      {% endif %}
+                    </div>
+                  </a>
+
+                  <div class="ao-card__swatches" aria-hidden="true">
+                    {% for swatch in product.swatches %}
+                      <span class="ao-swatch" title="{{ swatch.label }}" style="background: {{ swatch.color }}{% if swatch.label == 'Trắng' %}; border-color: #ddd{% endif %};"></span>
+                    {% endfor %}
+                    {% if product.extraSwatches %}
+                      <button class="ao-swatch__more" type="button">+{{ product.extraSwatches }}</button>
+                    {% endif %}
+                  </div>
+
+                  <h3 class="ao-card__title">{{ product.title }}</h3>
+                  <div class="ao-card__meta">
+                    <span></span><span></span>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+
+            <div class="ao-more">
+              <button type="button">Xem thêm <i class="fas fa-arrow-right"></i></button>
+              <p>Hiển thị 20 trên tổng số 163 sản phẩm</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ao-description">
+      <div class="cm-shell ao-page-container">
+        <details class="ao-description__details">
+          <summary>Áo nam tại Coolmate</summary>
+          <div class="ao-description__content">
+            <p>Thiết kế tối giản, form gọn và chất liệu thực dụng cho mọi ngày.</p>
+            <p>Áo nam Coolmate tập trung vào cảm giác thoải mái, khả năng thoáng khí và phối đồ linh hoạt.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

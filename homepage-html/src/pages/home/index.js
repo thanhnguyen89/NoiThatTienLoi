@@ -1,3 +1,5 @@
+import Modal from 'bootstrap/js/dist/modal';
+
 // Home page entry
 
 // Search filter functionality
@@ -39,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Footer accordion on mobile
 function initFooterAccordion() {
   if (window.innerWidth > 768) return;
-
-  const cols = document.querySelectorAll('.footer__col:not(:first-child)');
+  const cols = document.querySelectorAll('.footer__col:not(.footer__col--static)');
   cols.forEach(col => {
     const title = col.querySelector('.f-listtel__title');
     if (!title) return;
@@ -237,9 +238,9 @@ function initModalLogin() {
 
   if (!loginModalEl) return;
 
-  const loginModal = bootstrap.Modal.getOrCreateInstance(loginModalEl);
-  const registerModal = bootstrap.Modal.getOrCreateInstance(registerModalEl);
-  const forgotModal = bootstrap.Modal.getOrCreateInstance(forgotModalEl);
+  const loginModal = Modal.getOrCreateInstance(loginModalEl);
+  const registerModal = Modal.getOrCreateInstance(registerModalEl);
+  const forgotModal = Modal.getOrCreateInstance(forgotModalEl);
 
   // Trigger mở login
   loginLinks.forEach(link => {

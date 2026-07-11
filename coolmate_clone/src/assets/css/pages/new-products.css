@@ -1,0 +1,771 @@
+/* ===== NEW PRODUCTS PAGE STYLES ===== */
+
+.new-products-page {
+  font-family: var(--cm-font-body);
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.collection-hero {
+  overflow: hidden;
+  padding: 56px 0;
+}
+
+.collection-hero--light {
+  background: #f3f3f3;
+}
+
+.collection-hero--blue {
+  background: linear-gradient(135deg, #0b1f4a 0%, #2955d8 52%, #e7f0ff 52%, #fff 100%);
+  color: #fff;
+}
+
+.collection-hero__grid {
+  align-items: center;
+  display: grid;
+  gap: 42px;
+  grid-template-columns: minmax(0, .86fr) minmax(360px, 1fr);
+}
+
+.collection-hero__copy h1 {
+  font-family: var(--cm-font-display);
+  font-size: clamp(44px, 6vw, 88px);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: .88;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+}
+
+.collection-hero__copy p:not(.collection-eyebrow) {
+  color: rgba(17,17,17,.72);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 28px;
+  max-width: 560px;
+}
+
+.collection-hero--blue .collection-hero__copy p:not(.collection-eyebrow) {
+  color: rgba(255,255,255,.82);
+}
+
+.collection-eyebrow {
+  color: #2e6bff;
+  font-family: var(--cm-font-display);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.collection-hero--blue .collection-eyebrow {
+  color: #fff;
+}
+
+.collection-btn {
+  align-items: center;
+  background: #111;
+  border-radius: 999px;
+  color: #fff !important;
+  display: inline-flex;
+  font-family: var(--cm-font-display);
+  font-size: 15px;
+  font-weight: 900;
+  min-height: 46px;
+  padding: 0 26px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.collection-hero--blue .collection-btn {
+  background: #fff;
+  color: #111 !important;
+}
+
+.collection-hero__media {
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.collection-hero__media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.category-showcase {
+  padding: 26px 0 0;
+}
+
+.category-showcase__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.category-tile {
+  background: #f6f6f6;
+  border-radius: 20px;
+  color: #111;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.category-tile img {
+  aspect-ratio: .86;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.category-tile strong {
+  display: block;
+  font-family: var(--cm-font-display);
+  font-size: 18px;
+  font-weight: 900;
+  padding: 14px 16px 18px;
+  text-transform: uppercase;
+}
+
+/* ===== FIFA HERO BANNER ===== */
+.hero-banner-fifa {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner-fifa .cm-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.fifa-content {
+  flex: 1;
+  color: #fff;
+  max-width: 500px;
+}
+
+.fifa-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px 24px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.fifa-badge img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+}
+
+.fifa-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fifa-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.fifa-subtitle {
+  font-size: 12px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.fifa-heading {
+  font-family: var(--cm-font-display);
+  font-size: 48px;
+  font-weight: 900;
+  margin: 0 0 12px 0;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.fifa-subheading {
+  font-size: 20px;
+  margin-bottom: 32px;
+  opacity: 0.9;
+  letter-spacing: 2px;
+}
+
+.fifa-btn {
+  display: inline-block;
+  background: #fff;
+  color: #1a1a1a;
+  padding: 16px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  margin-bottom: 24px;
+}
+
+.fifa-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.fifa-disclaimer {
+  font-size: 10px;
+  opacity: 0.6;
+  line-height: 1.5;
+  max-width: 450px;
+}
+
+.fifa-image {
+  flex: 1;
+}
+
+.fifa-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* ===== PRODUCTS SECTION ===== */
+.products-section {
+  padding: 60px 0;
+}
+
+.products-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+}
+
+/* ===== SIDEBAR FILTERS ===== */
+.sidebar-filters {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.filter-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.filter-count {
+  font-size: 14px;
+  color: #666;
+}
+
+.filter-group {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filter-group:last-child {
+  border-bottom: none;
+}
+
+.filter-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.filter-option:hover {
+  color: #4A90E2;
+}
+
+.filter-option input[type="radio"],
+.filter-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4A90E2;
+}
+
+/* Color Options */
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.color-option {
+  cursor: pointer;
+}
+
+.color-option input {
+  display: none;
+}
+
+.color-swatch {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover .color-swatch {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.color-option input:checked + .color-swatch {
+  box-shadow: 0 0 0 3px #4A90E2;
+}
+
+/* ===== PRODUCTS MAIN ===== */
+.products-main {
+  flex: 1;
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-family: var(--cm-font-display);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.products-sort {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-select {
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.sort-select:hover,
+.sort-select:focus {
+  border-color: #4A90E2;
+}
+
+/* ===== PRODUCTS GRID ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border-color: #e0e0e0;
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-image {
+  position: relative;
+  padding-top: 133%;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.product-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08);
+}
+
+.product-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+.product-badge.new {
+  background: #4A90E2;
+  color: #fff;
+}
+
+.product-badge.hot {
+  background: #111;
+  color: #fff;
+}
+
+.product-promo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0054a6;
+  padding: 8px;
+  text-align: center;
+}
+
+.promo-badge {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.product-info {
+  padding: 16px;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+  color: #1a1a1a;
+  line-height: 1.4;
+  height: 40px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.price-sale {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff4444;
+}
+
+.price-discount {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff4444;
+  background: #ffe0e0;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.price-original {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.product-colors {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-dot:hover {
+  transform: scale(1.2);
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.pagination-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #4A90E2;
+  color: #4A90E2;
+  background: #f0f7ff;
+}
+
+.pagination-btn.active {
+  background: #4A90E2;
+  color: #fff;
+  border-color: #4A90E2;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ===== PROMO SECTION ===== */
+.promo-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  margin-top: 60px;
+}
+
+.promo-banner-bottom {
+  text-align: center;
+  color: #fff;
+}
+
+.promo-banner-bottom h2 {
+  font-size: 42px;
+  font-weight: 900;
+  margin: 0 0 16px 0;
+  letter-spacing: -1px;
+}
+
+.promo-banner-bottom p {
+  font-size: 20px;
+  margin-bottom: 32px;
+  opacity: 0.95;
+}
+
+.promo-btn {
+  display: inline-block;
+  background: #fff;
+  color: #4A90E2;
+  padding: 16px 48px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.promo-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .collection-hero__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-showcase__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .products-layout {
+    grid-template-columns: 240px 1fr;
+    gap: 30px;
+  }
+
+  .fifa-heading {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collection-hero {
+    padding: 42px 0;
+  }
+
+  .collection-hero__copy h1 {
+    font-size: 42px;
+  }
+
+  .collection-hero--blue,
+  .collection-hero--light {
+    background: #f3f3f3;
+    color: #111;
+  }
+
+  .collection-hero--blue .collection-hero__copy p:not(.collection-eyebrow) {
+    color: rgba(17,17,17,.72);
+  }
+
+  .collection-hero--blue .collection-eyebrow {
+    color: #2e6bff;
+  }
+
+  .collection-hero--blue .collection-btn {
+    background: #111;
+    color: #fff !important;
+  }
+
+  .hero-banner-fifa .cm-shell {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fifa-content {
+    max-width: 100%;
+  }
+
+  .fifa-badge {
+    margin: 0 auto 24px;
+  }
+
+  .fifa-heading {
+    font-size: 32px;
+  }
+
+  .products-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-filters {
+    position: static;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .promo-banner-bottom h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-showcase__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-banner-fifa {
+    padding: 40px 0;
+  }
+
+  .fifa-heading {
+    font-size: 24px;
+  }
+
+  .fifa-subheading {
+    font-size: 16px;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-name {
+    font-size: 13px;
+  }
+
+  .price-sale {
+    font-size: 16px;
+  }
+
+  .promo-banner-bottom h2 {
+    font-size: 24px;
+  }
+
+  .promo-banner-bottom p {
+    font-size: 16px;
+  }
+}

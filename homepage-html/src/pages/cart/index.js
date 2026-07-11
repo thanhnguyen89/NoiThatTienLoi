@@ -121,7 +121,7 @@ function updateTotals(cart) {
 // ── Reuse from home ──
 function initFooterAccordion() {
   if (window.innerWidth > 768) return;
-  document.querySelectorAll('.footer__col:not(:first-child)').forEach(col => {
+  document.querySelectorAll('.footer__col:not(.footer__col--static)').forEach(col => {
     const title = col.querySelector('.f-listtel__title');
     if (title) title.addEventListener('click', () => col.classList.toggle('is-open'));
   });

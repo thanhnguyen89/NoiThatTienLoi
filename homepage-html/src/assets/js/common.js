@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Flash Sale Timer
   initFlashSaleTimer();
+
+  // Header cart badge
+  initHeaderCartCount();
 });
 
 // Scroll to top
@@ -150,4 +153,19 @@ function initFlashSaleTimer() {
 
   updateTimer();
   setInterval(updateTimer, 1000);
+}
+
+function initHeaderCartCount() {
+  const countEl = document.getElementById('headerCartCount');
+  if (!countEl) return;
+
+  try {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalQty = cart.reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
+    countEl.textContent = String(totalQty);
+    countEl.classList.toggle('has-cart', totalQty > 0);
+  } catch {
+    countEl.textContent = '0';
+    countEl.classList.remove('has-cart');
+  }
 }

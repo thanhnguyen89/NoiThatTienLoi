@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coolmate - Trang chu thoi trang nam nu nang dong">
+  <meta name="keywords" content="coolmate, thoi trang, ao thun, pickleball, quan lot nam, do chay bo">
+  <meta name="theme-color" content="#39a9ff">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>Coolmate - Toan Website</title>
+</head>
+<body class="coolmate-body">
+
+  {% include "partials/header.njk" %}
+
+  <main class="coolmate-home">
+    <section class="cm-hero">
+      <div class="cm-hero-slider" data-slider>
+        <div class="cm-hero-slider__track">
+          <a class="cm-hero-slide is-active" href="/sale" data-slide>
+            <img src="../../assets/images/slides/camp24527Artboard_1_copy_2.avif" alt="Giam den 15 phan tram toan website">
+          </a>
+          <a class="cm-hero-slide" href="/pickleball" data-slide>
+            <img src="../../assets/images/slides/image.avif" alt="Bo suu tap Pickleball">
+          </a>
+          <a class="cm-hero-slide" href="/quan-lot-nam" data-slide>
+            <img src="../../assets/images/slides/image1.avif" alt="Quan lot nam">
+          </a>
+          <a class="cm-hero-slide" href="/do-chay-bo" data-slide>
+            <img src="../../assets/images/slides/image2.avif" alt="Do chay bo">
+          </a>
+        </div>
+        <button class="cm-hero-slider__nav cm-hero-slider__nav--prev" type="button" aria-label="Slide truoc" data-slider-prev>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="cm-hero-slider__nav cm-hero-slider__nav--next" type="button" aria-label="Slide tiep theo" data-slider-next>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="cm-hero-slider__dots" aria-label="Chon slide">
+          <button class="is-active" type="button" aria-label="Slide 1" data-slider-dot="0"></button>
+          <button type="button" aria-label="Slide 2" data-slider-dot="1"></button>
+          <button type="button" aria-label="Slide 3" data-slider-dot="2"></button>
+          <button type="button" aria-label="Slide 4" data-slider-dot="3"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cm-orbit" aria-label="Bo suu tap noi bat">
+      <div class="cm-orbit__track">
+        <a class="cm-orbit__item" href="/collection/fifa-worldcup-2026-collection"><img src="../../assets/images/danhmuc/1.webp" alt="FIFA World Cup 2026"></a>
+        <a class="cm-orbit__item" href="/collection/wave-motion-collection"><img src="../../assets/images/image2.avif" alt="Wave Motion"></a>
+        <a class="cm-orbit__item" href="/collection/coolmate-activewear"><img src="../../assets/images/danhmuc/ao-thun-chay-bo-airflow-gradient-286-cam.webp" alt="Activewear"></a>
+        <a class="cm-orbit__item" href="/collection/do-chay-bo-coolmate"><img src="../../assets/images/danhmuc/ao-thun-chay-bo-nam-ventra-gradient-1-1.webp" alt="Running"></a>
+        <a class="cm-orbit__item" href="/collection/quan-dai-nam"><img src="../../assets/images/Cool_MAT_quan-dai.webp" alt="Quan dai"></a>
+        <a class="cm-orbit__item" href="/collection/pickleball-tennis"><img src="../../assets/images/ao-polo-nu-pkb-exdry-essentials-17-trang_61.webp" alt="Pickleball"></a>
+        <a class="cm-orbit__item" href="/collection/ao-thun-nam"><img src="../../assets/images/Cool_MAT_ao-thun.webp" alt="Ao thun"></a>
+        <a class="cm-orbit__item" href="/collection/do-the-thao"><img src="../../assets/images/image3.avif" alt="The thao"></a>
+      </div>
+    </section>
+
+     <section class="cm-shop-strip">
+      <div class="cm-tabs" aria-label="Gioi tinh">
+        <button class="cm-tab is-active" type="button" data-filter="male" aria-pressed="true">NAM</button>
+        <button class="cm-tab" type="button" data-filter="female" aria-pressed="false">N&#7918;</button>
+      </div>
+      <div class="cm-category-panels">
+        <div class="cm-category-row is-active" data-category-panel="male">
+        <a class="cm-category-card" href="/collection/ao-polo-nam">
+          <img src="../../assets/images/Cool_MAT_polo.webp" alt="Ao Polo">
+          <strong>ÁO POLO</strong>
+        </a>
+        <a class="cm-category-card" href="/collection/ao-thun-nam">
+          <img src="../../assets/images/Cool_MAT_ao-thun.webp" alt="Ao thun">
+          <strong>ÁO THUN</strong>
+        </a>
+        <a class="cm-category-card" href="/collection/quan-short-nam">
+          <img src="../../assets/images/Cool_MAT_quan-short.webp" alt="Quan shorts">
+          <strong>QUẦN SHORTS</strong>
+        </a>
+        <a class="cm-category-card" href="/collection/ao-so-mi-nam">
+          <img src="../../assets/images/Cool_MAT_so-mi.webp" alt="So mi">
+          <strong>SƠ MI</strong>
+        </a>
+        <a class="cm-category-card" href="/collection/quan-dai-nam">
+          <img src="../../assets/images/Cool_MAT_quan-dai.webp" alt="Quan dai">
+          <strong>QUẦN DÀI</strong>
+        </a>
+        <a class="cm-category-card" href="/collection/quan-lot-nam">
+          <img src="../../assets/images/Cool_MAT_quan-lot.webp" alt="Quan lot">
+          <strong>QUẦN LÓT</strong>
+        </a>
+        </div>
+
+        <div class="cm-category-row" data-category-panel="female" hidden>
+          <a class="cm-category-card" href="/collection/ao-nu">
+            <img src="../../assets/images/t-shirt-the-thao-nu-quick-dry-tight-6-xanh-blue_11.webp" alt="Ao nu">
+            <strong>&#193;O N&#7918;</strong>
+          </a>
+          <a class="cm-category-card" href="/collection/quan-short-nu">
+            <img src="../../assets/images/quan-short-nu-cbo-pace-short-3.webp" alt="Quan short nu">
+            <strong>QU&#7846;N SHORTS</strong>
+          </a>
+          <a class="cm-category-card" href="/collection/bra-legging">
+            <img src="../../assets/images/Cool_MAT_bra__legging.webp" alt="Bra va legging">
+            <strong>BRA &amp; LEGGING</strong>
+          </a>
+          <a class="cm-category-card" href="/collection/vay-the-thao-nu">
+            <img src="../../assets/images/Cool_MAT_vay-the-thao.webp" alt="Vay the thao">
+            <strong>V&#193;Y TH&#7874; THAO</strong>
+          </a>
+          <a class="cm-category-card" href="/collection/pickleball-tennis?gender_type=female">
+            <img src="../../assets/images/ao-polo-nu-pkb-exdry-essentials-17-trang_61.webp" alt="Pickleball nu">
+            <strong>PICKLEBALL</strong>
+          </a>
+          <a class="cm-category-card" href="/collection/phu-kien-nu">
+            <img src="../../assets/images/Cool_MAT_phu-kien.webp" alt="Phu kien nu">
+            <strong>PH&#7908; KI&#7878;N</strong>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <section class="cm-gender-grid" aria-label="Khuyen mai theo gioi tinh">
+      <a class="cm-gender-card" href="/nam" aria-label="Mua ngay - do nam">
+        <img src="../../assets/images/coolmate-live/gateway-banner-men.jpg" alt="Do nam - khuyen mai hot" width="882" height="600" loading="lazy">
+        <span class="cm-gender-caption">
+          <span class="cm-gender-title">&#272;&#7890; NAM</span>
+          <span class="cm-pill-btn">MUA NGAY</span>
+        </span>
+      </a>
+      <a class="cm-gender-card" href="/nu" aria-label="Mua ngay - do nu">
+        <img src="../../assets/images/coolmate-live/gateway-banner-women.jpg" alt="Do nu - khuyen mai hot" width="882" height="600" loading="lazy">
+        <span class="cm-gender-caption">
+          <span class="cm-gender-title">&#272;&#7890; N&#7918;</span>
+          <span class="cm-pill-btn">MUA NGAY</span>
+        </span>
+      </a>
+    </section>
+
+    <section id="pickleball" class="cm-feature-banner cm-feature-banner--pickleball">
+      <img src="../../assets/images/slides/image.avif" alt="Pickleball">
+      <div class="cm-feature-banner__copy">
+        <h2>PICKLEBALL</h2>
+        <a href="/collection/pickleball-tennis" class="cm-pill-btn">MUA NGAY</a>
+      </div>
+    </section>
+
+    <section class="cm-product-section" data-product-section>
+      <div class="cm-section-heading">
+        <h2>S&#7842;N PH&#7848;M PICKLEBALL</h2>
+        <a href="/collection/pickleball-tennis">Xem th&#234;m</a>
+      </div>
+      <button class="cm-product-nav cm-product-nav--prev" type="button" aria-label="Cu&#7897;n sang tr&#225;i" data-product-prev>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="cm-product-row" data-product-rail>
+        <article class="cm-product-card cm-product-card--quick-add">
+          <a class="cm-product-card__link" href="/product/ao-polo-nu-pickleball-exdry-essentials?color=trang">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="../../assets/images/ao-polo-nu-pkb-exdry-essentials-17-trang_61.webp" alt="&#193;o polo n&#7919; Pickleball Exdry Essentials">
+              <div class="cm-product-quick-add" aria-hidden="true">
+                <div class="cm-product-quick-add__title">Th&#234;m nhanh v&#224;o gi&#7887; h&#224;ng <span>+</span></div>
+                <div class="cm-product-size-row">
+                  <span>XS</span>
+                  <span>S</span>
+                  <span>M</span>
+                  <span>L</span>
+                  <span>XL</span>
+                </div>
+              </div>
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f8f8f8;"></span>
+                <span class="cm-product-swatch" style="--swatch:#223c68;"></span>
+                <span class="cm-product-swatch" style="--swatch:#2f2b34;"></span>
+              </div>
+              <h3>&#193;o polo n&#7919; Pickleball Exdry Essentials</h3>
+              <p class="cm-product-price"><strong>399.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/vay-thun-knit-aline-pickleball-driveshot-essentials?color=trang">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="../../assets/images/vay-thun-knit-aline-pkb-driveshot-ess-2-trang_88.webp" alt="V&#225;y thun Knit Aline Pickleball Driveshot Essentials">
+              <div class="cm-product-ribbon">
+                <span class="cm-product-ribbon__pill">T&#7862;NG 01</span>
+                <span class="cm-product-ribbon__text">&#193;O CROPTOP PICKLEBALL VOLLEY ESSENTIALS</span>
+                <i class="fa-solid fa-shirt" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f8f8f8;"></span>
+                <span class="cm-product-swatch" style="--swatch:#23242c;"></span>
+                <span class="cm-product-swatch" style="--swatch:#274878;"></span>
+              </div>
+              <h3>V&#225;y thun Knit Aline Pickleball Driveshot Essentials</h3>
+              <p class="cm-product-price"><strong>449.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/ao-thun-nam-pickleball-dinkshot-essentials?color=xam">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/December2025/ao-thun-nam-pickleball-dinkshot-3-xam_3.jpg?aio=w-700" alt="&#193;o thun nam Pickleball Essentials">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f8f8f8;"></span>
+                <span class="cm-product-swatch" style="--swatch:#1c4574;"></span>
+                <span class="cm-product-swatch" style="--swatch:#2d2f36;"></span>
+              </div>
+              <h3>&#193;o thun nam Pickleball Essentials</h3>
+              <p class="cm-product-price"><strong>299.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot?color=trang">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="../../assets/images/short-nam-6inch-pickleball-smash-shot-cut-_8.webp" alt="Short nam 6inch Pickleball Smash Shot">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f8f8f8;"></span>
+                <span class="cm-product-swatch" style="--swatch:#1f6f69;"></span>
+                <span class="cm-product-swatch" style="--swatch:#2e2e31;"></span>
+              </div>
+              <h3>Short nam 6inch Pickleball Smash Shot</h3>
+              <p class="cm-product-price"><strong>379.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+      </div>
+      <button class="cm-product-nav cm-product-nav--next" type="button" aria-label="Cu&#7897;n sang ph&#7843;i" data-product-next>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </section>
+
+    <section class="cm-feature-banner cm-feature-banner--underwear">
+      <img src="../../assets/images/slides/image1.avif" alt="Quan lot nam">
+      <div class="cm-feature-banner__copy">
+        <h2>QU&#7846;N L&#211;T NAM</h2>
+        <a href="/collection/quan-lot-nam" class="cm-pill-btn">MUA NGAY</a>
+      </div>
+    </section>
+
+    <section class="cm-product-section" data-product-section>
+      <div class="cm-section-heading">
+        <h2>S&#7842;N PH&#7848;M QU&#7846;N L&#211;T NAM</h2>
+        <a href="/collection/quan-lot-nam">Xem th&#234;m</a>
+      </div>
+      <button class="cm-product-nav cm-product-nav--prev" type="button" aria-label="Cu&#7897;n sang tr&#225;i" data-product-prev>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="cm-product-row" data-product-rail>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/combo-3-quan-lot-nam-trunk-airmax-mesh">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/July2025/quan-lot-trunk-airmax-mesh-_9-navy-xanh_%284%29.jpg?aio=w-700" alt="Combo 3 qu&#7847;n l&#243;t nam Trunk AirMax Mesh">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#0f172f;"></span>
+                <span class="cm-product-swatch" style="--swatch:#364a6a;"></span>
+                <span class="cm-product-swatch" style="--swatch:#20242d;"></span>
+                <span class="cm-product-swatch" style="--swatch:#8b8f9c;"></span>
+              </div>
+              <h3>Combo 3 qu&#7847;n l&#243;t nam Trunk AirMax Mesh</h3>
+              <p class="cm-product-price"><strong>279.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/combo-3-quan-lot-nam-trunk-bamboo?color=den">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/2026/01/24/combo-3-quan-lot-trunk-nam-bamboo-fortune-3-45-den_64.jpg?aio=w-700" alt="Combo 3 qu&#7847;n l&#243;t nam Trunk Bamboo">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#0f0f12;"></span>
+                <span class="cm-product-swatch" style="--swatch:#5b606e;"></span>
+                <span class="cm-product-swatch" style="--swatch:#9da0a7;"></span>
+                <span class="cm-product-swatch" style="--swatch:#2e3c54;"></span>
+              </div>
+              <h3>Combo 3 qu&#7847;n l&#243;t nam Trunk Bamboo</h3>
+              <p class="cm-product-price"><strong>299.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/combo-3-quan-lot-nam-trunk-excool?color=xanh-denim">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/2026/01/31/combo-3-quan-lot-nam-trunk-excool-2-61-xanh-denim.jpg?aio=w-700" alt="Combo 3 qu&#7847;n l&#243;t nam Trunk Excool">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#263b63;"></span>
+                <span class="cm-product-swatch" style="--swatch:#15284a;"></span>
+                <span class="cm-product-swatch" style="--swatch:#878d9e;"></span>
+                <span class="cm-product-swatch" style="--swatch:#111217;"></span>
+              </div>
+              <h3>Combo 3 qu&#7847;n l&#243;t nam Trunk Excool</h3>
+              <p class="cm-product-price"><strong>259.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/combo-3-quan-lot-nam-brief-lenzing-modal?color=blue-shadow">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/2026/02/11/combo-3-quan-lot-nam-brief-lenzing-modal-1-xanh-bong-dem_33.jpg?aio=w-700" alt="Combo 3 qu&#7847;n l&#243;t nam Brief Lenzing Modal">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#1a1c22;"></span>
+                <span class="cm-product-swatch" style="--swatch:#4f6881;"></span>
+                <span class="cm-product-swatch" style="--swatch:#264551;"></span>
+                <span class="cm-product-swatch" style="--swatch:#7c8a94;"></span>
+              </div>
+              <h3>Combo 3 qu&#7847;n l&#243;t nam Brief Lenzing Modal</h3>
+              <p class="cm-product-price"><strong>279.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+      </div>
+      <button class="cm-product-nav cm-product-nav--next" type="button" aria-label="Cu&#7897;n sang ph&#7843;i" data-product-next>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </section>
+
+    <section class="cm-feature-banner cm-feature-banner--running">
+      <img src="../../assets/images/slides/image2.avif" alt="Do chay bo">
+      <div class="cm-feature-banner__copy">
+        <h2>&#272;&#7890; CH&#7840;Y B&#7896;</h2>
+        <a href="/collection/do-chay-bo-coolmate" class="cm-pill-btn">MUA NGAY</a>
+      </div>
+    </section>
+
+    <section class="cm-product-section" data-product-section>
+      <div class="cm-section-heading">
+        <h2>S&#7842;N PH&#7848;M CH&#7840;Y B&#7896;</h2>
+        <a href="/collection/do-chay-bo-coolmate">Xem th&#234;m</a>
+      </div>
+      <button class="cm-product-nav cm-product-nav--prev" type="button" aria-label="Cu&#7897;n sang tr&#225;i" data-product-prev>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="cm-product-row" data-product-rail>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient?color=hong">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="../../assets/images/t-shirt-chay-bo-nu-exdry-aerodot-gradient-2-hong.webp" alt="Tshirt ch&#7841;y b&#7897; n&#7919; Exdry AeroDot Gradient">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f3a1d7;"></span>
+                <span class="cm-product-swatch" style="--swatch:#6f74ac;"></span>
+              </div>
+              <h3>Tshirt ch&#7841;y b&#7897; n&#7919; Exdry AeroDot Gradient</h3>
+              <p class="cm-product-price"><strong>229.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/quan-short-nu-cbo-pace-short-35in?color=den">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="../../assets/images/quan-short-nu-cbo-pace-short-3.webp" alt="Qu&#7847;n short ch&#7841;y b&#7897; n&#7919; 2 l&#7899;p Pace Short 3.5in">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#262730;"></span>
+                <span class="cm-product-swatch" style="--swatch:#5e6180;"></span>
+              </div>
+              <h3>Qu&#7847;n short ch&#7841;y b&#7897; n&#7919; 2 l&#7899;p Pace Short 3.5in</h3>
+              <p class="cm-product-price"><strong>279.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/t-shirt-the-thao-nu-quick-dry-tight?color=xanh-blue">
+            <div class="cm-product-media">
+              <img class="cm-product-image" src="../../assets/images/t-shirt-the-thao-nu-quick-dry-tight-6-xanh-blue_11.webp" alt="Tshirt th&#7875; thao n&#7919; Quick Dry Tight">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f4f4f4;"></span>
+                <span class="cm-product-swatch" style="--swatch:#ec8d91;"></span>
+                <span class="cm-product-swatch" style="--swatch:#202832;"></span>
+              </div>
+              <h3>Tshirt th&#7875; thao n&#7919; Quick Dry Tight</h3>
+              <p class="cm-product-price"><strong>229.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+        <article class="cm-product-card">
+          <a class="cm-product-card__link" href="/product/t-shirt-chay-bo-nu-graphic-sky?color=cam">
+            <div class="cm-product-media">
+              <span class="cm-product-badge">B&#193;N CH&#7840;Y</span>
+              <img class="cm-product-image" src="https://n7media.coolmate.me/uploads/2026/01/24/t-shirt-chay-bo-nu-airflow-exdry-ombre-2-1-hong_94.jpg?aio=w-700" alt="Tshirt ch&#7841;y b&#7897; n&#7919; Graphic Sky">
+            </div>
+            <div class="cm-product-meta">
+              <div class="cm-product-swatches" aria-hidden="true">
+                <span class="cm-product-swatch is-selected" style="--swatch:#f8a2a0;"></span>
+                <span class="cm-product-swatch" style="--swatch:#f7c9d1;"></span>
+              </div>
+              <h3>Tshirt ch&#7841;y b&#7897; n&#7919; Graphic Sky</h3>
+              <p class="cm-product-price"><strong>249.000&#273;</strong></p>
+            </div>
+          </a>
+        </article>
+      </div>
+      <button class="cm-product-nav cm-product-nav--next" type="button" aria-label="Cu&#7897;n sang ph&#7843;i" data-product-next>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </section>
+
+    <section class="cm-care">
+      <img src="https://n7media.coolmate.me/uploads/2026/04/20/Banner_Desktop_Homepage_Care__Share.png" alt="Hanh trinh Care and Share">
+    </section>
+
+    <section class="cm-coolclub">
+      <div class="cm-coolclub__left">
+        <h2>Dac quyen danh cho <strong>529.945</strong> thanh vien CoolClub</h2>
+        <div class="cm-benefit-grid">
+          <a href="/coolclub" class="cm-benefit-card">Moi ban be hoan tien 10% CoolCash</a>
+          <a href="/coolclub" class="cm-benefit-card">Hoan tien den 7%</a>
+          <a href="/coolclub" class="cm-benefit-card">Qua tang sinh nhat & dac biet</a>
+          <a href="/coolclub" class="cm-benefit-card">Mien phi van chuyen don tu 399K</a>
+          <a href="/coolclub" class="cm-benefit-card">Doi tra mien phi 60 ngay</a>
+          <a href="/coolclub" class="cm-benefit-card">Uu dai rieng cho thanh vien</a>
+        </div>
+      </div>
+      <div class="cm-coolclub__right">
+        <h3>Hoat dong gan day</h3>
+        <p>1.872 don hang vua duoc giao thanh cong trong 24 gio qua.</p>
+        <a href="/coolclub" class="cm-dark-btn">Gia nhap CoolClub ngay</a>
+        <p>9.300 CoolCash da duoc hoan cho thanh vien moi.</p>
+        <a href="/coolclub" class="cm-dark-btn">Xem them quyen loi</a>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="cm-floating-rail" aria-label="Tien ich nhanh">
+    <a href="#top" aria-label="Len dau trang"><i class="fas fa-chevron-up"></i></a>
+    <a href="/account" aria-label="Tai khoan"><i class="fas fa-user"></i></a>
+    <a href="/cart" aria-label="Gio hang"><i class="fas fa-shopping-bag"></i></a>
+    <a href="/support" aria-label="Ho tro"><i class="fas fa-headset"></i></a>
+  </aside>
+
+  {% include "partials/footer.njk" %}
+
+</body>
+</html>

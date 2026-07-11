@@ -2,23 +2,191 @@
    Modal Login - Bootstrap Based
    ============================================ */
 
+/* Minimal Bootstrap modal primitives.
+   The project only imports a lite Bootstrap build, so we provide the
+   missing modal/base form styles here to prevent the modal markup from
+   rendering inline in the page. */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+  background: rgba(17, 24, 39, 0.48);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal.fade:not(.show) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal.fade.show {
+  opacity: 1;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 1.75rem auto;
+  pointer-events: none;
+}
+
+.modal-dialog-centered {
+  min-height: calc(100% - 3.5rem);
+  display: flex;
+  align-items: center;
+}
+
 /* Modal Dialog */
 .modal-login-dialog {
   max-width: 480px;
+  width: calc(100% - 2rem);
 }
 
-.modal-login .modal-content {
+#modalLogin .modal-content,
+#modalRegister .modal-content,
+#modalForgot .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background: #fff;
   border: none;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
-.modal-login .modal-header {
+#modalLogin .modal-header,
+#modalRegister .modal-header,
+#modalForgot .modal-header {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: space-between;
   padding: 28px 28px 0;
 }
 
-.modal-login .modal-body {
+#modalLogin .modal-body,
+#modalRegister .modal-body,
+#modalForgot .modal-body {
+  position: relative;
+  flex: 1 1 auto;
   padding: 20px 28px 32px;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.btn-close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.btn-close::before {
+  content: "\00d7";
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: center;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.form-floating {
+  position: relative;
+}
+
+.form-floating > .form-control,
+.form-floating > .form-select {
+  height: 54px;
+  padding: 1.25rem 0.875rem 0.5rem;
+}
+
+.form-floating > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.95rem 0.875rem;
+  pointer-events: none;
+  color: #999;
+  transition: all 0.2s ease;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+  transform: scale(0.85) translateY(-0.55rem) translateX(0.15rem);
+  height: auto;
+  padding-top: 0.25rem;
+  background: linear-gradient(to bottom, #fff 0 55%, transparent 55% 100%);
+}
+
+.form-check-input {
+  vertical-align: middle;
+}
+
+.modal .row {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.modal .row > * {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-group > .btn {
+  border-radius: 0 8px 8px 0;
+}
+
+.modal-register__captcha-img {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  font-weight: 600;
+  letter-spacing: 0.3em;
 }
 
 /* Social Buttons */

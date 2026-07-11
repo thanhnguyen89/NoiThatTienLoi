@@ -1,0 +1,161 @@
+.page-directory-page {
+  background: #f7f8fb;
+  color: #111;
+}
+
+.page-directory-main {
+  overflow: hidden;
+}
+
+.page-directory-hero {
+  background:
+    radial-gradient(circle at top right, rgba(46, 107, 255, .18), transparent 32%),
+    linear-gradient(135deg, #0d0d0d 0%, #151515 55%, #f7f8fb 55%, #f7f8fb 100%);
+  color: #fff;
+  padding: 72px 0 86px;
+}
+
+.page-directory-eyebrow {
+  color: #7db0ff;
+  font-family: var(--cm-font-display);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.page-directory-hero h1 {
+  font-family: var(--cm-font-display);
+  font-size: clamp(42px, 6vw, 80px);
+  font-weight: 900;
+  letter-spacing: -.06em;
+  line-height: .92;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+}
+
+.page-directory-hero p:not(.page-directory-eyebrow) {
+  color: rgba(255, 255, 255, .82);
+  font-size: 18px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 760px;
+}
+
+.page-directory-content {
+  padding: 34px 0 56px;
+}
+
+.page-directory-groups {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.page-directory-group {
+  background: #fff;
+  border: 1px solid rgba(17, 17, 17, .06);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.page-directory-group__head {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.page-directory-group__head h2 {
+  font-family: var(--cm-font-display);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.page-directory-group__head span {
+  color: #667085;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.page-directory-group__list {
+  display: grid;
+  gap: 10px;
+}
+
+.page-directory-link {
+  background: #f6f7fb;
+  border-radius: 12px;
+  color: #111;
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 12px 14px;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.page-directory-link:hover,
+.page-directory-link:focus-visible {
+  background: #edf1ff;
+  transform: translateY(-1px);
+}
+
+.page-directory-link strong {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.page-directory-link span {
+  color: #65708a;
+  font-family: var(--cm-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .page-directory-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-directory-hero {
+    background: #0d0d0d;
+    padding: 54px 0 62px;
+  }
+
+  .page-directory-content {
+    padding: 20px 0 34px;
+  }
+
+  .page-directory-group {
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  .page-directory-group__head h2 {
+    font-size: 16px;
+  }
+
+  .page-directory-link {
+    padding: 10px 12px;
+  }
+
+  .page-directory-link strong {
+    font-size: 12px;
+  }
+
+  .page-directory-link span {
+    font-size: 10px;
+  }
+}

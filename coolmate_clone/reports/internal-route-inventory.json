@@ -1,0 +1,3891 @@
+{
+  "generatedAt": "2026-05-30T23:03:49.816Z",
+  "siteUrl": "https://www.coolmate.me",
+  "scannedFileCount": 35,
+  "scannedFiles": [
+    "src/assets/js/common.js",
+    "src/assets/js/search-overlay.js",
+    "src/data/ao-nam.data.js",
+    "src/data/cart-page.data.js",
+    "src/data/catalog-pages.data.js",
+    "src/data/doraemon-product.data.js",
+    "src/data/info-pages.data.js",
+    "src/pages/about/index.js",
+    "src/pages/about/index.njk",
+    "src/pages/cart/index.js",
+    "src/pages/cart/index.njk",
+    "src/pages/category/index.js",
+    "src/pages/category/index.njk",
+    "src/pages/checkout/index.js",
+    "src/pages/checkout/index.njk",
+    "src/pages/collection-ao-nam/index.js",
+    "src/pages/collection-ao-nam/index.njk",
+    "src/pages/collection-generic/index.js",
+    "src/pages/collection-generic/index.njk",
+    "src/pages/contact/index.js",
+    "src/pages/contact/index.njk",
+    "src/pages/home/index.js",
+    "src/pages/home/index.njk",
+    "src/pages/info/index.js",
+    "src/pages/info/index.njk",
+    "src/pages/new-products/index.js",
+    "src/pages/new-products/index.njk",
+    "src/pages/news/index.js",
+    "src/pages/news/index.njk",
+    "src/pages/product-detail/index.js",
+    "src/pages/product-detail/index.njk",
+    "src/pages/product-doraemon/index.js",
+    "src/pages/product-doraemon/index.njk",
+    "src/partials/footer.njk",
+    "src/partials/header.njk"
+  ],
+  "coverage": {
+    "generatedRoutes": [
+      "/",
+      "/new-products/",
+      "/about/",
+      "/contact/",
+      "/category/",
+      "/collection/ao-nam/",
+      "/product/ao-thun-doraemon-cotton-compact-phoi-bo/",
+      "/product-detail/",
+      "/news/",
+      "/cart/",
+      "/checkout/",
+      "/collection/san-pham-moi/",
+      "/collection/do-nam/",
+      "/collection/do-nu/",
+      "/collection/do-the-thao/",
+      "/collection/pickleball-tennis/",
+      "/collection/phu-kien-nam/",
+      "/collection/quan-lot-nam/",
+      "/collection/giam-gia/",
+      "/stores/",
+      "/login/",
+      "/coolclub/",
+      "/lp/coolmate-101/",
+      "/blog/",
+      "/page/trung-tam-dich-vu-khach-hang/",
+      "/page/chinh-sach-bao-mat-thong-tin-ca-nhan/",
+      "/page/dich-vu-60-ngay-doi-tra/"
+    ],
+    "normalizedGeneratedRoutes": [
+      "/",
+      "/new-products",
+      "/about",
+      "/contact",
+      "/category",
+      "/collection/ao-nam",
+      "/product/ao-thun-doraemon-cotton-compact-phoi-bo",
+      "/product-detail",
+      "/news",
+      "/cart",
+      "/checkout",
+      "/collection/san-pham-moi",
+      "/collection/do-nam",
+      "/collection/do-nu",
+      "/collection/do-the-thao",
+      "/collection/pickleball-tennis",
+      "/collection/phu-kien-nam",
+      "/collection/quan-lot-nam",
+      "/collection/giam-gia",
+      "/stores",
+      "/login",
+      "/coolclub",
+      "/lp/coolmate-101",
+      "/blog",
+      "/page/trung-tam-dich-vu-khach-hang",
+      "/page/chinh-sach-bao-mat-thong-tin-ca-nhan",
+      "/page/dich-vu-60-ngay-doi-tra"
+    ],
+    "referencedRoutes": [
+      "/about",
+      "/account",
+      "/blog",
+      "/care-and-share",
+      "/careers",
+      "/cart",
+      "/checkout",
+      "/collection/ao-ba-lo-tank-top-nam",
+      "/collection/ao-bra-the-thao",
+      "/collection/ao-chay-bo",
+      "/collection/ao-croptop-nu",
+      "/collection/ao-khoac-nam",
+      "/collection/ao-khoac-nu",
+      "/collection/ao-nam",
+      "/collection/ao-nam-choi-the-thao",
+      "/collection/ao-nam-dai-tay",
+      "/collection/ao-nu",
+      "/collection/ao-pickleball",
+      "/collection/ao-polo-nam",
+      "/collection/ao-polo-nu",
+      "/collection/ao-so-mi-nam",
+      "/collection/ao-sweater-len-ni-nam",
+      "/collection/ao-tanktop-nu",
+      "/collection/ao-thun-nam",
+      "/collection/ao-thun-nu",
+      "/collection/balo",
+      "/collection/ban-chay-nhat",
+      "/collection/bra-legging",
+      "/collection/care-and-share",
+      "/collection/chan-vay-pickleball",
+      "/collection/coolmate-activewear",
+      "/collection/corecotton-tee",
+      "/collection/dam-nu",
+      "/collection/do-boi-nam",
+      "/collection/do-bong-da",
+      "/collection/do-casual",
+      "/collection/do-chay-bo-coolmate",
+      "/collection/do-gym",
+      "/collection/do-mac-hang-ngay-nu",
+      "/collection/do-nam",
+      "/collection/do-nu",
+      "/collection/do-the-thao",
+      "/collection/do-yoga-nu",
+      "/collection/doraemon-collection",
+      "/collection/fifa-worldcup-2026-collection",
+      "/collection/giam-gia",
+      "/collection/gym-yoga",
+      "/collection/mu-chong-nang",
+      "/collection/mu-luoi-trai",
+      "/collection/mu-non",
+      "/collection/mu-the-thao",
+      "/collection/phu-kien-ban-chay",
+      "/collection/phu-kien-chay-bo",
+      "/collection/phu-kien-khac",
+      "/collection/phu-kien-nam",
+      "/collection/phu-kien-nu",
+      "/collection/pickleball-tennis",
+      "/collection/quan-boxer-brief-dang-dai",
+      "/collection/quan-boxer-trunk",
+      "/collection/quan-dai-nam",
+      "/collection/quan-dai-nu",
+      "/collection/quan-jeans-nam",
+      "/collection/quan-jogger-nam",
+      "/collection/quan-jogger-nu",
+      "/collection/quan-kaki-nam",
+      "/collection/quan-legging-nu",
+      "/collection/quan-long-leg",
+      "/collection/quan-lot-nam",
+      "/collection/quan-nam",
+      "/collection/quan-nam-choi-the-thao",
+      "/collection/quan-nu",
+      "/collection/quan-nu-choi-the-thao",
+      "/collection/quan-pants-nam",
+      "/collection/quan-short-chay-bo",
+      "/collection/quan-short-nam",
+      "/collection/quan-short-nu",
+      "/collection/quan-short-pickleball",
+      "/collection/quan-tam-giac-brief",
+      "/collection/san-pham-moi",
+      "/collection/set-do-nam",
+      "/collection/set-do-nu",
+      "/collection/tat-co-cao",
+      "/collection/tat-nam",
+      "/collection/tat-pickleball",
+      "/collection/tat-the-thao",
+      "/collection/tat-vo",
+      "/collection/tui-deo-cheo",
+      "/collection/tui-vi",
+      "/collection/vay-dam-nu",
+      "/collection/vay-pickleball",
+      "/collection/vay-the-thao-nu",
+      "/collection/vi-nam",
+      "/collection/wave-motion-collection",
+      "/community-threads",
+      "/contact",
+      "/coolclub",
+      "/coolclub/benefits",
+      "/coolclub/register",
+      "/coolmate-101",
+      "/copyright",
+      "/customer-experience",
+      "/cxp",
+      "/do-chay-bo",
+      "/dvkh-xuat-sac",
+      "/factory",
+      "/faq",
+      "/graphic-tee",
+      "/highlight-collections",
+      "/language",
+      "/login",
+      "/lp/coolmate-101",
+      "/nam",
+      "/nu",
+      "/page/chinh-sach-bao-mat-thong-tin-ca-nhan",
+      "/page/dich-vu-60-ngay-doi-tra",
+      "/page/trung-tam-dich-vu-khach-hang",
+      "/pickleball",
+      "/privacy",
+      "/product-detail",
+      "/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50",
+      "/product/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99",
+      "/product/ao-polo-nam-cafe",
+      "/product/ao-polo-nam-phoi-bo-co-performance-world-cup",
+      "/product/ao-polo-nu-pickleball-exdry-essentials",
+      "/product/ao-polo-the-thao-nam-promax-s1-logo-1",
+      "/product/ao-polo-world-cup-doi-tuyen-anh",
+      "/product/ao-tank-regular-fit-cotton-poly-180gsm",
+      "/product/ao-thun-co-v-jacquard-exdry-proactive-world-cup",
+      "/product/ao-thun-cotton-compact-logo-coolmate",
+      "/product/ao-thun-doraemon-biet-doi-bien-xanh-cotton-180gsm1",
+      "/product/ao-thun-doraemon-cotton-compact-phoi-bo",
+      "/product/ao-thun-doraemon-ky-si-dai-duong-cotton-180gsm",
+      "/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1",
+      "/product/ao-thun-doraemon-tinh-ban-nhiem-mau-cotton-180gsm",
+      "/product/ao-thun-nam-cotton-compact-chong-nhan",
+      "/product/ao-thun-nam-phoi-tay-exdry-performance-world-cup",
+      "/product/ao-thun-nam-pickleball-dinkshot-essentials",
+      "/product/ao-thun-phoi-bo-co-exdry-proactive-world-cup",
+      "/product/ao-thun-the-thao-thoang-khi-essentials",
+      "/product/ao-tshirt-nam-regular-cotton-poly-180gsm",
+      "/product/ao-tshirt-nam-regular-fit-100-cotton-180gsm",
+      "/product/combo-3-quan-lot-nam-brief-lenzing-modal",
+      "/product/combo-3-quan-lot-nam-trunk-airmax-mesh",
+      "/product/combo-3-quan-lot-nam-trunk-bamboo",
+      "/product/combo-3-quan-lot-nam-trunk-excool",
+      "/product/polo-pique-basic-cotton-100",
+      "/product/quan-short-nu-cbo-pace-short-35in",
+      "/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot",
+      "/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient",
+      "/product/t-shirt-chay-bo-nu-graphic-sky",
+      "/product/t-shirt-the-thao-nu-quick-dry-tight",
+      "/product/tui-trong-gym",
+      "/product/vay-thun-knit-aline-pickleball-driveshot-essentials",
+      "/promotions-policy",
+      "/quan-lot-nam",
+      "/return",
+      "/return-store",
+      "/sale",
+      "/shipping",
+      "/site-history",
+      "/size-guide",
+      "/stores",
+      "/support",
+      "/sustainability",
+      "/vision-2030"
+    ],
+    "missingGeneratedRoutes": [
+      "/account",
+      "/care-and-share",
+      "/careers",
+      "/collection/ao-ba-lo-tank-top-nam",
+      "/collection/ao-bra-the-thao",
+      "/collection/ao-chay-bo",
+      "/collection/ao-croptop-nu",
+      "/collection/ao-khoac-nam",
+      "/collection/ao-khoac-nu",
+      "/collection/ao-nam-choi-the-thao",
+      "/collection/ao-nam-dai-tay",
+      "/collection/ao-nu",
+      "/collection/ao-pickleball",
+      "/collection/ao-polo-nam",
+      "/collection/ao-polo-nu",
+      "/collection/ao-so-mi-nam",
+      "/collection/ao-sweater-len-ni-nam",
+      "/collection/ao-tanktop-nu",
+      "/collection/ao-thun-nam",
+      "/collection/ao-thun-nu",
+      "/collection/balo",
+      "/collection/ban-chay-nhat",
+      "/collection/bra-legging",
+      "/collection/care-and-share",
+      "/collection/chan-vay-pickleball",
+      "/collection/coolmate-activewear",
+      "/collection/corecotton-tee",
+      "/collection/dam-nu",
+      "/collection/do-boi-nam",
+      "/collection/do-bong-da",
+      "/collection/do-casual",
+      "/collection/do-chay-bo-coolmate",
+      "/collection/do-gym",
+      "/collection/do-mac-hang-ngay-nu",
+      "/collection/do-yoga-nu",
+      "/collection/doraemon-collection",
+      "/collection/fifa-worldcup-2026-collection",
+      "/collection/gym-yoga",
+      "/collection/mu-chong-nang",
+      "/collection/mu-luoi-trai",
+      "/collection/mu-non",
+      "/collection/mu-the-thao",
+      "/collection/phu-kien-ban-chay",
+      "/collection/phu-kien-chay-bo",
+      "/collection/phu-kien-khac",
+      "/collection/phu-kien-nu",
+      "/collection/quan-boxer-brief-dang-dai",
+      "/collection/quan-boxer-trunk",
+      "/collection/quan-dai-nam",
+      "/collection/quan-dai-nu",
+      "/collection/quan-jeans-nam",
+      "/collection/quan-jogger-nam",
+      "/collection/quan-jogger-nu",
+      "/collection/quan-kaki-nam",
+      "/collection/quan-legging-nu",
+      "/collection/quan-long-leg",
+      "/collection/quan-nam",
+      "/collection/quan-nam-choi-the-thao",
+      "/collection/quan-nu",
+      "/collection/quan-nu-choi-the-thao",
+      "/collection/quan-pants-nam",
+      "/collection/quan-short-chay-bo",
+      "/collection/quan-short-nam",
+      "/collection/quan-short-nu",
+      "/collection/quan-short-pickleball",
+      "/collection/quan-tam-giac-brief",
+      "/collection/set-do-nam",
+      "/collection/set-do-nu",
+      "/collection/tat-co-cao",
+      "/collection/tat-nam",
+      "/collection/tat-pickleball",
+      "/collection/tat-the-thao",
+      "/collection/tat-vo",
+      "/collection/tui-deo-cheo",
+      "/collection/tui-vi",
+      "/collection/vay-dam-nu",
+      "/collection/vay-pickleball",
+      "/collection/vay-the-thao-nu",
+      "/collection/vi-nam",
+      "/collection/wave-motion-collection",
+      "/community-threads",
+      "/coolclub/benefits",
+      "/coolclub/register",
+      "/coolmate-101",
+      "/copyright",
+      "/customer-experience",
+      "/cxp",
+      "/do-chay-bo",
+      "/dvkh-xuat-sac",
+      "/factory",
+      "/faq",
+      "/graphic-tee",
+      "/highlight-collections",
+      "/language",
+      "/nam",
+      "/nu",
+      "/pickleball",
+      "/privacy",
+      "/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50",
+      "/product/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99",
+      "/product/ao-polo-nam-cafe",
+      "/product/ao-polo-nam-phoi-bo-co-performance-world-cup",
+      "/product/ao-polo-nu-pickleball-exdry-essentials",
+      "/product/ao-polo-the-thao-nam-promax-s1-logo-1",
+      "/product/ao-polo-world-cup-doi-tuyen-anh",
+      "/product/ao-tank-regular-fit-cotton-poly-180gsm",
+      "/product/ao-thun-co-v-jacquard-exdry-proactive-world-cup",
+      "/product/ao-thun-cotton-compact-logo-coolmate",
+      "/product/ao-thun-doraemon-biet-doi-bien-xanh-cotton-180gsm1",
+      "/product/ao-thun-doraemon-ky-si-dai-duong-cotton-180gsm",
+      "/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1",
+      "/product/ao-thun-doraemon-tinh-ban-nhiem-mau-cotton-180gsm",
+      "/product/ao-thun-nam-cotton-compact-chong-nhan",
+      "/product/ao-thun-nam-phoi-tay-exdry-performance-world-cup",
+      "/product/ao-thun-nam-pickleball-dinkshot-essentials",
+      "/product/ao-thun-phoi-bo-co-exdry-proactive-world-cup",
+      "/product/ao-thun-the-thao-thoang-khi-essentials",
+      "/product/ao-tshirt-nam-regular-cotton-poly-180gsm",
+      "/product/ao-tshirt-nam-regular-fit-100-cotton-180gsm",
+      "/product/combo-3-quan-lot-nam-brief-lenzing-modal",
+      "/product/combo-3-quan-lot-nam-trunk-airmax-mesh",
+      "/product/combo-3-quan-lot-nam-trunk-bamboo",
+      "/product/combo-3-quan-lot-nam-trunk-excool",
+      "/product/polo-pique-basic-cotton-100",
+      "/product/quan-short-nu-cbo-pace-short-35in",
+      "/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot",
+      "/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient",
+      "/product/t-shirt-chay-bo-nu-graphic-sky",
+      "/product/t-shirt-the-thao-nu-quick-dry-tight",
+      "/product/tui-trong-gym",
+      "/product/vay-thun-knit-aline-pickleball-driveshot-essentials",
+      "/promotions-policy",
+      "/quan-lot-nam",
+      "/return",
+      "/return-store",
+      "/sale",
+      "/shipping",
+      "/site-history",
+      "/size-guide",
+      "/support",
+      "/sustainability",
+      "/vision-2030"
+    ],
+    "unusedGeneratedRoutes": [
+      "/",
+      "/category",
+      "/new-products",
+      "/news"
+    ],
+    "declaredCollectionRoutes": [
+      "/collection/do-nam",
+      "/collection/do-nu",
+      "/collection/do-the-thao",
+      "/collection/giam-gia",
+      "/collection/phu-kien-nam",
+      "/collection/pickleball-tennis",
+      "/collection/quan-lot-nam",
+      "/collection/san-pham-moi"
+    ],
+    "declaredInfoRoutes": [
+      "/blog",
+      "/coolclub",
+      "/login",
+      "/lp/coolmate-101",
+      "/page/chinh-sach-bao-mat-thong-tin-ca-nhan",
+      "/page/dich-vu-60-ngay-doi-tra",
+      "/page/trung-tam-dich-vu-khach-hang",
+      "/stores"
+    ],
+    "collectionDataGaps": [
+      "/collection/ao-ba-lo-tank-top-nam",
+      "/collection/ao-bra-the-thao",
+      "/collection/ao-chay-bo",
+      "/collection/ao-croptop-nu",
+      "/collection/ao-khoac-nam",
+      "/collection/ao-khoac-nu",
+      "/collection/ao-nam-choi-the-thao",
+      "/collection/ao-nam-dai-tay",
+      "/collection/ao-nu",
+      "/collection/ao-pickleball",
+      "/collection/ao-polo-nam",
+      "/collection/ao-polo-nu",
+      "/collection/ao-so-mi-nam",
+      "/collection/ao-sweater-len-ni-nam",
+      "/collection/ao-tanktop-nu",
+      "/collection/ao-thun-nam",
+      "/collection/ao-thun-nu",
+      "/collection/balo",
+      "/collection/ban-chay-nhat",
+      "/collection/bra-legging",
+      "/collection/care-and-share",
+      "/collection/chan-vay-pickleball",
+      "/collection/coolmate-activewear",
+      "/collection/corecotton-tee",
+      "/collection/dam-nu",
+      "/collection/do-boi-nam",
+      "/collection/do-bong-da",
+      "/collection/do-casual",
+      "/collection/do-chay-bo-coolmate",
+      "/collection/do-gym",
+      "/collection/do-mac-hang-ngay-nu",
+      "/collection/do-yoga-nu",
+      "/collection/doraemon-collection",
+      "/collection/fifa-worldcup-2026-collection",
+      "/collection/gym-yoga",
+      "/collection/mu-chong-nang",
+      "/collection/mu-luoi-trai",
+      "/collection/mu-non",
+      "/collection/mu-the-thao",
+      "/collection/phu-kien-ban-chay",
+      "/collection/phu-kien-chay-bo",
+      "/collection/phu-kien-khac",
+      "/collection/phu-kien-nu",
+      "/collection/quan-boxer-brief-dang-dai",
+      "/collection/quan-boxer-trunk",
+      "/collection/quan-dai-nam",
+      "/collection/quan-dai-nu",
+      "/collection/quan-jeans-nam",
+      "/collection/quan-jogger-nam",
+      "/collection/quan-jogger-nu",
+      "/collection/quan-kaki-nam",
+      "/collection/quan-legging-nu",
+      "/collection/quan-long-leg",
+      "/collection/quan-nam",
+      "/collection/quan-nam-choi-the-thao",
+      "/collection/quan-nu",
+      "/collection/quan-nu-choi-the-thao",
+      "/collection/quan-pants-nam",
+      "/collection/quan-short-chay-bo",
+      "/collection/quan-short-nam",
+      "/collection/quan-short-nu",
+      "/collection/quan-short-pickleball",
+      "/collection/quan-tam-giac-brief",
+      "/collection/set-do-nam",
+      "/collection/set-do-nu",
+      "/collection/tat-co-cao",
+      "/collection/tat-nam",
+      "/collection/tat-pickleball",
+      "/collection/tat-the-thao",
+      "/collection/tat-vo",
+      "/collection/tui-deo-cheo",
+      "/collection/tui-vi",
+      "/collection/vay-dam-nu",
+      "/collection/vay-pickleball",
+      "/collection/vay-the-thao-nu",
+      "/collection/vi-nam",
+      "/collection/wave-motion-collection"
+    ],
+    "infoDataGaps": [
+      "/account",
+      "/care-and-share",
+      "/careers",
+      "/community-threads",
+      "/coolclub/benefits",
+      "/coolclub/register",
+      "/coolmate-101",
+      "/copyright",
+      "/customer-experience",
+      "/cxp",
+      "/do-chay-bo",
+      "/dvkh-xuat-sac",
+      "/factory",
+      "/faq",
+      "/graphic-tee",
+      "/highlight-collections",
+      "/language",
+      "/nam",
+      "/nu",
+      "/pickleball",
+      "/privacy",
+      "/promotions-policy",
+      "/quan-lot-nam",
+      "/return",
+      "/return-store",
+      "/sale",
+      "/shipping",
+      "/site-history",
+      "/size-guide",
+      "/support",
+      "/sustainability",
+      "/vision-2030"
+    ],
+    "missingByType": {
+      "top-level": [
+        "/account",
+        "/care-and-share",
+        "/careers",
+        "/community-threads",
+        "/coolmate-101",
+        "/copyright",
+        "/customer-experience",
+        "/cxp",
+        "/do-chay-bo",
+        "/dvkh-xuat-sac",
+        "/factory",
+        "/faq",
+        "/graphic-tee",
+        "/highlight-collections",
+        "/language",
+        "/nam",
+        "/nu",
+        "/pickleball",
+        "/privacy",
+        "/promotions-policy",
+        "/quan-lot-nam",
+        "/return",
+        "/return-store",
+        "/sale",
+        "/shipping",
+        "/site-history",
+        "/size-guide",
+        "/support",
+        "/sustainability",
+        "/vision-2030"
+      ],
+      "collection": [
+        "/collection/ao-ba-lo-tank-top-nam",
+        "/collection/ao-bra-the-thao",
+        "/collection/ao-chay-bo",
+        "/collection/ao-croptop-nu",
+        "/collection/ao-khoac-nam",
+        "/collection/ao-khoac-nu",
+        "/collection/ao-nam-choi-the-thao",
+        "/collection/ao-nam-dai-tay",
+        "/collection/ao-nu",
+        "/collection/ao-pickleball",
+        "/collection/ao-polo-nam",
+        "/collection/ao-polo-nu",
+        "/collection/ao-so-mi-nam",
+        "/collection/ao-sweater-len-ni-nam",
+        "/collection/ao-tanktop-nu",
+        "/collection/ao-thun-nam",
+        "/collection/ao-thun-nu",
+        "/collection/balo",
+        "/collection/ban-chay-nhat",
+        "/collection/bra-legging",
+        "/collection/care-and-share",
+        "/collection/chan-vay-pickleball",
+        "/collection/coolmate-activewear",
+        "/collection/corecotton-tee",
+        "/collection/dam-nu",
+        "/collection/do-boi-nam",
+        "/collection/do-bong-da",
+        "/collection/do-casual",
+        "/collection/do-chay-bo-coolmate",
+        "/collection/do-gym",
+        "/collection/do-mac-hang-ngay-nu",
+        "/collection/do-yoga-nu",
+        "/collection/doraemon-collection",
+        "/collection/fifa-worldcup-2026-collection",
+        "/collection/gym-yoga",
+        "/collection/mu-chong-nang",
+        "/collection/mu-luoi-trai",
+        "/collection/mu-non",
+        "/collection/mu-the-thao",
+        "/collection/phu-kien-ban-chay",
+        "/collection/phu-kien-chay-bo",
+        "/collection/phu-kien-khac",
+        "/collection/phu-kien-nu",
+        "/collection/quan-boxer-brief-dang-dai",
+        "/collection/quan-boxer-trunk",
+        "/collection/quan-dai-nam",
+        "/collection/quan-dai-nu",
+        "/collection/quan-jeans-nam",
+        "/collection/quan-jogger-nam",
+        "/collection/quan-jogger-nu",
+        "/collection/quan-kaki-nam",
+        "/collection/quan-legging-nu",
+        "/collection/quan-long-leg",
+        "/collection/quan-nam",
+        "/collection/quan-nam-choi-the-thao",
+        "/collection/quan-nu",
+        "/collection/quan-nu-choi-the-thao",
+        "/collection/quan-pants-nam",
+        "/collection/quan-short-chay-bo",
+        "/collection/quan-short-nam",
+        "/collection/quan-short-nu",
+        "/collection/quan-short-pickleball",
+        "/collection/quan-tam-giac-brief",
+        "/collection/set-do-nam",
+        "/collection/set-do-nu",
+        "/collection/tat-co-cao",
+        "/collection/tat-nam",
+        "/collection/tat-pickleball",
+        "/collection/tat-the-thao",
+        "/collection/tat-vo",
+        "/collection/tui-deo-cheo",
+        "/collection/tui-vi",
+        "/collection/vay-dam-nu",
+        "/collection/vay-pickleball",
+        "/collection/vay-the-thao-nu",
+        "/collection/vi-nam",
+        "/collection/wave-motion-collection"
+      ],
+      "nested": [
+        "/coolclub/benefits",
+        "/coolclub/register"
+      ],
+      "product": [
+        "/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50",
+        "/product/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99",
+        "/product/ao-polo-nam-cafe",
+        "/product/ao-polo-nam-phoi-bo-co-performance-world-cup",
+        "/product/ao-polo-nu-pickleball-exdry-essentials",
+        "/product/ao-polo-the-thao-nam-promax-s1-logo-1",
+        "/product/ao-polo-world-cup-doi-tuyen-anh",
+        "/product/ao-tank-regular-fit-cotton-poly-180gsm",
+        "/product/ao-thun-co-v-jacquard-exdry-proactive-world-cup",
+        "/product/ao-thun-cotton-compact-logo-coolmate",
+        "/product/ao-thun-doraemon-biet-doi-bien-xanh-cotton-180gsm1",
+        "/product/ao-thun-doraemon-ky-si-dai-duong-cotton-180gsm",
+        "/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1",
+        "/product/ao-thun-doraemon-tinh-ban-nhiem-mau-cotton-180gsm",
+        "/product/ao-thun-nam-cotton-compact-chong-nhan",
+        "/product/ao-thun-nam-phoi-tay-exdry-performance-world-cup",
+        "/product/ao-thun-nam-pickleball-dinkshot-essentials",
+        "/product/ao-thun-phoi-bo-co-exdry-proactive-world-cup",
+        "/product/ao-thun-the-thao-thoang-khi-essentials",
+        "/product/ao-tshirt-nam-regular-cotton-poly-180gsm",
+        "/product/ao-tshirt-nam-regular-fit-100-cotton-180gsm",
+        "/product/combo-3-quan-lot-nam-brief-lenzing-modal",
+        "/product/combo-3-quan-lot-nam-trunk-airmax-mesh",
+        "/product/combo-3-quan-lot-nam-trunk-bamboo",
+        "/product/combo-3-quan-lot-nam-trunk-excool",
+        "/product/polo-pique-basic-cotton-100",
+        "/product/quan-short-nu-cbo-pace-short-35in",
+        "/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot",
+        "/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient",
+        "/product/t-shirt-chay-bo-nu-graphic-sky",
+        "/product/t-shirt-the-thao-nu-quick-dry-tight",
+        "/product/tui-trong-gym",
+        "/product/vay-thun-knit-aline-pickleball-driveshot-essentials"
+      ]
+    }
+  },
+  "references": [
+    {
+      "route": "/about",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/about"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            101
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/account",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/account"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            457
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "type": "top-level",
+      "count": 2,
+      "variants": [
+        "/blog"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            90
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/care-and-share",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/care-and-share"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            103
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/careers",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/careers"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cart",
+      "type": "top-level",
+      "count": 3,
+      "variants": [
+        "/cart",
+        "/cart/"
+      ],
+      "files": [
+        {
+          "file": "src/pages/checkout/index.njk",
+          "lines": [
+            23
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            458
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            317
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/checkout",
+      "type": "top-level",
+      "count": 3,
+      "variants": [
+        "/checkout/"
+      ],
+      "files": [
+        {
+          "file": "src/pages/cart/index.js",
+          "lines": [
+            200
+          ]
+        },
+        {
+          "file": "src/pages/product-detail/index.js",
+          "lines": [
+            91
+          ]
+        },
+        {
+          "file": "src/pages/product-doraemon/index.js",
+          "lines": [
+            138
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-ba-lo-tank-top-nam",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/ao-ba-lo-tank-top-nam"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            27
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            51
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-bra-the-thao",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-bra-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            131
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-chay-bo",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-chay-bo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            201
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-croptop-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-croptop-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            129
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-khoac-nam",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/ao-khoac-nam"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            22
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-khoac-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-khoac-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            133
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-nam",
+      "type": "collection",
+      "count": 7,
+      "variants": [
+        "/collection/ao-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/about/index.njk",
+          "lines": [
+            27
+          ]
+        },
+        {
+          "file": "src/pages/cart/index.njk",
+          "lines": [
+            134
+          ]
+        },
+        {
+          "file": "src/pages/category/index.njk",
+          "lines": [
+            38,
+            139
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            167
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            49,
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-nam-choi-the-thao",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/ao-nam-choi-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            53,
+            194
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-nam-dai-tay",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-nam-dai-tay"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            56
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-nu",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/ao-nu"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            101
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            126,
+            127
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-pickleball",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            209
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-polo-nam",
+      "type": "collection",
+      "count": 4,
+      "variants": [
+        "/collection/ao-polo-nam"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            59
+          ]
+        },
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            17
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            74
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-polo-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-polo-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            130
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-so-mi-nam",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/ao-so-mi-nam"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            12
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            86
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            55
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-sweater-len-ni-nam",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/ao-sweater-len-ni-nam"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            32
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            57
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-tanktop-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-tanktop-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            132
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-thun-nam",
+      "type": "collection",
+      "count": 5,
+      "variants": [
+        "/collection/ao-thun-nam"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            7
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            62,
+            78
+          ]
+        },
+        {
+          "file": "src/pages/product-doraemon/index.njk",
+          "lines": [
+            27
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            52
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ao-thun-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/ao-thun-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            128
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/balo",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/balo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            275
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/ban-chay-nhat",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/ban-chay-nhat?gender_type=female",
+        "/collection/ban-chay-nhat?gender_type=male"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            43,
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/bra-legging",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/bra-legging"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            109
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/care-and-share",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/care-and-share"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/chan-vay-pickleball",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/chan-vay-pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            149
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/coolmate-activewear",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/coolmate-activewear"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            58
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            93,
+            193
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/corecotton-tee",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/corecotton-tee?gender_type=male"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            104
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/dam-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/dam-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            150
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-boi-nam",
+      "type": "collection",
+      "count": 4,
+      "variants": [
+        "/collection/do-boi-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            72,
+            95,
+            218,
+            228
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-bong-da",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/do-bong-da"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            219
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-casual",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/do-casual"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            94
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-chay-bo-coolmate",
+      "type": "collection",
+      "count": 11,
+      "variants": [
+        "/collection/do-chay-bo-coolmate",
+        "/collection/do-chay-bo-coolmate?gender_type=female"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            41,
+            47
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            59,
+            347,
+            354
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            158,
+            166,
+            199,
+            200,
+            225,
+            295
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-gym",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/do-gym"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            216
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-mac-hang-ngay-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/do-mac-hang-ngay-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            168
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-nam",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/do-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/collection-ao-nam/index.njk",
+          "lines": [
+            26
+          ]
+        },
+        {
+          "file": "src/pages/product-doraemon/index.njk",
+          "lines": [
+            25
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/do-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            121
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-the-thao",
+      "type": "collection",
+      "count": 5,
+      "variants": [
+        "/collection/do-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/pages/category/index.njk",
+          "lines": [
+            46
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            63
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            186,
+            191,
+            192
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/do-yoga-nu",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/do-yoga-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            157,
+            165,
+            217
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/doraemon-collection",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/doraemon-collection"
+      ],
+      "files": [
+        {
+          "file": "src/pages/product-doraemon/index.njk",
+          "lines": [
+            169
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/fifa-worldcup-2026-collection",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/fifa-worldcup-2026-collection"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            56
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            100,
+            177
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/giam-gia",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/giam-gia?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            304
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/gym-yoga",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/gym-yoga"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            215,
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/mu-chong-nang",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/mu-chong-nang"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            269
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/mu-luoi-trai",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/mu-luoi-trai"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            267
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/mu-non",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/mu-non"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            266,
+            286
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/mu-the-thao",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/mu-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            268
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/phu-kien-ban-chay",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/phu-kien-ban-chay"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            254
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/phu-kien-chay-bo",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/phu-kien-chay-bo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            203,
+            284
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/phu-kien-khac",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/phu-kien-khac"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            277
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/phu-kien-nam",
+      "type": "collection",
+      "count": 7,
+      "variants": [
+        "/collection/phu-kien-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/category/index.njk",
+          "lines": [
+            50
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            85,
+            86,
+            246,
+            251,
+            252,
+            291
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/phu-kien-nu",
+      "type": "collection",
+      "count": 4,
+      "variants": [
+        "/collection/phu-kien-nu"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            121
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            155,
+            159,
+            253
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/pickleball-tennis",
+      "type": "collection",
+      "count": 10,
+      "variants": [
+        "/collection/pickleball-tennis",
+        "/collection/pickleball-tennis?gender_type=female"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            61,
+            117,
+            150,
+            157
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            156,
+            167,
+            207,
+            208,
+            226,
+            237
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-boxer-brief-dang-dai",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-boxer-brief-dang-dai"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            80
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-boxer-trunk",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-boxer-trunk"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            79
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-dai-nam",
+      "type": "collection",
+      "count": 4,
+      "variants": [
+        "/collection/quan-dai-nam"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            53
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            60,
+            90
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            68
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-dai-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-dai-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            141
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-jeans-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-jeans-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            70
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-jogger-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-jogger-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            66
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-jogger-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-jogger-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            142
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-kaki-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-kaki-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            71
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-legging-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-legging-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            140
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-long-leg",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-long-leg"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-lot-nam",
+      "type": "collection",
+      "count": 6,
+      "variants": [
+        "/collection/quan-lot-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            94,
+            254,
+            261
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            76,
+            77,
+            92
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-nam",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/quan-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/category/index.njk",
+          "lines": [
+            42
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            63,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-nam-choi-the-thao",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/quan-nam-choi-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            67,
+            195
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-nu",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/quan-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            137,
+            138
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-nu-choi-the-thao",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-nu-choi-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            143
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-pants-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-pants-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            69
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-short-chay-bo",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-short-chay-bo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            202
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-short-nam",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/quan-short-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            82
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            65
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-short-nu",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/quan-short-nu"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            35
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            105
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            139
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-short-pickleball",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-short-pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            210
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/quan-tam-giac-brief",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/quan-tam-giac-brief"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            78
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/san-pham-moi",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/san-pham-moi?gender_type=female",
+        "/collection/san-pham-moi?gender_type=male",
+        "/collection/san-pham-moi?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            32,
+            42,
+            119
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/set-do-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/set-do-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            45
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/set-do-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/set-do-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            151
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tat-co-cao",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/tat-co-cao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            262
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tat-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/tat-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            259
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tat-pickleball",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/tat-pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            261
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tat-the-thao",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/tat-the-thao"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            260,
+            283
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tat-vo",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/tat-vo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            258
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tui-deo-cheo",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/tui-deo-cheo"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            274,
+            285
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/tui-vi",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/tui-vi"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            273
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/vay-dam-nu",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/vay-dam-nu"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            147
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/vay-pickleball",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/vay-pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            211
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/vay-the-thao-nu",
+      "type": "collection",
+      "count": 2,
+      "variants": [
+        "/collection/vay-the-thao-nu"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            113
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            148
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/vi-nam",
+      "type": "collection",
+      "count": 1,
+      "variants": [
+        "/collection/vi-nam"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            276
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/collection/wave-motion-collection",
+      "type": "collection",
+      "count": 3,
+      "variants": [
+        "/collection/wave-motion-collection"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            57
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            173,
+            233
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/community-threads",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/community-threads"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            88
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "type": "top-level",
+      "count": 7,
+      "variants": [
+        "/contact"
+      ],
+      "files": [
+        {
+          "file": "src/pages/about/index.njk",
+          "lines": [
+            28
+          ]
+        },
+        {
+          "file": "src/pages/info/index.njk",
+          "lines": [
+            26
+          ]
+        },
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            7,
+            112,
+            113,
+            114,
+            115
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/coolclub",
+      "type": "top-level",
+      "count": 11,
+      "variants": [
+        "/coolclub"
+      ],
+      "files": [
+        {
+          "file": "src/pages/cart/index.njk",
+          "lines": [
+            26
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            448,
+            450
+          ]
+        },
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            41
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/coolclub/benefits",
+      "type": "nested",
+      "count": 1,
+      "variants": [
+        "/coolclub/benefits"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            43
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/coolclub/register",
+      "type": "nested",
+      "count": 1,
+      "variants": [
+        "/coolclub/register"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/coolmate-101",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/coolmate-101"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            99
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/copyright",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/copyright"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            51
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/customer-experience",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/customer-experience"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            80
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/cxp",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/cxp"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/do-chay-bo",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/do-chay-bo"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/dvkh-xuat-sac",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/dvkh-xuat-sac"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/factory",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/factory"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            102
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/faq",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/faq"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/graphic-tee",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/graphic-tee?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            59
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/highlight-collections",
+      "type": "top-level",
+      "count": 2,
+      "variants": [
+        "/highlight-collections"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            44,
+            122
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/language",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/language"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/login",
+      "type": "top-level",
+      "count": 2,
+      "variants": [
+        "/login"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            14,
+            314
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/lp/coolmate-101",
+      "type": "lp",
+      "count": 2,
+      "variants": [
+        "/lp/coolmate-101",
+        "/lp/coolmate-101?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            98
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/nam",
+      "type": "top-level",
+      "count": 2,
+      "variants": [
+        "/nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            130
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            36
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/nu",
+      "type": "top-level",
+      "count": 3,
+      "variants": [
+        "/nu"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            137
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            113,
+            118
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/page/chinh-sach-bao-mat-thong-tin-ca-nhan",
+      "type": "page",
+      "count": 1,
+      "variants": [
+        "/page/chinh-sach-bao-mat-thong-tin-ca-nhan"
+      ],
+      "files": [
+        {
+          "file": "src/pages/cart/index.njk",
+          "lines": [
+            38
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/page/dich-vu-60-ngay-doi-tra",
+      "type": "page",
+      "count": 1,
+      "variants": [
+        "/page/dich-vu-60-ngay-doi-tra"
+      ],
+      "files": [
+        {
+          "file": "src/pages/cart/index.njk",
+          "lines": [
+            113
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/page/trung-tam-dich-vu-khach-hang",
+      "type": "page",
+      "count": 1,
+      "variants": [
+        "/page/trung-tam-dich-vu-khach-hang?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/pickleball",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/pickleball"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            29
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/privacy"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            63
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product-detail",
+      "type": "top-level",
+      "count": 7,
+      "variants": [
+        "/product-detail/"
+      ],
+      "files": [
+        {
+          "file": "src/pages/category/index.njk",
+          "lines": [
+            115,
+            121,
+            127,
+            133,
+            145,
+            151,
+            157
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50",
+      "type": "product",
+      "count": 4,
+      "variants": [
+        "/product/ao-hoodie-chong-nang-nam-quick-dry-sun-protection-upf50"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            73
+          ]
+        },
+        {
+          "file": "src/data/cart-page.data.js",
+          "lines": [
+            52
+          ]
+        },
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            12
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            114
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-khoac-nam-co-mu-daily-wear-truot-nuoc-chong-uv-99"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            181
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-polo-nam-cafe",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-polo-nam-cafe"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-polo-nam-phoi-bo-co-performance-world-cup",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-polo-nam-phoi-bo-co-performance-world-cup"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            314
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-polo-nu-pickleball-exdry-essentials",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-polo-nu-pickleball-exdry-essentials?color=trang"
+      ],
+      "files": [
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            44
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            164
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-polo-the-thao-nam-promax-s1-logo-1",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-polo-the-thao-nam-promax-s1-logo-1"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            195
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            144
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-polo-world-cup-doi-tuyen-anh",
+      "type": "product",
+      "count": 3,
+      "variants": [
+        "/product/ao-polo-world-cup-doi-tuyen-anh?color=trang"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            19
+          ]
+        },
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            20
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            126
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-tank-regular-fit-cotton-poly-180gsm",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-tank-regular-fit-cotton-poly-180gsm"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            108
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-co-v-jacquard-exdry-proactive-world-cup",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-thun-co-v-jacquard-exdry-proactive-world-cup"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            284
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-cotton-compact-logo-coolmate",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-thun-cotton-compact-logo-coolmate"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            246
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-doraemon-biet-doi-bien-xanh-cotton-180gsm1",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-thun-doraemon-biet-doi-bien-xanh-cotton-180gsm1"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            156
+          ]
+        },
+        {
+          "file": "src/data/doraemon-product.data.js",
+          "lines": [
+            66
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-doraemon-cotton-compact-phoi-bo",
+      "type": "product",
+      "count": 6,
+      "variants": [
+        "/product/ao-thun-doraemon-cotton-compact-phoi-bo",
+        "/product/ao-thun-doraemon-cotton-compact-phoi-bo/"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            13
+          ]
+        },
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            97
+          ]
+        },
+        {
+          "file": "src/data/cart-page.data.js",
+          "lines": [
+            46
+          ]
+        },
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            4
+          ]
+        },
+        {
+          "file": "src/data/doraemon-product.data.js",
+          "lines": [
+            4
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            102
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-doraemon-ky-si-dai-duong-cotton-180gsm",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-thun-doraemon-ky-si-dai-duong-cotton-180gsm"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            144
+          ]
+        },
+        {
+          "file": "src/data/doraemon-product.data.js",
+          "lines": [
+            59
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1",
+      "type": "product",
+      "count": 3,
+      "variants": [
+        "/product/ao-thun-doraemon-su-gia-vuong-quoc-mu-cotton-180gsm1"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            85
+          ]
+        },
+        {
+          "file": "src/data/doraemon-product.data.js",
+          "lines": [
+            45
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            108
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-doraemon-tinh-ban-nhiem-mau-cotton-180gsm",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-thun-doraemon-tinh-ban-nhiem-mau-cotton-180gsm"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            132
+          ]
+        },
+        {
+          "file": "src/data/doraemon-product.data.js",
+          "lines": [
+            52
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-nam-cotton-compact-chong-nhan",
+      "type": "product",
+      "count": 4,
+      "variants": [
+        "/product/ao-thun-nam-cotton-compact-chong-nhan"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            234
+          ]
+        },
+        {
+          "file": "src/data/cart-page.data.js",
+          "lines": [
+            64
+          ]
+        },
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            28
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            138
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-nam-phoi-tay-exdry-performance-world-cup",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-thun-nam-phoi-tay-exdry-performance-world-cup"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            270
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-nam-pickleball-dinkshot-essentials",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/ao-thun-nam-pickleball-dinkshot-essentials?color=xam"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            29
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            212
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-phoi-bo-co-exdry-proactive-world-cup",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-thun-phoi-bo-co-exdry-proactive-world-cup"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            299
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-thun-the-thao-thoang-khi-essentials",
+      "type": "product",
+      "count": 3,
+      "variants": [
+        "/product/ao-thun-the-thao-thoang-khi-essentials"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            258
+          ]
+        },
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            60
+          ]
+        },
+        {
+          "file": "src/pages/new-products/index.njk",
+          "lines": [
+            132
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-tshirt-nam-regular-cotton-poly-180gsm",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-tshirt-nam-regular-cotton-poly-180gsm"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/ao-tshirt-nam-regular-fit-100-cotton-180gsm",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/ao-tshirt-nam-regular-fit-100-cotton-180gsm"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            168
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/combo-3-quan-lot-nam-brief-lenzing-modal",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/combo-3-quan-lot-nam-brief-lenzing-modal?color=blue-shadow"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/combo-3-quan-lot-nam-trunk-airmax-mesh",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/combo-3-quan-lot-nam-trunk-airmax-mesh"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            268
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/combo-3-quan-lot-nam-trunk-bamboo",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/combo-3-quan-lot-nam-trunk-bamboo?color=den"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            285
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/combo-3-quan-lot-nam-trunk-excool",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/combo-3-quan-lot-nam-trunk-excool?color=xanh-denim"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            303
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/polo-pique-basic-cotton-100",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/polo-pique-basic-cotton-100"
+      ],
+      "files": [
+        {
+          "file": "src/data/ao-nam.data.js",
+          "lines": [
+            208
+          ]
+        },
+        {
+          "file": "src/data/cart-page.data.js",
+          "lines": [
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/quan-short-nu-cbo-pace-short-35in",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/quan-short-nu-cbo-pace-short-35in?color=den"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            376
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/quan-shorts-the-thao-nam-6inch-pickleball-smash-shot?color=trang"
+      ],
+      "files": [
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            228
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/t-shirt-chay-bo-nu-exdry-aerodot-gradient?color=hong"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            361
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/t-shirt-chay-bo-nu-graphic-sky",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/t-shirt-chay-bo-nu-graphic-sky?color=cam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            408
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/t-shirt-the-thao-nu-quick-dry-tight",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/t-shirt-the-thao-nu-quick-dry-tight?color=xanh-blue"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            392
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/tui-trong-gym",
+      "type": "product",
+      "count": 1,
+      "variants": [
+        "/product/tui-trong-gym?color=den"
+      ],
+      "files": [
+        {
+          "file": "src/assets/js/search-overlay.js",
+          "lines": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/vay-thun-knit-aline-pickleball-driveshot-essentials",
+      "type": "product",
+      "count": 2,
+      "variants": [
+        "/product/vay-thun-knit-aline-pickleball-driveshot-essentials?color=trang"
+      ],
+      "files": [
+        {
+          "file": "src/data/catalog-pages.data.js",
+          "lines": [
+            52
+          ]
+        },
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            191
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/promotions-policy",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/promotions-policy"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            62
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/quan-lot-nam",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/quan-lot-nam"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            32
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/return",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/return"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            61
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/return-store",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/return-store"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            60
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/sale",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/sale"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/shipping",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/shipping"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/site-history",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/site-history"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            71
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/size-guide",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/size-guide"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            89
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/stores",
+      "type": "top-level",
+      "count": 2,
+      "variants": [
+        "/stores",
+        "/stores?itm_source=navbar"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            111
+          ]
+        },
+        {
+          "file": "src/partials/header.njk",
+          "lines": [
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/support",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/support"
+      ],
+      "files": [
+        {
+          "file": "src/pages/home/index.njk",
+          "lines": [
+            459
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/sustainability",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/sustainability"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            104
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/vision-2030",
+      "type": "top-level",
+      "count": 1,
+      "variants": [
+        "/vision-2030"
+      ],
+      "files": [
+        {
+          "file": "src/partials/footer.njk",
+          "lines": [
+            105
+          ]
+        }
+      ]
+    }
+  ]
+}

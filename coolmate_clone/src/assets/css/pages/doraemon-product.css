@@ -1,0 +1,603 @@
+.doraemon-product-page {
+  background: #fff;
+  color: #111;
+}
+
+.doraemon-main {
+  overflow: hidden;
+}
+
+.doraemon-container {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+  width: 100%;
+}
+
+.doraemon-breadcrumb {
+  align-items: center;
+  color: #a3a3a3;
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  margin: 18px 0 30px;
+}
+
+.doraemon-breadcrumb a,
+.doraemon-breadcrumb strong {
+  color: inherit;
+  font-weight: 600;
+}
+
+.doraemon-product {
+  display: grid;
+  gap: 44px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(460px, .92fr);
+  align-items: start;
+}
+
+.doraemon-gallery {
+  position: sticky;
+  top: 122px;
+}
+
+.doraemon-gallery__main {
+  background: #fafafa;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+.doraemon-gallery__main img {
+  display: block;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.doraemon-gallery__count {
+  background: rgba(17,17,17,.68);
+  border-radius: 999px;
+  bottom: 16px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 10px;
+  position: absolute;
+  right: 16px;
+}
+
+.doraemon-gallery__thumbs {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.doraemon-thumb-track {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.doraemon-thumb-track::-webkit-scrollbar {
+  display: none;
+}
+
+.doraemon-thumb,
+.doraemon-thumb-nav {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  height: 74px;
+  overflow: hidden;
+  padding: 0;
+  width: 74px;
+}
+
+.doraemon-thumb.is-active {
+  border-color: #111;
+  box-shadow: 0 0 0 1px #111 inset;
+}
+
+.doraemon-thumb img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.doraemon-thumb-nav {
+  align-items: center;
+  color: #666;
+  display: inline-flex;
+  justify-content: center;
+  width: 40px;
+}
+
+.doraemon-info {
+  min-width: 0;
+  padding-top: 10px;
+}
+
+.doraemon-brand {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  margin-bottom: 10px;
+}
+
+.doraemon-title {
+  color: #111827;
+  font-family: var(--cm-font-display);
+  font-size: clamp(34px, 3vw, 46px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: .95;
+  margin: 0 0 14px;
+}
+
+.doraemon-subtitle {
+  color: #5f6368;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+  max-width: 560px;
+}
+
+.doraemon-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.doraemon-meta__chip {
+  background: #f3f4f6;
+  border-radius: 999px;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+}
+
+.doraemon-price {
+  margin-bottom: 22px;
+}
+
+.doraemon-price strong {
+  color: #111;
+  display: block;
+  font-family: var(--cm-font-display);
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
+.doraemon-price__sub {
+  color: #6b7280;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.doraemon-price__old {
+  text-decoration: line-through;
+}
+
+.doraemon-section {
+  margin-bottom: 22px;
+}
+
+.doraemon-section__head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.doraemon-section__head label {
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doraemon-link {
+  background: transparent;
+  border: 0;
+  color: #2448ff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.doraemon-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.doraemon-size {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  color: #111;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  height: 48px;
+  justify-content: center;
+  min-width: 56px;
+  padding: 0 14px;
+}
+
+.doraemon-size.is-active {
+  border-color: #111;
+  box-shadow: 0 0 0 1px #111 inset;
+}
+
+.doraemon-size.is-disabled {
+  color: #b4b4b4;
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.doraemon-colors {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.doraemon-color {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  padding: 0 6px;
+  width: 58px;
+}
+
+.doraemon-color.is-active {
+  border-color: #111;
+  box-shadow: 0 0 0 1px #111 inset;
+}
+
+.doraemon-color__swatch {
+  border-radius: 999px;
+  display: block;
+  height: 26px;
+  width: 42px;
+  background-size: cover;
+  background-position: center;
+}
+
+.doraemon-color__label {
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.doraemon-qty {
+  align-items: center;
+  display: inline-flex;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.doraemon-qty__btn {
+  background: #fff;
+  border: 0;
+  color: #111;
+  cursor: pointer;
+  font-size: 18px;
+  height: 48px;
+  width: 48px;
+}
+
+.doraemon-qty__input {
+  border: 0;
+  font-size: 16px;
+  height: 48px;
+  text-align: center;
+  width: 72px;
+}
+
+.doraemon-delivery {
+  background: #f8fafc;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  padding: 16px 18px;
+}
+
+.doraemon-delivery strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.doraemon-delivery p {
+  color: #5f6368;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.doraemon-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.doraemon-actions__cart,
+.doraemon-actions__buy {
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--cm-font-display);
+  font-size: 15px;
+  font-weight: 800;
+  height: 56px;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  text-transform: uppercase;
+}
+
+.doraemon-actions__cart {
+  background: #111;
+  color: #fff;
+  flex: 1;
+}
+
+.doraemon-actions__buy {
+  background: #f2f2f2;
+  color: #111;
+  min-width: 170px;
+}
+
+.doraemon-description,
+.doraemon-specs,
+.doraemon-related {
+  padding-top: 68px;
+}
+
+.doraemon-description {
+  background: #fafafa;
+  margin-top: 48px;
+  padding-bottom: 40px;
+}
+
+.doraemon-description h2,
+.doraemon-related h2 {
+  font-family: var(--cm-font-display);
+  font-size: clamp(30px, 3vw, 40px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin: 0 0 24px;
+}
+
+.doraemon-description__layout {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, .84fr);
+}
+
+.doraemon-feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.doraemon-feature {
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 1px rgba(15,23,42,.04);
+  display: inline-flex;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.doraemon-feature img {
+  display: block;
+  height: 38px;
+  width: 38px;
+}
+
+.doraemon-feature span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doraemon-description__copy {
+  color: #333;
+  line-height: 1.72;
+}
+
+.doraemon-description__copy p {
+  font-size: 16px;
+  margin: 0 0 18px;
+}
+
+.doraemon-description__copy ul {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.doraemon-description__copy li {
+  font-size: 15px;
+}
+
+.doraemon-description__hero {
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.doraemon-description__hero img {
+  display: block;
+  width: 100%;
+}
+
+.doraemon-specs {
+  padding-bottom: 16px;
+}
+
+.doraemon-specs__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.doraemon-spec {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+.doraemon-spec h3 {
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+
+.doraemon-spec p {
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.doraemon-related {
+  padding-bottom: 50px;
+}
+
+.doraemon-section-head {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.doraemon-section-head a {
+  color: #2448ff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doraemon-related__grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.doraemon-related-card a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.doraemon-related-card__media {
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+}
+
+.doraemon-related-card__media img {
+  display: block;
+  aspect-ratio: .78;
+  object-fit: cover;
+  width: 100%;
+}
+
+.doraemon-related-card__badge {
+  background: #2450ff;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.doraemon-related-card__meta {
+  padding: 12px 4px 0;
+}
+
+.doraemon-related-card__meta h3 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 0 4px;
+}
+
+.doraemon-related-card__meta p {
+  color: #111;
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+}
+
+@media (max-width: 1200px) {
+  .doraemon-product {
+    grid-template-columns: 1fr;
+  }
+
+  .doraemon-gallery {
+    position: static;
+  }
+
+  .doraemon-description__layout,
+  .doraemon-related__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .doraemon-title {
+    font-size: 30px;
+  }
+
+  .doraemon-actions {
+    flex-direction: column;
+  }
+
+  .doraemon-actions__buy {
+    min-width: 0;
+  }
+
+  .doraemon-description__layout,
+  .doraemon-specs__grid,
+  .doraemon-related__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doraemon-gallery__thumbs {
+    gap: 8px;
+  }
+
+  .doraemon-thumb,
+  .doraemon-thumb-nav {
+    height: 62px;
+    width: 62px;
+  }
+}

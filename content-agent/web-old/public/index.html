@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">🤖</span>
+        <span class="logo-text">Content Agent</span>
+      </div>
+      
+      <nav class="nav">
+        <!-- Viết Bài -->
+        <div class="nav-group open">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">📝</span>
+            <span>Viết Bài</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item active" data-view="pipeline">Viết Bài</a>
+            <a href="#" class="nav-item">Viết Hàng Loạt</a>
+            <a href="#" class="nav-item">Viết Lại</a>
+          </div>
+        </div>
+
+        <!-- Tự Động Viết Blog -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">🔄</span>
+            <span>Tự Động Viết Blog</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item">Tự Ưu Bài Viết</a>
+            <a href="#" class="nav-item">Tát Cả Bài Viết</a>
+          </div>
+        </div>
+
+        <!-- Tự Động Index -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">🔍</span>
+            <span>Tự Động Index</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item">Cấu Hình</a>
+          </div>
+        </div>
+
+        <!-- Cấu Hình -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">⚙️</span>
+            <span>Cấu Hình</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item">Website</a>
+            <a href="#" class="nav-item">Kiến Thức</a>
+          </div>
+        </div>
+
+        <!-- Keyword Tools -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">🔑</span>
+            <span>Keyword Tools</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item">Phân Tích Từ Khóa</a>
+            <a href="#" class="nav-item">Lấy Từ Khóa Google Suggest</a>
+            <a href="#" class="nav-item">Keyword Volume</a>
+            <a href="#" class="nav-item">Nhóm Từ Khóa</a>
+            <a href="#" class="nav-item">Từ Khóa Website</a>
+            <a href="#" class="nav-item">Semantic Keywords</a>
+          </div>
+        </div>
+
+        <!-- Công Cụ AI Khác -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">🤖</span>
+            <span>Công Cụ AI Khác</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item">AI Chat</a>
+            <a href="#" class="nav-item">Tạo Ảnh AI</a>
+            <a href="#" class="nav-item">Phân Tích Văn Bản</a>
+          </div>
+        </div>
+
+        <!-- Mở Rộng -->
+        <div class="nav-group">
+          <div class="nav-group-header" onclick="toggleNavGroup(this)">
+            <span class="nav-icon">📚</span>
+            <span>Mở Rộng</span>
+            <span class="nav-arrow">›</span>
+          </div>
+          <div class="nav-group-items">
+            <a href="#" class="nav-item" data-view="brand">Context & Data</a>
+            <a href="#" class="nav-item">Hướng Dẫn</a>
+            <a href="#" class="nav-item">API Documentation</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">👤</div>
+          <div class="user-details">
+            <div class="user-name" id="user-name">Admin</div>
+            <div class="user-role" id="user-role">admin</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Đăng xuất">🚪</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Pipeline View -->
+      <div id="view-pipeline" class="view active">
+        <div class="page-header">
+          <h1 class="page-title">Viết bài bằng AI</h1>
+          <p class="page-subtitle">Sử dụng AI để viết bài viết với nhiều lựa chọn</p>
+          <button class="btn-cach-su-dung">📖 Cách sử dụng</button>
+        </div>
+
+        <div class="content-wrapper">
+          <!-- Template Grid -->
+          <div class="template-grid">
+            <!-- Card 1 -->
+            <div class="template-card" onclick="showView('viet-bai-thong-minh')">
+              <div class="template-icon blue">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết thông minh</h3>
+              <p class="template-desc">Hệ thống viết bài tự động với pipeline 8 bước chuyên nghiệp</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="template-card">
+              <div class="template-icon green">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết theo từ khóa</h3>
+              <p class="template-desc">Nhanh chóng, đầy đủ, giải pháp cho các chủ đề chuyên sâu về SEO</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="template-card">
+              <div class="template-icon gray">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết bài ngắn gọn</h3>
+              <p class="template-desc">Bài viết ngắn khoảng 1,200 từ, tập trung vào từ khóa chính</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="template-card">
+              <div class="template-icon purple">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết Tin Tức</h3>
+              <p class="template-desc">Nội dụng các nhóm theo ngày, thông tin các nhóm cho website tin tức</p>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="template-card">
+              <div class="template-icon gray2">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết từ Google Search</h3>
+              <p class="template-desc">Dễ dàng tạo nội dung từ kết quả tìm kiếm Google AI Overview</p>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="template-card">
+              <div class="template-icon green2">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết theo ý</h3>
+              <p class="template-desc">Dựa trên ý của bạn để viết bài với đầy đủ chỉnh sửa chính xác</p>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="template-card">
+              <div class="template-icon blue2">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết đạt đoạn trần đầu</h3>
+              <p class="template-desc">Nhanh chóng, đầy đủ, giải pháp cho các chủ đề chuyên sâu về SEO</p>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="template-card">
+              <div class="template-icon gray3">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Write Product Review</h3>
+              <p class="template-desc">Viết đánh giá, phân tích chuyên sâu sản phẩm chi tiết phần</p>
+            </div>
+
+            <!-- Card 9 -->
+            <div class="template-card">
+              <div class="template-icon yellow">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết Amazon Affiliate</h3>
+              <p class="template-desc">Đánh giá bài viết Amazon Affiliate nhanh chóng, đầy đủ, giải pháp</p>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="template-card">
+              <div class="template-icon gray4">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết từ Youtube Video</h3>
+              <p class="template-desc">Chuyển nội dung video Youtube thành bài viết, tạo nội dung đầy đủ</p>
+            </div>
+
+            <!-- Card 11 -->
+            <div class="template-card">
+              <div class="template-icon gray5">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết từ Facebook Post</h3>
+              <p class="template-desc">Chuyển nội dung Facebook Post thành bài viết</p>
+            </div>
+
+            <!-- Card 12 -->
+            <div class="template-card">
+              <div class="template-icon blue3">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết bài dạng tương tự</h3>
+              <p class="template-desc">Viết bài dạng tương tự với bài viết mẫu, tạo nội dung tương tự</p>
+            </div>
+
+            <!-- Card 13 -->
+            <div class="template-card">
+              <div class="template-icon gray6">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết theo người</h3>
+              <p class="template-desc">Chuyển nội dung viết theo phong cách người khác thành bài viết của bạn</p>
+            </div>
+
+            <!-- Card 14 -->
+            <div class="template-card">
+              <div class="template-icon blue4">
+                <div class="icon-placeholder"></div>
+              </div>
+              <h3 class="template-title">Viết bài dạng tương tự</h3>
+              <p class="template-desc">Viết bài dạng tương tự với bài viết mẫu, tạo nội dung tương tự</p>
+            </div>
+          </div>
+
+          <!-- Pipeline Steps (Hidden by default) -->
+          <div id="pipeline-steps" class="pipeline-steps hidden"></div>
+          <div id="final-report" class="final-report hidden"></div>
+          <div id="article-preview" class="article-preview hidden">
+            <h3>📄 Preview Bài Viết</h3>
+            <div id="article-content" class="article-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand View -->
+      <div id="view-brand" class="view">
+        <div class="page-header">
+          <h1 class="page-title">Context & Data</h1>
+          <p class="page-subtitle">Brand context, SOP, và số liệu performance</p>
+        </div>
+
+        <div class="content-wrapper">
+          <div class="brand-tabs">
+            <button class="tab active" data-tab="brandGuideline">Brand Guideline</button>
+            <button class="tab" data-tab="customerPersona">Customer Persona</button>
+            <button class="tab" data-tab="marketingChannels">Marketing Channels</button>
+            <button class="tab" data-tab="productCatalog">Product Catalog</button>
+            <button class="tab" data-tab="contentSop">Content SOP</button>
+            <button class="tab" data-tab="researchSop">Research SOP</button>
+            <button class="tab" data-tab="performanceData">Performance Data</button>
+          </div>
+          <div class="brand-content">
+            <pre id="brand-text"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viết Bài Thông Minh View -->
+      <div id="view-viet-bai-thong-minh" class="view">
+        <div class="page-header">
+          <h1 class="page-title">Viết thông minh</h1>
+          <p class="page-subtitle">Viết thông minh là tính năng viết bài đầy đủ và hoàn chỉnh nhất</p>
+        </div>
+
+        <div class="content-wrapper" style="max-width: 1000px; margin: 0 auto;">
+          <div style="background-color: #ecf0f1; padding: 20px; border-radius: 8px; margin-bottom: 30px; font-size: 1.1em;">
+            <p style="margin: 0;">Viết thông minh là tính năng viết bài đầy đủ và hoàn chỉnh nhất, tích hợp cả đề xuất từ khóa (chính và phụ), dàn ý bài viết, tiêu đề SEO, semantic keywords, bổ xung thêm dữ liệu cho AI. Giúp bài viết vừa có chất lượng, đạt chuẩn helpful của Google, vừa đảm bảo điểm SEO.</p>
+          </div>
+          
+          <h2 style="font-size: 1.8em; color: #2980b9; margin-top: 20px; margin-bottom: 20px;">Cách sử dụng Viết thông minh - AI WRITER</h2>
+          <p style="margin-bottom: 30px;">Tại mỗi bước thực hiện Viết thông minh bạn đều nhận được sự trợ giúp của AI.</p>
+          
+          <!-- Step 1 -->
+          <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 1.8em; color: #2980b9; margin-bottom: 20px; padding-left: 15px; border-left: 5px solid #3498db;">
+              <span style="color: #e74c3c; font-weight: bold;">Bước </span>1. Nhập từ khóa chính
+            </h2>
+            <p>Để bắt đầu bài viết bạn cần cung cấp từ khóa chính. Từ khóa chính có thể là một ý tưởng mà bạn nhận được trong bài viết này, hoặc nó là một từ khóa mà mục tiêu SEO của bạn hướng tới</p>
+            <p>Từ khóa chính có thể là tiêu đề của bài viết, hoặc cũng có thể chỉ là một chủ đề (trọng tâm) mà bài viết bạn muốn hướng tới.</p>
+            <div style="background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin: 20px 0;">
+              <p style="margin: 0;">Ngoài từ khóa, bạn cũng cần chỉ định Ngôn ngữ của bài viết. AI WRITER hỗ trợ hơn 40 ngôn ngữ, hầu hết các ngôn ngữ AI đều viết tốt, kể cả ngôn ngữ tiếng Anh, tiếng Việt, tiếng Hàn và nhiều ngôn ngữ khác</p>
+            </div>
+            <p>Đặc biệt AI WRITER tích hợp trí tuệ nhân tạo, cho phép bạn nhập từ khóa ở ngôn ngữ mẹ đẻ, và tùy chọn bài viết ở ngôn ngữ khác. Ví dụ bạn có thể nhập từ khóa ở ngôn ngữ 'Tiếng Việt' và yêu cầu AI viết bài ở ngôn ngữ 'Tiếng Anh'</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 1.8em; color: #2980b9; margin-bottom: 20px; padding-left: 15px; border-left: 5px solid #3498db;">
+              <span style="color: #e74c3c; font-weight: bold;">Bước </span>2. Từ khóa phụ
+            </h2>
+            <p>Trong trường hợp bài viết của bạn ngoài từ khóa chính còn có mục tiêu vào các từ khóa phụ. Bạn có thể nhập từ khóa phụ ở bước này</p>
+            <p>Từ khóa phụ giúp định hướng AI viết bài xoay quanh các chủ đề chỉ định, tránh lan man, cải thiện điểm SEO SCORE và tăng tỉ lệ hữu ích của bài viết</p>
+            <p>Trong trường hợp bạn không quan tâm từ khóa phụ bạn có thể bỏ qua bước này</p>
+            <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+              <p style="margin: 0;">Đặc biệt AI WRITER cung cấp tính năng gợi ý từ khóa phụ bằng AI, bạn có thể sử dụng tính năng này để không bỏ sót bất cứ từ khóa nào liên quan đến từ khóa chính.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 1.8em; color: #2980b9; margin-bottom: 20px; padding-left: 15px; border-left: 5px solid #3498db;">
+              <span style="color: #e74c3c; font-weight: bold;">Bước </span>3. Dàn ý
+            </h2>
+            <p>Dựa vào từ khóa chính, từ khóa phụ mà bạn đã cung cấp, AI sẽ giúp bạn tạo ra dàn ý cho bài viết của mình. Dựa vào dàn ý (outline) này bạn sẽ dễ dàng đảm bảo AI viết đúng và đủ mục tiêu của bài viết</p>
+            <p>Đặc biệt AI WRITER cung cấp tính năng tạo dàn ý thông minh bằng cách sử dụng AI. Bạn có thể sử dụng 2 model AI khác nhau để tạo dàn ý cho mình:</p>
+            <ul style="margin-left: 30px; margin-bottom: 15px;">
+              <li style="margin-bottom: 10px;"><strong>Sử dụng AI (chatGPT):</strong> Công nghệ của (Open AI) tạo dàn ý văn phong mượt mà & cập nhập 2022</li>
+              <li style="margin-bottom: 10px;"><strong>Sử dụng AI (Bard):</strong> Công nghệ của (Google AI) tạo dàn ý hợp với các nội dung mới & cập nhập 2023</li>
+            </ul>
+            <p>Trong trường hợp sử dụng AI, nếu bạn cảm thấy ý nào trong dàn ý không phù hợp, bạn có thể hiệu chỉnh lại. Trong trường hợp bạn không thích sử dụng AI, bạn có thể nhập dàn ý của bạn vào. Việc này càng giúp bài viết đúng mục tiêu của bạn hơn</p>
+            <p>Ngoài ra, nếu bạn không thích sử dụng dàn ý, bạn có thể bỏ qua tính năng dàn ý. Bài viết lúc này chỉ tập trung vào từ khóa chính và phụ của bạn</p>
+          </div>
+
+          <!-- Step 5 -->
+          <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="font-size: 1.8em; color: #2980b9; margin-bottom: 20px; padding-left: 15px; border-left: 5px solid #3498db;">
+              <span style="color: #e74c3c; font-weight: bold;">Bước </span>5. Tiêu đề bài viết
+            </h2>
+            <p>Ở bước tạo tiêu đề bài viết, AI WRITER dựa vào từ khóa chính, từ khóa phụ và dàn ý để viết tiêu đề cho bạn. Bạn có thể chọn AI chatGPT hoặc Bard để viết tiêu đề</p>
+            <p>Mỗi lần yêu cầu, AI sẽ viết 4 - 6 tiêu đề và đoạn giới thiệu cho bạn. Nếu bạn ưng ý với nội dung của AI, bạn chỉ cần chọn cái bạn muốn. Trong trường hợp bạn không ưng ý và muốn chỉnh sửa, hãy gõ nội dung chỉnh sửa của bạn</p>
+            <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+              <p style="margin-bottom: 10px;">Bài viết của bạn nhờ sự trợ giúp của AI đã có những định hướng rõ bao gồm: tiêu đề, dàn ý và từ khóa.</p>
+              <p style="margin: 0;">Việc này đảm bảo AI sẽ viết bài tuân thủ theo đúng mục tiêu của bạn đề ra, nhưng AI vẫn đảm bảo bài viết đạt chuẩn SEO của Google</p>
+            </div>
+          </div>
+
+          <!-- Continue with remaining steps... -->
+          <div style="text-align: center; padding: 40px 0; color: #7f8c8d;">
+            <p>... và các bước tiếp theo từ 6-11 ...</p>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for template selection -->
+  <div id="template-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Tạo Content Mới</h2>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Từ khóa chính</label>
+          <input type="text" id="keyword" placeholder="VD: giường sắt đơn ống tròn" autofocus>
+        </div>
+        <div class="form-group">
+          <label>Sản phẩm (tùy chọn)</label>
+          <select id="product">
+            <option value="">— Không chọn —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Loại content</label>
+          <select id="contentType">
+            <option value="blog">Blog / SEO Article</option>
+            <option value="social-fb">Caption Facebook</option>
+            <option value="social-ig">Caption Instagram</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+        <button class="btn btn-primary" id="btn-run" onclick="runPipeline()">🚀 Chạy Pipeline</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

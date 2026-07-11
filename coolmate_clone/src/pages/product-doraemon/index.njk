@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ PAGE_SEO['doraemon-product'].description }}">
+  <meta name="keywords" content="{{ PAGE_SEO['doraemon-product'].keywords }}">
+  <meta name="theme-color" content="{{ themeColor }}">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-header.css">
+  <link rel="stylesheet" href="../../assets/css/pages/doraemon-product.css">
+  <link rel="stylesheet" href="../../assets/css/pages/coolmate-footer.css">
+  <script src="./index.js" defer></script>
+  <title>{{ PAGE_SEO['doraemon-product'].title }} | {{ siteName }}</title>
+</head>
+<body class="coolmate-body doraemon-product-page">
+  {% include "partials/header.njk" %}
+
+  <main class="doraemon-main">
+    <div class="cm-shell doraemon-container">
+      <nav class="doraemon-breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="doraemon-breadcrumb__home" aria-label="Trang chủ"><i class="fas fa-home"></i></a>
+        <span>/</span>
+        <a href="/collection/do-nam">Đồ Nam</a>
+        <span>/</span>
+        <a href="/collection/ao-thun-nam">Áo Thun Nam</a>
+        <span>/</span>
+        <strong>{{ pageData.name }}</strong>
+      </nav>
+
+      <section class="doraemon-product">
+        <div class="doraemon-gallery">
+          <div class="doraemon-gallery__main">
+            <img data-gallery-main src="{{ pageData.gallery[0] }}" alt="{{ pageData.name }}">
+            <div class="doraemon-gallery__count" data-gallery-count>1/{{ pageData.gallery.length }}</div>
+          </div>
+
+          <div class="doraemon-gallery__thumbs">
+            <button class="doraemon-thumb-nav" type="button" aria-label="Ảnh trước" data-gallery-prev><i class="fas fa-chevron-left"></i></button>
+            <div class="doraemon-thumb-track">
+              {% for image in pageData.gallery %}
+                <button class="doraemon-thumb{% if loop.first %} is-active{% endif %}" type="button" data-thumb="{{ image }}">
+                  <img src="{{ image }}" alt="Ảnh {{ loop.index }}" loading="lazy">
+                </button>
+              {% endfor %}
+            </div>
+            <button class="doraemon-thumb-nav" type="button" aria-label="Ảnh sau" data-gallery-next><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+
+        <div class="doraemon-info">
+          <div class="doraemon-brand">COOLMATE</div>
+          <h1 class="doraemon-title">{{ pageData.name }}</h1>
+          <p class="doraemon-subtitle">{{ pageData.descriptionIntro }}</p>
+
+          <div class="doraemon-meta">
+            <span class="doraemon-meta__chip">Thoáng mát</span>
+            <span class="doraemon-meta__chip">Chống nhăn</span>
+            <span class="doraemon-meta__chip">Nhanh khô</span>
+          </div>
+
+          <div class="doraemon-price">
+            <strong data-product-price="{{ pageData.price }}">{{ pageData.priceText }}</strong>
+            <div class="doraemon-price__sub">
+              {% if pageData.oldPrice %}
+                <span class="doraemon-price__old">{{ pageData.oldPriceText }}</span>
+              {% endif %}
+              <span>Giá đã bao gồm VAT</span>
+            </div>
+          </div>
+
+          <div class="doraemon-section">
+            <div class="doraemon-section__head">
+              <label>Kích thước</label>
+              <button class="doraemon-link" type="button">Hướng dẫn chọn size</button>
+            </div>
+            <div class="doraemon-sizes" role="listbox" aria-label="Kích thước">
+              {% for size in pageData.sizes %}
+                <button class="doraemon-size{% if size.active %} is-active{% endif %}{% if size.disabled %} is-disabled{% endif %}" type="button" data-size-btn {% if size.disabled %}disabled{% endif %}>{{ size.name }}</button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="doraemon-section">
+            <div class="doraemon-section__head">
+              <label>Màu sắc</label>
+            </div>
+            <div class="doraemon-colors">
+              <button class="doraemon-color is-active" type="button" data-color-btn data-color="{{ pageData.colorSlug }}" aria-label="{{ pageData.colorName }}">
+                <span class="doraemon-color__swatch" style="background-image:url('{{ pageData.colorImage }}')"></span>
+              </button>
+              <span class="doraemon-color__label">{{ pageData.colorName }}</span>
+            </div>
+          </div>
+
+          <div class="doraemon-section">
+            <div class="doraemon-section__head">
+              <label>Số lượng</label>
+            </div>
+            <div class="doraemon-qty">
+              <button class="doraemon-qty__btn" type="button" data-qty-minus>-</button>
+              <input class="doraemon-qty__input" type="number" min="1" value="1" data-product-qty>
+              <button class="doraemon-qty__btn" type="button" data-qty-plus>+</button>
+            </div>
+          </div>
+
+          <div class="doraemon-delivery">
+            <strong>Miễn phí vận chuyển</strong>
+            <p>Áp dụng cho đơn từ 399.000đ, đổi trả miễn phí trong 60 ngày.</p>
+          </div>
+
+          <div class="doraemon-actions">
+            <button class="doraemon-actions__cart" type="button" data-add-cart><i class="fas fa-shopping-bag"></i><span>Thêm vào giỏ</span></button>
+            <button class="doraemon-actions__buy" type="button" data-buy-now>Mua ngay</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="doraemon-description">
+      <div class="cm-shell doraemon-container">
+        <h2>{{ pageData.descriptionTitle }}</h2>
+        <div class="doraemon-description__layout">
+          <div class="doraemon-description__features">
+            <div class="doraemon-feature-row">
+              {% for feature in pageData.features %}
+                <div class="doraemon-feature">
+                  <img src="{{ feature.icon }}" alt="{{ feature.title }}" loading="lazy">
+                  <span>{{ feature.title }}</span>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="doraemon-description__copy">
+              <p>{{ pageData.descriptionIntro }}</p>
+              <ul>
+                {% for item in pageData.descriptionFeatures %}
+                  <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="doraemon-description__hero">
+            <img src="{{ pageData.heroImage }}" alt="{{ pageData.name }}" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doraemon-specs">
+      <div class="cm-shell doraemon-container">
+        <div class="doraemon-specs__grid">
+          {% for spec in pageData.specs %}
+            <article class="doraemon-spec">
+              <h3>{{ spec.label }}</h3>
+              <p>{{ spec.value }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="doraemon-related">
+      <div class="cm-shell doraemon-container">
+        <div class="doraemon-section-head">
+          <h2>Sản phẩm cùng bộ Doraemon</h2>
+          <a href="/collection/doraemon-collection">Xem thêm</a>
+        </div>
+        <div class="doraemon-related__grid">
+          {% for item in pageData.related %}
+            <article class="doraemon-related-card">
+              <a href="{{ item.href }}">
+                <div class="doraemon-related-card__media">
+                  {% if item.badge %}<span class="doraemon-related-card__badge">{{ item.badge }}</span>{% endif %}
+                  <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+                </div>
+                <div class="doraemon-related-card__meta">
+                  <h3>{{ item.title }}</h3>
+                  <p>{{ item.price }}</p>
+                </div>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/footer.njk" %}
+</body>
+</html>

@@ -1,31 +1,32 @@
-/* Footer Content */
 .footer-content {
-  margin: 0 auto;
-  padding: 20px 15px 30px;
-  font-size: 13px;
+  background: #111315;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  max-width: none;
+  padding: 4px 48px 48px;
 }
 
 .content-text {
-  font-size: 13px;
-  line-height: 1.85;
-  color: #4a4a4a;
-  margin-bottom: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0 auto 36px;
+  max-width: 1440px;
+  padding-top: 28px;
 }
 
 .content-text h2 {
-  font-size: 13px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 20px 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0 0 18px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .content-text p {
-  margin: 0 0 15px 0;
+  margin: 0 0 14px;
   text-align: justify;
-  line-height: 1.85;
-  font-size: 13px;
 }
 
 .content-text p:last-child {
@@ -33,150 +34,117 @@
 }
 
 .content-text strong {
+  color: #fff;
   font-weight: 700;
-  color: #333;
 }
 
 .content-text a {
-  color: #1F7A5C;
+  color: #9fd8ff;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 600;
 }
 
 .content-text a:hover {
   text-decoration: underline;
-  color: #145a42;
 }
 
-/* Footer Categories */
 .footer-categories {
-  margin-bottom: 30px;
+  margin: 0 auto;
+  max-width: 1440px;
 }
 
 .footer-categories h3 {
-  font-size: 13px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 15px 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0 0 20px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0 30px;
-  margin-bottom: 25px;
+  gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 24px;
 }
 
 .category-col h4 {
-  font-size: 13px;
+  color: #fff;
+  font-size: 14px;
   font-weight: 700;
-  color: #333;
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
 }
 
 .category-col ul {
   list-style: none;
+  margin: 0;
   padding: 0;
-  margin: 0 0 20px 0;
 }
 
 .category-col ul li {
   display: inline;
-  margin: 0;
-}
-
-.category-col ul li a {
-  font-size: 13px;
-  color: #666;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.category-col ul li a:hover {
-  color: #1F7A5C;
 }
 
 .category-col ul li::after {
+  color: rgba(255, 255, 255, 0.28);
   content: " | ";
-  color: #ccc;
 }
 
 .category-col ul li:last-child::after {
   content: "";
 }
 
-/* Footer Keywords */
-.footer-keywords h3 {
+.category-col ul li a {
+  color: rgba(255, 255, 255, 0.72);
   font-size: 13px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 15px 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.keyword-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.keyword-list a {
-  display: inline-block;
-  padding: 6px 14px;
-  background: #f5f5f5;
-  color: #666;
-  font-size: 13px;
+  line-height: 1.75;
   text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.3s;
-  border: 1px solid #e0e0e0;
 }
 
-.keyword-list a:hover {
-  background: #1F7A5C;
+.category-col ul li a:hover {
   color: #fff;
-  border-color: #1F7A5C;
 }
 
-/* Responsive */
+@media (max-width: 1280px) {
+  .footer-content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
 @media (max-width: 992px) {
   .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .footer-content {
-    padding: 15px 10px 20px;
+    padding: 0 20px 92px;
   }
 
   .content-text {
-    font-size: 12px;
-    line-height: 1.7;
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding-top: 24px;
   }
 
   .content-text h2,
-  .footer-categories h3,
-  .footer-keywords h3 {
+  .footer-categories h3 {
     font-size: 14px;
-    margin-bottom: 15px;
-  }
-
-  .content-text p {
-    margin-bottom: 12px;
   }
 
   .category-grid {
+    gap: 18px;
     grid-template-columns: 1fr;
-    gap: 0;
+    margin-bottom: 18px;
   }
+}
 
-  .keyword-list a {
-    padding: 5px 12px;
-    font-size: 12px;
+@media (max-width: 420px) {
+  .footer-content {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
